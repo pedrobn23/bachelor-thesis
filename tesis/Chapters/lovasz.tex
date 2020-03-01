@@ -208,16 +208,20 @@ Moser\cite{moser2013exact} proves that it exists an algorithm such that it give 
 \caption{Moser's Algorithm}\label{euclid}
 \begin{algorithmic}[1]
   \Procedure{Repair}{}
-  \State Randomly chooose an initial assigment $\alpha$
-  
 \EndProcedure
+  \State $C_1,...,C_m \gets \text{Clauses to satisfie}$
+  \State Randomly chooose an initial assigment $\alpha$
+  \For{j := 1 to m} 
+  \If{$\alpha(C_j) = 0$}
+  \State Repair($C_j$)
+
 \end{algorithmic}
 \end{algorithm}
 
 
 
 
-%\State $\textit{stringlen} \gets \text{length of }\textit{string}$
+%
 % \State $i \gets \textit{patlen}$
 % \State \emph{top}:
 % \If {$i > \textit{stringlen}$} \Return false
