@@ -121,8 +121,19 @@ Examples of formulas are $x\vee y$ or $x_1\wedge x_2 \vee  ( x_4 \vee \neg  x_3 
 	Where $C_i = (u_{1,i} \vee ... \vee u_{m_i,i})$  and $u_{i,j}$ are literals, that is, variables or negated variables. The set of all formulas in conjunctive normal form is called \emph{CNF}.
 \end{definition}
 	
-	A formula in \emph{CNF} could be seen as a collection of clauses. The associated problem with \emph{CNF} is straightforward on $O(n)$. The problem that we will investigate is whether a arbitrary formula $F$ have a \emph{SATe properties follows from the equivalent properties on the constants.
-\end{proof}
+A formula in \emph{CNF} could be seen as a collection of clauses. The associated problem with \emph{CNF} is straightforward on $O(n)$. The problem that we will investigate is whether a arbitrary formula $F$ have a \emph{SAT-equivalent} \emph{CNF} formula.
+Equivalently a clause could be seen as a set of literals. The set of all formulas in conjunctive normal form where $|C_i| = N\ i \in 1,...,n$ is called \emph{N-CNF}. The intersection of these set with the \emph{SAT} set are called \emph{CNF-SAT} y \emph{N-CNF-SAT}.\\
+
+
+	We could define an equal relationship on the set of formulas. Let $F,G$ be formulas. Then $F= G$ if it happens that for each $\alpha$ an assignment such that $F\alpha = 1$ then $G\alpha = 1$ and $G\alpha = 1$ then $F\alpha = 1$
+
+\begin{proposition} 
+	The given equal relationship is a equivalence relationship.
+\end{proposition}
+\begin{proof}
+	All three properties follows from the equivalent properties on the constants.
+
+        \end{proof}
 	
 	
 	We could define a partial order relation between the formulas.	Let $F,G$ be formulas. Then $F\le G$ if it for each $\alpha$ an assignment such that $F\alpha = 1$ then $G\alpha = 1$. \\
