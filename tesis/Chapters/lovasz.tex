@@ -1,24 +1,24 @@
-\section{Lovasz Local Lemma}
-We continue to prove an interesting lemma on the theoretical analysis of satisfiability problem: the Lovász Local Lema (LLL). This lemma was first proven on 1972 by Erdos and Lovasz while they were studying 3-coloration of hypergraphs. Then it was Moser which understood the relationship between  this result an constraint satisfation problem. The SAT could be regard as the simplest of these problems. \\
+\section{Lovász Local Lemma}
+We continue to prove an interesting lemma on the theoretical analysis of satisfiability problem: the Lovász Local Lemma (LLL). This lemma was first proven on 1972 by Erdös and Lovász while they were studying 3-coloration of hypergraphs. Then it was Moser which understood the relationship between  this result an constraint satisfaction problem. The SAT could be regard as the simplest of these problems. \\
 
 %Incluir teorema pagina 20? 
 
  
-This section is going to be based on the works of Moser, Tardos, Lovasz and Erdos as a result. As it will be shown LLL is applicable to set sufficent condition for satisfiability.  We will explain the lemma for theoretical purposes and prove the most general version, and give a constructive algorithm to solve a less general statement of the problem. The principal source of bibliography for the whole section would be Moser Phd. tesis. \\ 
+This section is going to be based on the works of Moser, Tardos, Lovász and Erdös as a result. As it will be shown LLL is applicable to set sufficient condition for satisfiability.  We will explain the lemma for theoretical purposes and prove the most general version, and give a constructive algorithm to solve a less general statement of the problem. The principal source of bibliography for the whole section would be Moser PhD. Thesis. \\ 
 %[INCLUIR LINK A LA BIBLIOGRAFIA]
 
 
-The main contribution of Moser's works to this problem is finding an efficient algorithm to find what assigment satifies the formula, should happen that $F$ is proved satifiable by the previous theorem. Previously only probabilistics approaches had been succesful.\\
+The main contribution of Moser's works to this problem is finding an efficient algorithm to find what assignment satisfies the formula, should happen that $F$ is proved satisfiable by the previous theorem. Previously only probabilistic approaches had been successful.\\
 
 
-The probabilistic method is a useful method to prove the existence of objetcs with an especific property. The philosophy beneath this type of demostration is the following: in order to prove the existence of an object we do not need to give the said object, instead, we could just consider a random object in the space that we consider an prove that the probability is strictly positive. Then we can deduce that an object with that property exists (if it did not probability would be 0). It is not necesary to provide the exact value, bouning it by a constant greater that 0 would be enough. \\
+The probabilistic method is a useful method to prove the existence of objects with an specific property. The philosophy beneath this type of demonstration is the following: in order to prove the existence of an object we do not need to give the said object, instead, we could just consider a random object in the space that we consider an prove that the probability is strictly positive. Then we can deduce that an object with that property exists (if it did not probability would be 0). It is not necessary to provide the exact value, bounding it by a constant greater that 0 would be enough. \\
 
-This tecnique was pioneered by Paul Erdos. The LLL takes part because is an useful tool to prove lower bounds for probabilities, allowing us to provide the result.\\
+This technique was pioneered by Paul Erdös. The LLL takes part because is an useful tool to prove lower bounds for probabilities, allowing us to provide the result.\\
 
 This section will follow this order:
 \begin{itemize}
-	\item Present the notation and general expresion for the LLL.
-	\item Use the result to prove an interesting property on satisfability un CNF.
+	\item Present the notation and general expression for the LLL.
+	\item Use the result to prove an interesting property on satisfiability on CNF.
 	\item Prove the general result with the probabilistic result.
 	\item Provide the more concise CNF-result with a constructive algorithm.
 \end{itemize}
@@ -26,7 +26,7 @@ This section will follow this order:
 
 \subsection{First definitions}
 
-We will work here with a very especific type of formulas. Let us call a formula $F$ is in $k$-CNF
+We will work here with a very specific type of formulas. Let us call a formula $F$ is in $k$-CNF
 if it is in CNF and $\forall C \in F, |C| = k$.
 \begin{definition}
 	Let $C$ be a clause in $F$, the neighborhood of $C$, denoted as $\Gamma_F(C)$ as 
@@ -60,7 +60,7 @@ If, instead of requiring the event to be more likely, we require it to be indepe
 
 \end{definition}
 
-\subsection{Statement of the Lovasz Local Lemma}
+\subsection{Statement of the Lovász Local Lemma}
 
 \begin{theorem}[Lovász Local Lema]\label{LLL}
 	Let $\Omega$ be a probability space and let 
@@ -72,7 +72,7 @@ $$
 then $P\left ( \bigcap_{A\in \mathcal{A}} \overline{A}\right ) > 0$.\\
 \end{theorem}
 
-By considering the random experiment of drawing an assignment uniformuly, with the event corresponding to violating the different clauses we could refomulate this result. The weight of each clause is the probability of violating each clause. Therefore, we can state a SAT-focused result.
+By considering the random experiment of drawing an assignment uniformly, with the event corresponding to violating the different clauses we could reformulate this result. The weight of each clause is the probability of violating each clause. Therefore, we can state a SAT-focused result.
 
 \begin{corollary}[Lovász Local Lema for SAT]\label{LLLS}
 	Let $F$ be a CNF formula. If there exists a mapping $\mu:F\to (0,1)$ that associates a number with each clause in the formula such that 
@@ -83,9 +83,9 @@ $$
 	then F is satisfiable.
 \end{corollary}
 \begin{proof}
-	To prove the result it would only be necesary to show  that $ \Gamma^*$ is the lopsidependency graph for this experiment. Given $C \in F$ and $\mathcal{D}\subset F\backslash \Gamma_{G_F^*}(D)\ $(i.e. no $D \in  \mathcal{D}$ conflict with $C$). We want to check the probability of a random assignment falisifying $C$ given that it satisfies all of the clauses in $\mathcal{D}$, and prove that it is at most $2^{-|C|}$. \\ 
+	To prove the result it would only be necessary to show  that $ \Gamma^*$ is the lopsidependency graph for this experiment. Given $C \in F$ and $\mathcal{D}\subset F\backslash \Gamma_{G_F^*}(D)\ $(i.e. no $D \in  \mathcal{D}$ conflict with $C$). We want to check the probability of a random assignment falsifying $C$ given that it satisfies all of the clauses in $\mathcal{D}$, and prove that it is at most $2^{-|C|}$. \\ 
 	
-Let $\alpha$ be an assigment such that it satisfies $\mathcal{D}$ and violates $C$. We could generate new assigment from $\alpha$ changing any value on $Var(C)$, and they still will satisfy $\mathcal{D}$ (as there are no conflict) so the probability is still at most $2^{-k}$. 
+Let $\alpha$ be an assignment such that it satisfies $\mathcal{D}$ and violates $C$. We could generate new assignment from $\alpha$ changing any value on $Var(C)$, and they still will satisfy $\mathcal{D}$ (as there are no conflict) so the probability is still at most $2^{-k}$. 
 
 % REVISAR 
 
@@ -105,10 +105,10 @@ $$
 \end{corollary}
 
 
-In order to get a result easier to check. If $k\le 2$ the $k$-SAT problem is  polinomically solvable so we will not be interested on such kormulas.
+In order to get a result easier to check. If $k\le 2$ the $k$-SAT problem is  polynomial solvable so we will not be interested on such formulas.
 
 \begin{corollary}
-	Let $F$ be a $k$-CNF with $k>2$ formula such that $\ \forall C \in F$ and $\ |\Gamma_F(C)|\le 2^k/e-1$ then $F$ is satisfable.
+	Let $F$ be a $k$-CNF with $k>2$ formula such that $\ \forall C \in F$ and $\ |\Gamma_F(C)|\le 2^k/e-1$ then $F$ is satisfiable.
 \end{corollary}
 \begin{proof}
 	
@@ -131,17 +131,17 @@ In order to get a result easier to check. If $k\le 2$ the $k$-SAT problem is  po
 
 \subsection{Nonconstructive proof of \ref{LLL}}
 
-We explain the way Erdös, Lovász and Spencer originally proved the Lemma. This material is from [EL75] and [Spe77]. The write-up presented here will resemble the one done by [Moser], already apeared similarly in [MW11].\\
+We explain the way Erdös, Lovász and Spencer originally proved the Lemma. This material is from \cite{erdos1973problems} and \cite{spencer1977asymptotic}. The write-up presented here will resemble the one done by \cite{moser2013exact}.\\
 
 
 
-Thorough the proof we will use repeteadly the definition of conditional probability, i.e. for anu events $\{E_i\}_{i\in 1,...,r}$,
+Thorough the proof we will use repeatedly the definition of conditional probability, i.e. for any events $\{E_i\}_{i\in 1,...,r}$,
 
 \[
 P\left ( \bigcap_{i=1}^r E_1\right ) = \prod_{i=1}^rP \left( E_i \Big | \bigcap_{j=1}^{i-1} E_j\right)\\
 \]
 
-Further on this subsection we will consdier  $\Omega$ to be a probability space and $\mathcal{A} = \{A_1,...,A_m\}$ to be arbitrary events in this space, $G$ to be the lopsidependency graph, and $\mu: \mathcal{A} \to (0,1)$ with such that the conditions of the theorem are satisfied. We first prove an auxiliary lemma.
+Further on this subsection we will consider  $\Omega$ to be a probability space and $\mathcal{A} = \{A_1,...,A_m\}$ to be arbitrary events in this space, $G$ to be the lopsidependency graph, and $\mu: \mathcal{A} \to (0,1)$ with such that the conditions of the theorem are satisfied. We first prove an auxiliary lemma.
 
 \begin{lemma} \label{LemaLLL}
 Let $ A_0 \in \mathcal{A} $ and $\mathcal{H}\subset \mathcal{A} $. then 
@@ -154,12 +154,12 @@ Let $ A_0 \in \mathcal{A} $ and $\mathcal{H}\subset \mathcal{A} $. then
 
 \begin{proof}
 
-The proof is by induction on the size of $|\mathcal{H}|$. The case $H=\emptyset$ follows from the hipotesis easily:
+The proof is by induction on the size of $|\mathcal{H}|$. The case $H=\emptyset$ follows from the hypothesis easily:
 
 $$ 
 	P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B}\right ) =  P(A) \le^{1.}   \mu(A) \prod_{B\in\Gamma^*_G(A)} (1-\mu(B)) \le^{2.} \mu(A) $$
 
-Where 1. uses the hypotesis and 2. uses that $0 < \mu(B) < 1$. Now we supose that $|\mathcal{H}|=n$ and that the claim is true for all $\mathcal{H}'$ such that $|\mathcal{H}'|<n$. We distinguish two cases. The induction hipotesis will not be neccesary for the first of them
+Where 1. uses the hypothesis and 2. uses that $0 < \mu(B) < 1$. Now we suppose that $|\mathcal{H}|=n$ and that the claim is true for all $\mathcal{H}'$ such that $|\mathcal{H}'|<n$. We distinguish two cases. The induction hypothesis will not be necessary for the first of them
 \begin{itemize}
 \item When $\mathcal{H} \cap \Gamma^*_G(A) = \emptyset$ then  $	P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B}\right ) = 0 \le P(A)$ by definition of $\Gamma_G^*$ and $P(A) \le \mu(A)$ by definition of $\mu$.
 \item Otherwise we have $A\not \in \mathcal{H}$ and $\mathcal{H} \cap \Gamma^*_G(A) \ne \emptyset$. Then we can define to sets $\mathcal{H}_A = \mathcal{H} \cap \Gamma^*_G(A) = \{H_1,...,H_k\}$ and $\mathcal{H}_0 = \mathcal{H}  \backslash \mathcal{H}_A$. 
@@ -174,18 +174,18 @@ We will bound numerator and denominator. For the numerator:
 P\left ( A \cap \left ( \bigcap_{B\in \mathcal{H}_A} \overline{B} \right ) \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right ) \le P\left ( A \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right ) \le P(A)
 \]
 
-Where the second inequiality is given by the definition of lopsidependency graph. On the other hand, for the denominator, we can define $\mathcal{H}_i := \{H_i,...,H_k\} \cup \mathcal{H}_0$.
+Where the second inequality is given by the definition of lopsidependency graph. On the other hand, for the denominator, we can define $\mathcal{H}_i := \{H_i,...,H_k\} \cup \mathcal{H}_0$.
 \begin{align*}
 P\left ( \bigcap_{B\in \mathcal{H}_A} \overline{B}  \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right )  = & \prod_{i=1}^k P\left ( \overline{B_i} \Big| \bigcap_{B\in \mathcal{H}_i} \overline{B} \right ) \\  \ge^{3.}  & \prod_{i=1}^k \left (1-\mu(H_i)\right ) 
  \ge^{4.}  \prod_{B\in\Gamma_G^*(A)} \left (1-\mu(B)\right )
 \end{align*}
 
-Where in 3. the induction hypotesis is used, and in 4. is considering  that $H_i \in \Gamma_G^*(A)$
+Where in 3. the induction hypothesis is used, and in 4. is considering  that $H_i \in \Gamma_G^*(A)$
 Considering now both parts:
 \[
 P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B} \right ) \le \frac{P(A)}{\prod_{B\in\Gamma_G^*(A)} \left (1-\mu(B)\right )} \le \mu(A)
 \]
-Where the last inequality uses the hypotesis on $\mu$.
+Where the last inequality uses the hypothesis on $\mu$.
 \end{itemize}
 \end{proof}
 
@@ -200,26 +200,35 @@ P\left ( \bigcap_{A\in \mathcal{A}} \overline{A}\right ) = \prod_{i=1}^m P \left
 
 \subsection{Constructive proof of \ref{LLLSC}}
 
-Moser proves that it exists an algorithm such that it give an assigment satisfiying the SAT formula, should it happend that the formula satisfies \ref{LLLS} conditions. This is no a big deal, as a bactrack would be also capable of providing the solution, given that we know its existance. What is not trivial is that it would run in $O(|F|)$
+Moser\cite{moser2013exact} proves that it exists an algorithm such that it give an assignment satisfying the SAT formula, should it happen that the formula satisfies \ref{LLLS} conditions. This is no a big deal, as a backtrack would be also capable of providing the solution, given that we know its existence. What is not trivial is that it would run in $O(|F|)$. We will show the version of the algorithm shown in \cite{schoning2013satisfiability} 
+
+
+
 \begin{algorithm}
-\caption{My algorithm}\label{euclid}
+\caption{Moser's Algorithm}\label{euclid}
 \begin{algorithmic}[1]
-\Procedure{MyProcedure}{}
-\State $\textit{stringlen} \gets \text{length of }\textit{string}$
-\State $i \gets \textit{patlen}$
-\State \emph{top}:
-\If {$i > \textit{stringlen}$} \Return false
-\EndIf
-\State $j \gets \textit{patlen}$
-\State \emph{loop}:
-\If {$\textit{string}(i) = \textit{path}(j)$}
-\State $j \gets j-1$.
-\State $i \gets i-1$.
-\State \textbf{goto} \emph{loop}.
-\State \textbf{close};
-\EndIf
-\State $i \gets i+\max(\textit{delta}_1(\textit{string}(i)),\textit{delta}_2(j))$.
-\State \textbf{goto} \emph{top}.
+  \Procedure{Repair}{}
+  \State Randomly chooose an initial assigment $\alpha$
+  
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+
+
+
+
+%\State $\textit{stringlen} \gets \text{length of }\textit{string}$
+% \State $i \gets \textit{patlen}$
+% \State \emph{top}:
+% \If {$i > \textit{stringlen}$} \Return false
+% \EndIf
+% \State $j \gets \textit{patlen}$
+% \State \emph{loop}:
+% \If {$\textit{string}(i) = \textit{path}(j)$}
+% \State $j \gets j-1$.
+% \State $i \gets i-1$.
+% \State \textbf{goto} \emph{loop}.
+% \State \textbf{close};
+% \EndIf
+% \State $i \gets i+\max(\textit{delta}_1(\textit{string}(i)),\textit{delta}_2(j))$.
+% \State \textbf{goto} \emph{top}.

@@ -154,7 +154,7 @@ As we then could see each class of equivalent as the set of assignment that sati
 	Every operator can be seen as a gate and every variable as an input.
 \end{proof}
 	
-\begin{theorem}[Tseitin]
+\begin{theorem}[Tseitin \cite{tseitin1983complexity}]
   There is a \emph{3-CNF} formula on each equivalent class. Moreover, given an element $F$  there is a equivalent formula $G$  in \emph{3-CNF} which could be done in polynomial time. 
 \end{theorem}
 
@@ -162,7 +162,7 @@ As we then could see each class of equivalent as the set of assignment that sati
 
 
 
-This result is important because, now we could be able to talk only about \emph{3CNF} formulas. The fact that they are reachable on polynomial time is important because it means it could be done efficiently. Should this be impossible it will not be of much relevance in practice, as we yearn to solve this problem as efficient as possible (in fact, as polynomial as possible).\\
+This result is important because, now we could be able to talk only about \emph{3-CNF} formulas. The fact that they are reachable on polynomial time is important because it means it could be done efficiently. Should this be impossible it will not be of much relevance in practice, as we yearn to solve this problem as efficient as possible (in fact, as polynomial as possible).\\
 
 We will show that for every circuit with $n$ inputs and $m$ binary gates there is a formula in \emph{3-CNF}  that could be constructed in polynomial time in $n$ and $m$. Then, given a formula we will work with it considering it associated circuit.\\
 
@@ -170,7 +170,7 @@ We will construct the formula considering variables $x_1,...,x_n$ that will repr
 
 $$ G = (y_1) \wedge \bigwedge_{i=1}^m (y_i \leftrightarrow f_i(z_{i,1},z_{i,2}))$$
 
-Where $f_i$ represents the formula associated to the $i$-gate, $z_{i,1},z_{i,2}$ each of the two inputs of the $i$-gate, whether they are $x_-$ or $y_-$ variables. This formula is not \emph{3-CNF} yet, but for each configuration being $f_i$ a Boolean operator there would be a \emph{3CNF} equivalent.
+Where $f_i$ represents the formula associated to the $i$-gate, $z_{i,1},z_{i,2}$ each of the two inputs of the $i$-gate, whether they are $x_-$ or $y_-$ variables. This formula is not \emph{3-CNF} yet, but for each configuration being $f_i$ a Boolean operator there would be a \emph{3-CNF} equivalent.
 
 \begin{itemize}
 	\item $z \leftrightarrow( x \vee y )  = \neg  ( z \vee  x \vee y    ) \vee (z \wedge ( x \vee y )  ) = \neg  ( z \vee  x \vee y    ) \vee (z \wedge x)  \vee (z \wedge y ) =$\\$= ( \neg  z \wedge  \neg  x \wedge \neg   y    ) \vee (z \wedge x)  \vee (z \wedge y )  =$$
@@ -221,7 +221,7 @@ Moreover, as checking if an assignment is autark is linear on the number of clau
 I\alpha = 
      \begin{cases}
        1&\quad\text{if $\alpha$ could be extended to an assignment that \emph{satisfies} $F$}, \\
-       0&\quad\text{if $\alpha$ could be extended to an assignment that \emph{nulifies} $G$},\\
+       0&\quad\text{if $\alpha$ could be extended to an assignment that \emph{nullifies} $G$},\\
      * &\quad\text{otherwise.} \\ 
      \end{cases}
 \]
@@ -243,7 +243,7 @@ For the last part we will show that, should it happens that a polynomial algorit
 
 To get an intuition about the way that unsolvable clauses are, we gonna state some simple result about combinatorics and resolution. This will give the reader an idea of how these formulas should be. \\
 
-Firstly, it is easy to break a big clause on some smaller one, adding one another on this fashion: Suppose we got two positive integers $n,m$ such that $m < n$ a clause $x_1\vee x_2 \vee ... \vee x_n$ we could split it into two parts $x_1\vee x_2  \vee ... \vee x_{m-1} \vee y, \neg y \vee x_m \vee ... \vee x_n$. Also given the same clause with a given length $n$ we could enlarge it one variable adding $ x_1 \vee ... \vee x_n \vee y$ and $ x_1 \vee ... \vee x_n \vee \neg y$. Note that to enlarge a clause from a length $m$ to a length $n>m$ we would generate $2^{n-m}$ clauses.
+Firstly, it is easy to break a big clause on some smaller ones, adding one another on this fashion: Suppose we got two positive integers $n,m$ such that $m < n$ a clause $x_1\vee x_2 \vee ... \vee x_n$ we could split it into two parts $x_1\vee x_2  \vee ... \vee x_{m-1} \vee y, \neg y \vee x_m \vee ... \vee x_n$. Also given the same clause with a given length $n$ we could enlarge it one variable adding $ x_1 \vee ... \vee x_n \vee y$ and $ x_1 \vee ... \vee x_n \vee \neg y$. Note that to enlarge a clause from a length $m$ to a length $n>m$ we would generate $2^{n-m}$ clauses.
 
 
 \begin{proposition}
@@ -253,14 +253,14 @@ Firstly, it is easy to break a big clause on some smaller one, adding one anothe
 	Let $n = Var(F)$, it happens that $n > k$. For each clause $C \in F$ there are $2^{n-k}$ assignment that falsify $F$, so in total there could be strictly less than $2^k \cdot 2^{n-k} = 2^n.$ Therefore it exists an assignment that assign all variables and not falsifies the formula $F$.
 \end{proof}
 \begin{proposition}
-	Let $F=\{C_1,...,C_n\}$ be a CNF formula. If $\sum_{j=1}^m 2^{-|C_j|}<1,$ then $F$ is satisfacible.
+	Let $F=\{C_1,...,C_n\}$ be a CNF formula. If $\sum_{j=1}^m 2^{-|C_j|}<1,$ then $F$ is satisfiable.
 \end{proposition}
 \begin{proof}
-	Enlarging clausulas the way it is explained to the maximun length $k$ ans applying the previous ressult.
+	Enlarging clauses the way it is explained to the maximum length $k$ ans applying the previous result.
 \end{proof}
 
-Following this idea que could define the weight of a clause $C\in F$ as $$\omega(C) = 2^{-|C|} $$
-being this the probability that a uniform-random assigment violates this clause. 
+Following this idea we could define the weight of a clause $C\in F$ as $$\omega(C) = 2^{-|C|} $$
+being this the probability that a uniform-random assignment violates this clause. 
 
 \begin{corollary}
 	For a formula in CNF, if the sum of the weights of the clauses is less than one then the formula is satisfiable.
@@ -268,16 +268,16 @@ being this the probability that a uniform-random assigment violates this clause.
 
 
 \begin{proof}
-For this task, we will give a probabilistic algorithm, only to prove that it will end with a big probability. Probabilistics (and heuristics) approachs to the problem would prove later on to be really useful. Let $F$ be a CNF formula regard as a clause set.
+For this task, we will give a probabilistic algorithm, only to prove that it will end with a big probability. Probabilistic (and heuristics) approaches to the problem would prove later on to be really useful. Let $F$ be a CNF formula regard as a clause set.
 \end{proof}
 
 
 
 \begin{definition}
-Let $F$ be a CNF formula. It is said to be minimally unsatisfable if:
+Let $F$ be a CNF formula. It is said to be minimally unsatisfiable if:
 \begin{itemize}
-	\item $F$ is unsatisfable.
-	\item $F\backslash \{C\}$ is satisfable $\forall C \in F$.
+	\item $F$ is unsatisfiable.
+	\item $F\backslash \{C\}$ is satisfiable $\forall C \in F$.
 \end{itemize}
 \end{definition}
 
@@ -287,7 +287,7 @@ Let F be a set of clauses. If for every subset $G$ of $F$ it holds that $|G|\le 
 \end{lemma}
 
 \begin{proposition}
-	Minimallly unsatisfable, then $|F| > Var(F)$.
+	Minimally unsatisfiable, then $|F| > Var(F)$.
 \end{proposition}
 
 \begin{proof}
@@ -298,7 +298,7 @@ Let F be a set of clauses. If for every subset $G$ of $F$ it holds that $|G|\le 
 %% \section{Cosas que seguir haciendo}
 %% \begin{itemize}
 %% 	\item NP-Completennes.
-%% 	\item Hacer programa para autarks y programa para tranformar en 3CNF.
+%% 	\item Hacer programa para autarks y programa para tranformar en 3-CNF.
 %% 	\item Acabar con combinations restrictions.
 %% \end{itemize}
 
