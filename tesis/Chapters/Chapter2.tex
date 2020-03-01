@@ -3,15 +3,24 @@
 \chapter{Reductions} % Main chapter title
 
 
-In order to demostrate the utility a series of reductions will be developed. This will imply a formal approach to the resolution of the problems, as well as deploying a little theoretical background to some problems when needed.
+In order to demonstrate the utility a series of reductions will be developed. This will imply a formal approach to the resolution of the problems, as well as deploying a little theoretical background to some problems when needed. Unalike other chapters this section is original work, although it generality and not being really complicated made it possible to be found on other works (maybe). 
 
 \section{Proofs}
 
 \subsection{Hamiltonian Cycle}
 
-We will consider the problem of the Hamiltonian cycle of undirected graphs. Therefore an edge would have two sources instead of a source and a target as it is regarded on directed graphs. Prior to the reduction a little lemma will be proven.
+% Should include Cook theorem?
 
-\begin{lemma} Being $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ a graph. The set $ \{e_{i_1},...,e_{i_n}\}\subset E$ is a Hamiltonian cycle if, and only if, each vertex is the source to exactly two edges and the path  $ \{e_{i_1},...,e_{i_n}\}\subset E$ is connected.
+
+By Cook theorem and the ease of checking whether a cycle is a Hamiltonian cycle, it is known that a reduction from the problem of the Hamiltonian Cycle to SAT exists. This theorem is constructive, so it effectively does give a reduction. Nonetheless, this reduction is unmanageable and in order to use SAT-solvers to improve Hamiltonian cycle resolution it would be necessary to improve it. On this subsection an alternative reduction will be proven.
+
+\begin{definition}
+  A Hamiltonian cycle is a cycle that visit every node in a graph. The associated problem is to check, given a graph, whether whether cycle exists.
+\end{definition}
+
+We will consider the problem of the Hamiltonian cycle of undetected graphs. Therefore an edge would have two sources instead of a source and a target as it is regarded on directed graphs. Prior to the reduction a little lemma will be proven. 
+
+\begin{lemma} Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. The set $ \{e_{i_1},...,e_{i_n}\}\subset E$ is a Hamiltonian cycle if, and only if, each vertex is the source to exactly two edges and the path  $ \{e_{i_1},...,e_{i_n}\}\subset E$ is connected.
 
   \begin{proof}
 	  If each vertex is the source of an edge, then every vertex is accessible by an edge. Also, as every vertex has exactly two edges, each connected component of the graph would be a cycle. As the graph is connected there is only one of such components.\\
@@ -52,15 +61,15 @@ In order to make the reduction we will represent with Boolean clauses these two 
 	c_{i,j} = (a_{i,1}\wedge b_{1,j}) \vee ... \vee (a_{i,n}\wedge b_{n,j})
   $$
 
-  As we do not care about the exact value of the sum in $A'$ but only whether $a'_{i,j}$ is greater than 0 we could consider as sum the \emph{or} operation element-wise. This prove that the expression \ref{eq:hamilton} is a formula, a bit laborious to do by hand but quite computable.  
+  As we do not care about the exact value of the sum in $A'$ but only whether $a'_{i,j}$ is greater than 0 we could consider as sum the \emph{or} operation element-wise. This prove that the expression \ref{eq:hamilton} is a formula, a bit laborious to do by hand but quite compatible.  
 
 \end{itemize}
-It simple to follow that if we could satifie all the formulas then there would be a Hamiltonian cycle = $\{e_i\in E : e_i = 1\}$ where the second $e_i$ is the variable and the first one is the edge. If no such cycle exists the formulas will be unsatisfiables. Further work to do would consider the implementation and resolution of the problem, and trying to express every formula in CNF.
+It simple to follow that if we could satisfy all the formulas then there would be a Hamiltonian cycle = $\{e_i\in E : e_i = 1\}$ where the second $e_i$ is the variable and the first one is the edge. If no such cycle exists the formulas will be unsatisfiable. Further work to do would consider the implementation and resolution of the problem, and trying to express every formula in CNF.\\
 
 
-We have resolve the problem to graph, although the same resolution is available for multigraphs (graph which could have more than one edge with the same sources), as this difference does not affect the propery. The next easy results prove this statment.
+We have resolve the problem to graph, although the same resolution is available for multigraphs (graph which could have more than one edge with the same sources), as this difference does not affect the property. The next easy results prove this statement.
 
-\begin{definition}
-A hypergraph is a generalization of a graph in which an edge can join any number of vertices.
-\end{definition}
+% \begin{definition}
+% A hypergraph is a generalization of a graph in which an edge can join any number of vertices.
+% \end{definition}
 

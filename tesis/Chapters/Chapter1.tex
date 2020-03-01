@@ -121,18 +121,7 @@ Examples of formulas are $x\vee y$ or $x_1\wedge x_2 \vee  ( x_4 \vee \neg  x_3 
 	Where $C_i = (u_{1,i} \vee ... \vee u_{m_i,i})$  and $u_{i,j}$ are literals, that is, variables or negated variables. The set of all formulas in conjunctive normal form is called \emph{CNF}.
 \end{definition}
 	
-	A formula in \emph{CNF} could be seen as a collection of clauses. The associated problem with \emph{CNF} is straightforward on $O(n)$. The problem that we will investigate is whether a arbitrary formula $F$ have a \emph{sat-equivalent} \emph{CNF} formula.\\
-	
-	Equivalently a clause could be seen as a set of literals. The set of all formulas in conjunctive normal form where $|C_i| = N\ i \in 1,...,n$ is called \emph{N-CNF}. The intersection of these set with the \emph{SAT} set are called \emph{CNF-SAT} y \emph{N-CNF-SAT}.\\
-
-
-	We could define an equal relationship on the set of formulas. Let $F,G$ be formulas. Then $F= G$ if it happens that for each $\alpha$ an assignment such that $F\alpha = 1$ then $G\alpha = 1$ and $G\alpha = 1$ then $F\alpha = 1$
-	
-\begin{proposition} 
-	The given equal relationship is a equivalence relationship.
-\end{proposition}
-\begin{proof}
-	All three properties follows from the equivalent properties on the constants.
+	A formula in \emph{CNF} could be seen as a collection of clauses. The associated problem with \emph{CNF} is straightforward on $O(n)$. The problem that we will investigate is whether a arbitrary formula $F$ have a \emph{SATe properties follows from the equivalent properties on the constants.
 \end{proof}
 	
 	
@@ -140,10 +129,10 @@ Examples of formulas are $x\vee y$ or $x_1\wedge x_2 \vee  ( x_4 \vee \neg  x_3 
 	
 	
 \begin{proposition} 
-	The given equal relationship is a equivalence relationship.
+	The given equal relationship is an equivalence relationship.
 \end{proposition}
 \begin{proof}
-As we then could see each class of equivalent as the set of assignment that satisfies all of the clauses, this property arises from the order of inclusion between sets.
+As we then could see each class of equivalent as the set of assignment that satisfies all of the clauses, this property arises from the order given by the inclusion on sets.\\
 \end{proof}
 	
 	
@@ -151,7 +140,7 @@ As we then could see each class of equivalent as the set of assignment that sati
 	For every \emph{SAT} formula there is an associated circuit.
 \end{lemma}
 \begin{proof}
-	Every operator can be seen as a gate and every variable as an input.
+	Every operator can be seen as a gate and every variable as an input.\\
 \end{proof}
 	
 \begin{theorem}[Tseitin \cite{tseitin1983complexity}]
@@ -159,11 +148,6 @@ As we then could see each class of equivalent as the set of assignment that sati
 \end{theorem}
 
 \begin{proof}
-
-
-
-This result is important because, now we could be able to talk only about \emph{3-CNF} formulas. The fact that they are reachable on polynomial time is important because it means it could be done efficiently. Should this be impossible it will not be of much relevance in practice, as we yearn to solve this problem as efficient as possible (in fact, as polynomial as possible).\\
-
 We will show that for every circuit with $n$ inputs and $m$ binary gates there is a formula in \emph{3-CNF}  that could be constructed in polynomial time in $n$ and $m$. Then, given a formula we will work with it considering it associated circuit.\\
 
 We will construct the formula considering variables $x_1,...,x_n$ that will represents the inputs and $y_1,...,y_n$ that will represents the output of each gate. 
@@ -190,8 +174,7 @@ Where $f_i$ represents the formula associated to the $i$-gate, $z_{i,1},z_{i,2}$
 	In the last item we use the third one.
 	
 \end{proof}
-
-This results implies that if we know how to solve \emph{3-CNF} then we will be able to solve 'full'SAT problems.
+This result is important because, now we could be able to talk only about \emph{3-CNF} formulas. The fact that they are reachable on polynomial time is important because it means it could be done efficiently. Should this be impossible it will not be of much relevance in practice, as we yearn to solve this problem as efficient as possible (in fact, as polynomial as possible). This results implies that if we know how to solve \emph{3-CNF} then we will be able to solve 'full'SAT problems.
 \begin{definition}
 	An assignment is called autark for a formula $F\in$\emph{CNF} if for every clause $C \in F$ it happens that if $Var(C) \cap Var(\alpha) \ne \emptyset $ then $C\alpha = 1$, in other words it satisfies all clauses that it 'touches'. 
 \end{definition}
