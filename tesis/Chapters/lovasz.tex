@@ -1,0 +1,225 @@
+\section{Lovasz Local Lemma}
+We continue to prove an interesting lemma on the theoretical analysis of satisfiability problem: the Lovász Local Lema (LLL). This lemma was first proven on 1972 by Erdos and Lovasz while they were studying 3-coloration of hypergraphs. Then it was Moser which understood the relationship between  this result an constraint satisfation problem. The SAT could be regard as the simplest of these problems. \\
+
+%Incluir teorema pagina 20? 
+
+ 
+This section is going to be based on the works of Moser, Tardos, Lovasz and Erdos as a result. As it will be shown LLL is applicable to set sufficent condition for satisfiability.  We will explain the lemma for theoretical purposes and prove the most general version, and give a constructive algorithm to solve a less general statement of the problem. The principal source of bibliography for the whole section would be Moser Phd. tesis. \\ 
+%[INCLUIR LINK A LA BIBLIOGRAFIA]
+
+
+The main contribution of Moser's works to this problem is finding an efficient algorithm to find what assigment satifies the formula, should happen that $F$ is proved satifiable by the previous theorem. Previously only probabilistics approaches had been succesful.\\
+
+
+The probabilistic method is a useful method to prove the existence of objetcs with an especific property. The philosophy beneath this type of demostration is the following: in order to prove the existence of an object we do not need to give the said object, instead, we could just consider a random object in the space that we consider an prove that the probability is strictly positive. Then we can deduce that an object with that property exists (if it did not probability would be 0). It is not necesary to provide the exact value, bouning it by a constant greater that 0 would be enough. \\
+
+This tecnique was pioneered by Paul Erdos. The LLL takes part because is an useful tool to prove lower bounds for probabilities, allowing us to provide the result.\\
+
+This section will follow this order:
+\begin{itemize}
+	\item Present the notation and general expresion for the LLL.
+	\item Use the result to prove an interesting property on satisfability un CNF.
+	\item Prove the general result with the probabilistic result.
+	\item Provide the more concise CNF-result with a constructive algorithm.
+\end{itemize}
+
+
+\subsection{First definitions}
+
+We will work here with a very especific type of formulas. Let us call a formula $F$ is in $k$-CNF
+if it is in CNF and $\forall C \in F, |C| = k$.
+\begin{definition}
+	Let $C$ be a clause in $F$, the neighborhood of $C$, denoted as $\Gamma_F(C)$ as 
+	$$ \Gamma_F(C) = \{ D \in F : D\ne C, Var(C) \cap Var(D) \ne \emptyset\}$$
+	
+	Analogously, the inclusive neighborhood $\Gamma_F^+(C) = \Gamma(C) \cup \{C\}$. 
+\end{definition}
+
+
+Further on $\Gamma$ and $\Gamma^+$ will respectively denote inclusive or exclusive neighborhood on CNF formulas or graphs
+
+
+\begin{definition}
+	
+	Two clauses are \emph{conflicting} if there is a variable that is required to be true in one of then and to be false in the other. The graph $G_F^*$ such that there is an edge between $C$ and $D$ iff they \emph{conflict} in some variable.
+	
+\end{definition}
+	
+
+
+
+\begin{definition} Let $\Omega$ be a probability space and let 
+$\mathcal{A} = \{A_1,...,A_m\}$ be arbitrary events in this space. We say that a graph $G$ on the vertex set $\mathcal{A}$ is a \emph{lopsidependency graph }for $\mathcal{A}$ is more likely in the conditional space defined by intersecting the complement of any subset of its non-neighbors. In others words:
+
+\[
+ P\left(  A\ \Big | \bigcap_{B\in S} \overline{B} \right ) \le P(A) \ \ \ \ \quad \forall A \in \mathcal{A},\ \forall S \subset \mathcal{A} \backslash\Gamma_G^+(A) 
+\]
+
+
+If, instead of requiring the event to be more likely, we require it to be independent (i.e. to be equal in probability) the graph is called \emph{dependency graph}.
+
+\end{definition}
+
+\subsection{Statement of the Lovasz Local Lemma}
+
+\begin{theorem}[Lovász Local Lema]\label{LLL}
+	Let $\Omega$ be a probability space and let 
+$\mathcal{A} = \{A_1,...,A_m\}$ be arbitrary events in this space. Let $G$ be a lopsidependency graph for $\mathcal{A}$. If there exists a mapping $\mu:\mathcal{A} \to (0,1)$ such that 
+$$
+\forall A \in \mathcal{A} : P (A) \le \mu(A) \prod_{B\in\Gamma_G(A)} (1-\mu(B))
+$$
+
+then $P\left ( \bigcap_{A\in \mathcal{A}} \overline{A}\right ) > 0$.\\
+\end{theorem}
+
+By considering the random experiment of drawing an assignment uniformuly, with the event corresponding to violating the different clauses we could refomulate this result. The weight of each clause is the probability of violating each clause. Therefore, we can state a SAT-focused result.
+
+\begin{corollary}[Lovász Local Lema for SAT]\label{LLLS}
+	Let $F$ be a CNF formula. If there exists a mapping $\mu:F\to (0,1)$ that associates a number with each clause in the formula such that 
+	
+	$$
+\forall A \in \mathcal{A} : \omega (A) \le \mu(A) \prod_{B\in\Gamma^*_G(A)} (1-\mu(B))
+$$
+	then F is satisfiable.
+\end{corollary}
+\begin{proof}
+	To prove the result it would only be necesary to show  that $ \Gamma^*$ is the lopsidependency graph for this experiment. Given $C \in F$ and $\mathcal{D}\subset F\backslash \Gamma_{G_F^*}(D)\ $(i.e. no $D \in  \mathcal{D}$ conflict with $C$). We want to check the probability of a random assignment falisifying $C$ given that it satisfies all of the clauses in $\mathcal{D}$, and prove that it is at most $2^{-|C|}$. \\ 
+	
+Let $\alpha$ be an assigment such that it satisfies $\mathcal{D}$ and violates $C$. We could generate new assigment from $\alpha$ changing any value on $Var(C)$, and they still will satisfy $\mathcal{D}$ (as there are no conflict) so the probability is still at most $2^{-k}$. 
+
+% REVISAR 
+
+\end{proof}
+
+
+The result that we will prove in a constructive way will be slightly more strict, imposing the condition not only in $\Gamma^*$ but in $\Gamma^+$ 
+
+
+\begin{corollary}[Constructive Lovász Local Lema for SAT]\label{LLLSC}
+	Let $F$ be a CNF formula. If there exists a mapping $\mu:F\to (0,1)$ that associates a number with each clause in the formula such that 
+	
+	$$
+\forall A \in \mathcal{A} : \omega (A) \le \mu(A) \prod_{B\in\Gamma_G(A)} (1-\mu(B))
+$$
+	then F is satisfiable.
+\end{corollary}
+
+
+In order to get a result easier to check. If $k\le 2$ the $k$-SAT problem is  polinomically solvable so we will not be interested on such kormulas.
+
+\begin{corollary}
+	Let $F$ be a $k$-CNF with $k>2$ formula such that $\ \forall C \in F$ and $\ |\Gamma_F(C)|\le 2^k/e-1$ then $F$ is satisfable.
+\end{corollary}
+\begin{proof}
+	
+	 We will try to use \ref{LLLSC}. We will define such $\mu: F \to (0,1),$$\ \mu(C)=e\cdot 2^{-k}$. Let $C_0\in F$ be an arbitrary clause.
+	 
+	 \[
+	 2^{-k}=\omega(C)\le  \mu(C) \prod_{B\in\Gamma_F(C)} (1-\mu(B)) = e2^{-k}(1-e 2^{-k})^{|\Gamma_F(C)|}
+	 \]
+	 With the hypothesis
+	 
+	\[
+		 2^{-k} \le  e 2^{-k}(1-e2^{-k})^{2^k/e-1}\]\[
+		 1  \le e(1-e2^{-k})^{2^k/e-1}
+	\]
+	
+	Being famous that the convergence of the sequence $\{(1-e2^{-k})^{2^k/e-1}\}_k$ to $1/e$ is monotonically decreasing.\\
+\end{proof}
+
+
+
+\subsection{Nonconstructive proof of \ref{LLL}}
+
+We explain the way Erdös, Lovász and Spencer originally proved the Lemma. This material is from [EL75] and [Spe77]. The write-up presented here will resemble the one done by [Moser], already apeared similarly in [MW11].\\
+
+
+
+Thorough the proof we will use repeteadly the definition of conditional probability, i.e. for anu events $\{E_i\}_{i\in 1,...,r}$,
+
+\[
+P\left ( \bigcap_{i=1}^r E_1\right ) = \prod_{i=1}^rP \left( E_i \Big | \bigcap_{j=1}^{i-1} E_j\right)\\
+\]
+
+Further on this subsection we will consdier  $\Omega$ to be a probability space and $\mathcal{A} = \{A_1,...,A_m\}$ to be arbitrary events in this space, $G$ to be the lopsidependency graph, and $\mu: \mathcal{A} \to (0,1)$ with such that the conditions of the theorem are satisfied. We first prove an auxiliary lemma.
+
+\begin{lemma} \label{LemaLLL}
+Let $ A_0 \in \mathcal{A} $ and $\mathcal{H}\subset \mathcal{A} $. then 
+\[
+	P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B}\right ) \le \mu(A) 
+\]
+
+		
+\end{lemma}
+
+\begin{proof}
+
+The proof is by induction on the size of $|\mathcal{H}|$. The case $H=\emptyset$ follows from the hipotesis easily:
+
+$$ 
+	P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B}\right ) =  P(A) \le^{1.}   \mu(A) \prod_{B\in\Gamma^*_G(A)} (1-\mu(B)) \le^{2.} \mu(A) $$
+
+Where 1. uses the hypotesis and 2. uses that $0 < \mu(B) < 1$. Now we supose that $|\mathcal{H}|=n$ and that the claim is true for all $\mathcal{H}'$ such that $|\mathcal{H}'|<n$. We distinguish two cases. The induction hipotesis will not be neccesary for the first of them
+\begin{itemize}
+\item When $\mathcal{H} \cap \Gamma^*_G(A) = \emptyset$ then  $	P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B}\right ) = 0 \le P(A)$ by definition of $\Gamma_G^*$ and $P(A) \le \mu(A)$ by definition of $\mu$.
+\item Otherwise we have $A\not \in \mathcal{H}$ and $\mathcal{H} \cap \Gamma^*_G(A) \ne \emptyset$. Then we can define to sets $\mathcal{H}_A = \mathcal{H} \cap \Gamma^*_G(A) = \{H_1,...,H_k\}$ and $\mathcal{H}_0 = \mathcal{H}  \backslash \mathcal{H}_A$. 
+\[
+	P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B} \right ) = \frac{P\left ( A \cap \left ( \bigcap_{B\in \mathcal{H}_A} \overline{B} \right ) \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right )
+	}{P\left ( \bigcap_{B\in \mathcal{H}_A} \overline{B}  \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right )}
+\]
+
+We will bound numerator and denominator. For the numerator:
+
+\[
+P\left ( A \cap \left ( \bigcap_{B\in \mathcal{H}_A} \overline{B} \right ) \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right ) \le P\left ( A \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right ) \le P(A)
+\]
+
+Where the second inequiality is given by the definition of lopsidependency graph. On the other hand, for the denominator, we can define $\mathcal{H}_i := \{H_i,...,H_k\} \cup \mathcal{H}_0$.
+\begin{align*}
+P\left ( \bigcap_{B\in \mathcal{H}_A} \overline{B}  \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right )  = & \prod_{i=1}^k P\left ( \overline{B_i} \Big| \bigcap_{B\in \mathcal{H}_i} \overline{B} \right ) \\  \ge^{3.}  & \prod_{i=1}^k \left (1-\mu(H_i)\right ) 
+ \ge^{4.}  \prod_{B\in\Gamma_G^*(A)} \left (1-\mu(B)\right )
+\end{align*}
+
+Where in 3. the induction hypotesis is used, and in 4. is considering  that $H_i \in \Gamma_G^*(A)$
+Considering now both parts:
+\[
+P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B} \right ) \le \frac{P(A)}{\prod_{B\in\Gamma_G^*(A)} \left (1-\mu(B)\right )} \le \mu(A)
+\]
+Where the last inequality uses the hypotesis on $\mu$.
+\end{itemize}
+\end{proof}
+
+
+\begin{proof}[proof of the theorem \ref{LLL}]
+\[
+P\left ( \bigcap_{A\in \mathcal{A}} \overline{A}\right ) = \prod_{i=1}^m P \left( \overline{A_i} \Big | \bigcap_{j=1}^{i-1} \overline{A_j}\right) \ge^{5.} \prod_{i=1}^m ( 1 - \mu(A_i))
+\]
+	Where in 5. is used \ref{LemaLLL} and since $\mu:\mathcal{A}\to (0,1)$ then $P\left ( \bigcap_{A\in \mathcal{A}} \overline{A}\right )  > 0$.\\
+\end{proof}
+
+
+\subsection{Constructive proof of \ref{LLLSC}}
+
+Moser proves that it exists an algorithm such that it give an assigment satisfiying the SAT formula, should it happend that the formula satisfies \ref{LLLS} conditions. This is no a big deal, as a bactrack would be also capable of providing the solution, given that we know its existance. What is not trivial is that it would run in $O(|F|)$
+\begin{algorithm}
+\caption{My algorithm}\label{euclid}
+\begin{algorithmic}[1]
+\Procedure{MyProcedure}{}
+\State $\textit{stringlen} \gets \text{length of }\textit{string}$
+\State $i \gets \textit{patlen}$
+\State \emph{top}:
+\If {$i > \textit{stringlen}$} \Return false
+\EndIf
+\State $j \gets \textit{patlen}$
+\State \emph{loop}:
+\If {$\textit{string}(i) = \textit{path}(j)$}
+\State $j \gets j-1$.
+\State $i \gets i-1$.
+\State \textbf{goto} \emph{loop}.
+\State \textbf{close};
+\EndIf
+\State $i \gets i+\max(\textit{delta}_1(\textit{string}(i)),\textit{delta}_2(j))$.
+\State \textbf{goto} \emph{top}.
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
