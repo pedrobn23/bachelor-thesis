@@ -1,0 +1,38 @@
+\newpage
+
+\section{Special Cases Solvable in PolynomialTime}
+
+
+In this section we will discuss some cases of the sat problem solvable in P. These cases are of interest because polynomial is no achievable in all cases.
+
+\begin{definition}
+  Let $F$ be a formula. A subset $ V \subset Var(F)$ is called a backdoor if $F\alpha \in \text{P}$ for every assigment $\alpha$ that maps all $V$.
+\end{definition}
+A goal for a SAT-solver could be to find a backdoor of minimun size. DPLL would try to search for a backdoor, using heuristics in order not to explore all subsets (only achievable if such backdoor exists).
+\subsection{Unit Propagation}
+
+
+\subsection{2CNF}
+It is already know that 3CNF is equivalent to SAT. This is not known for 2CNF and is belived to be false.
+
+\begin{proposition}
+  2CNF is in P 
+\end{proposition}
+\begin{proof}
+
+  To prove that 2CNF is in P, an algorithm polinomial on the number of clauses will be given. Let $F \in$ 2CNF.  Without loosing of generality, we will consider that there are no clauses in $F$ $\{u,u\}$ or $\{u,\neg u\}$ as the first one should be handle with unit propagation and the second one is a tautology. Therefore each clause is $(u \vee v)$ with $var(u) \ne var(v)$, which could be seen as $(\neg u \rightarrow v) \wede (\new v \rightwarrow u)$.\\
+
+
+  
+  We would consider a step to be as follow: we choose a variable $x \in Var(F)$ and set it to 0. Them a chain of implication would arise, which might end on conflict. If no conflitc arise, then is an autark assigment, so repeat the process. Otherwise set it to 1 and proceed. If conflitc arise, then $F$ is unsatisfiable. If no conflitc arise, then is an autark assigment, so repeat the process.
+  
+
+  Each step is of polynomial time over the number of clauses. Also there would be at most as many steps as variables, therefore we have a polynomial algorithm.
+  
+  
+\end{proof}
+
+\subsection{Horn Formulas}
+\subsection{Renamable horn}
+
+

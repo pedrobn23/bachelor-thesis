@@ -122,7 +122,7 @@ Examples of formulas are $x\vee y$ or $x_1\wedge x_2 \vee  ( x_4 \vee \neg  x_3 
 \end{definition}
 	
 A formula in \emph{CNF} could be seen as a collection of clauses. The associated problem with \emph{CNF} is straightforward on $O(n)$. The problem that we will investigate is whether a arbitrary formula $F$ have a \emph{SAT-equivalent} \emph{CNF} formula.
-Equivalently a clause could be seen as a set of literals. The set of all formulas in conjunctive normal form where $|C_i| = N\ i \in 1,...,n$ is called \emph{N-CNF}. The intersection of these set with the \emph{SAT} set are called \emph{CNF-SAT} y \emph{N-CNF-SAT}.\\
+Equivalently a clause could be seen as a set of literals. The set of all formulas in conjunctive normal form where $|C_i| = N\ i \in 1,...,n$ is called \emph{NCNF}. The intersection of these set with the \emph{SAT} set are called \emph{CNF-SAT} y \emph{NCNF-SAT}. If the context is clear enough the problems will be called \emph{CNF} and \emph{NCNF}\\
 
 
 	We could define an equal relationship on the set of formulas. Let $F,G$ be formulas. Then $F= G$ if it happens that for each $\alpha$ an assignment such that $F\alpha = 1$ then $G\alpha = 1$ and $G\alpha = 1$ then $F\alpha = 1$
