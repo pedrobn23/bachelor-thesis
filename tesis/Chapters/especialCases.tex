@@ -33,6 +33,41 @@ It is already know that 3CNF is equivalent to SAT. This is not known for 2CNF an
 \end{proof}
 
 \subsection{Horn Formulas}
-\subsection{Renamable horn}
+
+In this subsection we will analize Horn formulas. They named after Alfred Horn, who defined them on his work\cite{horn1951sentences}. They are of special intereset as is HORNSAT is P-complete.
+
+
+\begin{definition}
+  Let $F$ be a formula in CNF. It is said to be a horn formula if for every $C \in F$ there is at most one non-negated literal. HORN will be the set of all horn formulas.
+
+  HORNSAT will be the intersection of HORN and SAT problems. Nonetheless, given the easiness of checking whether a formula is in HORN, it would usually consider as the problem that check the satisfability of a horn formula.
+\end{definition}
+
+
+\begin{proposition}
+  HORNSAT is in P.
+\end{proposition}
+\begin{proof}
+  Given a formula it could have a clause with only one non-negated literal or not. If it does not have a clause like this, set all the variables to 0 and is solved. Otherwise, unit-propagate the unary clause and repeat the process, as it would necesary be done to solve the problem. If a contradiction is raised, them the formula is not satisfiable.
+\end{proof}
+
+\begin{theorem}
+  HORNSAT is P-COMPLETE.
+\end{theorem}
+
+\begin{proof}
+  TODO: https://www.dbai.tuwien.ac.at/staff/pichler/complexity/slides/cc04.pdf
+\end{proof}
+
+Now we will discuss a powerfull generalization of Horn formulas: the renamable Horn Formulas. 
+
+\begin{definition}
+  Let $F$ be a CNF formula. $F$ is called renamable Horn if there is a subset $U$ of the variables $Var(F)$, so that $F[x=\neg x | x \in U]$ is a Horn formula.
+  That set would be called a renaming.
+\end{definition}
+
+
+
+
 
 
