@@ -1,7 +1,7 @@
-\newpage
+
+\chapter{Resolution Algorithms}
 
 \section{Special Cases Solvable in PolynomialTime}
-
 
 In this section we will discuss some cases of the sat problem solvable in P. These cases are of interest because polynomial is no achievable in all cases.
 
@@ -11,6 +11,9 @@ In this section we will discuss some cases of the sat problem solvable in P. The
 A goal for a SAT-solver could be to find a backdoor of minimun size. DPLL would try to search for a backdoor, using heuristics in order not to explore all subsets (only achievable if such backdoor exists).
 \subsection{Unit Propagation}
 
+Unit propagation is a simple concept that is worth standing out because it would be comonplace. Given a CNF formula $F$ if there is a clause with only one element that should be assigned acordingly to the clause, otherwise $F$ is unsatisfiable. This lead to the unit propagation concept. Whenever we have a unitary clause $\{p\}$ we should \emph{resolve} it and start working with $F[p=1]$ being $[p=1]$ the assigment that maps the value of the metavariable $p$ to 1, which could posibly imply mapping a variable to $0$.
+
+Also, the unit propagation might result on a recursive problem, as other unit clauses could appear.
 
 \subsection{2CNF}
 It is already know that 3CNF is equivalent to SAT. This is not known for 2CNF and is belived to be false.
@@ -48,16 +51,9 @@ In this subsection we will analize Horn formulas. They named after Alfred Horn, 
   HORNSAT is in P.
 \end{proposition}
 \begin{proof}
-  Given a formula it could have a clause with only one non-negated literal or not. If it does not have a clause like this, set all the variables to 0 and is solved. Otherwise, unit-propagate the unary clause and repeat the process, as it would necesary be done to solve the problem. If a contradiction is raised, them the formula is not satisfiable.
+  Given a formula it could have a clause with only one non-negated literal or not have it. If it does not have a clause like this, set all the variables to 0 and is solved. Otherwise, unit-propagate the unary clause and repeat the process, as it would necesary be done to solve the problem. If a contradiction is raised, them the formula is not satisfiable.
 \end{proof}
 
-\begin{theorem}
-  HORNSAT is P-COMPLETE.
-\end{theorem}
-
-\begin{proof}
-  TODO: https://www.dbai.tuwien.ac.at/staff/pichler/complexity/slides/cc04.pdf
-\end{proof}
 
 Now we will discuss a powerfull generalization of Horn formulas: the renamable Horn Formulas. 
 
@@ -65,6 +61,26 @@ Now we will discuss a powerfull generalization of Horn formulas: the renamable H
   Let $F$ be a CNF formula. $F$ is called renamable Horn if there is a subset $U$ of the variables $Var(F)$, so that $F[x=\neg x | x \in U]$ is a Horn formula.
   That set would be called a renaming.
 \end{definition}
+
+In order to prove an important result on renaming, we will introduce some notation.
+
+\begin{definition}
+  Let $F$ be a CNF formula. Then a 2CNF formula $F^*$ is defined as:
+  $$F^* = \{(u \vee v) | u,v \text{are literals in the same clause} K \in F \}$$
+\end{definition}
+
+
+\begin{theorem}
+  The CNF formula $F$ is renamable Horn if and only if the associated $F*$ formula is satisfiable. Moreover, if satisfying assigment $\alpha$ for $F^*$  exists then it encodes a renaming $U$ in the sense that $x \in U \iff \alpha(x) = 1$.
+\end{theorem}
+\begin{proof}
+  Let $F$ be renamable Horn a $U$ be a renaming. We consider the assigment $\alpha$ that map to 1 all variable in $U$ and map to 0 otherwise. Let $\{u\vee v\} \in F^*$ after the renaming. There should be at least one negative variable so if every variable is set to 0, $F^*$ is satisfiable.
+
+  The other direction is analogous: let $\alpha$ be an assigment that satisfie $F^*$. Them there is no to literals in the same clause set to 0. Defining $U=  {x \in Var(F) | \alpha(x) = 1}$ there is no two positives variables in a clause.
+  \end{proof}
+
+
+These mean that if a renaming exists, if could be obtained efficiently.
 
 
 

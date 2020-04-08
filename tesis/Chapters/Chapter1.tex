@@ -18,6 +18,7 @@
 In this section Boolean formulas will be introduced. We first start with the basic building blocks, which collectively form what is called  the alphabet. Namely,
 \begin{itemize}
 \item Symbols $x,y,z$ for Boolean variables.
+\item Symbols $p,q,r$ for Boolean metavariables, that is, a variable that refer to a boolean variable or a negated (see below) boolean variable.
 \item Values 0 and 1, referring to false  and true respectively. The set $\{0,1\}$ will be named as $\mathbb{B}$.
 
 \item Boolean Operators: 
@@ -88,7 +89,7 @@ We will consider $\wedge$ of greater priority than $\vee$. These operator are de
   \end{itemize}
 \end{definition}
 
-Examples of formulas are $x\vee y$ or $x_1\wedge x_2 \vee  ( x_4 \vee \neg  x_3 \wedge (x_5\rightarrow x_6) \vee 0 )$.\\
+Examples of formulas are $x\vee y$ or $x_1\wedge x_2 \vee  ( x_4 \vee \neg  x_3 \wedge (x_5\rightarrow x_6) \vee 0 )$. \\
 
 
 \begin{definition} Given a set $A$ it has an associated homonym problem that consists on, given an arbitrary element $e$ check if $e\in A$.	
@@ -97,7 +98,9 @@ Examples of formulas are $x\vee y$ or $x_1\wedge x_2 \vee  ( x_4 \vee \neg  x_3 
 
 \begin{definition}
 	An assignment is a function from the set of Boolean formulas to the set of Boolean formulas, on which some variables $\{x_1,...,x_n \}$ are replaced by predefined constants $\{a_1,...,a_n\}$ respectively. If none of the variables altered by an assignment $\alpha$ are present on the formula $F$ then $\alpha(F) = F$. We denote as $Var(\alpha)$ the set of those variables that receive a value from $\alpha$. Analogously, $Var(F)$ will denote the variables present on a formula $F$.
-	\end{definition}
+      \end{definition}
+
+      Now we will clarify the necesity of a meta variable. When we talk about a given formula $F$, should we like to talk about a variable $x \in Var(F)$ talking also as how appear in that formula (negated or not) we should use a meta variable. \\
 
 	
 	One can then \emph{apply} an assignment $\alpha$ to a formula $F$, denoting it by $F\alpha=\alpha(F)$. To describe an assignment we will use a set that pairs each variable to it value, i.e. $\alpha=\{x_1\to 1,...,x_n\to 0\}$. For example given an assignment $\alpha_0 = \{x_1 \to 1, x_2\to 1, x_3 \to 0\}$ and $F_0=x_1\to (x_2\wedge x_4)$ then  $F_0\alpha_0=1 \to (1\wedge x_4)= x_4$. \\
@@ -232,7 +235,7 @@ For the last part we will show that, should it happens that a polynomial algorit
 
 
 
-\section{Satisfiability by Combinatorics}
+\chapter{Satisfiability by Combinatorics}
 
 
 To get an intuition about the way that unsolvable clauses are, we gonna state some simple result about combinatorics and resolution. This will give the reader an idea of how these formulas should be. \\
@@ -275,37 +278,45 @@ Let $F$ be a CNF formula. It is said to be minimally unsatisfiable if:
 \end{itemize}
 \end{definition}
 
-\begin{lemma}
-Let F be a set of clauses. If for every subset $G$ of $F$ it holds that $|G|\le |Var(G)|$, then $F$ is satisfiable.
 
+The to following prove would be shown as done in \cite{schoning2013satisfiability}. For that resolution we will need the well known Hall marriage theorem\cite{hall2009representatives}:
+
+\begin{theorem}[Hall marriage graph version]
+  Let $G$ be a finite bipartite graph with finite sets $X,Y$. There is a matching edge cover(a cover such that every vertex only participate in one edge) of $X$ if and only if $|W| \le |N_G(W)|$.  
+\end{theorem}
+
+
+\begin{lemma}
+Let F be a CNF formula. If for every subset $G$ of $F$ it holds that $|G|\le |Var(G)|$, then $F$ is satisfiable.
 \end{lemma}
+
+\begin{proof}
+ We will Associate $F$ a bipartite graph and with $U, V$ be the two set of vertex: $U$ consists on the set of clauses and $V$ on the set of variables. By the marriage theorem every clause can be associated to a variable. Therefore we could make an assigment that take every variable asociated to a clause to the value that the clause requires.
+\end{proof}
+
+This idea or neighbourhood in clasuse is important and curious. It defines a relation between clasues and give clauses resolution some nice graph-tools to work with.
+
 
 \begin{proposition}
 	Minimally unsatisfiable, then $|F| > Var(F)$.
 \end{proposition}
 
 \begin{proof}
-	
+  Since $F$ is unsatisfiable, there must be a subset $G$ such that is the maximal that satisfy $|G| > Var(G)$. If $G=F$ them the theorem is proved.
+
+
+  Otherwise, be $H \subset F\backslash G$ an arbitrary subset. If $|H| > |Var(H)\Var(G)|$ then $|G \cup H| > |Var(G\cup H)|$ and $G$ would not be maximal.  Therefore $F\G$ satisfy the condition of the lemma and is satisfiable ussing an assigment that does not use any variable $x \in Var(G)$. As $G$ is minimally unsatifiable $G$ is satisfiable by and assigment $\beta$. We could them define an assigment:
+
+  \[   
+\gamma(x) = 
+     \begin{cases}
+       \beta(x) &\quad\text{if } x \in Var(G)\\
+       \alpha(x) &\quad\text{otherwise.} \\ 
+     \end{cases}
+   \]
+this assigment would satisfy F, contradictin the hypothesis.
 \end{proof}
 
-
-%% \section{Cosas que seguir haciendo}
-%% \begin{itemize}
-%% 	\item NP-Completennes.
-%% 	\item Hacer programa para autarks y programa para tranformar en 3-CNF.
-%% 	\item Acabar con combinations restrictions.
-%% \end{itemize}
-
-
-%% \section{Sources}
-%% \begin{thebibliography}{9}
-
-
-%% \bibitem{Main} Schöning, U., Torán, J. (2013). The satisfiability problem. Berlin: Lehmanns.
-%% \end{thebibliography}
-
- 
- 
 
 
 
