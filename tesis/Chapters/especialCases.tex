@@ -55,14 +55,13 @@ In this subsection we will analize Horn formulas. They named after Alfred Horn, 
 \end{proof}
 
 
-Now we will discuss a powerfull generalization of Horn formulas: the renamable Horn Formulas. 
+Now we will discuss a simple generalization of Horn formulas: the renamable Horn Formulas. These formulas would allow to give some use to the otherwise not really useful horn definition. They would also add a condition that can be checked efficently.
 
 \begin{definition}
   Let $F$ be a CNF formula. $F$ is called renamable Horn if there is a subset $U$ of the variables $Var(F)$, so that $F[x=\neg x | x \in U]$ is a Horn formula.
   That set would be called a renaming.
 \end{definition}
 
-In order to prove an important result on renaming, we will introduce some notation.
 
 \begin{definition}
   Let $F$ be a CNF formula. Then a 2CNF formula $F^*$ is defined as:
@@ -80,7 +79,7 @@ In order to prove an important result on renaming, we will introduce some notati
   \end{proof}
 
 
-These mean that if a renaming exists, if could be obtained efficiently.
+These mean that if a renaming exists, if could be obtained efficiently, and them solve efficently with the HORNSAT algorithm
 
 
 
