@@ -1,33 +1,47 @@
 
 \chapter{Resolution Algorithms}
 
-\section{Special Cases Solvable in PolynomialTime}
+This chapter is fundamental as it attack the main problem of SAT: solving it. Onward we will see how it could be solved, and develop applied techniques. There are a lot of approach to this problem and they differ on it way to attack it. We have to realise that three thing are important to judge a algorithm:
 
-In this section we will discuss some cases of the sat problem solvable in P. These cases are of interest because polynomial is no achievable in all cases.
+\begin{itemize}
+\item The simplicity: following Occam's razor, between to solution that do not appear to be better or worse, one should choose the easiest one. This solution are far more comprehensible and tend to be more variable and adaptable for our problem. We should not despise an easy solution to a complex problem only because far more difficult approach give slightly better results.
+
+\item The complexity: and by that I mean it algorithmic ('Big O') complexity. It is important to get good running times in all cases and have a analysis of the worst cases scenario that the algorithm could have.
+
+\item The efficiency: Some algorithms will have the same complexity as the most simple ones, but will use some plans to be able to solve the most part of the problems fast (even in polynomial time). There are some cases that would make this algorithms be pretty slow, but more often than not a trade-off is convenient.
+\end{itemize}
+  
+  The first section will talk about special cases, in order to continue to general ones. 
+
+
+
+\section{Special Cases Solvable in Polynomial Time}
+
+In this section we will discuss some cases of the sat problem solvable in P. These cases are of interest because polynomial is no achievable in all cases. These algorithms will have incredible property and will excel in all property that were just described. Nonetheless, they only work with a subset of all possible formulas. They should be use whenever possible as no general polynomial time is believed to exists, nor it is proved its non-existence.
 
 \begin{definition}
-  Let $F$ be a formula. A subset $ V \subset Var(F)$ is called a backdoor if $F\alpha \in \text{P}$ for every assigment $\alpha$ that maps all $V$.
+  Let $F$ be a formula. A subset $ V \subset Var(F)$ is called a backdoor if $F\alpha \in \text{P}$ for every assignment $\alpha$ that maps all $V$.
 \end{definition}
-A goal for a SAT-solver could be to find a backdoor of minimun size. DPLL would try to search for a backdoor, using heuristics in order not to explore all subsets (only achievable if such backdoor exists).
+A goal for a SAT-solver could be to find a backdoor of minimum size. DPLL would try to search for a backdoor, using heuristics in order not to explore all subsets (only achievable if such backdoor exists).
 \subsection{Unit Propagation}
 
-Unit propagation is a simple concept that is worth standing out because it would be comonplace. Given a CNF formula $F$ if there is a clause with only one element that should be assigned acordingly to the clause, otherwise $F$ is unsatisfiable. This lead to the unit propagation concept. Whenever we have a unitary clause $\{p\}$ we should \emph{resolve} it and start working with $F[p=1]$ being $[p=1]$ the assigment that maps the value of the metavariable $p$ to 1, which could posibly imply mapping a variable to $0$.
+Unit propagation is a simple concept that is worth standing out because it would be commonplace. Given a CNF formula $F$ if there is a clause with only one element that should be assigned accordingly to the clause, otherwise $F$ is unsatisfiable. This lead to the unit propagation concept. Whenever we have a unitary clause $\{p\}$ we should \emph{resolve} it and start working with $F[p=1]$ being $[p=1]$ the assignment that maps the value of the metavariable $p$ to 1, which could possibly imply mapping a variable to $0$.
 
 Also, the unit propagation might result on a recursive problem, as other unit clauses could appear.
 
 \subsection{2CNF}
-It is already know that 3CNF is equivalent to SAT. This is not known for 2CNF and is belived to be false.
+It is already know that 3CNF is equivalent to SAT. This is not known for 2CNF and is believed to be false.
 
 \begin{proposition}
   2CNF is in P 
 \end{proposition}
 \begin{proof}
 
-  To prove that 2CNF is in P, an algorithm polinomial on the number of clauses will be given. Let $F \in$ 2CNF.  Without loosing of generality, we will consider that there are no clauses in $F$ $\{u,u\}$ or $\{u,\neg u\}$ as the first one should be handle with unit propagation and the second one is a tautology. Therefore each clause is $(u \vee v)$ with $var(u) \ne var(v)$, which could be seen as $(\neg u \rightarrow v) \wede (\new v \rightwarrow u)$.\\
+  To prove that 2CNF is in P, an algorithm polynomial on the number of clauses will be given. Let $F \in$ 2CNF.  Without loosing of generality, we will consider that there are no clauses in $F$ $\{u,u\}$ or $\{u,\neg u\}$ as the first one should be handle with unit propagation and the second one is a tautology. Therefore each clause is $(u \vee v)$ with $var(u) \ne var(v)$, which could be seen as $(\neg u \rightarrow v) \wede (\new v \rightwarrow u)$.\\
 
 
   
-  We would consider a step to be as follow: we choose a variable $x \in Var(F)$ and set it to 0. Them a chain of implication would arise, which might end on conflict. If no conflitc arise, then is an autark assigment, so repeat the process. Otherwise set it to 1 and proceed. If conflitc arise, then $F$ is unsatisfiable. If no conflitc arise, then is an autark assigment, so repeat the process.
+  We would consider a step to be as follow: we choose a variable $x \in Var(F)$ and set it to 0. Them a chain of implication would arise, which might end on conflict. If no conflict arise, then is an autark assignment, so repeat the process. Otherwise set it to 1 and proceed. If conflict arise, then $F$ is unsatisfiable. If no conflict arise, then is an autark assignment, so repeat the process.
   
 
   Each step is of polynomial time over the number of clauses. Also there would be at most as many steps as variables, therefore we have a polynomial algorithm.
@@ -37,13 +51,13 @@ It is already know that 3CNF is equivalent to SAT. This is not known for 2CNF an
 
 \subsection{Horn Formulas}
 
-In this subsection we will analize Horn formulas. They named after Alfred Horn, who defined them on his work\cite{horn1951sentences}. They are of special intereset as is HORNSAT is P-complete.
+In this subsection we will analyze Horn formulas. They named after Alfred Horn, who defined them on his work\cite{horn1951sentences}. They are of special interest as is HORNSAT is P-complete.
 
 
 \begin{definition}
   Let $F$ be a formula in CNF. It is said to be a horn formula if for every $C \in F$ there is at most one non-negated literal. HORN will be the set of all horn formulas.
 
-  HORNSAT will be the intersection of HORN and SAT problems. Nonetheless, given the easiness of checking whether a formula is in HORN, it would usually consider as the problem that check the satisfability of a horn formula.
+  HORNSAT will be the intersection of HORN and SAT problems. Nonetheless, given the easiness of checking whether a formula is in HORN, it would usually consider as the problem that check the satisfiability of a horn formula.
 \end{definition}
 
 
@@ -51,11 +65,11 @@ In this subsection we will analize Horn formulas. They named after Alfred Horn, 
   HORNSAT is in P.
 \end{proposition}
 \begin{proof}
-  Given a formula it could have a clause with only one non-negated literal or not have it. If it does not have a clause like this, set all the variables to 0 and is solved. Otherwise, unit-propagate the unary clause and repeat the process, as it would necesary be done to solve the problem. If a contradiction is raised, them the formula is not satisfiable.
+  Given a formula it could have a clause with only one non-negated literal or not have it. If it does not have a clause like this, set all the variables to 0 and is solved. Otherwise, unit-propagate the unary clause and repeat the process, as it would necessary be done to solve the problem. If a contradiction is raised, them the formula is not satisfiable.
 \end{proof}
 
 
-Now we will discuss a simple generalization of Horn formulas: the renamable Horn Formulas. These formulas would allow to give some use to the otherwise not really useful horn definition. They would also add a condition that can be checked efficently.
+Now we will discuss a simple generalization of Horn formulas: the renamable Horn Formulas. These formulas would allow to give some use to the otherwise not really useful horn definition. They would also add a condition that can be checked efficiently.
 
 \begin{definition}
   Let $F$ be a CNF formula. $F$ is called renamable Horn if there is a subset $U$ of the variables $Var(F)$, so that $F[x=\neg x | x \in U]$ is a Horn formula.
@@ -70,16 +84,16 @@ Now we will discuss a simple generalization of Horn formulas: the renamable Horn
 
 
 \begin{theorem}
-  The CNF formula $F$ is renamable Horn if and only if the associated $F*$ formula is satisfiable. Moreover, if satisfying assigment $\alpha$ for $F^*$  exists then it encodes a renaming $U$ in the sense that $x \in U \iff \alpha(x) = 1$.
+  The CNF formula $F$ is renamable Horn if and only if the associated $F*$ formula is satisfiable. Moreover, if satisfying assignment $\alpha$ for $F^*$  exists then it encodes a renaming $U$ in the sense that $x \in U \iff \alpha(x) = 1$.
 \end{theorem}
 \begin{proof}
-  Let $F$ be renamable Horn a $U$ be a renaming. We consider the assigment $\alpha$ that map to 1 all variable in $U$ and map to 0 otherwise. Let $\{u\vee v\} \in F^*$ after the renaming. There should be at least one negative variable so if every variable is set to 0, $F^*$ is satisfiable.
+  Let $F$ be renamable Horn a $U$ be a renaming. We consider the assignment $\alpha$ that map to 1 all variable in $U$ and map to 0 otherwise. Let $\{u\vee v\} \in F^*$ after the renaming. There should be at least one negative variable so if every variable is set to 0, $F^*$ is satisfiable.
 
-  The other direction is analogous: let $\alpha$ be an assigment that satisfie $F^*$. Them there is no to literals in the same clause set to 0. Defining $U=  {x \in Var(F) | \alpha(x) = 1}$ there is no two positives variables in a clause.
+  The other direction is analogous: let $\alpha$ be an assignment that satisfy $F^*$. Them there is no to literals in the same clause set to 0. Defining $U=  {x \in Var(F) | \alpha(x) = 1}$ there is no two positives variables in a clause.
   \end{proof}
 
 
-These mean that if a renaming exists, if could be obtained efficiently, and them solve efficently with the HORNSAT algorithm
+These mean that if a renaming exists, if could be obtained efficiently, and them solve efficiently with the HORNSAT algorithm
 
 
 

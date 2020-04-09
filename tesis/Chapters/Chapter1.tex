@@ -100,7 +100,7 @@ Examples of formulas are $x\vee y$ or $x_1\wedge x_2 \vee  ( x_4 \vee \neg  x_3 
 	An assignment is a function from the set of Boolean formulas to the set of Boolean formulas, on which some variables $\{x_1,...,x_n \}$ are replaced by predefined constants $\{a_1,...,a_n\}$ respectively. If none of the variables altered by an assignment $\alpha$ are present on the formula $F$ then $\alpha(F) = F$. We denote as $Var(\alpha)$ the set of those variables that receive a value from $\alpha$. Analogously, $Var(F)$ will denote the variables present on a formula $F$.
       \end{definition}
 
-      Now we will clarify the necesity of a meta variable. When we talk about a given formula $F$, should we like to talk about a variable $x \in Var(F)$ talking also as how appear in that formula (negated or not) we should use a meta variable. \\
+      Now we will clarify the necessity of a meta variable. When we talk about a given formula $F$, should we like to talk about a variable $x \in Var(F)$ talking also as how appear in that formula (negated or not) we should use a meta variable. \\
 
 	
 	One can then \emph{apply} an assignment $\alpha$ to a formula $F$, denoting it by $F\alpha=\alpha(F)$. To describe an assignment we will use a set that pairs each variable to it value, i.e. $\alpha=\{x_1\to 1,...,x_n\to 0\}$. For example given an assignment $\alpha_0 = \{x_1 \to 1, x_2\to 1, x_3 \to 0\}$ and $F_0=x_1\to (x_2\wedge x_4)$ then  $F_0\alpha_0=1 \to (1\wedge x_4)= x_4$. \\
@@ -122,6 +122,8 @@ Examples of formulas are $x\vee y$ or $x_1\wedge x_2 \vee  ( x_4 \vee \neg  x_3 
 	A formula $F$ is said to be in conjunctive normal form if is written as:
 	$$F = C_1\wedge ... \wedge C_n$$
 	Where $C_i = (u_{1,i} \vee ... \vee u_{m_i,i})$  and $u_{i,j}$ are literals, that is, variables or negated variables. The set of all formulas in conjunctive normal form is called \emph{CNF}.
+
+        A literal $u$ would be a pure literal if there is no $\neg u$ in $F$
 \end{definition}
 	
 A formula in \emph{CNF} could be seen as a collection of clauses. The associated problem with \emph{CNF} is straightforward on $O(n)$. The problem that we will investigate is whether a arbitrary formula $F$ have a \emph{SAT-equivalent} \emph{CNF} formula.
@@ -282,7 +284,7 @@ Let $F$ be a CNF formula. It is said to be minimally unsatisfiable if:
 The to following prove would be shown as done in \cite{schoning2013satisfiability}. For that resolution we will need the well known Hall marriage theorem\cite{hall2009representatives}:
 
 \begin{theorem}[Hall marriage graph version]
-  Let $G$ be a finite bipartite graph with finite sets $X,Y$. There is a matching edge cover(a cover such that every vertex only participate in one edge) of $X$ if and only if $|W| \le |N_G(W)|$.  
+  Let $G$ be a finite bipartite graph with finite sets of vertex $X,Y$. There is a matching edge cover(a cover such that every vertex only participate in one edge) of $X$ if and only if $|W| \le |N_G(W)|$.  
 \end{theorem}
 
 
@@ -291,10 +293,10 @@ Let F be a CNF formula. If for every subset $G$ of $F$ it holds that $|G|\le |Va
 \end{lemma}
 
 \begin{proof}
- We will Associate $F$ a bipartite graph and with $U, V$ be the two set of vertex: $U$ consists on the set of clauses and $V$ on the set of variables. By the marriage theorem every clause can be associated to a variable. Therefore we could make an assigment that take every variable asociated to a clause to the value that the clause requires.
+ We will Associate $F$ a bipartite graph and with $U, V$ be the two set of vertex: $U$ consists on the set of clauses and $V$ on the set of variables. By the marriage theorem every clause can be associated to a variable. Therefore we could make an assignment that take every variable associated to a clause to the value that the clause requires.
 \end{proof}
 
-This idea or neighbourhood in clasuse is important and curious. It defines a relation between clasues and give clauses resolution some nice graph-tools to work with.
+This idea or neighbourhood in clause is important and curious. It defines a relation between clauses and give clauses resolution some nice graph-tools to work with.
 
 
 \begin{proposition}
@@ -305,7 +307,7 @@ This idea or neighbourhood in clasuse is important and curious. It defines a rel
   Since $F$ is unsatisfiable, there must be a subset $G$ such that is the maximal that satisfy $|G| > Var(G)$. If $G=F$ them the theorem is proved.
 
 
-  Otherwise, be $H \subset F\backslash G$ an arbitrary subset. If $|H| > |Var(H)\Var(G)|$ then $|G \cup H| > |Var(G\cup H)|$ and $G$ would not be maximal.  Therefore $F\G$ satisfy the condition of the lemma and is satisfiable ussing an assigment that does not use any variable $x \in Var(G)$. As $G$ is minimally unsatifiable $G$ is satisfiable by and assigment $\beta$. We could them define an assigment:
+  Otherwise, be $H \subset F\backslash G$ an arbitrary subset. If $|H| > |Var(H)\Var(G)|$ then $|G \cup H| > |Var(G\cup H)|$ and $G$ would not be maximal.  Therefore $F\G$ satisfy the condition of the lemma and is satisfiable using an assignment that does not use any variable $x \in Var(G)$. As $G$ is minimally unsatisfiable $G$ is satisfiable by and assignment $\beta$. We could them define an assignment:
 
   \[   
 \gamma(x) = 
@@ -314,7 +316,7 @@ This idea or neighbourhood in clasuse is important and curious. It defines a rel
        \alpha(x) &\quad\text{otherwise.} \\ 
      \end{cases}
    \]
-this assigment would satisfy F, contradictin the hypothesis.
+this assignment would satisfy F against the hypothesis.
 \end{proof}
 
 
