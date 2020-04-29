@@ -1,24 +1,7 @@
 
-s
-\chapter{Resolution Algorithms}
-
-This chapter is fundamental as it attack the main problem of SAT: solving it. Onward we will see how it could be solved, and develop applied techniques. There are a lot of approach to this problem and they differ on it way to attack it. We have to realise that three thing are important to judge a algorithm:
-
-\begin{itemize}
-\item The simplicity: following Occam's razor, between to solution that do not appear to be better or worse, one should choose the easiest one. This solution are far more comprehensible and tend to be more variable and adaptable for our problem. We should not despise an easy solution to a complex problem only because far more difficult approach give slightly better results.
-
-\item The complexity: and by that I mean it algorithmic ('Big O') complexity. It is important to get good running times in all cases and have a analysis of the worst cases scenario that the algorithm could have.
-
-\item The efficiency: Some algorithms will have the same complexity as the most simple ones, but will use some plans to be able to solve the most part of the problems fast (even in polynomial time). There are some cases that would make this algorithms be pretty slow, but more often than not a trade-off is convenient.
-\end{itemize}
-  
-  The first section will talk about special cases, in order to continue to general ones. In general thorough the chapter we will follow the book \cite{schoning2013satisfiability}.
-
-
-
 \section{Special Cases Solvable in Polynomial Time}
 
-In this section we will discuss some cases of the sat problem solvable in P. These cases are of interest because polynomial is no achievable in all cases. These algorithms will have incredible property and will excel in all property that were just described. Nonetheless, they only work with a subset of all possible formulas. They should be use whenever possible as no general polynomial time is believed to exists, nor it is proved its non-existence.
+In this section we will discuss some cases of the sat problem solvable in P. These cases are of interest because polynomial is no achievable in all cases. These algorithms will have incredible property and will excel in all property that were just described. Nonetheless, they only work with a subset of all possible formulas. They should be use whenever possible as no general polynomial time is believed to exists, nor it is proved its non-existence.In general thorough the section we will follow the book \cite{schoning2013satisfiability}.
 
 \begin{definition}
   Let $F$ be a formula. A subset $ V \subset Var(F)$ is called a backdoor if $F\alpha \in \text{P}$ for every assignment $\alpha$ that maps all $V$.

@@ -1,3 +1,103 @@
+
+\chapter{Resolution Algorithms}
+
+This chapter is fundamental as it attack the main problem of SAT: solving it. Onward we will see how it could be solved, and develop applied techniques. There are a lot of approach to this problem and they differ on it way to attack it. We have to realise that three thing are important to judge a algorithm:
+
+\begin{itemize}
+\item The simplicity: following Occam's razor, between to solution that do not appear to be better or worse, one should choose the easiest one. This solution are far more comprehensible and tend to be more variable and adaptable for our problem. We should not despise an easy solution to a complex problem only because far more difficult approach give slightly better results.
+
+\item The complexity: and by that I mean it algorithmic ('Big O') complexity. It is important to get good running times in all cases and have a analysis of the worst cases scenario that the algorithm could have.
+
+\item The efficiency: Some algorithms will have the same complexity as the most simple ones, but will use some plans to be able to solve the most part of the problems fast (even in polynomial time). There are some cases that would make this algorithms be pretty slow, but more often than not a trade-off is convenient.
+\end{itemize}
+  
+  The first section will talk about combinatorics, the about some special cases, in order to continue to general ones. 
+
+\section{Satisfiability by Combinatorics}
+
+
+To get an intuition about the way that unsolvable clauses are, we gonna state some simple result about combinatorics and resolution. This will give the reader an idea of how these formulas should be. Also, these cases present some cases where we can solve the problem very efficently, although more often that not we would not provide a satisfying assignment. Nonetheless, beeing given an efficent non-constructive SAT-solver, it is possible to make a constructive solver with a running time of $n$ times the previous by assigning a literal a checking whether or not the result is still solvable. As every know general SAT-solver is exponential, a polynomial increase do not affect overall the assymptotical complexity.\\
+
+Firstly, it is easy to break a big clause on some smaller ones, adding one another on this fashion: Suppose we got two positive integers $n,m$ such that $m < n$ a clause $x_1\vee x_2 \vee ... \vee x_n$ we could split it into two parts $x_1\vee x_2  \vee ... \vee x_{m-1} \vee y, \neg y \vee x_m \vee ... \vee x_n$. Also given the same clause with a given length $n$ we could enlarge it one variable adding $ x_1 \vee ... \vee x_n \vee y$ and $ x_1 \vee ... \vee x_n \vee \neg y$. Note that to enlarge a clause from a length $m$ to a length $n>m$ we would generate $2^{n-m}$ clauses.
+
+
+\begin{proposition}
+	Let $F$ be a CNF formula which has exactly k literals, if $|F| < 2^k$ then $F$ is satisfiable.
+\end{proposition}
+\begin{proof}
+	Let $n = Var(F)$, it happens that $n > k$. For each clause $C \in F$ there are $2^{n-k}$ assignment that falsify $F$, so in total there could be strictly less than $2^k \cdot 2^{n-k} = 2^n.$ Therefore it exists an assignment that assign all variables and not falsifies the formula $F$.
+\end{proof}
+\begin{proposition}
+	Let $F=\{C_1,...,C_n\}$ be a CNF formula. If $\sum_{j=1}^m 2^{-|C_j|}<1,$ then $F$ is satisfiable.
+\end{proposition}
+\begin{proof}
+	Enlarging clauses the way it is explained to the maximum length $k$ ans applying the previous result.
+\end{proof}
+
+Following this idea we could define the weight of a clause $C\in F$ as $$\omega(C) = 2^{-|C|} $$
+being this the probability that a uniform-random assignment violates this clause. 
+
+\begin{corollary}
+	For a formula in CNF, if the sum of the weights of the clauses is less than one then the formula is satisfiable.
+\end{corollary}
+
+
+\begin{proof}
+For this task, we will give a probabilistic algorithm, only to prove that it will end with a big probability. Probabilistic (and heuristics) approaches to the problem would prove later on to be really useful. Let $F$ be a CNF formula regard as a clause set.
+\end{proof}
+
+
+
+\begin{definition}
+Let $F$ be a CNF formula. It is said to be minimally unsatisfiable if:
+\begin{itemize}
+	\item $F$ is unsatisfiable.
+	\item $F\backslash \{C\}$ is satisfiable $\forall C \in F$.
+\end{itemize}
+\end{definition}
+
+
+The to following prove would be shown as done in \cite{schoning2013satisfiability}. For that resolution we will need the well known Hall marriage theorem\cite{hall2009representatives}:
+
+\begin{theorem}[Hall marriage graph version]
+  Let $G$ be a finite bipartite graph with finite sets of vertex $X,Y$. There is a matching edge cover(a cover such that every vertex only participate in one edge) of $X$ if and only if $|W| \le |N_G(W)|$.  
+\end{theorem}
+
+
+\begin{lemma}
+Let F be a CNF formula. If for every subset $G$ of $F$ it holds that $|G|\le |Var(G)|$, then $F$ is satisfiable.
+\end{lemma}
+
+\begin{proof}
+ We will Associate $F$ a bipartite graph and with $U, V$ be the two set of vertex: $U$ consists on the set of clauses and $V$ on the set of variables. By the marriage theorem every clause can be associated to a variable. Therefore we could make an assignment that take every variable associated to a clause to the value that the clause requires.
+\end{proof}
+
+This idea or neighbourhood in clause is important and curious. It defines a relation between clauses and give clauses resolution some nice graph-tools to work with.
+
+
+\begin{proposition}
+	Minimally unsatisfiable, then $|F| > Var(F)$.
+\end{proposition}
+
+\begin{proof}
+  Since $F$ is unsatisfiable, there must be a subset $G$ such that is the maximal that satisfy $|G| > Var(G)$. If $G=F$ them the theorem is proved.
+
+
+  Otherwise, be $H \subset F\backslash G$ an arbitrary subset. If $|H| > |Var(H)\Var(G)|$ then $|G \cup H| > |Var(G\cup H)|$ and $G$ would not be maximal.  Therefore $F\G$ satisfy the condition of the lemma and is satisfiable using an assignment that does not use any variable $x \in Var(G)$. As $G$ is minimally unsatisfiable $G$ is satisfiable by and assignment $\beta$. We could them define an assignment:
+
+  \[   
+\gamma(x) = 
+     \begin{cases}
+       \beta(x) &\quad\text{if } x \in Var(G)\\
+       \alpha(x) &\quad\text{otherwise.} \\ 
+     \end{cases}
+   \]
+this assignment would satisfy F against the hypothesis.
+\end{proof}
+
+
+
+
 \section{Lovász Local Lemma}
 We continue to prove an interesting lemma on the theoretical analysis of satisfiability problem: the Lovász Local Lemma (LLL). This lemma was first proven on 1972 by Erdös and Lovász while they were studying 3-coloration of hypergraphs. Then it was Moser which understood the relationship between  this result an constraint satisfaction problem. The SAT could be regard as the simplest of these problems. \\
 
