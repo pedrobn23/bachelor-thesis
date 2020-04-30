@@ -1,75 +1,30 @@
 % Chapter 1
-
 \chapter{Reductions} % Main chapter title
 
 
-In order to demonstrate the utility a series of reductions will be developed. This will imply a formal approach to the resolution of the problems, as well as deploying a little theoretical background to some problems when needed. Unalike other chapters this section is original work, although it generality and not being really complicated made it possible to be found on other works (maybe). 
+In order to demonstrate the utility a series of reductions will be developed. This will imply a formal approach to the resolution of the problems, as well as deploying a little theoretical background to some problems when needed. Also we would like to show that this techniches provide sometimes really simple approximations to the problems.
 
-\section{Proofs}
-
-\subsection{Hamiltonian Cycle}
-
-% Should include Cook theorem?
+\section{Hamiltonian Cycle}
 
 
-By Cook theorem and the ease of checking whether a cycle is a Hamiltonian cycle, it is known that a reduction from the problem of the Hamiltonian Cycle to SAT exists. This theorem is constructive, so it effectively does give a reduction. Nonetheless, this reduction is unmanageable and in order to use SAT-solvers to improve Hamiltonian cycle resolution it would be necessary to improve it. On this subsection an alternative reduction will be proven.
+The problem of, given a graph, find a Hamiltonian Cycle is well know to be NP-Complete. Then by Cook Theorem it is known that a reduction from the problem of the Hamiltonian Cycle to SAT exists. This theorem is constructive, so it effectively does give a reduction. Nonetheless, this reduction is unmanageable and in order to use SAT-solvers to improve Hamiltonian cycle resolution it would be necessary to improve it. On this subsection an alternative reduction will be proven.
 
 \begin{definition}
   A Hamiltonian cycle is a cycle that visit every node in a graph. The associated problem is to check, given a graph, whether whether cycle exists.
 \end{definition}
 
-We will consider the problem of the Hamiltonian cycle of undetected graphs. Therefore an edge would have two sources instead of a source and a target as it is regarded on directed graphs. Prior to the reduction a little lemma will be proven. 
+We will consider the problem of the Hamiltonian cycle of undirected graphs. Therefore an edge would have two sources instead of a source and a target as it is regarded on directed graphs.\\
 
-\begin{lemma} Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. The set $ \{e_{i_1},...,e_{i_n}\}\subset E$ is a Hamiltonian cycle if, and only if, each vertex is the source to exactly two edges and the path  $ \{e_{i_1},...,e_{i_n}\}\subset E$ is connected.
+This problem is a very good example to represent what mean to use a SAT-solver to solve a hard problem. The presented reduction is done as shown in \cite{49593}, with a minor error solved. It move the complexity of the problem from how to solve it to how to implement a SAT-solver. Therefore it only left a worry about what do I need to satisfy in order to solve this problem In order to make the reduction we will represent with Boolean clauses the conditions:\\
 
-  \begin{proof}
-	  If each vertex is the source of an edge, then every vertex is accessible by an edge. Also, as every vertex has exactly two edges, each connected component of the graph would be a cycle. As the graph is connected there is only one of such components.\\
-  \end{proof}
-	
-\end{lemma}
+Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. To reduce it to a CNF-SAT problem, we will first define the variables $\{x_{i,j}: i\in 1,...,n ; j\in 1,...,n+1 \}$. If the variable $x_{i,j}$ is assign to true it would mean that the vertex $v_i$ is in position $j$ in the path. We would like to find a assignment of these variables that satisfy the following clauses:
 
+\begin{enumerate}
+\item Each vertex must appear at least once in the path, for every vertex $v_i$:
+  $ x_{i,1} \vee ... \vee x_{i,m+1},\ i \in 1,...,n$.
+\item Each vertex must not appear twice in the path, unless it is the first and last node: $\neg x_{i,j} \vee \neg x_{i,k},\ i \in 1,...,n ,\ j \in 2,...,m+1, k \in 1,...,m$.
+\item Every position in the path must be occupied:   $ x_{1,i} \vee ... \vee \x_{n,i},\ i \in 1,...,m+1$.
+\item Two consecutive vertex have to be adjacent: $\neg x_{i,j} \vee \neg x_{i+1,k}\ \forall (k,j) \not \in E$.
+\end{enumerate}
 
-In order to make the reduction we will represent with Boolean clauses these two condition:
-
-\begin{itemize}
-\item We will start defining the variables $e_1,...,e_n$ that will represent if the edge $e_i$ is choose for the path. Also, if a vertex $e_i$ has as sources $v_j,v_k$ then the variables $e_{i,v_j}$ and $e_{i,v_k}$ will be also defined. The first set of formulas to consider will be:
-
-  $$
-	e_i \iff e_{i,v_j} \iff e_{i,v_k} \ \ \ \ \ \   \forall i \in 1,..,m, \forall j,k \in 1,...,n 
-  $$
-
-  Note than if $e_j$ does not have as source $v_j$ then $e_{j,v_j} \iff 0$. To ensure that each vertex is the source of exactly two edges we will define these clauses:
-
-  $$
-	\bigwedge_{k=1}^m \left (\ \bigwedge_{i=1}^m \  \bigvee_{\substack{j=1\\  j\ne i}}^m e_{j,v_k} \right )
-  $$
-
-  In order two ensure that each vertex is source to at least two edges. Then to ensure that there would not be more than two:
-
-  $$
-	\bigwedge_{h=1}^m \bigwedge_{\substack{i=1\\j=1\\k=1}}^n \neg e_{i,v_h} \vee \neg e_{j,v_h} \vee \neg e_{k,v_h} 
-  $$
-
-\item To prove the connectivity we will use the connectivity matrix. Henceforth all matrix will be consider as $n\times n$-sized matrix. Given $A = (a_{i,j})$ such that $a_{i,j} = 1$ if, and only if, there is a edge between $v_i$ and $v_j$, otherwise $a_{i,j} = 0 $. Then consider $A^{k} = (a^*_{i,j})$, it happens that if $(a^*_{i,j})=1$ then there is a path of exactly length k. Then to check the connectivity we will define $A' = \sum_{i=0}^n A^i$ and defining the formula:\\
-\begin{equation} \label{eq:hamilton}
-  (a'_{1,1}\wedge ... \wedge a'_{1,n})  
-\end{equation}
-
-  Matrix product could be seen as a Boolean operation (for the purpose that we reach): Given $A = (a_{i,j})$, $B = (b_i,j)$ and $C=A\cdot B$ then 
-
-  $$
-	c_{i,j} = (a_{i,1}\wedge b_{1,j}) \vee ... \vee (a_{i,n}\wedge b_{n,j})
-  $$
-
-  As we do not care about the exact value of the sum in $A'$ but only whether $a'_{i,j}$ is greater than 0 we could consider as sum the \emph{or} operation element-wise. This prove that the expression \ref{eq:hamilton} is a formula, a bit laborious to do by hand but quite compatible.  
-
-\end{itemize}
-It simple to follow that if we could satisfy all the formulas then there would be a Hamiltonian cycle = $\{e_i\in E : e_i = 1\}$ where the second $e_i$ is the variable and the first one is the edge. If no such cycle exists the formulas will be unsatisfiable. Further work to do would consider the implementation and resolution of the problem, and trying to express every formula in CNF.\\
-
-
-We have resolve the problem to graph, although the same resolution is available for multigraphs (graph which could have more than one edge with the same sources), as this difference does not affect the property. The next easy results prove this statement.
-
-% \begin{definition}
-% A hypergraph is a generalization of a graph in which an edge can join any number of vertices.
-% \end{definition}
-
+Let now solve that this is a correct reduction, i.e., that an assignment that can satisfy this clauses exists if, and only if, the graph $G$ has a Hamiltonian graph. If such an assignment exists we can make a Hamiltonian cycle with the variables sasigned to 1. On the other hand if such cycle exists an assignment that assign to 1 the variable $x_{i,j}$ given that the vertex $v_i$ is in position $j$ in the path would satisfy all the clauses. 
