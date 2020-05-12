@@ -1,37 +1,47 @@
 
-\chapter{Resolution Algorithms}
+\chapter{Resolution Algorithms: Solvers}
 
-This chapter is fundamental as it attack the main problem of SAT: solving it. Onward we will see how it could be solved, and develop applied techniques. There are a lot of approach to this problem and they differ on it way to attack it. We have to realise that three thing are important to judge a algorithm:
+This chapter is fundamental as it attack the main problem of SAT: explain the different techniques that can be applied. Onward we will see how it could be solved, and develop applied techniques. There are a lot of approaches to this problem and they differ on their way to attack it. We have to realise that three things are important to judge a algorithm:
 
 \begin{itemize}
-\item The simplicity: following Occam's razor, between to solution that do not appear to be better or worse, one should choose the easiest one. This solution are far more comprehensible and tend to be more variable and adaptable for our problem. We should not despise an easy solution to a complex problem only because far more difficult approach give slightly better results.
+\item The simplicity: following Occam's razor, between two solutions that do not appear to be better or worse, one should choose the easiest one. This solution are far more comprehensible and tends to be more variable and adaptable for our problem. We should not despise an easy solution to a complex problem only because a far more difficult approach give slightly better results.
 
-\item The complexity: and by that I mean it algorithmic ('Big O') complexity. It is important to get good running times in all cases and have a analysis of the worst cases scenario that the algorithm could have.
+\item The complexity: and by that I mean its algorithmic ('Big O') complexity. It is important to get good running times in all cases and have a analysis of the worst cases scenario that the algorithm could have.
 
-\item The efficiency: Some algorithms will have the same complexity as the most simple ones, but will use some plans to be able to solve the most part of the problems fast (even in polynomial time). There are some cases that would make this algorithms be pretty slow, but more often than not a trade-off is convenient.
+\item The efficiency: Some algorithms will have the same complexity as the most simple ones, but will use some plans to be able to solve most part of the cases fast (even in polynomial time). There are some cases that would make this algorithms be pretty slow, but more often than not a trade-off is convenient.
 \end{itemize}
   
-  The first section will talk about combinatorics, the about some special cases, in order to continue to general ones. 
+  The first section will talk about combinatorics. Then we will proceed to analyze solvability in special cases, i.e., algorithms  that works really well in formulas given that they satisfy some restriction.
 
 \section{Satisfiability by Combinatorics}
 
 
-To get an intuition about the way that unsolvable clauses are, we gonna state some simple result about combinatorics and resolution. This will give the reader an idea of how these formulas should be. Also, these cases present some cases where we can solve the problem very efficently, although more often that not we would not provide a satisfying assignment. Nonetheless, beeing given an efficent non-constructive SAT-solver, it is possible to make a constructive solver with a running time of $n$ times the previous by assigning a literal a checking whether or not the result is still solvable. As every know general SAT-solver is exponential, a polynomial increase do not affect overall the assymptotical complexity.\\
+To get an intuition about how unsolvable clauses are, we gonna state some simple result about combinatorics and resolution. Also, these techinques present some cases where we can solve the problem efficently, although more often that not we would not provide a satisfying assignment.
 
-Firstly, it is easy to break a big clause on some smaller ones, adding one another on this fashion: Suppose we got two positive integers $n,m$ such that $m < n$ a clause $x_1\vee x_2 \vee ... \vee x_n$ we could split it into two parts $x_1\vee x_2  \vee ... \vee x_{m-1} \vee y, \neg y \vee x_m \vee ... \vee x_n$. Also given the same clause with a given length $n$ we could enlarge it one variable adding $ x_1 \vee ... \vee x_n \vee y$ and $ x_1 \vee ... \vee x_n \vee \neg y$. Note that to enlarge a clause from a length $m$ to a length $n>m$ we would generate $2^{n-m}$ clauses.
+
+Nonetheless, given an efficent non-constructive SAT-solver, it is possible to make a constructive solver with a running time of $n$ times the previous by assigning a literal a value, checking whether or not the result is still solvable. EXTENDER LA IDEA.
+
+
+As general SAT-solver is exponential, a polynomial increase does not affect overall the assymptotical complexity.\\
+
+Firstly, it is easy to break a big clause on some smaller ones, adding one another on this way: Suppose we got two positive integers $n,m$ such that $m < n$ a clause $x_1\vee x_2 \vee ... \vee x_n$ we could split it into two parts $x_1\vee x_2  \vee ... \vee x_{m-1} \vee y, \neg y \vee x_m \vee ... \vee x_n$. Also given the same clause with a given length $n$ we could enlarge it one variable adding $ x_1 \vee ... \vee x_n \vee y$ and $ x_1 \vee ... \vee x_n \vee \neg y$ where $y$ is a new variable. Note that to enlarge a clause from a length $m$ to a length $n>m$ we would generate $2^{n-m}$ clauses.
+
+\begin{definition}
+  Let $F$ be a formula. It is in call a $k$-CNF formula if it is in CNF and $\forall C \in F, |C| = k$.
+\end{definition}
 
 
 \begin{proposition}
-	Let $F$ be a CNF formula which has exactly k literals, if $|F| < 2^k$ then $F$ is satisfiable.
+	Let $F$ be a $k$-CNF formula, if $|F| < 2^k$ then $F$ is satisfiable.
 \end{proposition}
 \begin{proof}
-	Let $n = Var(F)$, it happens that $n > k$. For each clause $C \in F$ there are $2^{n-k}$ assignment that falsify $F$, so in total there could be strictly less than $2^k \cdot 2^{n-k} = 2^n.$ Therefore it exists an assignment that assign all variables and not falsifies the formula $F$.
+	Let $n = Var(F)$, it happens that $n > k$. For each clause $C \in F$ there are $2^{n-k}$ assignments that falsify $F$, so in total there could be strictly less than $2^k \cdot 2^{n-k} = 2^n.$ Therefore it exists an assignment that assigns all variables and not falsifies the formula $F$.
 \end{proof}
 \begin{proposition}
 	Let $F=\{C_1,...,C_n\}$ be a CNF formula. If $\sum_{j=1}^m 2^{-|C_j|}<1,$ then $F$ is satisfiable.
 \end{proposition}
 \begin{proof}
-	Enlarging clauses the way it is explained to the maximum length $k$ ans applying the previous result.
+	Enlarging clauses the way it is explained to the maximum length $k$ and applying the previous result.
 \end{proof}
 
 Following this idea we could define the weight of a clause $C\in F$ as $$\omega(C) = 2^{-|C|} $$
@@ -42,9 +52,9 @@ being this the probability that a uniform-random assignment violates this clause
 \end{corollary}
 
 
-\begin{proof}
-For this task, we will give a probabilistic algorithm, only to prove that it will end with a big probability. Probabilistic (and heuristics) approaches to the problem would prove later on to be really useful. Let $F$ be a CNF formula regard as a clause set.
-\end{proof}
+% \begin{proof}
+% For this task, we will give a probabilistic algorithm, only to prove that it will end with a big probability. Probabilistic (and heuristic) approaches to the problem would prove later on to be really useful. Let $F$ be a CNF formula regarded as a clause set.
+% \end{proof}
 
 
 
@@ -57,10 +67,18 @@ Let $F$ be a CNF formula. It is said to be minimally unsatisfiable if:
 \end{definition}
 
 
-The to following prove would be shown as done in \cite{schoning2013satisfiability}. For that resolution we will need the well known Hall marriage theorem\cite{hall2009representatives}:
+Then the following prove will be shown as in \cite{schoning2013satisfiability}. For that we will need the well known Hall marriage theorem\cite{hall2009representatives}.
+
+\begin{definition}
+  Let $G=(N,E)$ be a graph where $N$ is the set of nodes and $E$ the set of edges, represented as pair of nodes. Given $n \in X$,  the neighborhood of $n$, denoted as $\Gamma_G(n)$, is defined as:
+	$$ \Gamma_G(n) = \{ n' \in X : n'\ne n, \exists e \in E \text{ such that } n,n' \in e\}$$
+	
+        Analogously, the inclusive neighborhood is defined as $\Gamma_G^+(n) = \Gamma_G(n) \cup \{n\}$. The neighborhood of a subset $W \subset X$ is defined as $\Gamma_G(X) = \Cup_{n\in X} \Gamma_G(n)$
+\end{definition}
+
 
 \begin{theorem}[Hall marriage graph version]
-  Let $G$ be a finite bipartite graph with finite sets of vertex $X,Y$. There is a matching edge cover(a cover such that every vertex only participate in one edge) of $X$ if and only if $|W| \le |N_G(W)|$.  
+  Let $G$ be a finite bipartite graph with finite sets of vertex $X,Y$. There is a matching edge cover(a cover such that every vertex only participate in one edge) of $X$ if and only if $|W| \le |\Gamma_G(W)|$ for every $W\subset X$.  
 \end{theorem}
 
 
@@ -69,21 +87,22 @@ Let F be a CNF formula. If for every subset $G$ of $F$ it holds that $|G|\le |Va
 \end{lemma}
 
 \begin{proof}
- We will Associate $F$ a bipartite graph and with $U, V$ be the two set of vertex: $U$ consists on the set of clauses and $V$ on the set of variables. By the marriage theorem every clause can be associated to a variable. Therefore we could make an assignment that take every variable associated to a clause to the value that the clause requires.
+  We will associate a bipartite graph with $F$:  $U, V$ be the two set of vertexes where $U$ consists on the set of clauses and $V$ on the set of variables. There is an edge $(u,v)$ if $v$ takes part on $u$.
+
+  By the marriage theorem every clause can be associated to a variable. Therefore we could make an assignment that take every variable associated to a clause to the value that the clause requires.
 \end{proof}
 
 This idea or neighbourhood in clause is important and curious. It defines a relation between clauses and give clauses resolution some nice graph-tools to work with.
 
-
 \begin{proposition}
-	Minimally unsatisfiable, then $|F| > Var(F)$.
+	If $F$ is minimally unsatisfiable, then $|F| > Var(F)$.
 \end{proposition}
 
 \begin{proof}
-  Since $F$ is unsatisfiable, there must be a subset $G$ such that is the maximal that satisfy $|G| > Var(G)$. If $G=F$ them the theorem is proved.
+  Since $F$ is unsatisfiable, there must be a subset $G$ such that is maximal and satisfy $|G| > Var(G)$. If $G=F$ them the theorem is proved.
 
 
-  Otherwise, be $H \subset F\backslash G$ an arbitrary subset. If $|H| > |Var(H)\Var(G)|$ then $|G \cup H| > |Var(G\cup H)|$ and $G$ would not be maximal.  Therefore $F\G$ satisfy the condition of the lemma and is satisfiable using an assignment that does not use any variable $x \in Var(G)$. As $G$ is minimally unsatisfiable $G$ is satisfiable by and assignment $\beta$. We could them define an assignment:
+  Otherwise, let $H \subset F\backslash G$ be an arbitrary subset. If $|H| > |Var(H)\Var(G)|$ then $|G \cup H| > |Var(G\cup H)|$ and $G$ would not be maximal.  Therefore $F\G$ satisfies the condition of the lemma and is satisfiable using an assignment that does not use any variable $x \in Var(G)$. As $G$ is minimally unsatisfiable $G$ is satisfiable by and assignment $\beta$. We could them define an assignment:
 
   \[   
 \gamma(x) = 
@@ -92,28 +111,28 @@ This idea or neighbourhood in clause is important and curious. It defines a rela
        \alpha(x) &\quad\text{otherwise.} \\ 
      \end{cases}
    \]
-this assignment would satisfy F against the hypothesis.
+this assignment would satisfy F against the hypothesis. We proved $G=F$ by contradiction and therefore we proved the lemma.
 \end{proof}
 
 
 
 
 \section{Lovász Local Lemma}
-We continue to prove an interesting lemma on the theoretical analysis of satisfiability problem: the Lovász Local Lemma (LLL). This lemma was first proven on 1972 by Erdös and Lovász while they were studying 3-coloration of hypergraphs. Then it was Moser which understood the relationship between  this result an constraint satisfaction problem. The SAT could be regard as the simplest of these problems. \\
+We continue to prove an interesting lemma on the theoretical analysis of satisfiability problem: the Lovász Local Lemma (LLL). This lemma was first proven on 1972 by Erdös and Lovász while they were studying 3-coloration of hypergraphs. Then it was Moser which understood the relationship between  this result and constraint satisfaction problem. SAT could be regarded as the simplest of these problems. \\
 
 %Incluir teorema pagina 20? 
 
  
-This section is going to be based on the works of Moser, Tardos, Lovász and Erdös as a result. As it will be shown LLL is applicable to set sufficient condition for satisfiability.  We will explain the lemma for theoretical purposes and prove the most general version, and give a constructive algorithm to solve a less general statement of the problem. The principal source of bibliography for the whole section would be Moser PhD. Thesis. \\ 
+This section is going to be based on the works of Moser, Tardos, Lovász and Erdös. As it will be shown, LLL is applicable to set a sufficient condition for satisfiability.  We will explain the lemma for theoretical purposes and prove the most general version, and give a constructive algorithm to solve a less general statement of the problem. The principal source of bibliography for the whole section would be Moser PhD. Thesis\cite{moser2009constructive}. \\ 
 %[INCLUIR LINK A LA BIBLIOGRAFIA]
 
 
-The main contribution of Moser's works to this problem is finding an efficient algorithm to find what assignment satisfies the formula, should happen that $F$ is proved satisfiable by the previous theorem. Previously only probabilistic approaches had been successful.\\
+The main contribution of Moser's work to this problem is finding an efficient constructive algorithm to find what assignment satisfies the formula, given that $F$ satisfies the hypothesis of the lemma. Previously only probabilistic approaches had been successful.\\
 
 
-The probabilistic method is a useful method to prove the existence of objects with an specific property. The philosophy beneath this type of demonstration is the following: in order to prove the existence of an object we do not need to give the said object, instead, we could just consider a random object in the space that we consider an prove that the probability is strictly positive. Then we can deduce that an object with that property exists (if it did not probability would be 0). It is not necessary to provide the exact value, bounding it by a constant greater that 0 would be enough. \\
+The probabilistic method is a useful method to prove the existence of objects with an specific property. The philosophy beneath this type of proofs is the following: in order to prove the existence of an object we do not need to give the object, instead, we could just consider a random object in the space we are exploring an prove that the probability is strictly positive. Then we can deduce that an object with that property exists. It is not necessary to provide the exact value, bounding it by a constant greater that zero would be enough. \\
 
-This technique was pioneered by Paul Erdös. The LLL takes part because is an useful tool to prove lower bounds for probabilities, allowing us to provide the result.\\
+This technique was pioneered by Paul Erdös. LLL is an useful tool to prove lower bounds for probabilities that is commonly used to prove that a probaility is strictly positive.\\
 
 This section will follow this order:
 \begin{itemize}
@@ -126,8 +145,7 @@ This section will follow this order:
 
 \subsection{First definitions}
 
-We will work here with a very specific type of formulas. Let us call a formula $F$ is in $k$-CNF
-if it is in CNF and $\forall C \in F, |C| = k$.
+We will work here with a very specific type of formulas.
 \begin{definition}
 	Let $C$ be a clause in $F$, the neighborhood of $C$, denoted as $\Gamma_F(C)$ as 
 	$$ \Gamma_F(C) = \{ D \in F : D\ne C, Var(C) \cap Var(D) \ne \emptyset\}$$
@@ -141,7 +159,7 @@ Further on $\Gamma$ and $\Gamma^+$ will respectively denote inclusive or exclusi
 
 \begin{definition}
 	
-	Two clauses are \emph{conflicting} if there is a variable that is required to be true in one of then and to be false in the other. The graph $G_F^*$ such that there is an edge between $C$ and $D$ iff they \emph{conflict} in some variable.
+	Two clauses are \emph{conflicting} if there is a variable that is required to be true in one of then and to be false in the other. $G_F^*$ is the graph such that there is an edge between $C$ and $D$ iff they \emph{conflict} in some variable.
 	
 \end{definition}
 	
@@ -149,7 +167,7 @@ Further on $\Gamma$ and $\Gamma^+$ will respectively denote inclusive or exclusi
 
 
 \begin{definition} Let $\Omega$ be a probability space and let 
-$\mathcal{A} = \{A_1,...,A_m\}$ be arbitrary events in this space. We say that a graph $G$ on the vertex set $\mathcal{A}$ is a \emph{lopsidependency graph }for $\mathcal{A}$ is more likely in the conditional space defined by intersecting the complement of any subset of its non-neighbors. In others words:
+$\mathcal{A} = \{A_1,...,A_m\}$ be arbitrary events in this space. We say that a graph $G$ on the vertex set $\mathcal{A}$ is a \emph{lopsidependency graph }for $\mathcal{A}$ if no event is more likely in the conditional space defined by intersecting the complement of any subset of its non-neighbors. In others words:
 
 \[
  P\left(  A\ \Big | \bigcap_{B\in S} \overline{B} \right ) \le P(A) \ \ \ \ \quad \forall A \in \mathcal{A},\ \forall S \subset \mathcal{A} \backslash\Gamma_G^+(A) 
@@ -185,7 +203,7 @@ $$
 \begin{proof}
 	To prove the result it would only be necessary to show  that $ \Gamma^*$ is the lopsidependency graph for this experiment. Given $C \in F$ and $\mathcal{D}\subset F\backslash \Gamma_{G_F^*}(D)\ $(i.e. no $D \in  \mathcal{D}$ conflict with $C$). We want to check the probability of a random assignment falsifying $C$ given that it satisfies all of the clauses in $\mathcal{D}$, and prove that it is at most $2^{-|C|}$. \\ 
 	
-Let $\alpha$ be an assignment such that it satisfies $\mathcal{D}$ and violates $C$. We could generate new assignment from $\alpha$ changing any value on $Var(C)$, and they still will satisfy $\mathcal{D}$ (as there are no conflict) so the probability is still at most $2^{-k}$. 
+Let $\alpha$ be an assignment such that it satisfies $\mathcal{D}$ and violates $C$. We could generate a new assignment from $\alpha$ changing any value on $Var(C)$, and they still will satisfy $\mathcal{D}$ (as there are no conflict) so the probability is still at most $2^{-k}$. 
 
 % REVISAR 
 
@@ -205,7 +223,7 @@ $$
 \end{corollary}
 
 
-In order to get a result easier to check. If $k\le 2$ the $k$-SAT problem is  polynomial solvable so we will not be interested on such formulas.
+In order to get a result easier to check we will present a new criteria. If $k\le 2$ the $k$-SAT problem is  polynomially solvable so we will not be interested on such formulas.
 
 \begin{corollary}
 	Let $F$ be a $k$-CNF with $k>2$ formula such that $\ \forall C \in F$ and $\ |\Gamma_F(C)|\le 2^k/e-1$ then $F$ is satisfiable.
@@ -231,7 +249,8 @@ In order to get a result easier to check. If $k\le 2$ the $k$-SAT problem is  po
 
 \subsection{Nonconstructive proof of \ref{LLL}}
 
-We explain the way Erdös, Lovász and Spencer originally proved the Lemma. This material is from \cite{erdos1973problems} and \cite{spencer1977asymptotic}. The write-up presented here will resemble the one done by \cite{moser2013exact}.\\
+We explain the way Erdös, Lovász and Spencer originally proved the Lemma \cite{erdos1973problems} \cite{spencer1977asymptotic}. The write-up presented here will resemble the one done by
+ \cite{moser2013exact}.\\
 
 
 
@@ -241,7 +260,7 @@ Thorough the proof we will use repeatedly the definition of conditional probabil
 P\left ( \bigcap_{i=1}^r E_1\right ) = \prod_{i=1}^rP \left( E_i \Big | \bigcap_{j=1}^{i-1} E_j\right)\\
 \]
 
-Further on this subsection we will consider  $\Omega$ to be a probability space and $\mathcal{A} = \{A_1,...,A_m\}$ to be arbitrary events in this space, $G$ to be the lopsidependency graph, and $\mu: \mathcal{A} \to (0,1)$ with such that the conditions of the theorem are satisfied. We first prove an auxiliary lemma.
+Further on this subsection we will consider  $\Omega$ to be a probability space and $\mathcal{A} = \{A_1,...,A_m\}$ to be arbitrary events in this space, $G$ to be a lopsidependency graph, and $\mu: \mathcal{A} \to (0,1)$ such that the conditions of the theorem are satisfied. We first prove an auxiliary lemma.
 
 \begin{lemma} \label{LemaLLL}
 Let $ A_0 \in \mathcal{A} $ and $\mathcal{H}\subset \mathcal{A} $. then 
@@ -300,7 +319,7 @@ P\left ( \bigcap_{A\in \mathcal{A}} \overline{A}\right ) = \prod_{i=1}^m P \left
 
 \subsection{Constructive proof of \ref{LLLSC}}
 
-Moser\cite{moser2013exact} proves that it exists an algorithm such that it give an assignment satisfying the SAT formula, should it happen that the formula satisfies \ref{LLLS} conditions. This is no a big deal, as a backtrack would be also capable of providing the solution, given that we know its existence. Not so trivial is that it would run in $O(|F|)$. We will show the version of the algorithm shown in \cite{schoning2013satisfiability}.
+Moser\cite{moser2013exact} proves that it exists an algorithm such that it gives an assignment satisfying the SAT formula, should it happen that the formula satisfies \ref{LLLS} conditions. This is no a big deal, as a backtrack would be also capable of providing the solution, given that we know its existence. Not so trivial is that it would run in $O(|F|)$. We will show the version of the algorithm shown in \cite{schoning2013satisfiability}.
 
 
 
@@ -330,6 +349,6 @@ Moser\cite{moser2013exact} proves that it exists an algorithm such that it give 
 \end{algorithm}
 
 
-At first sight it is not clear if it terminates. If $F$ verify \ref{LLLS} it is proved that if would end after running Repair at most  $O(\sum_{C\in F} \frac{\mu(C)}{1-\mu(C)})$
+At first sight it is not clear if it terminates. If $F$ verifies \ref{LLLS} it is proved that if will end after running Repair at most  $O(\sum_{C\in F} \frac{\mu(C)}{1-\mu(C)})$
 
 
