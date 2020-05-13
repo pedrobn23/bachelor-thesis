@@ -6,12 +6,22 @@ In this section we will discuss some cases of the SAT problem solvable in P. The
 \begin{definition}
   Let $F$ be a formula. A subset $ V \subset Var(F)$ is called a backdoor if $F\alpha \in \text{P}$ for every assignment $\alpha$ that maps all $V$.
 \end{definition}
+
+Let us explain this concept. Given a formula $F$ a backdoor is a expecial subset of the variables such that if all of it is assigned then we can solve the remaning formula in polynomial time, i.e., once we have assigned this variables the problem is easy. The trivial backdoor is the set of all variables. For a backdoor the smaller, the better.\\
+
+
 A goal for a SAT-solver could be to find a backdoor of minimum size. DPLL would try to search for a backdoor, using heuristics in order not to explore all subsets (only achievable if such backdoor exists).
+
 \subsection{Unit Propagation}
 
-Unit propagation is a simple concept that is worth standing out because it would be commonplace. Given a CNF formula $F$ if there is a clause with only one element that should be assigned accordingly to the clause, otherwise $F$ is unsatisfiable. This lead to the unit propagation concept. Whenever we have a unitary clause $\{p\}$ we should \emph{resolve} it and start working with $F[p=1]$ being $[p=1]$ the assignment that maps the value of the metavariable $p$ to 1, which could possibly imply mapping a variable to $0$.
+Unit propagation is a simple concept that is worth standing out because it is commonplace. Given a CNF formula $F$ if there is a clause with only one element then the value of the variable should be assigned accordingly to the clause, otherwise $F$ is unsatisfiable. This lead to the unit propagation concept. Whenever we have a unitary clause $\{p\}$ we should \emph{resolve} it and start working with $F[p=1]$ being $[p=1]$ the assignment that maps the value of the metavariable $p$ to 1, which could possibly imply mapping a variable to $0$.  \\
 
-Also, the unit propagation might result on a recursive problem, as other unit clauses could appear.
+Also, the unit propagation might result on a recursive problem, as other unit clauses could appear. Unit propagation is a usefull way to find autark assignments. \\ 
+
+
+Similar to this concept is the concept of pure literal. A literal $u$ is a pure literal for a formula $F$ if there is no $\neg u$ in $F$. The assignment that only maps $u\to 1$ is autark for $F$.
+
+
 
 \subsection{2CNF}
 It is already know that 3CNF is equivalent to SAT. This is not known for 2CNF and is believed to be false.
@@ -21,25 +31,25 @@ It is already know that 3CNF is equivalent to SAT. This is not known for 2CNF an
 \end{proposition}
 \begin{proof}
 
-  To prove that 2CNF is in P, an algorithm polynomial on the number of clauses will be given. Let $F \in$ 2CNF.  Without loosing of generality, we will consider that there are no clauses in $F$ $\{u,u\}$ or $\{u,\neg u\}$ as the first one should be handle with unit propagation and the second one is a tautology. Therefore each clause is $(u \vee v)$ with $var(u) \ne var(v)$, which could be seen as $(\neg u \rightarrow v) \wede (\new v \rightwarrow u)$.\\
+  To prove that 2CNF is in P, a polynomial algorithm on the number of clauses will be given. Let $F \in$ 2CNF.  Without loss of generality, we will consider that there are no clauses in $F$ $\{u,u\}$ or $\{u,\neg u\}$ as the first one should be handle with unit propagation and the second one is a tautology. Therefore each clause is $(u \vee v)$ with $var(u) \ne var(v)$, which could be seen as $(\neg u \rightarrow v) \wede (\new v \rightwarrow u)$.\\
 
 
   
-  We would consider a step to be as follow: we choose a variable $x \in Var(F)$ and set it to 0. Them a chain of implication would arise, which might end on conflict. If no conflict arise, then is an autark assignment, so repeat the process. Otherwise set it to 1 and proceed. If conflict arise, then $F$ is unsatisfiable. If no conflict arise, then is an autark assignment, so repeat the process.
+  We would consider a step to be as follow: we choose a variable $x \in Var(F)$ and set it to 0. Then a chain of implications would arise, which might end on conflict. If no conflict arises, then is an autark assignment, so repeat the process. Otherwise set it to 1 and proceed. If conflict arise, then $F$ is unsatisfiable. If no conflict arise, then is an autark assignment, so repeat the process.
   
 
   Each step is of polynomial time over the number of clauses. Also there would be at most as many steps as variables, therefore we have a polynomial algorithm.
   
-  
+ 
 \end{proof}
 
 \subsection{Horn Formulas}
 
-In this subsection we will analyze Horn formulas. They named after Alfred Horn, who defined them on his work\cite{horn1951sentences}. They are of special interest as is HORNSAT is P-complete.
+In this subsection we will analyze Horn formulas. They named after Alfred Horn\cite{horn1951sentences}. They are of special interest as HORNSAT is P-complete.
 
 
 \begin{definition}
-  Let $F$ be a formula in CNF. It is said to be a horn formula if for every $C \in F$ there is at most one non-negated literal. HORN will be the set of all horn formulas.
+  Let $F$ be a formula in CNF. $F$ is said to be a Horn formula if for every $C \in F$ there is at most one non-negated literal. HORN will be the set of all horn formulas.
 
   HORNSAT will be the intersection of HORN and SAT problems. Nonetheless, given the easiness of checking whether a formula is in HORN, it would usually consider as the problem that check the satisfiability of a horn formula.
 \end{definition}
@@ -49,35 +59,45 @@ In this subsection we will analyze Horn formulas. They named after Alfred Horn, 
   HORNSAT is in P.
 \end{proposition}
 \begin{proof}
-  Given a formula it could have a clause with only one non-negated literal or not have it. If it does not have a clause like this, set all the variables to 0 and is solved. Otherwise, unit-propagate the unary clause and repeat the process, as it would necessary be done to solve the problem. If a contradiction is raised, them the formula is not satisfiable.
+  Given a formula $F$ it could have a clause with only one non-negated literal or not. If it does not have a clause like this, set all the variables in to 0 and is solved. Otherwise, unit-propagate the unary clause and repeat the process recursively. If a contradiction is raised, them the $F$ is not satisfiable.
 \end{proof}
 
 
-Now we will discuss a simple generalization of Horn formulas: the renamable Horn Formulas. These formulas would allow to give some use to the otherwise not really useful horn definition. They would also add a condition that can be checked efficiently.
+Now we will discuss a simple generalization of Horn formulas: the renamable Horn Formulas. These formulas allow us to give some use to the otherwise not really useful Horn definition. They also add a condition that can be checked efficiently.
 
 \begin{definition}
   Let $F$ be a CNF formula. $F$ is called renamable Horn if there is a subset $U$ of the variables $Var(F)$, so that $F[x=\neg x | x \in U]$ is a Horn formula.
-  That set would be called a renaming.
+  That set is called a renaming.
 \end{definition}
 
 
 \begin{definition}
   Let $F$ be a CNF formula. Then a 2CNF formula $F^*$ is defined as:
-  $$F^* = \{(u \vee v) | u,v \text{are literals in the same clause} K \in F \}$$
+  $$F^* = \{(u \vee v) | u,v \text{ are literals in the same clause } K \in F \}$$
 \end{definition}
 
 
 \begin{theorem}
-  The CNF formula $F$ is renamable Horn if and only if the associated $F*$ formula is satisfiable. Moreover, if satisfying assignment $\alpha$ for $F^*$  exists then it encodes a renaming $U$ in the sense that $x \in U \iff \alpha(x) = 1$.
+  The CNF formula $F$ is renamable Horn if and only if the associated $F^*$ formula is satisfiable. Moreover, if satisfying assignment $\alpha$ for $F^*$  exists then it encodes a renaming $U$ in the sense that $x \in U \iff \alpha(x) = 1$.
 \end{theorem}
 \begin{proof}
-  Let $F$ be renamable Horn a $U$ be a renaming. We consider the assignment $\alpha$ that map to 1 all variable in $U$ and map to 0 otherwise. Let $\{u\vee v\} \in F^*$ after the renaming. There should be at least one negative variable so if every variable is set to 0, $F^*$ is satisfiable.
+  Let $F$ be renamable Horn and $U$ be a renaming. We consider the assignment
 
-  The other direction is analogous: let $\alpha$ be an assignment that satisfy $F^*$. Them there is no to literals in the same clause set to 0. Defining $U=  {x \in Var(F) | \alpha(x) = 1}$ there is no two positives variables in a clause.
+$$
+\alpha(x)= 
+\begin{cases}
+1 & x \in U,\\
+0 & \text{otherwise}.
+\end{cases}
+$$
+ 
+  Let $\{u\vee v\} \in F^*$ after the renaming. There should be at least one negative variable so if every variable is set to 0, $F^*$ is satisfiable.\\
+
+  The other direction is analogous: let $\alpha$ be an assignment that satisfy $F^*$. Then there is no to literals in the same clause set to 0. Defining $U=  \{x \in Var(F) : \alpha(x) = 1\}$ there is no two positives variables in a clause.
   \end{proof}
 
 
-These mean that if a renaming exists, if could be obtained efficiently, and them solve efficiently with the HORNSAT algorithm
+If a renaming exists, it can be obtained efficiently, and then solve efficiently with the HORNSAT algorithm.
 
 
 
