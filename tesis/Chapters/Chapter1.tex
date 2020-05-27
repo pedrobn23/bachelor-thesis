@@ -28,7 +28,7 @@ Info:
 
 We could have started the topic right from the axioms. Nonetheless, given the goal we want to achieve, it seems excesive. We will reffer to the commonly used \emph{Zermelo-Fraenkel axioms}, in order to have a point of reference, and therefore we will work without more considerations with sets and sets operations. We will put \emph{Zorn's lemma} to work, so the axiom of choice will also be needed, although in practice we will only work with finite sets of formulas.\\
 
-Further on this section we will present Boolean Algebra in a classic lattice-based way that could be found widely extended in related literature. In particular we follow the approach shown on  \cite{marek2009introduction}.
+Further on this section we will present Boolean Algebra in a classic lattice-based way that could be found widely extended in related literature. In particular we follow Introduction to mathematics of satisfiability\cite{marek2009introduction} for the deffinition of Booblean Algebra and Propositional Logic.
 
 \begin{definition}
   A partial ordered set, also poset, is a pair $\{X, \le\}$ where $X$ is a set and $\\le$ is a partial order of $X$. A chain $Y$ of a $\{X, \le\}$ is a subset of $X$ where $\le$ is a total order. 
@@ -80,145 +80,262 @@ With the contex of lattice just included, we will present the \emph{Knaster and 
 
 
 \section{Propositional Logic}
+In this section we will introduce Propositional Logic. Propositional logic would be the framework that would allow us define the main topics of this text.  Lets define some concepts:
+\begin{itemize}
+\item An alphabet $A$ is an arbitrary set.
+\item A symbol $a$ is an element of the alphabet.
+\item A word $w = \{a_i:i\in 1,..,n\}$ is a finite sequence of symbols.
+\item The collection of all posible words over an alphabet $A$ is denoted by $A^*$.
+\item A language $L$ over $A$ is a subset of $A^*$.
+\end{itemize}
 
+For example, spanish is a language with a well-known alphabet. Also, spanish is a proper laguange over its alphabet as it is not empty, and is does no include all possible words.\\
 
+When we talk about a logic system we are talking about a distinguished formal language. A formal language is defined by it sintax and its semantics. The syntax is the rules that define the language. They state what words over an alphabet are valid in the language. The semantics deal with the interpretations of the elements in the language. Usually this is achieved by assigning truth values to each word.\\
 
-\section{Definitions and first concepts.}
-    In this section Boolean formulas will be introduced. We first start with the basic building blocks, which collectively form what is called  the alphabet. Namely,
+We will define now propositional logic, or zeroth-order-logic. 
+
+\subsection{Syntax of Propositional Logic}
+  We first start with the basic building blocks, which collectively form what is called the alphabet:
     \begin{itemize}
-    \item Symbols $x,y,z$ for Boolean variables.
-    \item Symbols $p,q,r$ for Boolean metavariables, that is, a variable that refer to a boolean variable or a negated (see below) boolean variable.
-    \item Values 0 and 1, referring to false  and true respectively. The set $\{0,1\}$ will be named as $\mathbb{B}$.
+    \item Symbols $x,y,z$ for variables. When more variblaes are necessary subindexes will be used.
+    \item Unary operator negation $\neg$. A literal is a variable that refer to a boolean variable or a negated variable.
+    
+    \item Values 0 and 1. This values are often named as $\bot$ and $\top$ respectively.
 
-    \item Boolean Operators: 
-      \begin{itemize}
-      \item unary: $\neg $
-      \item binary: $\wedge, \vee, \rightarrow, \oplus, \leftrightarrow $
-      \end{itemize}
-
-
-      We will consider $\wedge$ of greater priority than $\vee$. These operator are defined by theirs truth table:
-
+    \item Binary operators: $\wedge, \vee, \rightarrow, \oplus, \leftrightarrow $
     \end{itemize}
 
-    \vspace{0.5cm}
-    \begin{tabular}{cccccccc}
-      & &
-          \begin{tabular}{c|cc}
-            $\neg $ & 0 & 1 \\\hline
-                    & 1 & 0
-          \end{tabular} 
+
+ The words of Propositional Logic are called formulas.
+    \begin{definition}
+    A Boolean formula is defined inductively:
+\begin{itemize}
+\item The constants 0 and 1 are formulas.
+\item Every variable is a formula.
+\item If $F$ is a formula, then $\neg  F$ is a formula.
+\item The concatenation with a symbol of two formulas is a formula too.\\
+\end{itemize}
+\end{definition}
+
+ Examples of formulas are $x\vee y$ or $x_1\wedge x_2 \vee  ( x_4 \vee \neg  x_3 \wedge (x_5\to x_6) \vee 0 )$.We should distinguish a special type of formula: the clauses. A clause  is a formula of the form $l_1\vee ... \vee l_n$ where $l_i, i \in 1,...,n$ are literals. Clasuses are will be often regarded as set of literals. Example of a clause is $(x_1\vee \neg x_4 \vee x_2)$. When regarded as a set every clause $C$ has a cardinal $|C|$, that represents the number of literals contained. \\
+
+\subsection{Semantics of Propositional Logic}
+When facing a way to provide semantic meaning to formulas the use of function In this section we will discuss to ways of providing meaning to the formulas: two-valued logic and three valued logic.\\ 
+
+    In two valued logic define the truth value of a formula by assigning a truth value(1 for Truth and 0 for False) to each variable. Note that we assing a meaning of truth to the constants 1 and 0, that until now where meaningless. The truth value of the formulas that involve operators are provide by their truth table.
 
 
-                    &
-                      \begin{tabular}{c|cc}
-                        $\vee$ & 0 & 1 \\\hline
-                        0   & 0 & 1 \\
-                        1   & 1 & 1
-                      \end{tabular} 
-                    & 
-                      
-                      \begin{tabular}{c|cc}
-                        $\wedge$ & 0 & 1 \\\hline
-                        0   & 0 & 0 \\
-                        1   & 0 & 1
-                      \end{tabular} &
-                                      \begin{tabular}{c|cc}
-                                        $\rightarrow$ & 0 & 1 \\\hline
-                                        0   & 1 & 1 \\
-                                        1   & 0 & 1
-                                      \end{tabular}  & 
-                                                       
-                                                       \begin{tabular}{c|cc}
-                                                         $\oplus$ & 0 & 1 \\\hline
-                                                         0   & 0 & 1 \\
-                                                         1   & 1 & 0
-                                                       \end{tabular} 
-                    &
-                      
-                      
-                      \begin{tabular}{c|cc}
-                        $\leftrightarrow$ & 0 & 1 \\\hline
-                        0   & 1 & 0 \\
-                        1   & 0 & 1
-                      \end{tabular} \\ 
-    \end{tabular}
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|l|l|l|}
+\hline
+$p$ & $q$ & $\neg p$& $p\vee q$ & $p\wedge q$ & $p \oplus q$ & $p \to q $ & $p \iff q$  \\ 
+\hline
+  0 & 0 & 1 & 0 & 0 & 0 & 1&1\\
+  0 & 1 & 1 & 1 & 0 & 1 & 1&0\\
+  1 & 0 & 0 & 1 & 0 & 1 & 0&0\\
+  1 & 1 & 0 & 1 & 1 & 0 & 1&1\\\hline
+\end{tabular}
+\end{center}
+\caption{\label{tab:table-name}Truth tables od different operators.}
+\end{table}
 
-    \vspace{1cm}
+
+The truth value of a formula is therefore obtatined by replacing each variable by their assigned constant and propagating the value. The tool that we will use to assign a truth value to each variable is the assignments
+    \begin{definition}
+      An assignment is a function $\alpha$ from the $Form_{Var}$ to $Form_{Var}$, on which some variables $\{x_1,...,x_n \}$ are replaced by predefined constants $\{a_1,...,a_n\}$ respectively.\\
+    \end{definition}
+
+    A assignment that assign a value $a$ to a variable $x$ is said to map the variable $x$. In two valued logic we will consider only assigment that maps all variables, and therefore all formulas are given a value by an assigment. We also see that any assignment generate a map from $Var$ to $\{0,1\}$. Conversely, any map from $Var$ to $\{0,1\}$ would uniquely represent a assignment $alpha$ over $Form_{Var}$. In practice when we talk about an assignment $\alpha$ we will reffer indistinctly to either the function over $Form_{Var}$ or the mapping  over $Var$.\\
+
+    One can then \emph{apply} an assignment $\alpha$ to a formula $F$, denoting it by $F\alpha=\alpha(F)$. To describe an assignment we will use a set that pairs each variable to it value, i.e. $\alpha=\{x_1\to 1,...,x_n\to 0\}$. For example given an assignment $\alpha_0 = \{x_1 \to 1, x_2\to 1, x_3 \to 0, x_4 \to 1\}$ and $F_0=x_1\to (x_2\wedge x_4)$ then  $F_0\alpha_0=1 \to (1\wedge 1)= 1$. \\    
+
+    \begin{definition}
+      An assignment is said to \emph{satisfy}  a formula $F$ if $F\alpha=1$ and in the case $F  \alpha = 0 $ it is said to \emph{falsify} the statement. A formula $F$ is called \emph{satisfiable} if is exists an assignment that satisfy it. Otherwise it is called \emph{unsatisfiable}.
+    \end{definition}
+
+
+    Note that we have a really restrictive constraint on the assignment: they should map all variables.  This is so in order for an assignment to give a meaning to every formula. To ease this contraint we use three-valued logic. On three valued logic we have three significant: True or 1, False or 0, and unknown or $\upsilon$. Now the assigment will map every variable to one of this values. These new assignments will be called partial assignments, as they only map some variables to a truth value. We can propagate the previous values adding new rules.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|l|l|l|}
+\hline
+$p$ & $q$ & $\neg p$& $p\vee q$ & $p\wedge q$ & $p \oplus q$ & $p \to q $  & $p \iff q$  \\ 
+  \hline
+  
+  \upsilon & 0 & \upsilon & \upsilon & 0 & \upsilon & \upsilon &\upsilon\\
+  \upsilon & 1 & \upsilon & 1 & \upsilon & \upsilon & 1 &\upsilon\\
+  0 & \upsilon & 1 & \upsilon & 0 & \upsilon & 1 &\upsilon\\
+  1 & \upsilon & 0 & 1 & \upsilon & \upsilon & \upsilon &\upsilon\\
+\hline
+
+\end{tabular}
+\end{center}
+\caption{\label{tab:table-name}Truth table of the different operators in three valued logic.}
+\end{table}
+
+
+In practice partial assignments will be only define by denoting only the variables that are mapped to either 0 or 1. We can see that the composition of assignments (seen as functions over $Form_{var}$ is also a partial assigment. Also, when applying a partial assigment to a formula, instead of mapping it to $\upsilon$ we will avoid operating over the variables assigned to $\upsilon$. For example given an assignment $\alpha_0 = \{x_1 \to 1, x_2\to 1, x_3 \to 0\}$ and $F_0=x_1\to (x_2\wedge x_4)$ then  $F_0\alpha_0=1 \to (1\wedge x_4)= 1 \to (x_4)$. Altought $F_0$ is mapped to another formula, $\alpha_0$ is still providing a meaning to it, i.e., that we are not sure whether this is a true or false assignment. \\
+
+TODO INCLUIR LINK A AUTARK LOKO\\
+
+Partial assignments will be also used to iteratively expand them: let $Var= \{x_i:i\in 1,...,n\}$ the set of varibles a partial assigment $\alpha_1$ that map variables $[x_1\to a_1,...,x_j\to a_j]$ with $1<j<n$ and $a_j\in\{0,1\}$ for every $j$, we can expand it by choosing a nonempty subset  $A\subset\{a_k: k\in j+1,..,n\}$ and a value $c_x \in \{0,1\}$ for every $x\in A$. Then we can define:
+
+$$
+\alpha_2(x)=
+\begin{cases}
+\alpha_1(x) & x \in \{x_i : i \in 1,...,n\},\\
+c_x & x\in A, \\
+\upsilon & \text{otherwise}.
+\end{cases}
+$$
+
+We can see that $\alpha_2$ expands $\alpha_1$ in the sense that the truth value assigned to a formula by $\alpha_1$ holds in $\alpha_2$ if it where diferent that unknown. Therefore we are expanding the 'known' values of the formulas. Note that in the definition of $\alpha_1$ it where not neccesary to state what variables were mapped to $\upsilon$ at it was implicit that every variable not listed were of unknown  value.\\
+
+Arguably, the most special case of partial assigment are autarks assignments, which we are going to discuss further on this text. An autark assignment is an assigment such that at least one variable is mapped to either 0 or 1 and $F$ and $F\alpha$ are equal. Let define what equals mean in this context.\\
+
+Two formulas $F,G$ are said to be equal, represented as $F\sim G$, if for every two-valued assignment $\alpha$ maps $F\alpha = G\alpha$. It follows from the equivalente properties on constants that $\sim$ is an equal relationship. This definition is really intuitive, as it define as equal the formulas that has the same meaning in every possible situation. \\
+
+With $\sim$ defined we can have what is called a Lindenbaum algebra, as a quotient space of $Form = Form_{Var}$, denoted as $Form/\sim$. It follows that every operator respect the quotient space structure, i.e., for every $[\phi_1],[\phi_2]\in\ Form/\sim$:
+
+\begin{itemize}
+\item $\neg [\phi_1] = [\neg\phi_1]$
+\item $ [\phi_1] \vee [\phi_2]= [\phi_1 \vee \phi_2]$
+\item $ [\phi_1] \wedge [\phi_2]= [\phi_1 \wedge \phi_2]$
+\end{itemize}
+
+The interest of Lindenbaum algebra resides in the fact that $\{Form, \vee,\wedge,[1],[0]\}$ is a Boolean algebra, providing therefore a nexus between the algebraic formultation of the problem an its semantics.
+
+
+\section{Problems}
+
+\subsection{Decision Problems}
+Computability and complexity theory attempt to answer questions regarding how to efficiently solve real-world problems. On this section we provide a formal approach to de concept of problem, and its resolution.\\
+
+We will study the complexity of functions. In order to standarize the aproach we code the input of the function and the output of the functions using words over a finite alphabet. As for every finite alphabet $A$ there is a bijective mapping from $A^*$ to $\{0,1\}^*$ we can asume when its convenient that the alphabet is $\{0,1\}$. With this convention we are now ready to define what is a decision problem.
+
+\begin{definition}[Decision Problem\cite{arora2009computational}]
+Given a language $L$ over an alphabet $A$, it has an associated decision problem that consist on, given a word $w\in A^*$ check whether $w$ is in $L$. 	
+\end{definition}
+
+
+When we have a named language, we refer indistinctly by this name to both the language and the associated decision problem. In order to define a decision problem is only needed to define a language over an alphabet. Therefore a decision problem may be defined implicitly, that is, as the set of the words in an alphabet that satisfy some condition. As semantics provide meaning to the languages, real world problems can be addressed as decision problems.
+
+\subsection{Satisfiability Problem}
+
+Given the previous definitions, we are now almost prepared to define the central part of this thesis: the satisfiability decision problem of propositional logic, SAT for short. To this end we define a special subset of formulas in Poprositional Logic: the formulas in Conjunctive Normal Form.
+
+\begin{definition}
+      A formula $F$ is said to be in Conjunctive Normal Form ($CNF$)  if is written as:
+      $$F = C_1\wedge ... \wedge C_n$$
+      Where $C_i$  are clauses.
+    \end{definition}
+
+Note that every formula in $CNF$ can be regarded as a set of clauses. This approach is really useful in some contexts and will be often used.
+
+\begin{definition}
+  The Satisfiability Language of Propositional Logic (SAT) is the language over the alphabet of prositional logic that includes all formulas that are both satisfiables and in $CNF$.
+\end{definition}
+
+We will refer with the acronym $SAT$ to both the language and the associated decision problem. As checking if a formula is in CNF is a fairly simple syntax problem, we are only interested in asserting whether or not a formula in $CNF$ is satisfiable.
+
+\begin{definition}
+A \emph{SAT-Solver} is an algorithm that, beeing given a formula $F$ in \emph{CNF} as input, answer wheter or not is satisfiable.
+\end{definition}
+
+We will diferenciate two types of SAT-Solver. INCLUIR COMPLETOS E INCOMPLETOS.
+
+\subsection{Variations}
+
+The SAT decision problem quite a lot of variations, all of them of interest for certain complexity clases. We will list some of the most important, starting with two decision problems. The first of them is a natural generalization.
+
+\begin{definition}
+  The Generalized Satisfiability Language of Propositional Logic (GSAT) is the language over the alphabet of prositional logic that includes all formulas that are Satisfiable.
+\end{definition}
+
+With Tseitin's Theorem\ref{the:Tseitin} we can see that this two problems are in fact fairly similar. More often than not GSAT will be solved by solving an equivalent SAT problem. Analogously a \emph{GSAT-Solver}  is a SAT-solver that also accepts as inputs formulas not in CNF. For the next variation we will need a definition.
+
+\begin{definition}
+  Let $F$ be a formula. $F$ is said to be $k$-CNF formula (equivalently a formula in $k$-CNF) if it is in CNF and $\forall C \in F, |C| = k$. $k$-SAT is the language of the formulas that are both satisfiable and in $k$-CNF.
+\end{definition}
+
+Other variations of SAT could be achieved by generalizing the concept of decision problem.
+
+\begin{definition}[Function Problem]
+Let $A,B$ be two sets. Given a relation $R\subset A\times B$, it has an associated function problem that consists on, given a word $a\in X$ find a word $b\in B$ such that $(a,b)\in R$.
+\end{definition}
+
+That is, is the problem of finf
+
+\begin{definition}
+ Let $Form$ be the set of propositional formulas in CNF and $B$ the set of assignments.  The Satisfiability Function Problem of Propositional Logic (FSAT) is the function problem defined by the relation $$R=\{(F, b): F\in Form, b \in B, Fb = 1\}.$$
+\end{definition}
+That is, is the problem of finding an assignment that satisfy a formula. Most of SAT-solvers not only try to solve SAT but also to solve FSAT, i.e., try to find an assignment that satisfy  the formula should it exists.
+\begin{definition}
+ Let $Form$ be the set of propositional formulas in CNF and $B$ the set of assignments. The Maximum Satisfiability Problem (MAXSAT) is the problem. function problem defined by the relation $$R=\{(F,n) : F\in Form, n = \max_{\alpha \in B}\{ | \{C\in F : C\alpha =1 \}| \}.$$
+\end{definition}
+
+That is, is the problem of finding the maximum number of assignments that can be satisfied simultaniously.
+
+\section{Models of Computation}
+On this section we will discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximations to Turing machines, so we present a quick formal approach to the area. 
+
+\subsection{Turing Machines}
+Turing machines are arguably the epicenter of  models of computation. A Turing Machine  represents a long mechanial tape on which we are going to operate. The tape is divided in to discrete positions, such that we can see the tape as a one-dimensional array. Operating on this tape we can focus on a cell, scan its contents, overwrite  its contents or move to an adjacent cell. These operations try to resemble the process of human calculus, as done with paper and pencil when applying the long division method  for example. Formally:
+
+\begin{definition}[Turing Machine \cite{hopcroft2007introduction}] We describe a Turing Machine as a 7-tuple $M=(Q, \sum, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
+  \begin{itemize}
+  \item $Q$ the finite set of \emph{states} of the finite control.
+  \item $\sum$ the finite set of \emph{input symbols}.
+  \item $\Gamma$ the finite set of \emph{tape symbols}. $\sum$ is always a subset of $\Gamma$.
+  \item  $\delta: Q\times \Gamma \to Q\times\Gamma\times\{L,R\}$ the transition funciton.
+  \item $q_0$ the \emph{start state}.
+  \item $B$ the \emph{blank symbol}.
+  \item $F$ the \emph{accpeting states}.
+  \end{itemize}
+
+  A configuration of a turing machine is a triplet $C=(q,u,v)$ where $q\in Q$, $u,v\in \Gamma^*$. A configuration is acepting if $q\in F$.
+\end{definition}
+
+A configuration should be understand as a state of the machine, where $q$ is the current state, $u$ the part of the tape left to the cell on which we focus and $v$ is the part of the tape right to the cell we focus, starting on it.\\
+
+We can define a relation between configurations that will allow us to formalize the operations that can be made on a turing machine.
+
+\begin{definition}
+  Let $M$ be a Turing Machine and $C = (q,u_1...u_n, av_1....v_m)$, $C'=(q',u_1...u_{n-1},)$ be a configuration. We say that $C\vdash C'$ if:
+  \begin{itemize}
+    \item It exists $\delta(q,a) = (q',b,I)$, 
+\end{definition}
+
+
+\begin{enumerate}
+\item PASO DE CALCULO
+\item ACEPTAR RECHAZAR
+\item COMPLEJIDAD ALGORITMICA
+\end{enumerate}
+  
+
+
+\subsection{First order Logic}
+
+\subsection{Modal Logic}
+
 
 
 
     \begin{definition}
-      A Boolean formula is defined inductively:
-      \begin{itemize}
-      \item The constants 0 and 1 are formulas.
-      \item Every variable is a formula.
-      \item If $F$ is a formula, then $\neg  F$ is a formula.
-      \item The concatenation with a symbol of two formulas is a formula too.
-      \end{itemize}
+ The set of all satisfiable formulas is denoted as $SAT$.  The problem $SAT$ is the associated problem. 	An assignment $\alpha$ that satisfies $F$ is called a model an is denoted as $\alpha \models F$.\end{definition}
+    A formula $F$ such that for every  $\alpha$ assignment happens that $F\alpha=1$ is a tautology. Given two formulas $G,F$ it is said that $G$ follows from $F$ if $F\to G$ is a tautology. \\
+   
     \end{definition}
-
-    Examples of formulas are $x\vee y$ or $x_1\wedge x_2 \vee  ( x_4 \vee \neg  x_3 \wedge (x_5\rightarrow x_6) \vee 0 )$. \\
-
-
-    \begin{definition} Given a set $A$ it has an associated homonym problem that consists on, given an arbitrary element $e$ check if $e\in A$.	
-    \end{definition}
-
-
-    \begin{definition}
-      An assignment is a function $\alpha$ from the set of Boolean formulas to the set of Boolean formulas, on which some variables $\{x_1,...,x_n \}$ are replaced by predefined constants $\{a_1,...,a_n\}$ respectively.\\
-    \end{definition}
-
       If none of the variables altered by an assignment $\alpha$ are present on the formula $F$ then $\alpha(F) = F$. We denote as $Var(\alpha)$ the set of those variables that receive a value from $\alpha$. Analogously, $Var(F)$ will denote the variables present on a formula $F$.
 
-
     
-    One can then \emph{apply} an assignment $\alpha$ to a formula $F$, denoting it by $F\alpha=\alpha(F)$. To describe an assignment we will use a set that pairs each variable to it value, i.e. $\alpha=\{x_1\to 1,...,x_n\to 0\}$. For example given an assignment $\alpha_0 = \{x_1 \to 1, x_2\to 1, x_3 \to 0\}$ and $F_0=x_1\to (x_2\wedge x_4)$ then  $F_0\alpha_0=1 \to (1\wedge x_4)= x_4$. \\
-    
-    \begin{definition}
-      An assignment is said to \emph{satisfy}  a formula $F$ if $F\alpha=1$ and in the case $F  \alpha = 0 $ it is said to \emph{falsify} the statement.
-    \end{definition}
-    
-    \begin{definition}
-      A formula $F$ is called \emph{satisfiable} if $\exists \alpha : F\alpha = 1.$ Otherwise it is called \emph{unsatisfiable}. The set of all satisfiable formulas is denoted as $SAT$.  The problem $SAT$ is the associated problem. 	An assignment $\alpha$ that satisfies $F$ is called a model an is denoted as $\alpha \models F$.\\
+      A formula in \emph{CNF} could be seen as a collection of clauses. The associated problem with \emph{CNF} is straightforward on $O(n)$. The problem that we will investigate is whether a arbitrary formula $F$ have a \emph{SAT-equivalent} \emph{CNF} formula.\\
       
-      
-      A formula $F$ such that for every  $\alpha$ assignment happens that $F\alpha=1$ is a tautology. Given two formulas $G,F$ it is said that $G$ follows from $F$ if $F\rightarrow G$ is a tautology. \\
-    \end{definition}
-    
-    
-    
-    \begin{definition}
-      A formula $F$ is said to be in conjunctive normal form if is written as:
-      $$F = C_1\wedge ... \wedge C_n$$
-      Where $C_i = (u_{1,i} \vee ... \vee u_{m_i,i})$  and $u_{i,j}$ are literals, that is, variables or negated variables. The set of all formulas in conjunctive normal form is called \emph{CNF}.
-
-    \end{definition}
-    
-    A formula in \emph{CNF} could be seen as a collection of clauses. The associated problem with \emph{CNF} is straightforward on $O(n)$. The problem that we will investigate is whether a arbitrary formula $F$ have a \emph{SAT-equivalent} \emph{CNF} formula.
     Equivalently a clause could be seen as a set of literals. The set of all formulas in conjunctive normal form where $|C_i| = N\ i \in 1,...,n$ is called \emph{NCNF}. The intersection of these set with the \emph{SAT} sets are called \emph{CNF-SAT} y \emph{NCNF-SAT}. If the context is clear enough the problems will be called \emph{CNF} and \emph{NCNF}\\
-
-
-    We could define an equal relationship on the set of formulas. Let $F,G$ be formulas. Then $F= G$ if it happens that for each $\alpha$ an assignment such that $F\alpha = 1$ then $G\alpha = 1$ and $G\alpha = 1$ then $F\alpha = 1$
-
-    \begin{proposition} 
-      The given equal relationship is a equivalence relationship.
-    \end{proposition}
-    \begin{proof}
-      All three properties follows from the equivalent properties on the constants.
-
-    \end{proof}
-    
-    
-    We could define a partial order relation between the formulas.	Let $F,G$ be formulas. Then $F\le G$ if it for each $\alpha$ an assignment such that $F\alpha = 1$ then $G\alpha = 1$. \\
-    
-    
-    \begin{proposition} 
-      The given order relationship is well-defined.
-    \end{proposition}
-    \begin{proof}
-      As we then could see each class of equivalent as the set of assignment that satisfies all of the clauses, this property arises from the order given by the inclusion on sets.\\
-    \end{proof}
 
 
     TODO: Definir un circuito.
@@ -230,7 +347,7 @@ With the contex of lattice just included, we will present the \emph{Knaster and 
       Every operator can be seen as a gate and every variable as an input.\\
     \end{proof}
     
-    \begin{theorem}[Tseitin \cite{tseitin1983complexity}]
+    \begin{theorem}[Tseitin \cite{tseitin1983complexity}] \label{the:Tseitin}
       There is a \emph{3-CNF} formula on each equivalent class. Moreover, given an element $F$  there is a equivalent formula $G$  in \emph{3-CNF} which could be computad in polynomial time. 
     \end{theorem}
 
@@ -239,23 +356,23 @@ With the contex of lattice just included, we will present the \emph{Knaster and 
 <
       We will construct the formula considering variables $x_1,...,x_n$ that will represent the inputs and $y_1,...,y_m$ that will represents the output of each gate. 
 
-      $$ G = (y_1) \wedge \bigwedge_{i=1}^m (y_i \leftrightarrow f_i(z_{i,1},z_{i,2}))$$
+      $$ G = (y_1) \wedge \bigwedge_{i=1}^m (y_i \iff f_i(z_{i,1},z_{i,2}))$$
 
       Where $f_i$ represents the formula associated to the $i$-gate, $z_{i,1},z_{i,2}$ each of the two inputs of the $i$-gate, whether they are $x_-$ or $y_-$ variables. This formula is not \emph{3-CNF} yet, but for each configuration being $f_i$ a Boolean operator there would be a \emph{3-CNF} equivalent.
 
       \begin{itemize}
-      \item $z \leftrightarrow( x \vee y )  = \neg  ( z \vee  x \vee y    ) \vee (z \wedge ( x \vee y )  ) = \neg  ( z \vee  x \vee y    ) \vee (z \wedge x)  \vee (z \wedge y ) =$\\$= ( \neg  z \wedge  \neg  x \wedge \neg   y    ) \vee (z \wedge x)  \vee (z \wedge y )  =$$
+      \item $z \iff( x \vee y )  = \neg  ( z \vee  x \vee y    ) \vee (z \wedge ( x \vee y )  ) = \neg  ( z \vee  x \vee y    ) \vee (z \wedge x)  \vee (z \wedge y ) =$\\$= ( \neg  z \wedge  \neg  x \wedge \neg   y    ) \vee (z \wedge x)  \vee (z \wedge y )  =$$
         (\neg  z \vee (z \wedge x)  \vee (z \wedge y ))  \wedge  
         (\neg  x \vee (z \wedge x)  \vee (z \wedge y )) \wedge
         (\neg  y \vee (z \wedge x)  \vee (z \wedge y ))   =
         (\neg  z \vee x  \vee y )  \wedge  
         (\neg  x \vee z  ) \wedge
         (\neg  y \vee z ) $   
-      \item $z \leftrightarrow( x \wedge y ) = \neg ( z \vee ( x \wedge y )) \vee (z \wedge ( x \wedge y )) = (z\wedge x \wedge y ) \vee  (\neg  z\wedge \neg  x \wedge \neg  y )  =$\\$\ \ \ ((z\vee  (\neg  z\wedge \neg  x \wedge \neg  y )  ) \wedge (x \vee  (\neg  z\wedge \neg  x \wedge \neg  y )  ) \wedge (y\vee  (\neg  z\wedge \neg  x \wedge \neg  y )  ) ) = (\neg  x \vee z) \wedge (\neg  y \vee z ) \wedge (\neg  z \vee x ) \wedge (\neg  y \vee x ) \wedge(\neg  z\vee y )\wedge (\neg  x\vee y )$
+      \item $z \iff( x \wedge y ) = \neg ( z \vee ( x \wedge y )) \vee (z \wedge ( x \wedge y )) = (z\wedge x \wedge y ) \vee  (\neg  z\wedge \neg  x \wedge \neg  y )  =$\\$\ \ \ ((z\vee  (\neg  z\wedge \neg  x \wedge \neg  y )  ) \wedge (x \vee  (\neg  z\wedge \neg  x \wedge \neg  y )  ) \wedge (y\vee  (\neg  z\wedge \neg  x \wedge \neg  y )  ) ) = (\neg  x \vee z) \wedge (\neg  y \vee z ) \wedge (\neg  z \vee x ) \wedge (\neg  y \vee x ) \wedge(\neg  z\vee y )\wedge (\neg  x\vee y )$
 	
-      \item $z \leftrightarrow( x \leftrightarrow y ) =  \neg ( z \vee ( x \leftrightarrow y ) ) \vee (z \wedge ( x \leftrightarrow y ) = \neg ( z \vee (\neg  x \wedge \neg  y) \vee (x \wedge y)) \vee (z \wedge(\neg  x \wedge \neg  y) \vee (x \wedge y))  )=(\neg  z \wedge \neg  (\neg  x \wedge \neg  y) \wedge \neg  (x \wedge y)) \vee (z \wedge(\neg  x \wedge \neg  y) \vee (x \wedge y))  )=(\neg  z \wedge  (x \vee  y) \wedge (\neg  x \vee \neg  y)) \vee (z \wedge(\neg  x \wedge \neg  y) \vee (x \wedge y))  )=z \vee ( \neg  x \wedge \neg  y) = (\neg x \vee \neg y \vee z) \wedge (\neg x \vee \neg z \vee y) \wedge (y \vee z \vee x) \wedge (y \vee \neg y \vee x) \wedge (\neg z \vee z \vee x) \wedge (\neg z \vee \neg y \vee x)$
+      \item $z \iff( x \iff y ) =  \neg ( z \vee ( x \iff y ) ) \vee (z \wedge ( x \iff y ) = \neg ( z \vee (\neg  x \wedge \neg  y) \vee (x \wedge y)) \vee (z \wedge(\neg  x \wedge \neg  y) \vee (x \wedge y))  )=(\neg  z \wedge \neg  (\neg  x \wedge \neg  y) \wedge \neg  (x \wedge y)) \vee (z \wedge(\neg  x \wedge \neg  y) \vee (x \wedge y))  )=(\neg  z \wedge  (x \vee  y) \wedge (\neg  x \vee \neg  y)) \vee (z \wedge(\neg  x \wedge \neg  y) \vee (x \wedge y))  )=z \vee ( \neg  x \wedge \neg  y) = (\neg x \vee \neg y \vee z) \wedge (\neg x \vee \neg z \vee y) \wedge (y \vee z \vee x) \wedge (y \vee \neg y \vee x) \wedge (\neg z \vee z \vee x) \wedge (\neg z \vee \neg y \vee x)$
 	
-      \item $z \leftrightarrow( x \oplus y ) =  z \leftrightarrow(\neg  x \leftrightarrow y )  $	
+      \item $z \iff( x \oplus y ) =  z \iff(\neg  x \iff y )  $	
 
       \end{itemize}
       In the last item we use the third one.
@@ -263,14 +380,14 @@ With the contex of lattice just included, we will present the \emph{Knaster and 
     \end{proof}
     This result is important because, now we could be able to talk only about \emph{3-CNF} formulas. The fact that they are reachable on polynomial time is important because it means it could be done efficiently. Should this be impossible it will not be of much relevance in practice, as we yearn to solve this problem as efficient as possible (in fact, as polynomial as possible). This result implies that if we know how to solve \emph{3-CNF} then we will be able to solve 'full'SAT problems.
     \begin{definition}
-      An assignment \alpha is called autark for a formula $F\in$\emph{CNF} if for every clause $C \in F$ it happens that if $Var(C) \cap Var(\alpha) \ne \emptyset $ then $C\alpha = 1$, in other words it satisfies all clauses that it 'touches'. 
+      An assignment $\alpha$ is called autark for a formula $F\in$\emph{CNF} if for every clause $C \in F$ it happens that if $Var(C) \cap Var(\alpha) \ne \emptyset $ then $C\alpha = 1$, in other words it satisfies all clauses that it 'touches'. 
     \end{definition}
 
     The use of this definition is self-evident, as it would simplify the problem of resolving a \emph{CNF} clause. The strategy would be simple as obvious: try to make every clause positive. This assignment will give simplifications of the problem, and enabling a good method for the search will be useful.\\ 
 
     Should it happen that we got an algorithm for autarks clauses, and iterating it, we could find a solution of any given formula. Finding a polynomial algorithm that finds whether there exists any non-empty autark formula and provide it, we could be able of proving that NP = P, as we could solve SAT applying this algorithm iteratively. Anyway, trying to find simple autark assignment, i.e. assignment with not many variables,is a good praxis.
 
-    \begin{proposition} We could reduce the SAT-CNF problem to the Autark-Finding problem.
+    \begin{proposition} We could reduce SAT to the Autark-Finding problem.
       \begin{proof} Suppose that an algorithm such that if it exists any autark it return one of them, and end with an error code otherwise is given.  \\
 
         Given a formula $F$, if there is not an autark then there is no solution for the SAT problem. If it finds an Autark-assignment $\alpha$ then we apply the same algorithm to $\alpha(F)$. Also, as it happens that $|Var(\alpha(F))|<|Var(F)|$ so we would only apply the algorithm finitely many times. Also, $F$ will be solvable if, and only if, $F\alpha$ is solvable.	\\

@@ -19,17 +19,12 @@ This chapter is fundamental as it attack the main problem of SAT: explain the di
 To get an intuition about how unsolvable clauses are, we gonna state some simple result about combinatorics and resolution. Also, these techinques present some cases where we can solve the problem efficently, although more often that not we would not provide a satisfying assignment.
 
 
-Nonetheless, given an efficent non-constructive SAT-solver, it is possible to make a constructive solver with a running time of $n$ times the previous by assigning a literal a value, checking whether or not the result is still solvable. EXTENDER LA IDEA.
+Nonetheless, given an efficent non-constructive SAT-solvers, it is possible to make a constructive solver with a running time of $n$ times the previous by assigning a literal a value, checking whether or not the result is still solvable. EXTENDER LA IDEA.
 
 
-As general SAT-solver is exponential, a polynomial increase does not affect overall the assymptotical complexity.\\
+As there is no complete SAT-solver known to work in polymial time complexity, a polynomial increase does not affect overall the assymptotical complexity.\\
 
 Firstly, it is easy to break a big clause on some smaller ones, adding one another on this way: Suppose we got two positive integers $n,m$ such that $m < n$ a clause $x_1\vee x_2 \vee ... \vee x_n$ we could split it into two parts $x_1\vee x_2  \vee ... \vee x_{m-1} \vee y, \neg y \vee x_m \vee ... \vee x_n$. Also given the same clause with a given length $n$ we could enlarge it one variable adding $ x_1 \vee ... \vee x_n \vee y$ and $ x_1 \vee ... \vee x_n \vee \neg y$ where $y$ is a new variable. Note that to enlarge a clause from a length $m$ to a length $n>m$ we would generate $2^{n-m}$ clauses.
-
-\begin{definition}
-  Let $F$ be a formula. It is in call a $k$-CNF formula if it is in CNF and $\forall C \in F, |C| = k$.
-\end{definition}
-
 
 \begin{proposition}
 	Let $F$ be a $k$-CNF formula, if $|F| < 2^k$ then $F$ is satisfiable.
@@ -124,7 +119,7 @@ We continue to prove an interesting lemma on the theoretical analysis of satisfi
 
  
 This section is going to be based on the works of Moser, Tardos, Lovász and Erdös. As it will be shown, LLL is applicable to set a sufficient condition for satisfiability.  We will explain the lemma for theoretical purposes and prove the most general version, and give a constructive algorithm to solve a less general statement of the problem. The principal source of bibliography for the whole section would be Moser PhD. Thesis\cite{moser2009constructive}. \\ 
-%[INCLUIR LINK A LA BIBLIOGRAFIA]
+
 
 
 The main contribution of Moser's work to this problem is finding an efficient constructive algorithm to find what assignment satisfies the formula, given that $F$ satisfies the hypothesis of the lemma. Previously only probabilistic approaches had been successful.\\
