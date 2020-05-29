@@ -104,7 +104,8 @@ headsepline, % Uncomment to get a line under the header
 \usepackage[noend]{algpseudocode}
 
 \usepackage{enumitem}
-\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
+
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -114,6 +115,10 @@ headsepline, % Uncomment to get a line under the header
 \newtheorem{proposition}{Proposition}[section]
 
 
+\definecolor{myred}{RGB}{128, 0, 0}
+
+\usepackage[allcolors=myred]{hyperref}
+\usepackage{mathrsfs}
 \begin{document}
 
 \frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
@@ -138,13 +143,17 @@ headsepline, % Uncomment to get a line under the header
 \begin{minipage}[t]{0.4\textwidth}
 \begin{flushleft} \large
 \emph{Author:}\\
-\href{http://www.johnsmith.com}{\authorname} % Author name - remove the \href bracket to remove the link
+\href{https://github.com/pedrobn23/TFG/}{\authorname} % Author name - remove the \href bracket to remove the link
 \end{flushleft}
 \end{minipage}
 \begin{minipage}[t]{0.4\textwidth}
 \begin{flushright} \large
-\emph{Supervisor:} \\
-\href{http://www.jamessmith.com}{\supname} % Supervisor name - remove the \href bracket to remove the link  
+  \emph{Supervisor:} \\
+
+  
+\noindent
+{\color{myred} \supname }
+ % Supervisor name - remove the \href bracket to remove the link  
 \end{flushright}
 \end{minipage}\\[3cm]
  
@@ -222,7 +231,9 @@ headsepline, % Uncomment to get a line under the header
 
 {
   \hypersetup{hidelinks}
+  \setcounter{tocdepth}{1}
   \tableofcontents
+
 }
 % Prints the main table of contents
 

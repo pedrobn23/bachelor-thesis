@@ -1,7 +1,11 @@
 
-\chapter{Resolution Algorithms: Solvers}
+\part{Resolution Algorithms: Solvers}
 \label{chap:2}
-This chapter is fundamental as it attack the main problem of SAT: explain the different techniques that can be applied. Onward we will see how it could be solved, and develop applied techniques. There are a lot of approaches to this problem and they differ on their way to attack it. We have to realise that three things are important to judge a algorithm:
+
+
+\chapter{Special Cases}
+
+On this part we attack the main problem of SAT: explain the different techniques that can be applied.Onward we will see how it could be solved, and develop applied techniques. There are a lot of approaches to this problem and they differ on their way to attack it. We have to realise that three things are important to judge a algorithm.
 
 \begin{itemize}
 \item The simplicity: following Occam's razor, between two solutions that do not appear to be better or worse, one should choose the easiest one. This solution are far more comprehensible and tends to be more variable and adaptable for our problem. We should not despise an easy solution to a complex problem only because a far more difficult approach give slightly better results.
@@ -10,8 +14,12 @@ This chapter is fundamental as it attack the main problem of SAT: explain the di
 
 \item The efficiency: Some algorithms will have the same complexity as the most simple ones, but will use some plans to be able to solve most part of the cases fast (even in polynomial time). There are some cases that would make this algorithms be pretty slow, but more often than not a trade-off is convenient.
 \end{itemize}
-  
-  The first section will talk about combinatorics. Then we will proceed to analyze solvability in special cases, i.e., algorithms  that works really well in formulas given that they satisfy some restriction.
+
+
+  On this chapter we are going to talk about solvability in special situations where we work with a restricted subset of formulas (more restricted than CNF formulas). We want to exploit special characteristics of these subsets in our favor in order to get a resolution without involving a complex exponential time algorithms (as the ones needed to solve SAT).\\
+
+
+  The first section of this chapter will talk about combinatorics. Then we will proceed to analyze solvability in special cases, i.e., algorithms  that works really well in formulas given that they satisfy some restriction.
 
 \section{Satisfiability by Combinatorics}
 

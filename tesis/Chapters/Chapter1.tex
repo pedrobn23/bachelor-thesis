@@ -1,6 +1,6 @@
 % Chapter 1
 
-\chapter{Theoretical Introduction} % Main chapter title
+\part{Satisfiability Problem: Definition and Relevance} % Main chapter title
 
 \label{Chapter1} % For referencing the chapter elsewhere, use \ref{Chapter1} 
 
@@ -14,14 +14,21 @@
 \newcommand{\option}[1]{\texttt{\itshape#1}}
 
 % ----------------------------------------------------------------------------------------
-\section{Introduction}
 
-TODO: incluir introducción del problema.
+\chapter{Logic}
+\begin{itemize}
+\item[TODO:]$\qquad$ Incluir introducción del problema.
 
-Info:
-- Handbook incluye una introducción histórica.
-- Libro verde incluye una introducción intuitiva excelente.
+\item[INFO:]
+  \begin{itemize}
+  \item Explicar que vamos a explicar en este capítulo.
+  \item Handbook incluye una introducción histórica.
+  \item Libro verde incluye una introducción intuitiva excelente.
+\end{itemize}
+\end{itemize}
 
+
+In this chapter we present the bases of Logic and formal languages. Logic will provide us with a framework on which we will be able to define the Satisfiability Problem. We will present the area with formality, explaining only the things that will be necessary for our goal.
 
 
 \section{Boolean Algebra}
@@ -214,7 +221,8 @@ Two formulas $F,G$ are said to be equal, represented as $F\sim G$, if for every 
 
 
 
-With $\sim$ defined we can have what is called a Lindenbaum algebra, as a quotient space of $Form = Form_{Var}$ by the relation $\sim$, denoted as $Form/\sim$. It follows that every operator respect the quotient space structure, i.e., for every $[\phi_1],[\phi_2]\in\ Form/\sim$:
+\label{def:linden}
+With $\sim$ defined we can have what is called a \emph{Lindenbaum algebra}, as a quotient space of $Form = Form_{Var}$ by the relation $\sim$, denoted as $Form/\sim$. It follows that every operator respect the quotient space structure, i.e., for every $[\phi_1],[\phi_2]\in\ Form/\sim$:
 
 \begin{itemize}
 \item $\neg [\phi_1] = [\neg\phi_1]$
@@ -226,9 +234,13 @@ The interest of Lindenbaum algebra resides in the fact that $\{Form, \vee,\wedge
 
 
 
-\section{Problems}
+\section{First order Logic}
 
-\subsection{Decision Problems}
+\section{Modal Logic}
+
+
+\chapter{Definition of the problem}
+\section{Decision Problems}
 Computability and complexity theory attempt to answer questions regarding how to efficiently solve real-world problems. On this section we provide a formal approach to the concept of problem, and its resolution.\\
 
 We will study the complexity of functions. In order to standardize the approach we code the input of the function and the output of the functions using words over a finite alphabet. As for every finite alphabet $A$ there is a bijective mapping from $A^*$ to $\{0,1\}^*$ we can assume when its convenient that the alphabet is $\{0,1\}$. With this convention we are now ready to define what is a decision problem.
@@ -240,7 +252,8 @@ We will study the complexity of functions. In order to standardize the approach 
 
 When we have a named language, we refer indistinctly by this name to both the language and the associated decision problem. In order to define a decision problem is only needed to define a language over an alphabet. Therefore a decision problem may be defined implicitly, that is, as the set of the words in an alphabet that satisfy some condition. As semantics provide meaning to the languages, real world problems can be addressed as decision problems.
 
-\subsection{Satisfiability Problem}
+\section{Satisfiability Problem}
+\subsection{Definition}
 
 Given the previous definitions, we are now almost prepared to define the central part of this thesis: the satisfiability decision problem of propositional logic, SAT for short. To this end we define a special subset of formulas in Propositional Logic: the formulas in Conjunctive Normal Form.
 
@@ -383,7 +396,7 @@ Should it happen that we have an algorithm for the Autarks Finding Problem, iter
 \end{proposition}
 
 
-
+\chapter{Complexity Classes and Relevance of the Problem}
 \section{Models of Computation}
 On this section we will discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximations to Turing machines, so we present a quick formal approach to the area. 
 
@@ -423,18 +436,20 @@ We can define a relation between configurations that will allow us to formalize 
   \end{enumerate}
   
 
+\section{Tseitin Theorem}
+Now that we are able to talk about efficency is time to talk about an interesting, anticipated result. If we remember Lindenbaum algebra[\ref{def:linden}] we have defined a quotient space on the formulas in terms of satisfiability. In order to solve GSAT, we are not in need of solving all formulas.  Instead we can learn how to solve a language of formulas $\mathsrc{F}$ such that for every class $[\phi_1]\in Form/\sim$ there  is a formula $f\in\mathsrc{F}$ such that $f \in [\phi_1]$. Also, we will need a method that allow us to find such $f\in\mathsrc{F}$ given any element of $[\phi_1]$.We want to prove that SAT is a language that satisfy this restrictions. The naive approach to the problem is straightforward:\\
 
-  \subsection{First order Logic}
+\begin{proposition}
+  There is a $CNF$ formula in each equivalence class. Moreover, given a function $f\in Form$ we are able to find an equivalent $CNF$ formula.
+\end{proposition}
+\begin{proof}
+ Given $\phi_1 \in Form$ we make the truth table of $\phi_1$. Two formulas are in the same equivalent classes if, and only if, they share the same truth table. \\
 
-  \subsection{Modal Logic}
-  
+  We can generate a $CNF$ formula that has the same table this way: for every row $[x_1\to a_1,...,x_n\to a_n]$ ($x_i$ variables, $a_i\in \{0,1\}$) that falsify $\phi_1$ we add a clause $(z_1\vee ... \vee z_n)$ with $z_i = x_i$ if $a_i = 0$ and  $z_i =\neg x_i$ if $a_i = 1$.
+\end{proof}
 
 
-
-
-
-\subsection{Tseitin Theorem}
-   DEFINIR LAS CLASES DE EQUIVALENCIA.
+  This method is interesting as it show the truth table, as the collection of all two-valued assignments$\alpha$ such that $Var(\alpha) = \phi_1$. Nonetheless is not a method that should be considered useful, as is has exponential time. Tseitin theorem provide us with a solution to this problem that run in polynomial time. We will need a lemma first:
 
   \begin{lemma}
     For every \emph{SAT} formula there is an associated circuit.
@@ -444,7 +459,7 @@ We can define a relation between configurations that will allow us to formalize 
   \end{proof}
   
   \begin{theorem}[Tseitin \cite{tseitin1983complexity}] \label{the:Tseitin}
-    There is a \emph{3-CNF} formula on each equivalent class. Moreover, given an element $F$  there is a equivalent formula $G$  in \emph{3-CNF} which could be computed in polynomial time. 
+    There is a 3-CNF formula on each equivalent class. Moreover, given an element $F$  there is a equivalent formula $G$  in 3-CNF which could be computed in polynomial time. 
   \end{theorem}
 
   \begin{proof}
