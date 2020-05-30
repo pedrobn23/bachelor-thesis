@@ -1,0 +1,190 @@
+\chapter{Probabilistic Algorithms}
+\label{sec:prob}
+
+
+In this chapter we will talk about probabilistic algorithms for SAT and $k$-SAT.When we talk about probabilistic algorithms, we are trying to define an incomplete SAT-solver, with a bounded probability error. This might seems like a big loss in power. Nonetheless, given the complexity of the problem, neither are complete solvers capable of solving all formulas in a feasible time. Therefore, dropping completeness could be a fair exchange in order to get better time complexity.\\
+
+
+\section{Paturi-Pudlák-Zane}
+The first one that we will consider is the Paturi-Pudlák-Zane(PPZ) algorithm \cite{paturi1997satisfiability} developed in 1997 and its improvements Paturi-Pudlák-Saks-Zane(PPSZ). It was the first probabilistic algorithm for $k$-CNFSAT proven to work. It has an associated deterministic version that could well be included in the DPLL chapter. Then, some improvements have been done to the algorithm in \cite{paturi2005improved} and \cite{hertli20143}.\\
+
+\subsection{Paturi-Pudlák-Zane}
+
+In this subsection we will present the PPZ algorithm and in the next subsection its improved version PPSZ. The information presented here follows the discussion in \cite{paturi2005improved}. The difference between PPZ and PPSZ is some added preprocessing. At the time of release, PPSZ was the asymptotically fastest algorithm for random $k$-SAT with $k \ge 4$ only improved in $3$-SAT by the Schönning random walk algorithm and its improved version the Hofmeister algorithm, because PPSZ were not able to extend the results they found but it was suggested that it should be extendable. At the end, it was proved 9 years later by Hertli \cite{hertli20143} that the bounds hold on general. 
+
+
+To define the algorithms, we first define some subroutines. The first of them take a CNF formula $F$, an assignment $\alpha$ and a permutation $\pi$ and returns other assignment $u$.
+
+
+TODO: Explicar lo que es G_i y u
+\begin{algorithm}
+  \caption{Modify subroutine}\label{mod}
+  \begin{algorithmic}[1]
+    \Procedure{Modify}{$\alpha, \pi$, $F$}
+    \State $F_0 = F$
+    \For{$i \in \{0,...,m-1\}$}
+    \If{$\{x_{\pi(i)}\} \in G_i$}
+    \State $u += \{x_{\pi(i)} = 1\}$
+    \Else \If{$\{\neg x_{\pi(i)}\} \in G_i$}
+    \State $u += \{x_{\pi(i)} = 0\}$
+    \Else
+    \State $u += \{x_{\pi(i)} = \alpha(x_{\pi(i)})\}$
+    \EndIf
+    \EndIf
+    \State $G_{i+1} = u(G_i) $
+    \EndFor
+    \State \Return u
+  \end{algorithmic}
+\end{algorithm}
+
+
+Note that in line 5 and 7 is only checking whether or not we can unit propagate the variable $x_{\pi(i)}$. The algorithm Search is obtained by running Modify on many pairs $(\alpha, \pi)$ where $\alpha$ is a random assignment and $\pi$ a random permutation. \\
+
+
+\begin{algorithm}
+  \caption{Search subroutine}\label{search}
+  \begin{algorithmic}[1]
+    \Procedure{Search}{$F$, $I$}
+    \For{$i \in \{0,...,I\}$}
+    \State $\alpha$  =   random assignment on $Var(F)$
+    \State $\pi$  =   random permutation on $1,...,|Var(F)|$
+    \State u = Modify($\alpha, \pi, F$)
+    \If{$u(F) = 1$}
+    \State \Return Satisfiable
+    \EndIf
+    \EndFor
+    \State \Return Unsatisfiable
+  \end{algorithmic}
+\end{algorithm}
+
+TODO: poner los nombres del algoritmo en smallcaps
+
+This procedure is the named PPZ algorithm. As we can see is a pretty simple algorithm, but more often than not the work on random algorithms is not to program but to prove them correct. Therefore we will proceed to prove why this algorithm is, in fact, a correct probabilistic algorithm.\\
+
+
+Search always answers Unsatisfiable if $F$ is unsatisfiable. The only problem is to upper bound the error probability in the case that $F$ is unsatisfiable. In fact, we only have to to find $\tau(F)$: the probability that modify($F,\pi, \alpha$) find a satisfying assignment. The error probability  of search would be therefore $(1-\tau(F))^{I}$. As $1-x \le exp(-x)$ with $x \in [0,1]$ them $(1-\tau(F))^{I} \le exp(-I\tau(F))$, which is at most $exp(-n)$ where $n= |Var(F)|$ provided  $I>n/\tau(F)$ . it suffices to give good upper bounds on $\tau(F)$. In order to do that we will prove first two lemmas.\\
+
+To prove the first lemma we introduce some notation:
+
+\begin{definition}
+  A variable $x$ is forced for an assignment $\alpha$, a formula $F$ and a permutation $\pi$ if $x$ is unit propagated in the procedure Modify$(\alpha, \pi, F)$. $Forced(\alpha, \pi, F)$ is the set of all variables that are forced for $(\alpha, \pi, F)$
+\end{definition}
+
+\begin{lemma} Let $z$ be a satisfying assignment of a CNF formula $G$, and let $\pi$ be a permutation of $\{1,...,n\}$ and $y$ be any assignment to the variables. Then, Modify($G,\pi,y$)=$z$ if and only if $y(x) = z(x)\ \  \forall x \in Var(G) \backslash \text{Forced}(z, \pi, G)$.
+\end{lemma}
+
+\begin{proof}
+  
+  If $y(x) = z(x)\ \  \forall x \in Var(G) \backslash \text{Forced}(z, \pi, G)$ we prove that $u$ = $z$ where $u$ is the assignment provided by  Modify($i,\pi,F$). by induction on $i$.  $x_\{\pi(0)\}$ is forced only if $F$ has a unit clause on $x$, therefore either it is forced for all assignments or it is not forced for any of them. Otherwise $u(x_{\pi(0)}) = z(x_{\pi(0)})= y(x_{\pi(0)})$ Therefore $u(x_{\pi(0)}) = z(x_{\pi(0)})$. Let suppose that $u(x_{\pi(j)}) = z(x_{\pi(j)})$ for $j < i$. If the variable $x_{\pi(i)}$ is forced on $z$ it should be forced on $u$ to (and to the same value). Otherwise $u(x_{\pi(j)}) = z(x_{\pi(j)})= y(x_{\pi(j)})$. \\
+
+  Let $i$ be the first index such that $y(x_{\pi(i)})\ne z(x_{\pi(i)})$ with $x_{\pi(i)} \not \in \text{Forced}(z, \pi, G)$ therefore $u(x_{\pi(i)})=y(x_{\pi(i)})\ne z(x_{\pi(i)})$.
+\end{proof}
+
+Now, let $\tau(F,z)$ the probability that $Modify(\alpha,\pi,F)$ would return $z$ with random $\pi$ and $\alpha$. From the previous lemma:
+
+$$ \tau(F,z) = 2^{-n} E_{\pi}[2^{|\text{Forced}(z, \pi, F)|}] \ge^{1.} 2^{-n +E_{\pi}[{|\text{Forced}(z, \pi, F)|}] }$$
+
+
+TODO: DECIR que es E_pi
+
+
+Where 1. is by the convexity of the exponential function. \\
+
+Let $v$ be a variable in $Var(f)$ and $z$ a satisfying assignment of $F$. let $C$ be a clause in $F$, then we say that $C$ is critical for $(v,z,F)$ if the only true literal in $C$ is the one corresponding to $v$. Suppose that $\pi$ is a permutation such that $v$ appears after all other variables in $C$. It is easy to follow that $v \in \text{Forced}(z,\pi,F)$ if $C$ is critical for $(v,z,F)$. Conversely, if $z$ is forced it must be critical and appears last on the permutation. Let $Last(v,G,z)$ be the set of permutation of the variables such that for at least one critical clause for $(v,G,z)$, v appears last on the permutation. That is, the set of permutations where $v$ is forced. Let $P(v,z,F)$ the probability that a random permutation is in $Last(v,G,z)$. It follows that
+
+$$ E_{\pi}[|\text{Forced}(z, \pi, F)|]= \sum_{v \in Var(F)} E_{\pi}[v \in \text{Forced}( z, \pi, F)] = \sum_{v \in Var(F)} P(v, z, F)  $$
+
+Putting it all together we have:
+
+\begin{lemma}
+  \label{labelito}
+  For any satisfying assignment $z$ of a CNF formula $F$
+  $$\tau(F,z) \ge 2^{-n + \sum_{v \in Var(F)} P(v, z, F)}$$
+
+  In particular, if $P(v,z,F) \ge p$ for all variables $v$ then $\tau(G,z) \ge 2^{-(1-p)n}$.
+\end{lemma}
+
+
+\begin{theorem}
+  Let $F$ be a $k$-CNF formula. If $F$ is satisfiable by an isolated assignment, $\tau(F) \ge 2^{-(1-\frac{1}{k})n}$, where $n$ is the number of variables.
+\end{theorem}
+\begin{proof}
+  Let $z$ be a satisfying assignment of $F$. Then $\tau(F) \ge \tau(F,z)$. If $z$ is an isolated assignment, them for each variable $v$ there is a critical clause $C_v$ and the probability that for a random permutation $v$ appear last is $1/k$. Therefore by the previous lemma  $$\tau(F) \ge \tau(F,z) \ge 2^{-(1-\frac{1}{k})n}$$
+\end{proof}
+
+
+Then we can think that it is unusual that it is easier to guess a satisfying assignment with such a simple method when there is less satisfiable assignments. We are now going to formalize that intuition, growing on the previous lemmas, and giving similar arguments. For that we will introduce a new concept.
+
+\begin{definition}
+
+  Let $\alpha$ be an assignment of a proper subset $A \subset Var(F)$. Then the subcube defined by $\alpha$ is the set of the assignments that extends $\alpha$, i.e. all $\beta$ that assign all elements in $Var(F)$ and $\beta(x)=\alpha(x), \forall x \in A$.
+\end{definition}
+
+\begin{lemma}
+  Let $V$ be a set of variables and let $A\ne \emptyset$ be a set of assignments that map all variables in $V$. The set of all assignments that map all $V$ can be partitioned into a family $(B_z : z \in A)$ of distinct disjoint subcubes so that $z \in B_z \ \forall z \in A$.
+\end{lemma}
+
+\begin{proof}
+  If $|A|=1$ choose $B_z$ as the set of all possible assignments. Otherwise there is two assignments that differ on one variable $X$. We will partition two subcubes: the one from the assignment that map $x$ to 0 and the assignment that map $x$ to 1. Then we proceed recursively on both subcubes.
+\end{proof}
+
+
+Given a formula $F$ we will apply this lemma to the set $sat(F)$ of assignments that satisfy $F$, and obtain a family of $\{B_z : z \in sat(F)\}$. We will analyze the probability $\tau(F, z | B_z)$, that is, the probability of $Modify(y, \pi, F)$ returns $z$ given that $y \in B_z$. It is easy to follow that:
+
+
+
+\begin{align*}
+  \tau(G) \ge \sum_{z\in sat(F)}  \tau(G, z | B_z) Prob(y \in B_z)  &\ge  \sum_{z\in sat(F)} \min_{\chi \in sat(F)} \{\tau(G, \chi | B_\chi)\}  Prob(y \in B_z)\\ & = \min_{\chi \in sat(F)} \{\tau(G, \chi | B_\chi)\}
+\end{align*}
+
+
+Further on let $z$ be a satisfying assignment and $B = B_z$. Let $N$ be the set of unassigned variables in $B_z$ (the set of variables that are not assigned equal for all $\alpha$ in $B$). Writing $Forced_z (y,\pi,F) = N \cap Forced(y,\pi,F)$  we have
+
+$$\tau(F, z | B) \ge 2^{-N + E[|Forced_z(z, \pi, G|]}$$
+
+Therefore $P(v,z,F) \ge 1/k$ for $v\in N$. This is true because z is the unique satisfying assignment in $B$, hence changing the value in $v$ produce a nonsatisfying assignment. Therefore $v$ is critical on some permutation and analogously as the lemma\ref{labelito} we have that $P(v,z,F)$.
+
+\begin{theorem}[\cite{paturi2005improved}]  Let $F$ be a $k$-CNF formula, $z$ a satisfying assignment and let $B$ be a subcube on $Var(F)$ that contains $z$ and no other satisfying assignment. Then:
+
+  $$ \tau(G, z|B) \ge 2^{-(1-\frac{1}{k})|N|}$$
+\end{theorem}
+
+
+With that we could analyze the complexity of this algorithm. Modify run on $O(nC)$ where $n$ is the number of variables and $C$ is the number of clauses (assign CNF-formula has a worst case of $C$).  Search run on $O(I\cdot O(\text{Modify}))$ supposing that we can get a random number in $O(1)$ and therefore a random assignment and a  random permutation on $O(n)$. As we will set $I> n/\tau(G,z|B)>n/\tau(F)$ we get a running time of $O(n\cdot C\cdot 2^{1-\frac{1}{k}n})$, with a one-sided error probability of $e^{-n}$ (0.049 for 3-SAT).
+
+
+\subsection{Paturi-Pudlák-Saks-Zane}
+
+This algorithm includes a preprocessing of the formula prior to the searching algorithm. This preprocessing will try to find isolated assignments improving its running time (or at least its complexity analysis). The preprocessing takea as input a CNF formula $F$ and a positive integer $I$. It uses the concept of resolution: should it happen that we have to clauses $C_1 = \{x_1,...,x_n\}$, $C_2 = \{y_1,...,y_{n'}\}$  such that $C_1,C_2 \in G$ and the literal $x_i = \neg y_j; \ i\in\{1,...,n\},\ j \in \{1,...,n'\} $ them we could generate a clause $C = R(C_1,C_2) = \{x_k : k \in\{1,...,n\}\backslash i\} \cup \{y_k : k \in\{1,...,n'\}\backslash j\}$ and the formula $F' = F \wedge C$ has the same satisfying assignment that $F$. A pair of clauses $(C_1,C_2)$ are said to be s-bounded if they are resolvable and $|C_1|,|C_2|, |R(C_1,C_2)| < s$.
+
+
+\begin{algorithm}
+  \caption{Resolve subroutine}\label{mod}
+  \begin{algorithmic}[1]
+    \Procedure{Resolve}{$F, s$}
+    \State $F_s = F$
+    \While{$F_s$ has a s-bounded pair $(C_1,C_2)$ with $R(C_1,C_2) \not \in F_s$}
+    \State $F_s  = F_s \wedge R(C_1, C_2)$
+    \EndWhile
+    \State \Return $F_s$
+    \EndProcedure
+    \State
+    \Procedure{ResolveSat}{$F, s, I$}
+    \State $F_s = Resolve(F,s)$
+    \State \Return $Search(F,s)$
+    \EndProcedure
+
+    
+  \end{algorithmic}
+\end{algorithm}
+
+With this prepossessing added to the algorithm a better upper bound is proved. Defining
+$$ \mu_k = \sum_{j=1}^\infty \frac{1}{j \left (j + \frac{1}{k-1}\right )}$$
+
+\begin{theorem}[theorem 1. \cite{paturi2005improved}] Let $k\ge 3$\footnote{Here we are also using the Hertli Result\cite{hertli20143}.}, let $s(n)$ a function going to infinity. Then, for any satisfiable $k$-CNF formula $F$ on $n$ variables,
+  $$\tau(F_s) \ge 2^{-(1-\frac{\mu_k}{k-1})n-o(n)}$$
+
+  Hence ResolveSat(F,s,I) with $I = 2^{+(1-\frac{\mu_k}{k-1})n+o(n)}$ has an error probability $o(1)$ and running time $2^{-(1-\frac{\mu_k}{k-1})n-o(n)$ on any satisfiable $k$-CNF formula, provided that $s(n)$ goes to infinity sufficiently slowly.
+\end{theorem}
+
+By slowly the theorem means that $s(n)$ diverge in $o(log(n))$. Also the term $o(n)$ can be reduced as wished.

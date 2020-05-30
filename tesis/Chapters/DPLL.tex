@@ -1,0 +1,194 @@
+
+\chapter{Complete Algorithms}
+\section{Backtracking and DPLL Algorithms}
+\label{sec:dpll}
+In this section we will talk about algorithms that explore the space of possible assignments in order to find one that satisfies a given formula, or otherwise prove its non-existence. Onward whenever a formula is given, it would be a CNF formula.
+
+% All algorithms would have an complexity of $O(a^k), a \in (1,2)$. Under polynomial hyerarcy asumpionts an 
+
+\subsection{Backtracking}
+We  will start with the approach based on the simple and well-known backtracking algorithm.
+
+\begin{algorithm}
+  \caption{Backtrack}\label{bt}
+  \begin{algorithmic}[1]
+    \Procedure{backtracking}{$F$}
+    \If{$0 \in F$} \Return 0
+    \EndIf
+    \If{$F=1$} \Return 1
+    \EndIf
+    \State Choose $x \in Var(F)$
+    \If{$backtracking(F\{x=0\})$} \Return 1
+    \EndIf
+    \State \Return $backtracking(F\{x=1\})$
+  \end{algorithmic}
+\end{algorithm}
+
+
+This algorithm describe a recursion with $0(2^n)$ complexity with $n$ being the number of variables. It also lends itself to describe a plethora of approaches varying how we choose the variable $x$ in line 4. This algorithm will be an upper bound in complexity and a lower bound in simplicity for the rest of algorithms in this section.
+
+
+An easy modification can be done to improve a little its efficiency in the context of $k$-SAT. Choosing a clause of at most $k$ variable we could choose between $2^k-1$ satisfying assignments. The recursion equation of this algorithm will be $T(n) = (2^k-1)*(T(n-k))$, so it would have asymptotic upper bound $O(a^n)$ with $a^n = (2^k-1)^{\frac{1}{k}}<2^n$.
+
+
+\subsection{Davis-Putman-Logemann-Loveland (DPLL) algorithm}
+
+This algorithm is an improvement of the backtracking algorithm, still really simple and prone to multiple modifications and improvements. 
+
+\begin{algorithm}
+  \caption{DPLL}\label{bt}
+  \begin{algorithmic}[1]
+    \Procedure{DPLL}{$F$}
+    \If{$0 \in F$} \Return 0
+    \EndIf
+    \If{$F=1$} \Return 1
+    \EndIf
+    \State
+    \If{$F$ contains a unit clause $\{p\}$} \Return $DPLL(F\{p=1\})$
+    \EndIf
+    \If{$F$ contains a pure literal u} \Return $DPLL(F\{u=1\}})$
+  \EndIf
+  \State
+  \State Choose $x \in Var(F)$ with an strategy.
+  \If{$DPLL(F\{x=0\})$} \Return 1
+  \EndIf
+  \State \Return $DPLL(F\{x=0\})$
+\end{algorithmic}
+\end{algorithm}
+
+We could see to main differences:
+\begin{itemize}
+\item The algorithm try to look for backdoors and simplifications in lines 5 and 6. Although only some of these techniques are present, and even some implementations skip the pure  literal search, is an improvement. Search for autarks assignments or renames could also be a good idea.
+
+\item It uses heuristics to select variables. It does not imply that they always are better chosen  (and there would be cases that run worse), but tend to be better. In practice, hard heuristics approaches give excellent results. {\color{red} citation needed }. The roles of heuristics is to reduce the branching steps. Because of this, many heuristics functions have been proposed. For the formulation of some of them we will define:
+  \begin{equation}
+    \begin{split}
+      f_k(u) & = \text{number of occurrences of literal } u \text{ in clauses of size k}\\
+      f(u) & = \text{number of occurrences of literal } u
+\end{split}
+\end{equation}
+  
+  \begin{itemize}
+  \item DLIS (dynamic largest individual sum): choose $u$ that maximizes $f$. Try first $u=1$.
+  \item DLCS (dynamic largest clause sum):  choose $u$ that maximizes $f(u)+f(\neg u)$. Try first whichever has largest individual sum.
+  \item Jeroslaw-Wang: For the one sided version choose $u$ such that maximizes the sum of the weights of the clauses that include the literal. For the two sided version choose a variable instead of a literal.
+  \item Shortest Clause: choose the first literal from the shortest clause, as this clause is one of the clauses with the biggest weight in $F$.
+  \item VSIDS: This heuristics function is a variation of DLIS. The difference is that once a conflict is obtained and the algorithm need to back track, the weight of that literals are increased by 1.
+  \end{itemize}
+\end{itemize}
+
+\subsection{Clause Learning}
+
+Despite not being an algorithm, clause learning is a rather useful technique in order to improve any search based algorithm (as DPLL variations).  The technique works adding clauses to ensure that once reached a contradiction it would not be reached again, that is, providing new clauses to the $CNF$ formula that, without being satisfied, the formula could not be satisfied. When we add those clauses we avoid the repetitions that led to the contradiction, bounding some branches in a problem specific manner.  The content of this subsection is in \cite{tichy2006clause}. The information and definition on UIP is in \cite{zhang2001efficient} \\
+
+In order to add clarity to the explanation we will introduce some definitions: Conflict clause, decision level, and implication graph. A conflict clause would represent part of an assignment that will never be part of a solution. 
+
+\begin{definition}
+  A clause $C$ is a conflict clause of the formula $F$ if:
+  \begin{itemize}
+  \item $Var(C) \subset Var(F)$
+  \item Each variable in $Var(C)$ appear only once is the clause $C$.  
+  \item $C \not\in F$ and for every assignment $\alpha$ such that $C\alpha = 0$ it happens $F\alpha = 0$.
+  \end{itemize}
+\end{definition}
+
+It is clear that the third condition of the definition is the one that add meaning to it. Nonetheless the first two are important to bound the clauses that can be interesting. By adding conflict clauses more constraints are added to the formula, avoiding searching on assignments that will not satisfy the formula.\\
+
+The decision level refer to the process of problem solving in a DPLL algorithm. Each time we could not find any autark to append to our future assignment we have to take a decision. These decisions anidate, and the decision level refer to the number of anidations done when the literal $u$ was assigned to the value $a$.\\
+
+The implication graph  is the directed graph that has as nodes a pair with a variable an a value assigned to that variable at a particular decision level of the algorithm, and there is an edge from $(x,a_x)$ to $(y,a_y)$ if at some point, assign $x$ to $a_x$  make mandatory that $y$ is assigned to $a_y$. The implication graph has a conflict if there is two nodes with the same variable and opposite value. The implication graph is made iteratively, adding elements at each decision level. A node is called a decision node if that assignment was not implied (it was made by decision).\\
+
+
+The purpose of clause learning is to find conflict clauses. In order to do that we will make a implication graph and examine it when a conflict happens. We would like to choose the nodes that led to the conflict. This could be made choosing nodes such that every path from a decision node to the conflict has to include one of the nodes. This will be named a cut, not confuse with the graph theory concept. A conflict clause can be made from each cut.\\
+
+A common and efficient approaches are to choose cut are base on the idea of Unique Implication Point(UIP).  A UIP   is   a   vertex   at   the   current   decision   level   that   dominates   both   vertices   corresponding   to   the   conflicting   variable. 
+
+\begin{itemize}
+\item Last UIP - choosing every decision node that has a path to the conflict.
+\item First UIP - choosing the first unique point encountered. That is, following backward the implication graph from the conflict, choosing the first UIP.
+\end{itemize}
+
+
+The first UIP tend to have smaller clauses and experimental results \cite{tichy2006clause} \cite{zhang2001efficient} provide proves in favor of it. It is commonplace on DPLL-based solver.
+
+\section{Other complete algorithms}
+\subsection{Monien-Speckenmeyer (MS) Algorithm}
+
+This algorithm is a variation of the DPLL-Shortest Clause algorithm, specifying that once you choose the shortest clause, all variables you choose should be from that clause until you satisfy it, as it will continue to be the shortest given that there is no clause with repeated literals as well as no clause that is a tautology. This algorithm (DPLLSC) on $k$-SAT generates a recursion such that $T(n) = \sum_{i=1}^kT(n-i)$. Under the hypothesis that MS does not has a under-exponential worst case complexity, then $T(n) = a^n$ for some $a \in (1,\infty)$.  Then
+
+$$a^k = \sum_{i=1}^kT(i) = \frac{1-a^k}{1-a}$$
+
+that solved in the equation $a^{k+1}+1 = 2a^k$. The difference between MS and DPLLSC is that MS includes an autark assignment search in addition to the unit clause search and generalizing the pure literal search (that would be a search of autarks of size 1). When we select a clause (the shortest) we first try to generate an autark with its variables and otherwise continue the algorithm.
+
+
+\begin{algorithm}
+  \caption{DPLL}\label{bt}
+  \begin{algorithmic}[1]
+    \Procedure{MS}{$F$}
+    \If{$0 \in F$} \Return 0
+    \EndIf
+    \If{$F=1$} \Return 1
+    \EndIf
+    \State
+    \If{$F$ contains a unit clause $\{p\}$} \Return $MS(F\{p=1\})$
+    \EndIf
+    \If{$F$ contains a pure literal u} \Return $MS(F\{u=1\}})$
+  \EndIf
+  \State Choose the shortest clause $C = \{u_1,...,u_m\}$
+  \For{$i \in \{1,...,m\}$ }
+  \State $\alpha_1 := [u_1=0,...,u_{i-1}=0,u_i=1]$
+  \If{$\alpha_i$ is autark } \Return $ MS(F\alpha_i)$
+  \EndIf
+  \EndFor
+  \If{$MS(F\{u_1=1\})$} \Return 1
+  \EndIf
+  \State \Return $MS(F\{u_1=0\})$
+\end{algorithmic}
+\end{algorithm}
+
+
+Other version of the algorithm repeats the last for-loop  in the successive calls of $F$ (calling $MS(F\alpha_i)$). Nonetheless we consider that with a deterministic heuristic (that, for example, choose the first clause between the set of clauses with minimum size) the result is equivalent and this provide a simpler algorithm.\\
+
+For the $k$-SAT complexity analysis we have to consider whether or not an autark was found. If so, $T(n) \le T(n-1)$. Otherwise we are applying a non autark assignment that necessarily collide with a clause which size is at most $k-1$. Let us denote by $B(n)$ the number of recursive calls with n variables and under the hypothesis that there is a clause with at most $k-1$ variables. In this case $T(n) \le \sum_{i=1}^{k}B(n-i)$ and $B(n) \le \sum_{i=1}^{k-1}B(n-i)$. Both of these cases are worse than $T(n-1)$ so in order to study a worst case complexity we have to study the case when no autark is found. Under the hypothesis that $B(n) = a^n$ we get $a^k+1=2^{k-1}$. For $k=3$ we obtain $a=\frac{1 + \sqrt{5}}{2}$.
+
+
+
+
+
+\subsection{GRASP}
+
+We present now one of the most cited algorithms.  GRASP(Generic seaRch Algorithm for the Satisfiability Problem) was introduced by Marques-Silva and Sakallah\cite{marques1999grasp} that works on CNF formulas. It is based on clause learning techniques, and unit propagation. It divides the search process in four parts:
+
+\begin{enumerate}
+\item \texttt{Decide}: Chooses a decision assignment at each stage of the search process. Based of experimental results it uses the heuristic DLIS.
+\item \texttt{Deduce}: Which implement a recursive unit propagation as done before.
+\item \texttt{Diagnose}: Which implement a clause learning procedure.
+\item \texttt{Erase}: Which delete assignments implied by the last decision.
+\end{enumerate}
+
+
+The method \texttt{Erase} is needed as the assignment is considered a global variable. The way that the algorithm work is that each time, either a new conflict clause is added to the formula, and therefore we \texttt{Erase} our last assignment to explore other options, or we find an assignment that satisfy the formula.
+
+\begin{algorithm}
+  \caption{GRASP}\label{bt}
+  \begin{algorithmic}[1]
+    \Procedure{\texttt{Search}($d$)}{$F$}
+    \State //d: decision level
+    \If{\texttt{Decide}($d$)} \Return 1
+    \EndIf
+    \While{True}
+    \If{\texttt{Deduce}(d) != Conflict}
+    \State \texttt{Search}(d+1)
+    \EndIf
+    \If{\texttt{Deduce}(d) == Conflict}
+    \If{\texttt{Diagnose}(d)}\texttt{ Erase(); } \Return Conflict
+    \EndIf
+    \EndIf
+    \State Erase
+    \EndWhile
+    \EndProcedure
+    \State \Return \texttt{Search}
+    
+\end{algorithmic}
+\end{algorithm}
+
