@@ -39,7 +39,7 @@ Further on this section we will present Boolean Algebra in a classic lattice-bas
 
 \begin{definition}
   A partial ordered set, also poset, is a pair $\{X, \le\}$ where $X$ is a set and $\le$ is a partial order of $X$. A chain $Y$ of $\{X, \le\}$ is a subset of $X$ where $\le$ is a total order. 
-\end{denition}
+\end{definition}
 
 \begin{proposition}[Zorn lemma]
   If every chain in a poset $\{X,\le\}$ is bounded, then $X$ possesses a maximal elements and for every $x\inX$ there is a maximal element $y$ such that $x\le y$.
@@ -52,9 +52,11 @@ Further on this section we will present Boolean Algebra in a classic lattice-bas
   \item $x\vee y$ denote the least upper bound.
   \item $x\wedge y$  denote the greatest lower bound.
   \end{itemize}
-  
+\end{definition}
+
+
   A lattice is complete if every subset has a unique largest element and a unique lowest element. A lattice is presented generally as a duple $\{L,\le\}$, a triple $\{X,\vee,\wedge\}$ and, whenever possible, is presented as a quintuple $\{X, \vee, \wedge, \top,\bot\}$ where $\top$ is the greatest element and $\bot$ the lowest element. A lattice is called distributive if $x\vee(y \wedge z) = (x\vee y) \wedge (x \vee z)$ and $x\wedge(y \vee z) = (x\wedge y) \vee (x \wedge z)$
-\end{definition} 
+
 
 
 With the concept of lattice just included, we present the \emph{Knaster and Tarski fixpoint theorem} fixpoint theorem. In order to do that we will introduce some notation. Given a function $f:\{L,\le\}\to \{L,\le\}$, a prefixpoint (resp. postfixpoint) is a point $x \in L$ such that $f(x) \le x$ (resp. $f(x) \ge x$). A fixpoint is a point that is both prefixpoint and postfixpoint. Note that, given that they exists, $\top$ and $bot$ are a prefixpoint and a postfixpoint of $f$ respectively.
@@ -117,7 +119,7 @@ We first start with the basic building blocks, which collectively form what is c
 \item Symbols $x,y,z$ for variables. As more variables are necessary sub-indexes will be used.
 \item Unary operator $\neg$ (negation). A literal will refer to a variable or a negated variable.
   
-\item Values 0 and 1. This values are often named as $\bot$ and $\top$ respectively.
+\item Values 0 and 1. These values are often named as $\bot$ and $\top$ respectively.
 
 \item Binary operators: $\wedge, \vee, \rightarrow, \oplus, \iff $
 \end{itemize}
@@ -172,7 +174,7 @@ One can then \emph{apply} an assignment $\alpha$ to a formula $F$, denoting it b
 \end{definition}
 
 
-Note that we have a really restrictive constraint on assignments: they should map all variables.  This is so in order for an assignment to give a meaning to every formula. To ease this constraint we use three-valued logic. On three valued logic we have three significant: True or 1, False or 0, and unknown or $\upsilon$. Now the assignment will map every variable to one of this values. These new assignments will be called partial assignments, as they only map some variables to a truth value. We can propagate the previous values adding new rules.
+Note that we have a really restrictive constraint on assignments: they should map all variables.  This is so in order for an assignment to give a meaning to every formula. To ease this constraint we use three-valued logic. On three valued logic we have three significant: True or 1, False or 0, and unknown or $\upsilon$. Now the assignment will map every variable to one of these values. These new assignments will be called partial assignments, as they only map some variables to a truth value. We can propagate the previous values adding new rules.
 
 \begin{table}[h]
   \begin{center}
@@ -241,7 +243,7 @@ The interest of Lindenbaum algebra resides in the fact that $\{Form, \vee,\wedge
 
 \chapter{Definition of the problem}
 \section{Decision Problems}
-Computability and complexity theory attempt to answer questions regarding how to efficiently solve real-world problems. On this section we provide a formal approach to the concept of problem, and its resolution.\\
+Computability and complexity theory attempt to answer questions regarding how to efficiently solve real-world problems. In this section we provide a formal approach to the concept of problem, and its resolution.\\
 
 We will study the complexity of functions. In order to standardize the approach we code the input of the function and the output of the functions using words over a finite alphabet. As for every finite alphabet $A$ there is a bijective mapping from $A^*$ to $\{0,1\}^*$ we can assume when its convenient that the alphabet is $\{0,1\}$. With this convention we are now ready to define what is a decision problem.
 
@@ -275,7 +277,8 @@ We will refer with the acronym $SAT$ to both the language and the associated dec
   A \emph{SAT-Solver} is an algorithm that, being given a formula $F$ in \emph{CNF} as input, answer whether or not is satisfiable.
 \end{definition}
 
-On chapter[\ref{chap:2}] we analyze the main SAT-solver developed in the literature. We will differentiate two types of SAT-Solver. The algorithms that, given enough time always output the correct result at the end are called \emph{complete}. The SAT-solvers that doesn't guaranty its result are called \emph{incomplete}. Of particular interest among incomplete SAT-solvers are the one-sided bounded error SAT-solvers. This are the called probabilistic algorithms, discussed on section\ref{sec:prob}   
+On chapter[\ref{chap:2}] we analyze the main SAT-solver developed in the literature. We will differentiate two types of SAT-Solver. The algorithms that, given enough time always output the correct result at the end are called \emph{complete}. The SAT-solvers that doesn't guaranty its result are called \emph{incomplete}. Of particular interest among incomplete SAT-solvers are the one-sided bounded error SAT-solvers. These are the called probabilistic algorithms, discussed on section\ref{sec:prob}   
+
 
 \subsection{Variations}
 
@@ -285,7 +288,7 @@ The SAT decision problem quite a lot of variations, all of them of interest for 
   The Generalized Satisfiability Language of Propositional Logic (GSAT) is the language over the alphabet of propositional logic that includes all formulas that are Satisfiable.
 \end{definition}
 
-With Tseitin's Theorem[\ref{the:Tseitin}] we can see that this two problems are in fact fairly similar. More often than not GSAT will be solved by solving an equivalent SAT problem. Analogously a \emph{GSAT-Solver}  is a SAT-solver that also accepts as inputs formulas not in CNF. Further on, every new problem will have a associated \emph{solver}, defined analogously.
+With Tseitin's Theorem[\ref{the:Tseitin}] we can see that these two problems are in fact fairly similar. More often than not GSAT will be solved by solving an equivalent SAT problem. Analogously a \emph{GSAT-Solver}  is a SAT-solver that also accepts as inputs formulas not in CNF. Further on, every new problem will have a associated \emph{solver}, defined analogously.
 
 
 
@@ -307,8 +310,9 @@ That is, is the problem of finding an assignment that satisfy a formula. Most of
   Let $CNF$ be the set of propositional formulas in CNF and $B$ the set of assignments. The Maximum Satisfiability Problem (MAXSAT) is the problem. function problem defined by the relation $$R=\{(F,n) : F\in CNF, n = \max_{\alpha \in B}\{ | \{C\in F : C\alpha =1 \}| \}.$$
 \end{definition}
 
-That is, is the problem of finding the maximum number of assignments that can be satisfied simultaneously.
+That is, is the problem of finding the maximum number of assignments that can be satisfied simultaneously.\\
 
+As we will see, most SAT-solvers are FSAT-solvers. In related literature the FSAT-solver are called constructive SAT-solvers, as they provide a constructive solution of the problem. Solvers that only solve sat are called non-constructive SAT-solvers. After presenting the concept of algorithmic complexity we will see that from a non constructive SAT-solver, a constructive SAT-solver can be made so that the latter is not much less efficient[\ref{sub:fromnon}].
 
 \subsection{Constraint Satisfaction Problem}
 
@@ -319,17 +323,18 @@ We want to introduce the notion of Constraint Satisfaction Problem (CSP) because
   \begin{itemize}
   \item $X=\{x_1,...,x_n\}$ is the set of variables  occurring in the problem.
   \item $D=\{D_1,...,D_n\}$ is the set of the domains. Each $D_i={d_{i,1},..,d_{i,n_i}}$ is the domain of the variable $x_i$.
-  \item $C=\{C_1,...,C_m\}$ is the set of constraints over the variables. For our intentions, this constraints must be written as:
+  \item $C=\{C_1,...,C_m\}$ is the set of constraints over the variables. For our intentions, these constraints must be written as:
     \begin{itemize}
     \item An equality, for example: $(x_i, x_j) = (d_{i,k}, d_{j,k'})$
     \item An inequality, for example: $(x_i, x_j) \ne (d_{i,k}, d_{ºj,k'})$
     \item Concatenation with a Propositional Logic operator of two equalities or inequalities, for example: $((x_1) = (d_{1,1}) \vee (x_2 \ne d_{2,5}) \wedge \neg((x_8,x_9) = (d_{8,3},d_{9,7}))$ .
     \end{itemize}
   \end{itemize}
+\end{definition}
   The goal of a CSP is to found a mapping \[ \alpha:X\to \cup_{i\in 1,...,n} D_i\]
   
-  such that every variable $x_i$ is mapped to a value on its associated domain $D_i$ and every constraint is satisfied. Such map will be called an \emph{assignment}, and if this map satisfy all constraints it will \emph{satisfy}.
-\end{definition}
+  such that every variable $x_i$ is mapped to a value on its associated domain $D_i$ and every constraint is satisfied. Such map will be called an \emph{assignment}, and if this map satisfy all constraints it is said that $\alpha$ \emph{satisfy} the CSP problem.\\
+
 
 Note that we can use all our artillery from Propositional Logic as both an equalities and inequalities hold a binary truth value (True/False), therefore can be handled as Propositional Logic Variables. \\
 
@@ -384,10 +389,10 @@ Should it happen that we have an algorithm for the Autarks Finding Problem, iter
 
 \begin{definition}
   Let $CNF$ the set of formulas in CNF and $Part$ the set of partial assignment. The Autark Finding Problem is the function problem defined by the relation:
-  $$R = \{(F,\alpha): F \in CNF, \}$$
+  $$R = \{(F,\alpha): F \in CNF\wedge \forall C \in F( Var(C)\cap Var(\alpha)\ne\emptyset \implies C\alpha=1 )\}$$
 \end{definition}
 
-\begin{proposition} We could reduce FSAT to the Autark-Finding problem.
+\begin{proposition} There is a reduction from FSAT to the Autark-Finding problem.
   \begin{proof} Suppose that an algorithm such that if it exists any autark it return one of them, and end with an error code otherwise is given.  \\
 
     Given a formula $F$, if there is not an autark then there is no solution for the SAT problem. If it finds an Autark-assignment $\alpha$ then we apply the same algorithm to $\alpha(F)$. Also, as it happens that $|Var(\alpha(F))|<|Var(F)|$ so we would only apply the algorithm finitely many times. Also, $F$ will be solvable if, and only if, $F\alpha$ is solvable.
@@ -398,16 +403,16 @@ Should it happen that we have an algorithm for the Autarks Finding Problem, iter
 
 \chapter{Complexity Classes and Relevance of the Problem}
 \section{Models of Computation}
-On this section we will discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximations to Turing machines, so we present a quick formal approach to the area. 
+In this section we will discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximations to Turing machines, so we present a quick formal approach to the area. 
 
 \subsection{Turing Machines}
 Turing machines are arguably the epicenter of  models of computation. A Turing Machine  represents a long mechanical tape on which we are going to operate. The tape is divided in to discrete positions, such that we can see the tape as a one-dimensional array. Operating on this tape we can focus on a cell, scan its contents, overwrite  its contents or move to an adjacent cell. These operations try to resemble the process of human calculus, as done with paper and pencil when applying the long division method  for example. Formally:
 
-\begin{definition}[Turing Machine \cite{hopcroft2007introduction}] We describe a Turing Machine as a 7-tuple $M=(Q, \sum, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
+\begin{definition}[Turing Machine \cite{hopcroft2007introduction}] We describe a Turing Machine as a 7-tuple $M=(Q, \Sigma, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
   \begin{itemize}
   \item $Q$ the finite set of \emph{states} of the finite control.
-  \item $\sum$ the finite set of \emph{input symbols}.
-  \item $\Gamma$ the finite set of \emph{tape symbols}. $\sum$ is always a subset of $\Gamma$.
+  \item $\Sigma$ the finite set of \emph{input symbols}.
+  \item $\Gamma$ the finite set of \emph{tape symbols}. $\Sigma$ is always a subset of $\Gamma$.
   \item  $\delta: Q\times \Gamma \to Q\times\Gamma\times\{L,R\}$ the transition function.
   \item $q_0$ the \emph{start state}.
   \item $B$ the \emph{blank symbol}.
@@ -419,25 +424,90 @@ Turing machines are arguably the epicenter of  models of computation. A Turing M
 
 A configuration should be understand as a state of the machine, where $q$ is the current state, $u$ the part of the tape left to the cell on which we focus and $v$ is the part of the tape right to the cell we focus, starting on it.\\
 
-We can define a relation between configurations that will allow us to formalize the operations that can be made on a Turing machine.
+As a brief note before going on, we have not define the empty word yet, as in propositional logic is not a valid formula so it lacks our interest until now. We will note the empty word as $\epsilon$ and would consist of an empty sequence of symbols. We can  now define a relation between configurations:
 
 \begin{definition}
-  Let $M$ be a Turing Machine and $C = (q,u_1...u_n, av_1....v_m)$, $C'=(q',u_1...u_{n-1},)$ be a configuration. We say that $C\vdash C'$ if:
+  Let $M$ be a Turing Machine and $C=(q,u,v)$, $C'=(q,u,v)$ be two configurations of $M$. We say that $C\vdash C'$ if there is a transition $\delta (q,v_1) = (q', b, D) $ with $D\in{L,R}$ and:
   \begin{itemize}
-  \item It exists $\delta(q,a) = (q',b,I)$, 
+  \item if $D=L$, then if $u=u_1...u_n$ and $v = v_1...v_m$, it should happen that $u' = u_1...u_{n-1}$ and $v' = u_n bv_2...v_n$ with two exceptions:
+    \begin{itemize}
+    \item if $u=\epsilon$ then $u' = \epsilon$ and $v' = bv_2...v_n$
+    \item if $v = v_1$ and $b =B$ then $u'=u_1...u_{n-1}$ and $v' = u_n$.
+    \end{itemize}
+
+  \item if $D=R$, then if $u=u_1...u_n$ and $v = v_1...v_m$, it should happen that $u' = u_1...u_{n}b$ and $v' = v_2...v_n$ with two exceptions:
+    \begin{itemize}
+    \item if $u=\epsilon$ then $u' = b$ and $v' =v_2...v_n$
+    \item if $v = v_1$ and $b =B$ then $u'=u_1...u_{n-1}$ and $v' = \epsilon$.
+    \end{itemize}
+  \end{itemize}
+
+  Note that on both cases the two exceptions can be given simultaneously (if $b = B$) and then give $(q, \epsilon, u_1) \vdash (q', \epsilon, B)$. We say $C\vdash^* C'$ if there exists a finite sequence $\{C_i\}_{i\in 1,...,n}$ such that $C_1 = C$, $C_n=C'$ and $C_i\vdash C_{i+1}$ for every $i\in 1,...,n-1$.  
   \end{definition}
 
+  A Turing machine solves a decision problem, i.e. having an alphabet $\Sigma$  (its input alphabet) it takes a word in $\Sigma^*$ and decides whether it belongs to a language or not.The intuitive idea is that we write the word in question on the tape and the machine tells us the results after some computations. In this way we will consider that a word belongs to the language decided by the Turing machine if and only if it is \emph{accepted} by that machine. Let's define when this concept.
 
-  \begin{enumerate}
-  \item PASO DE CALCULO
-  \item ACEPTAR RECHAZAR
-  \item COMPLEJIDAD ALGORITMICA
-  \item Moreover, as checking whether an assignment is autark is linear on the number of clauses, then this make the autark-finding problem NP-Complete(NP-C further on).
-  \end{enumerate}
+  \begin{definition}
+     Let $M$ be a Turing Machine. We say that $u\in\Sigma^*$ is \emph{accepted} by $M$ if there exists a final configuration $C$ such that $(q_0,\epsilon,u)\vdash^* C$. The language \emph{accepted} by $M$ is the collection of all words accepted. We say that $M$ \emph{decides} a language $L$ if $L$ is the language accepted by $M$.
+  \end{definition}
+
+  We can also consider a Turing Machine that can solve a function problem. The intuitive idea is that we write the input on the tape and after some computations we have written on the tape a word that is related to the input one. Formally:
+
+
+  \begin{definition}
+    Let $f:\Sigma^*\to \Sigma^*$. A Turing Machine $M$ \emph{compute} $f$ if for every $u\in \Sigma^*$ there is an accepting configuration $C=(q',v,v')$ of $M$  such that $(q,\epsilon,u)\vdash C$ and $f(u)=vv'$. A Turing Machine $M$ computes a function problem defined by $R$ if it computes a function $f_M:Sigma^*\to \Sigma^*$ such that $(u,f(u)) \in R$ for all $ u\in \Sigma^*$.
+  \end{definition}
+
   
+\subsection{Circuits}
 
-\section{Tseitin Theorem}
-Now that we are able to talk about efficency is time to talk about an interesting, anticipated result. If we remember Lindenbaum algebra[\ref{def:linden}] we have defined a quotient space on the formulas in terms of satisfiability. In order to solve GSAT, we are not in need of solving all formulas.  Instead we can learn how to solve a language of formulas $\mathsrc{F}$ such that for every class $[\phi_1]\in Form/\sim$ there  is a formula $f\in\mathsrc{F}$ such that $f \in [\phi_1]$. Also, we will need a method that allow us to find such $f\in\mathsrc{F}$ given any element of $[\phi_1]$.We want to prove that SAT is a language that satisfy this restrictions. The naive approach to the problem is straightforward:\\
+The circuit model provide another computation model that is naturally related to propositional logic. We define it briefly in order to prove some results on the area. Circuits are the computation model that is used in practice. One of the most important area of industrial application of SAT is circuit verification. This is going to be discussed further on AÑADIR CAPITULO.
+
+\begin{enumerate}
+\item Moreover, as checking whether an assignment is autark is linear on the number of clauses, then this make the autark-finding problem NP-Complete(NP-C further on).
+\end{enumerate}
+
+\subsection{Reduction}
+
+\section{Complexity Classes}
+In this section we are going to define what a complexity class is and then we are going to discuss some results of the complexity of the sat problem. This is for two reasons: 
+
+\begin{enumerate}
+\item To study the complexity of the SAT problem and its variants so far.
+
+\item To give one more justification of the relevance of the problem.
+\end{enumerate}
+
+\subsection{Exponential Time Hypothesis}
+\label{hyp:exponential_time}
+In this subsection we will introduce the result, shown first on \cite{impagliazzo2001complexity}. This result states simply that no sub-exponential time algorithm can be found for 3-SAT. This hypothesis, although widely accepted, is still unproven. Formally:
+
+\begin{definition}[ETH]
+  For $k\ge 3$, lets define:
+  $$s_k=\inf\{\delta: \text{there exists} O(2^{\delta n}) k-\text{SAT solver.}\}$$
+  It is claim that $s_k>0$.
+\end{definition}
+
+This result has some equivalent formulations.
+
+\begin{proposition}[theorem 1. \cite{impagliazzo2001complexity}]
+  The following statements are equivalent:
+  \begin{enumerate}
+  \item ETH: for all $k\ge 3$, $s_k > 0$.
+  \item For some $k$, $s_k \ge 0$.
+  \item $s_3 \ge 0$.
+
+  \end{enumerate}
+  \end{proposition}
+
+This theorem is prove making use of Sparsification Lemma, which is based in turn on the ideas of critical and forced variables. By the time of the publication of the article, Zane has already worked with these ideas for the development of the PPZ algorithm\cite{paturi1997satisfiability}. Although we are not going to prove this result, we are going to present this ideas when analyzing the Paturi-Pudlák-Zane Algorithm[\ref{subsec:PPZ}].
+ 
+This claim is harder that $P\ne NP$, as it not only declares that SAT is not polynomial time, but neither is sub-exponential time. 
+
+\section{Postponed results}
+In this section we will develop some result that where intentionally postponed, in order to talk about them once complexity classes has been introduced, although they belong thematically to previous sections. 
+\subsection{Tseitin Theorem}
+Now that we are able to talk about efficiency is time to talk about an interesting, anticipated result. If we remember Lindenbaum algebra[\ref{def:linden}] we have defined a quotient space on the formulas in terms of satisfiability. In order to solve GSAT, we are not in need of solving all formulas.  Instead we can learn how to solve a language of formulas $\mathsrc{F}$ such that for every class $[\phi_1]\in Form/\sim$ there  is a formula $f\in\mathsrc{F}$ such that $f \in [\phi_1]$. Also, we will need a method that allow us to find such $f\in\mathsrc{F}$ given any element of $[\phi_1]$.We want to prove that SAT is a language that satisfy this restrictions. The naive approach to the problem is straightforward:\\
 
 \begin{proposition}
   There is a $CNF$ formula in each equivalence class. Moreover, given a function $f\in Form$ we are able to find an equivalent $CNF$ formula.
@@ -518,8 +588,48 @@ Now that we are able to talk about efficency is time to talk about an interestin
     For every assignment $\beta$ such that $Var(\beta) = Var(F)\cup Var(G)$ then if $\beta(F) = 1$ then $\beta(I) = 1$ so $F \to I$  is a tautology. Similarly it can not happen that $I\beta = 1 $ and $G\beta = 0$, because the second will imply that   $I\beta = 0$.\\
 
     For the last part we will refer to the paper on the topic by: \red{TODO}
-
-
-
   \end{proof}
+
+  \subsection{From non-constructive to constructive}
+  \label{sub:fromnon}
+  This subsection we explain how a constructive SAT-solver can be made from a non-constructive SAT-solver without changing is asymptotic time complexity, assuming true the exponential time hypothesis[\ref{hyp:exponential_time}]
+
+  \begin{proposition}
+    Let $\phi$ be an oracle that decides SAT in $O(\varphi(n+m))$ where $n$ is the number of variables and $m$ the number of clauses. Then we can make an algorithm  that computes FSAT on $O((n(\varphi(n+m))+m)$ 
+  \end{proposition}
+  \begin{proof}
+    We will iteratively expand a partial assignment $\alpha$. $\alpha$ initially maps all variables to $\upsilon$. The procedure take as input a CNF formula $F$. The algorithm that solve FSAT is described in \ref{alg:constructive}. It is based in the notion that, if  $F$ is satisfiable, either $F\{x=1\}$ or $F\{x=0\}$ is satisfiable. We are able to explore the variable lineally being sure that we are always assigning the correct value to each variable. 
+
+    
+    \begin{algorithm}
+  \caption{FSAT routine}\label{alg:constructive}
+  \begin{algorithmic}[1]
+
+    
+  \Procedure{Solver}{$F$}
+  \State $F_0 \gets F$
+  \State $\alpha \gets$ empty partial assignment.
+  \State
+    \For{$x\in Var(F)$}
+    \If{$\phi(F_0\{x=1\})$}
+    \State $\alpha += \{x = 1\}$
+    \State $F_0 \gets F_0\{x=1\}$
+    \Else \If{$\phi(F_0\{x=0\})$} 
+    \State $\alpha += \{x = 0\}$
+    \State $F_0 \gets F_0\{x=0\}$
+    \Else
+    \State \Retun Unsatisfiable
+    \EndIf
+    \EndIf
+    \EndFor
+    \State \Return $\alpha$
+  \end{algorithmic}
+\end{algorithm}
+
+Let's analyze the complexity of this algorithm. We make at most $n$ repetitions of the for loop, and on each repetition we call $\phi$ and assign a variable in a formula.Therefore the procedure run in $O(n\varphi(n+m)+m)$
+\end{proof}
+
+Assuming ETH we assume that $\phi$ is exponential in time, an therefore asymptotic complexity $O(\varphi(n+m))$ is the same as $O(n(\varphi(n+m)+m))$, so, until $ETH$ is proved wrong we can consider SAT and FSAT as being equal in complexity. On this text we will only deal with non-constructive  solver on the combinatorics section[\ref{sec:combu}].
+
+
 

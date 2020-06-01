@@ -1,5 +1,5 @@
 
-\part{Resolution Algorithms: Solvers}
+\part{Solvers}
 \label{chap:2}
 
 
@@ -19,15 +19,12 @@ On this part we attack the main problem of SAT: explain the different techniques
   On this chapter we are going to talk about solvability in special situations where we work with a restricted subset of formulas (more restricted than CNF formulas). We want to exploit special characteristics of these subsets in our favor in order to get a resolution without involving a complex exponential time algorithms (as the ones needed to solve SAT).\\
 
 
-  The first section of this chapter will talk about combinatorics. Then we will proceed to analyze solvability in special cases, i.e., algorithms  that works really well in formulas given that they satisfy some restriction.
+  The first section of this chapter will talk about combinatorics. We proceed to analyze solvability in special cases, i.e., algorithms  that works really well in formulas given that they satisfy some restriction.
 
 \section{Satisfiability by Combinatorics}
+\label{sec:combu<}
 
-
-To get an intuition about how unsolvable clauses are, we gonna state some simple result about combinatorics and resolution. Also, these techinques present some cases where we can solve the problem efficently, although more often that not we would not provide a satisfying assignment.
-
-
-Nonetheless, given an efficent non-constructive SAT-solvers, it is possible to make a constructive solver with a running time of $n$ times the previous by assigning a literal a value, checking whether or not the result is still solvable. EXTENDER LA IDEA.
+To get an intuition about how unsolvable clauses are, we gonna state some simple result about combinatorics and resolution. These techinques present some cases where we can solve the decision problem efficently, although more often that not we would not provide a satisfying assignment, i.e., we do not solve the function problem.
 
 
 As there is no complete SAT-solver known to work in polymial time complexity, a polynomial increase does not affect overall the assymptotical complexity.\\
@@ -70,7 +67,7 @@ Let $F$ be a CNF formula. It is said to be minimally unsatisfiable if:
 \end{definition}
 
 
-Then the following prove will be shown as in \cite{schoning2013satisfiability}. For that we will need the well known Hall marriage theorem\cite{hall2009representatives}.
+Then the following prove will be shown as in \cite{schoning2013satisfiability}. For that we will need the well known Hall marriage theorem\cite{hall2009representatives}. A similar result is proved in chapter 7 of \cite{marek2009introduction}, using the König theorem. Both of the version take the idea of associate a graph to each set of clauses. 
 
 \begin{definition}
   Let $G=(N,E)$ be a graph where $N$ is the set of nodes and $E$ the set of edges, represented as pair of nodes. Given $n \in X$,  the neighborhood of $n$, denoted as $\Gamma_G(n)$, is defined as:

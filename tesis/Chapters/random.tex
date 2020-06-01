@@ -6,49 +6,69 @@ In this chapter we will talk about probabilistic algorithms for SAT and $k$-SAT.
 
 
 \section{Paturi-Pudlák-Zane}
-The first one that we will consider is the Paturi-Pudlák-Zane(PPZ) algorithm \cite{paturi1997satisfiability} developed in 1997 and its improvements Paturi-Pudlák-Saks-Zane(PPSZ). It was the first probabilistic algorithm for $k$-CNFSAT proven to work. It has an associated deterministic version that could well be included in the DPLL chapter. Then, some improvements have been done to the algorithm in \cite{paturi2005improved} and \cite{hertli20143}.\\
+The first one that we will consider is the Paturi-Pudlák-Zane(PPZ) algorithm \cite{paturi1997satisfiability} developed in 1997 and its improvements Paturi-Pudlák-Saks-Zane(PPSZ). It was the first probabilistic algorithm for $k$-SAT proven to work. It has an associated deterministic version that could well be included in the DPLL chapter. Then, some improvements have been done to the algorithm in \cite{paturi2005improved} and \cite{hertli20143}.\\
 
 \subsection{Paturi-Pudlák-Zane}
-
+\label{subsec:PPZ}
 In this subsection we will present the PPZ algorithm and in the next subsection its improved version PPSZ. The information presented here follows the discussion in \cite{paturi2005improved}. The difference between PPZ and PPSZ is some added preprocessing. At the time of release, PPSZ was the asymptotically fastest algorithm for random $k$-SAT with $k \ge 4$ only improved in $3$-SAT by the Schönning random walk algorithm and its improved version the Hofmeister algorithm, because PPSZ were not able to extend the results they found but it was suggested that it should be extendable. At the end, it was proved 9 years later by Hertli \cite{hertli20143} that the bounds hold on general. 
 
 
 To define the algorithms, we first define some subroutines. The first of them take a CNF formula $F$, an assignment $\alpha$ and a permutation $\pi$ and returns other assignment $u$.
 
 
-TODO: Explicar lo que es G_i y u
+
+\algrenewcommand\textkeyword{\textrm}
+\algdef{SE}{For}{End}[2]{%
+  \textkeyword{for} \(#1\) \textkeyword{to} \(#2\) \textkeyword{do begin}}{%
+  \textkeyword{end}}
+
 \begin{algorithm}
-  \caption{Modify subroutine}\label{mod}
+\begin{algorithmic}[1]
+\State Assign an ordering $A_{1}, ..., A_{n}$ to the nonterminals of the grammar.
+\For{i = 1}{n}
+    \For{j = 1}{i-1}
+    \State for each production of the form $A_{i} \rightarrow A_{j} \alpha$
+    \End
+\End
+\end{algorithmic}
+\caption{Paull's algorithm}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{\texttt{Modify subroutine}}\label{alg:modify}
   \begin{algorithmic}[1]
     \Procedure{Modify}{$\alpha, \pi$, $F$}
-    \State $F_0 = F$
+    \State $F_0 \gets F$
+    \State $u \gets$ empty partial assignment. 
+    \State
     \For{$i \in \{0,...,m-1\}$}
-    \If{$\{x_{\pi(i)}\} \in G_i$}
+    \If{$\{x_{\pi(i)}\} \in F_i$}
     \State $u += \{x_{\pi(i)} = 1\}$
-    \Else \If{$\{\neg x_{\pi(i)}\} \in G_i$}
+    \Else \If{$\{\neg x_{\pi(i)}\} \in F_i$}
     \State $u += \{x_{\pi(i)} = 0\}$
     \Else
     \State $u += \{x_{\pi(i)} = \alpha(x_{\pi(i)})\}$
     \EndIf
     \EndIf
-    \State $G_{i+1} = u(G_i) $
+    \State $F_{i+1} = F_iu $
     \EndFor
     \State \Return u
+    \EndProcedure
   \end{algorithmic}
 \end{algorithm}
+\newpage
 
-
-Note that in line 5 and 7 is only checking whether or not we can unit propagate the variable $x_{\pi(i)}$. The algorithm Search is obtained by running Modify on many pairs $(\alpha, \pi)$ where $\alpha$ is a random assignment and $\pi$ a random permutation. \\
+Note that in line 5 and 7 on the procedure \texttt{modify}[\ref{alg:modify}]is only checking whether or not we can unit propagate the variable $x_{\pi(i)}$. The algorithm \texttt{Search} is obtained by running \texttt{Modify} on many pairs $(\alpha, \pi)$ where $\alpha$ is a random assignment and $\pi$ a random permutation. 
 
 
 \begin{algorithm}
-  \caption{Search subroutine}\label{search}
+  \caption{\texttt{Search subroutine}}\label{search}
   \begin{algorithmic}[1]
     \Procedure{Search}{$F$, $I$}
     \For{$i \in \{0,...,I\}$}
-    \State $\alpha$  =   random assignment on $Var(F)$
-    \State $\pi$  =   random permutation on $1,...,|Var(F)|$
-    \State u = Modify($\alpha, \pi, F$)
+    \State $\alpha\gets$   random assignment on $Var(F)$
+    \State $\pi\gets$    random permutation on $1,...,|Var(F)|$
+    \State $u\gets$ \texttt{Modify}($\alpha, \pi, F$)
     \If{$u(F) = 1$}
     \State \Return Satisfiable
     \EndIf
@@ -57,7 +77,7 @@ Note that in line 5 and 7 is only checking whether or not we can unit propagate 
   \end{algorithmic}
 \end{algorithm}
 
-TODO: poner los nombres del algoritmo en smallcaps
+
 
 This procedure is the named PPZ algorithm. As we can see is a pretty simple algorithm, but more often than not the work on random algorithms is not to program but to prove them correct. Therefore we will proceed to prove why this algorithm is, in fact, a correct probabilistic algorithm.\\
 
@@ -159,7 +179,7 @@ This algorithm includes a preprocessing of the formula prior to the searching al
 
 
 \begin{algorithm}
-  \caption{Resolve subroutine}\label{mod}
+  \caption{Resolve subroutine}\label{alg:resolve}
   \begin{algorithmic}[1]
     \Procedure{Resolve}{$F, s$}
     \State $F_s = F$
@@ -172,11 +192,10 @@ This algorithm includes a preprocessing of the formula prior to the searching al
     \Procedure{ResolveSat}{$F, s, I$}
     \State $F_s = Resolve(F,s)$
     \State \Return $Search(F,s)$
-    \EndProcedure
-
-    
+    \EndProcedure    
   \end{algorithmic}
 \end{algorithm}
+
 
 With this prepossessing added to the algorithm a better upper bound is proved. Defining
 $$ \mu_k = \sum_{j=1}^\infty \frac{1}{j \left (j + \frac{1}{k-1}\right )}$$
