@@ -4,8 +4,6 @@
 \label{sec:dpll}
 In this section we will talk about algorithms that explore the space of possible assignments in order to find one that satisfies a given formula, or otherwise prove its non-existence. Onward whenever a formula is given, it would be a CNF formula.
 
-% All algorithms would have an complexity of $O(a^k), a \in (1,2)$. Under polynomial hyerarcy asumpionts an 
-
 \subsection{Backtracking}
 We  will start with the approach based on the simple and well-known backtracking algorithm.
 
@@ -52,7 +50,7 @@ This algorithm is an improvement of the backtracking algorithm, still really sim
   \State Choose $x \in Var(F)$ with an strategy.
   \If{$DPLL(F\{x=0\})$} \Return 1
   \EndIf
-  \State \Return $DPLL(F\{x=0\})$
+  \State \Return $DPLL(F\{x=1\})$
 \end{algorithmic}
 \end{algorithm}
 
@@ -81,7 +79,10 @@ We could see to main differences:
 
 Despite not being an algorithm, clause learning is a rather useful technique in order to improve any search based algorithm (as DPLL variations).  The technique works adding clauses to ensure that once reached a contradiction it would not be reached again, that is, providing new clauses to the $CNF$ formula that, without being satisfied, the formula could not be satisfied. When we add those clauses we avoid the repetitions that led to the contradiction, bounding some branches in a problem specific manner.  The content of this subsection is in \cite{tichy2006clause}. The information and definition on UIP is in \cite{zhang2001efficient} \\
 
-In order to add clarity to the explanation we will introduce some definitions: Conflict clause, decision level, and implication graph. A conflict clause would represent part of an assignment that will never be part of a solution. 
+In the context of Clause Learning we have to think about an algorithm that works by iteratively expanding a partial assignment as is done in DPLL.
+
+
+In order to add clarity to the explanation we will introduce some definitions: Conflict clause, decision level, and implication graph. A conflict clause would represent part of an assignment that will never be part of a solution.  
 
 \begin{definition}
   A clause $C$ is a conflict clause of the formula $F$ if:
@@ -92,16 +93,108 @@ In order to add clarity to the explanation we will introduce some definitions: C
   \end{itemize}
 \end{definition}
 
-It is clear that the third condition of the definition is the one that add meaning to it. Nonetheless the first two are important to bound the clauses that can be interesting. By adding conflict clauses more constraints are added to the formula, avoiding searching on assignments that will not satisfy the formula.\\
+It is clear that the third condition of the definition is the one that add meaning to it. Nonetheless the first two are important to bound the clauses that can be interesting. By adding conflict clauses more constraints are added to the formula, avoiding searching on assignments that will not satisfy the formula. The purpose of clause learning is to find conflict clauses. In order to do that we will make a implication graph and examine it when a conflict happens.\\
 
-The decision level refer to the process of problem solving in a DPLL algorithm. Each time we could not find any autark to append to our future assignment we have to take a decision. These decisions anidate, and the decision level refer to the number of anidations done when the literal $u$ was assigned to the value $a$.\\
+A decision is made every time a variable is assigned and its not part of a unit clause or is a pure literal, i.e., each time we make a non-forced decision. These decisions anidate, and the decision level refer to the number of anidations done when the literal $u$ was assigned to the value $a$.\\
 
-The implication graph  is the directed graph that has as nodes a pair with a variable an a value assigned to that variable at a particular decision level of the algorithm, and there is an edge from $(x,a_x)$ to $(y,a_y)$ if at some point, assign $x$ to $a_x$  make mandatory that $y$ is assigned to $a_y$. The implication graph has a conflict if there is two nodes with the same variable and opposite value. The implication graph is made iteratively, adding elements at each decision level. A node is called a decision node if that assignment was not implied (it was made by decision).\\
+The implication graph  is the directed graph that has as nodes a pair with a variable an a value assigned to that variable, and there is an edge from $(x,a_x)$ to $(y,a_y)$ if at some point, assign $x$ to $a_x$  make mandatory that $y$ is assigned to $a_y$.  The idea behind this graph is to has a log of the decisions taken to expand the current partial assignment. Formally:
 
 
-The purpose of clause learning is to find conflict clauses. In order to do that we will make a implication graph and examine it when a conflict happens. We would like to choose the nodes that led to the conflict. This could be made choosing nodes such that every path from a decision node to the conflict has to include one of the nodes. This will be named a cut, not confuse with the graph theory concept. A conflict clause can be made from each cut.\\
+\begin{definition}
+  Let $F$ be a CNF formula,$\{x_i : 1,...,n\} = Var(F)$, and $A=\{ a_i\in{0,1\}:$$\ i\in 1,...,n\}$. The associated implication graph $\mathcal{G}_{F,A}$ is defined inductively:
+  \begin{itemize}
+  \item $\mathcal{G}_0$ is the empty graph, and $F_0 = F$.
+  \item From $\math{G}_{i-1}, F_{i-1}$ we define $\math{G}_{i},F_i$:
+    \begin{itemize}
+  \item Let $x_j$ be the first variable in $Var(F_i)$. We add the node named $(x_j,a_j)$.
+  \item We define $F_i' = F_{i-1}\{x_j\to a_j\}$ and $\math{G}_{i}=\math{G}_{i-1}$.
+  \item Every unit clause $\{l\}$ in $F_{i}$, we add to $\math{G}_{i}$ a node $(x,a)$ such that $(l)\{x\to a\} = 1$. Note that $(x,a)$ is unique as $l$ is a literal.
 
-A common and efficient approaches are to choose cut are base on the idea of Unique Implication Point(UIP).  A UIP   is   a   vertex   at   the   current   decision   level   that   dominates   both   vertices   corresponding   to   the   conflicting   variable. 
+  \item Every unit clause $\{l\}$ has an associated clause $C=\{l_{i_1},..,l_{i_{k}}\}\in F$ and a associated node $(x,a)$. Necessarily, all other literals in $C$ has been assigned already, so they has an associated node in the graph $(y,b)$. We add to $\math{G}_{i}$ an edge from every associated node $(y,b)\to (x,a)$.
+  \item We define:
+    $$F_i = F_i'\{x\to a : (x,a) \text{ is a node associated to a unit clause in } F_i' \}$$
+  \end{itemize}
+  \item We repeat the process until either all variables are assigned or a conflict arise. The implication graph has a conflict if there is two nodes with the same variable and opposite value. The resulting graph will be $\mathcal{G}_{F,A}$
+  \end{itemize}
+  We say that $x$ was assigned at \emph{decision level} $i$ if $x\in Var(F_{i-1})$ and $x \not\in F_i$. 
+ \end{definition} 
+ As we can see a decisión graph is dependent of the order on which the variables are assigned (should a decision be maked) and the value choosen for each variable when this decision happens.\\
+
+ We will show a little example in order to clarify this definition.
+\begin{itemize}
+ \item[Start of example] Suppose that we have $F = \{(x_1\vee x_2 \vee x_3), ( x_1 \vee x_2), (\neg x_1 \vee \neg x_2), (\neg x_3 \vee \neg x_4), (x_4 \vee x_2 \vee \neg x_3) \}$. We make a list $A=\{1,1,1,0\}$ of values associated to each variable. We start by adding the node $(x_1,1)$ to $\mathcal{G}_1$. \\
+
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    node distance=1.5cm and 2.5cm,
+    mynode/.style={draw,circle,text width=1cm,align=center}
+    ]
+
+    \node[mynode] (1) {\((x_1,1)\)};
+    \end{tikzpicture}
+    \caption{$\mathcal{G}_1$ before unit propagation}
+  \end{figure}
+
+  Then we define $F_1' = F_0\{x_1\to 1\} =F_0\{x_1\to 1\} = F\{x_1 \to 1\}= \{(\neg x_2), (\neg x_3 \vee \neg x_4), (x_4 \vee x_2 \vee\neg x_3)\}$. We have an unit clause, therefore, we add a node$(x_2, 0)$, as this clause where associated in $F$ with the clause $(\neg x_1 \vee \neg x_2)$ we add an edge $(x_1,1)\to (x_2,0)$. As there were only a unit clause, we can define $F_1 = \{(\neg x_3 \vee \neg x_4), (x_4 \vee \neg x_3)\}$.\\
+  
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    node distance=1.5cm and 2.5cm,
+    mynode/.style={draw,circle,text width=1cm,align=center}
+    ]
+
+    \node[mynode] (1) {\((x_1,1)\)};
+    \node[mynode,right=of 1] (2) {\((x_2,0)\)};
+
+    \draw[->] (1) -- (2) node[pos=0.1, sloped, above] {};
+
+  \end{tikzpicture}
+  \caption{$\mathcal{G}_1$ after unit propagation}
+\end{figure}
+
+Once we have $F_1$ and $\mathcal{G}_i$ we continue the iteration. Therefore we choose the variable $x_3$ (as $x_1$ and $x_2$ where already assigned) and assign it to $1$ as we initially decided. Therefore we define $\mathcal{G}_2 = \mathcal{G}_1 $, and immediately after we add the node $(x_3,1)$. We define $F_2' = \{(\neg x_4), (x_4)\}$. We have two unit clauses. Solving them as done above we have:
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    node distance=1.5cm and 1.5cm,
+    mynode/.style={draw,circle,text width=1cm,align=center}
+    ]
+
+    \node[mynode] (1) {\((x_1,1)\)};
+    \node[mynode,right=of 1] (2) {\((x_2,0)\)};
+    \node[mynode,below= of 2] (3) {\((x_3,1)\)};
+    \node[mynode,right= of 3] (41) {\((x_4, 1)\)};
+    \node[mynode,right= of 2] (40) {\((x_4, 0 )\)};
+    \draw[->] (1) -- (2) node[pos=0.1, sloped, above] {};
+    \draw[->] (3) -- (41) node[pos=0.1, sloped, above] {};
+    \draw[->] (3) -- (40) node[pos=0.1, sloped, above] {};
+    \draw[->] (2) -- (40) node[pos=0.1, sloped, above] {};
+    \draw[->] (41) -- (40) node[pos=0.1, sloped, above] {};
+    \draw[->] (40) -- (41) node[pos=0.5,  right] {Conflict};
+
+  \end{tikzpicture}
+  \caption{$\mathcal{G}_2$ after unit propagation}
+\end{figure}
+
+We can see that a conflict has arise. Therefore we can not continue iterating throw the process and $\mathcal{G}_{F,A} = \mathcal{G}_2$. Note that have we wanted to assign the values in other order, only a renaming would have been necessary. 
+\item[End of example]
+\end{itemize}
+As we already stated, the purpose of the implication graph is to show the root of the conflict. That is, we want to know what assignments led to the conflict. This could be made by making a set of nodes $N=\{(x_j,a_j: j\in 1,...,k)\}$ such that every path from a decision node to the conflict has to include one node of the set. This will be named a cut, not confuse with the graph theory concept.\\
+
+
+A conflict clause can be made from each cut $N$: once we have the set $N$, we can add a new clause $C = (l_1,...,l_k)$to $F$ such that $l_k = x_k$ if $a_k = 0$ and $l_k=\neg x_k$ otherwise.\\
+
+Let's summarize what we know until know:
+\begin{itemize}
+\item[-] We know how to make implication graph.
+\item[-] We know how to add conflict clauses from a cut of a implication graph with conflict.  
+\end{itemize}
+
+So we only has to learn strategies in order to detect cuts on implication graphs. Although every cut is enough to add conflict clauses, the most two common approaches are to choose cut are base on the idea of Unique Implication Point(UIP).  A UIP   is   a   vertex    that   dominates   both   vertices   corresponding   to   the   conflicting   variable. 
 
 \begin{itemize}
 \item Last UIP - choosing every decision node that has a path to the conflict.
@@ -109,9 +202,10 @@ A common and efficient approaches are to choose cut are base on the idea of Uniq
 \end{itemize}
 
 
-The first UIP tend to have smaller clauses and experimental results \cite{tichy2006clause} \cite{zhang2001efficient} provide proves in favor of it. It is commonplace on DPLL-based solver.
+The first UIP tend to produce smaller clauses and experimental results \cite{tichy2006clause} \cite{zhang2001efficient} provide proves in favor of it. It is commonplace on DPLL-based solver. The GRASP[\ref{sub:grasp}] algorithm was one of the first conflict driven solver, that is, a sat solver that implement a DPLL procedure based mainly on Clause Learning. 
 
 \section{Other complete algorithms}
+
 \subsection{Monien-Speckenmeyer (MS) Algorithm}
 
 This algorithm is a variation of the DPLL-Shortest Clause algorithm, specifying that once you choose the shortest clause, all variables you choose should be from that clause until you satisfy it, as it will continue to be the shortest given that there is no clause with repeated literals as well as no clause that is a tautology. This algorithm (DPLLSC) on $k$-SAT generates a recursion such that $T(n) = \sum_{i=1}^kT(n-i)$. Under the hypothesis that MS does not has a under-exponential worst case complexity, then $T(n) = a^n$ for some $a \in (1,\infty)$.  Then
@@ -156,7 +250,7 @@ For the $k$-SAT complexity analysis we have to consider whether or not an autark
 
 
 \subsection{GRASP}
-
+\label{sub:grasp}
 We present now one of the most cited algorithms.  GRASP(Generic seaRch Algorithm for the Satisfiability Problem) was introduced by Marques-Silva and Sakallah\cite{marques1999grasp} that works on CNF formulas. It is based on clause learning techniques, and unit propagation. It divides the search process in four parts:
 
 \begin{enumerate}

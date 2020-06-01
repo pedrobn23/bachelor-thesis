@@ -10,29 +10,11 @@ The first one that we will consider is the Paturi-Pudlák-Zane(PPZ) algorithm \c
 
 \subsection{Paturi-Pudlák-Zane}
 \label{subsec:PPZ}
-In this subsection we will present the PPZ algorithm and in the next subsection its improved version PPSZ. The information presented here follows the discussion in \cite{paturi2005improved}. The difference between PPZ and PPSZ is some added preprocessing. At the time of release, PPSZ was the asymptotically fastest algorithm for random $k$-SAT with $k \ge 4$ only improved in $3$-SAT by the Schönning random walk algorithm and its improved version the Hofmeister algorithm, because PPSZ were not able to extend the results they found but it was suggested that it should be extendable. At the end, it was proved 9 years later by Hertli \cite{hertli20143} that the bounds hold on general. 
+In this subsection we will present the PPZ algorithm and in the next subsection its improved version PPSZ. The information presented here follows the discussion in \cite{paturi2005improved}. The difference between PPZ and PPSZ is some added preprocessing. At the time of release, PPSZ was the asymptotically fastest algorithm for random $k$-SAT with $k \ge 4$ only improved in $3$-SAT by the Schönning random walk algorithm and its improved version the Hofmeister algorithm, because PPSZ were not able to extend the results they found but it was suggested that it should be extendable. At the end, it was proved 9 years later by Hertli \cite{hertli20143} that the bounds hold on general. \\
 
 
-To define the algorithms, we first define some subroutines. The first of them take a CNF formula $F$, an assignment $\alpha$ and a permutation $\pi$ and returns other assignment $u$.
+To define the algorithms, we first define some subroutines. The first of them take a CNF formula $F$, an assignment $\alpha$ and a permutation $\pi$ and returns other assignment $u$.Note that in line 5 and 7 on the procedure \texttt{modify}[\ref{alg:modify}]is only checking whether or not we can unit propagate the variable $x_{\pi(i)}$. The algorithm \texttt{Search} is obtained by running \texttt{Modify} on many pairs $(\alpha, \pi)$ where $\alpha$ is a random assignment and $\pi$ a random permutation.\\ 
 
-
-
-\algrenewcommand\textkeyword{\textrm}
-\algdef{SE}{For}{End}[2]{%
-  \textkeyword{for} \(#1\) \textkeyword{to} \(#2\) \textkeyword{do begin}}{%
-  \textkeyword{end}}
-
-\begin{algorithm}
-\begin{algorithmic}[1]
-\State Assign an ordering $A_{1}, ..., A_{n}$ to the nonterminals of the grammar.
-\For{i = 1}{n}
-    \For{j = 1}{i-1}
-    \State for each production of the form $A_{i} \rightarrow A_{j} \alpha$
-    \End
-\End
-\end{algorithmic}
-\caption{Paull's algorithm}
-\end{algorithm}
 
 \begin{algorithm}
   \caption{\texttt{Modify subroutine}}\label{alg:modify}
@@ -56,10 +38,11 @@ To define the algorithms, we first define some subroutines. The first of them ta
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
+
+
+
+This procedure is the named PPZ algorithm. As we can see is a pretty simple algorithm, but more often than not the work on random algorithms is not to program but to prove them correct. Therefore we will proceed to prove why this algorithm is, in fact, a correct probabilistic algorithm.\\
 \newpage
-
-Note that in line 5 and 7 on the procedure \texttt{modify}[\ref{alg:modify}]is only checking whether or not we can unit propagate the variable $x_{\pi(i)}$. The algorithm \texttt{Search} is obtained by running \texttt{Modify} on many pairs $(\alpha, \pi)$ where $\alpha$ is a random assignment and $\pi$ a random permutation. 
-
 
 \begin{algorithm}
   \caption{\texttt{Search subroutine}}\label{search}
@@ -79,7 +62,7 @@ Note that in line 5 and 7 on the procedure \texttt{modify}[\ref{alg:modify}]is o
 
 
 
-This procedure is the named PPZ algorithm. As we can see is a pretty simple algorithm, but more often than not the work on random algorithms is not to program but to prove them correct. Therefore we will proceed to prove why this algorithm is, in fact, a correct probabilistic algorithm.\\
+
 
 
 Search always answers Unsatisfiable if $F$ is unsatisfiable. The only problem is to upper bound the error probability in the case that $F$ is unsatisfiable. In fact, we only have to to find $\tau(F)$: the probability that modify($F,\pi, \alpha$) find a satisfying assignment. The error probability  of search would be therefore $(1-\tau(F))^{I}$. As $1-x \le exp(-x)$ with $x \in [0,1]$ them $(1-\tau(F))^{I} \le exp(-I\tau(F))$, which is at most $exp(-n)$ where $n= |Var(F)|$ provided  $I>n/\tau(F)$ . it suffices to give good upper bounds on $\tau(F)$. In order to do that we will prove first two lemmas.\\
@@ -102,17 +85,13 @@ To prove the first lemma we introduce some notation:
 
 Now, let $\tau(F,z)$ the probability that $Modify(\alpha,\pi,F)$ would return $z$ with random $\pi$ and $\alpha$. From the previous lemma:
 
-$$ \tau(F,z) = 2^{-n} E_{\pi}[2^{|\text{Forced}(z, \pi, F)|}] \ge^{1.} 2^{-n +E_{\pi}[{|\text{Forced}(z, \pi, F)|}] }$$
+$$ \tau(F,z) = 2^{-n} \mathbb{E}_{\pi}[2^{|\text{Forced}(z, \pi, F)|}] \ge^{1.} 2^{-n +E_{\pi}[{|\text{Forced}(z, \pi, F)|}] }$$
 
-
-TODO: DECIR que es E_pi
-
-
-Where 1. is by the convexity of the exponential function. \\
+Where 1. is by the convexity of the exponential function and $\mathbb{E}_{\pi}$ is the expected value with $\pi$ as variable. \\
 
 Let $v$ be a variable in $Var(f)$ and $z$ a satisfying assignment of $F$. let $C$ be a clause in $F$, then we say that $C$ is critical for $(v,z,F)$ if the only true literal in $C$ is the one corresponding to $v$. Suppose that $\pi$ is a permutation such that $v$ appears after all other variables in $C$. It is easy to follow that $v \in \text{Forced}(z,\pi,F)$ if $C$ is critical for $(v,z,F)$. Conversely, if $z$ is forced it must be critical and appears last on the permutation. Let $Last(v,G,z)$ be the set of permutation of the variables such that for at least one critical clause for $(v,G,z)$, v appears last on the permutation. That is, the set of permutations where $v$ is forced. Let $P(v,z,F)$ the probability that a random permutation is in $Last(v,G,z)$. It follows that
 
-$$ E_{\pi}[|\text{Forced}(z, \pi, F)|]= \sum_{v \in Var(F)} E_{\pi}[v \in \text{Forced}( z, \pi, F)] = \sum_{v \in Var(F)} P(v, z, F)  $$
+$$ \mathbb{E}_{\pi}[|\text{Forced}(z, \pi, F)|]= \sum_{v \in Var(F)} \mathbb{E}_{\pi}[v \in \text{Forced}( z, \pi, F)] = \sum_{v \in Var(F)} P(v, z, F)  $$
 
 Putting it all together we have:
 
