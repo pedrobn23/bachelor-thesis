@@ -420,7 +420,7 @@ In this section we explain some concepts of SAT that are interesting on that the
 
 The first of them are useful when modelling a problem in order to generate SAT problems on which we can work more efficiently. Then second of them is an useful technique that is used extensively on SAT solvers.
 \subsection{Symmetry}
-
+\subsubsection{Motivation}
 In this section we talk about symmetry groups and its application to SAT. The information and examples resemble the ones in \cite{sakallah2009symmetry}. We will start this section with a motivating example.
 \begin{itemize}
  \item[Start of example]
@@ -447,7 +447,10 @@ With these three invariants we can also see that the composition of each one of 
 We can see therefore that by invariant $\gamma$, it does not matter what value does we assign to $a$, as either both $F\{a = 1\}$ and $F\{a=0\}$ are satisfiable or none are. Therefore we can solve$F\{a=1\}$, and we have a simplified problem to examine. For the record, the formula is not satisfiable.
 \item[End of example] 
 \end{itemize}
-  This is what is called \emph{symmetry breaking}. And avid reader would have already recognized the group structure on the invariants.  On this section we are going to explore the concepts related to define a symmetry, explore the group of negations and permutations, and develop some strategies to implement \emph{symmetry breaking}.
+
+This is what is called \emph{symmetry breaking}. And avid reader would have already recognized the group structure on the invariants.  On this section we are going to explore the concepts related to define a symmetry, explore the group of negations and permutations, and develop some strategies to implement \emph{symmetry breaking}.  Now we are going to define a few concepts.
+
+\subsubsection{Definitions}
 
 \begin{definition}
 Let $F$ be a formula and $\phi$ be a function $\alpha:Form_{Var(F)}\to Form_{Var(F)}$. We say that $\phi$ is an invariant of $F$ if $\phi(F) = F$.
@@ -469,7 +472,7 @@ Let $F$ be a formula and $\phi$ be a function $\alpha:Form_{Var(F)}\to Form_{Var
  We have a function $\alpha :Form_{X}\to Form_{X}$ that maps $F = (\neg a \land b  \land c) \lor (a \land \neg b \land c)$ to $\alpha(F) = (\neg c \land b  \land a) \lor (c \land \neg b \land a)$.\\
 
 
- We can see set of all permutations over a set $X$ such that $|X|=n$ along with composition is the \emph{permutation group} on $n$ elements. This group is studied in algebra, and is usually introduced as the group of mappings of $X=\{1,...,n\}$ and composition. Nonetheless we are more interested on calling those elements $\{x_1,...,x_n\}$ in order to have it frame on satisfiability. We can use this without more regards as the definition of the permutation group is element-free. As this is a well known group we will not prove that is, in fact, a group.\\
+ We can see set of all permutations over a set $X$ such that $|X|=n$ along with composition is the \emph{permutation group} on $n$ elements, $P_n$. This group is studied in algebra, and is usually introduced as the group of mappings of $X=\{1,...,n\}$ and composition. Nonetheless we are more interested on calling those elements $\{x_1,...,x_n\}$ in order to have it frame on satisfiability. We can use this without more regards as the definition of the permutation group is element-free. As this is a well known group we will not prove that is, in fact, a group.\\
 
 
 \begin{definition}
@@ -488,12 +491,48 @@ Where $Lit(X)$ is the set of literals over $X$. Each negation induces a homonym 
 \begin{proposition}
   The set of negations over a set $X$ and composition is a group.
 \end{proposition}
-\begin{prove}
+\begin{proof}\\
   \begin{itemize}
-    \item 
+    \item Closure: We can see that $\sigma_{A}\circ\sigma_{B} = \sigma_{(A\cup B)\backslash (A\cap B)}$.
+    \item Associativity: Associativity is inherited from the general associativity of composition.
+    \item Identity: We have an identity element $\sigma_{\emptyset}$.
+    \item Inverse: For every $A\subset X$, $\sigma_{A}^2 = \sigma_{\emptyset}$.
   \end{itemize}
-  
-\end{prove}
+\end{proof}
+
+We will denote the group of negations over $n$ variables as $N_n$.
+
+\begin{proposition}[$NP_n$]
+  The set of negations and permutations on $n$ variables ($NP_n$) along with the composition will be called 
+\end{proposition}
+\begin{proof}\\
+  Note that every element $x\in NP_n$ can be expressed as $\alpha\circ \sigma$ where $\alpha$ is a permutation and $\sigma$ is a negation. Also note that 
+  \begin{itemize}
+    \item Closure: $\alpha\circ \sigma_{A} \circ \alpha'\circ \sigma_{A'} = \alpha \circ \alpha' \circ \sigma_{\alpha^{-1} A} \circ \sigma_{A'}  = \alpha''\circ \sigma_{A''}$, where $\alpha''$ is a permutation and $\sigma_{A''}$ is a negation.
+    \item Associativity: Associativity is inherited from the general associativity of composition.
+    \item Identity: We have an identity element $\sigma_{\emptyset}=I$.
+    \item Inverse: For every $\alpha \circ sigma_A$ the function $\alpha^{-1}\circ \sigma_{\alpha(A)}$ is its inverse.
+  \end{itemize}
+\end{proof}
+
+\begin{proposition}[$NP_n$]
+  $NP_n$ s the semi-direct product of $N_n$ and $P_n$. That is:
+   $$NP_n = N_n \rtimes P_n$$
+\end{proposition}
+\begin{proof}
+Because of the property aforementioned, $NP_n = P_nN_n$ and $P_n\cap N_n = I$. Therefore $NP_n$ is the semi direct product of $P_n$ and $N_n$.
+\end{proof}
+
+\begin{definition}[Group Action]
+  An \emph{action} of a group $G$ on a set $S$ is a map $G \times S \to S$ such that:
+  \begin{itemize}
+  \item $es = s$ for $e$ the identity element of $G$ and every $s\in S$.
+  \item $(g_1g_2)(s) = g_1(g_2s)$ for all $s \in S$ and all $g_1,g_2\in G$.
+    \end{itemize}
+\end{definition}
+
+
+We are going to search symmetries a CNF formulas $F$ by looking for invariants in the group $NP_{|Var(F)|}$.
 
 \subsection{Autarks assignments}
 \label{sec:autark}
@@ -525,236 +564,4 @@ Should it happen that we have an algorithm for the Autarks Finding Problem, iter
 
 The most common autark assignment are the pure literal. A literal $l$ is a pure literal for a formula $F$ if there is no $\neg l$ in $F$. The partial-assignment that only maps $u\to 1$ is an autark assignment for $F$. This type of autark are used on DPLL algorithm[\ref{sec:dpll}]. The MS algorithm[\ref{alg:MS}] also uses an autark finding technique
 . 
-
-\chapter{Complexity Classes and Relevance of the Problem}
-\section{Models of Computation}
-In this section we will discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximations to Turing machines, so we present a quick formal approach to the area. 
-
-\subsection{Turing Machines}
-Turing machines are arguably the epicenter of  models of computation. A Turing Machine  represents a long mechanical tape on which we are going to operate. The tape is divided in to discrete positions, such that we can see the tape as a one-dimensional array. Operating on this tape we can focus on a cell, scan its contents, overwrite  its contents or move to an adjacent cell. These operations try to resemble the process of human calculus, as done with paper and pencil when applying the long division method  for example. Formally:
-
-\begin{definition}[Turing Machine \cite{hopcroft2007introduction}] We describe a Turing Machine as a 7-tuple $M=(Q, \Sigma, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
-  \begin{itemize}
-  \item $Q$ the finite set of \emph{states} of the finite control.
-  \item $\Sigma$ the finite set of \emph{input symbols}.
-  \item $\Gamma$ the finite set of \emph{tape symbols}. $\Sigma$ is always a subset of $\Gamma$.
-  \item  $\delta: Q\times \Gamma \to Q\times\Gamma\times\{L,R\}$ the transition function.
-  \item $q_0$ the \emph{start state}.
-  \item $B$ the \emph{blank symbol}.
-  \item $F$ the \emph{accepting states}.
-  \end{itemize}
-
-  A configuration of a Turing machine is a triplet $C=(q,u,v)$ where $q\in Q$, $u,v\in \Gamma^*$. A configuration is accepting if $q\in F$.
-\end{definition}
-
-A configuration should be understand as a state of the machine, where $q$ is the current state, $u$ the part of the tape left to the cell on which we focus and $v$ is the part of the tape right to the cell we focus, starting on it.\\
-
-As a brief note before going on, we have not define the empty word yet, as in propositional logic is not a valid formula so it lacks our interest until now. We will note the empty word as $\epsilon$ and would consist of an empty sequence of symbols. We can  now define a relation between configurations:
-
-\begin{definition}
-  Let $M$ be a Turing Machine and $C=(q,u,v)$, $C'=(q,u,v)$ be two configurations of $M$. We say that $C\vdash C'$ if there is a transition $\delta (q,v_1) = (q', b, D) $ with $D\in{L,R}$ and:
-  \begin{itemize}
-  \item if $D=L$, then if $u=u_1...u_n$ and $v = v_1...v_m$, it should happen that $u' = u_1...u_{n-1}$ and $v' = u_n bv_2...v_n$ with two exceptions:
-    \begin{itemize}
-    \item if $u=\epsilon$ then $u' = \epsilon$ and $v' = bv_2...v_n$
-    \item if $v = v_1$ and $b =B$ then $u'=u_1...u_{n-1}$ and $v' = u_n$.
-    \end{itemize}
-
-  \item if $D=R$, then if $u=u_1...u_n$ and $v = v_1...v_m$, it should happen that $u' = u_1...u_{n}b$ and $v' = v_2...v_n$ with two exceptions:
-    \begin{itemize}
-    \item if $u=\epsilon$ then $u' = b$ and $v' =v_2...v_n$
-    \item if $v = v_1$ and $b =B$ then $u'=u_1...u_{n-1}$ and $v' = \epsilon$.
-    \end{itemize}
-  \end{itemize}
-
-  Note that on both cases the two exceptions can be given simultaneously (if $b = B$) and then give $(q, \epsilon, u_1) \vdash (q', \epsilon, B)$. We say $C\vdash^* C'$ if there exists a finite sequence $\{C_i\}_{i\in 1,...,n}$ such that $C_1 = C$, $C_n=C'$ and $C_i\vdash C_{i+1}$ for every $i\in 1,...,n-1$.  
-  \end{definition}
-
-  A Turing machine solves a decision problem, i.e. having an alphabet $\Sigma$  (its input alphabet) it takes a word in $\Sigma^*$ and decides whether it belongs to a language or not.The intuitive idea is that we write the word in question on the tape and the machine tells us the results after some computations. In this way we will consider that a word belongs to the language decided by the Turing machine if and only if it is \emph{accepted} by that machine. Let's define when this concept.
-
-  \begin{definition}
-     Let $M$ be a Turing Machine. We say that $u\in\Sigma^*$ is \emph{accepted} by $M$ if there exists a final configuration $C$ such that $(q_0,\epsilon,u)\vdash^* C$. The language \emph{accepted} by $M$ is the collection of all words accepted. We say that $M$ \emph{decides} a language $L$ if $L$ is the language accepted by $M$.
-  \end{definition}
-
-  We can also consider a Turing Machine that can solve a function problem. The intuitive idea is that we write the input on the tape and after some computations we have written on the tape a word that is related to the input one. Formally:
-
-
-  \begin{definition}
-    Let $f:\Sigma^*\to \Sigma^*$. A Turing Machine $M$ \emph{compute} $f$ if for every $u\in \Sigma^*$ there is an accepting configuration $C=(q',v,v')$ of $M$  such that $(q,\epsilon,u)\vdash C$ and $f(u)=vv'$. A Turing Machine $M$ computes a function problem defined by $R$ if it computes a function $f_M:Sigma^*\to \Sigma^*$ such that $(u,f(u)) \in R$ for all $ u\in \Sigma^*$.
-  \end{definition}
-
-  
-\subsection{Circuits}
-
-The circuit model provide another computation model that is naturally related to propositional logic. We define it briefly in order to prove some results on the area. Circuits are the computation model that is used in practice. One of the most important area of industrial application of SAT is circuit verification. This is going to be discussed further on AÑADIR CAPITULO.
-
-\begin{enumerate}
-\item Moreover, as checking whether an assignment is autark is linear on the number of clauses, then this make the autark-finding problem NP-Complete(NP-C further on).
-\end{enumerate}
-
-\subsection{Reduction}
-
-\section{Complexity Classes}
-In this section we are going to define what a complexity class is and then we are going to discuss some results of the complexity of the sat problem. This is for two reasons: 
-
-\begin{enumerate}
-\item To study the complexity of the SAT problem and its variants so far.
-
-\item To give one more justification of the relevance of the problem.
-\end{enumerate}
-
-\subsection{Exponential Time Hypothesis}
-\label{hyp:exponential_time}
-In this subsection we will introduce the result, shown first on \cite{impagliazzo2001complexity}. This result states simply that no sub-exponential time algorithm can be found for 3-SAT. This hypothesis, although widely accepted, is still unproven. Formally:
-
-\begin{definition}[ETH]
-  For $k\ge 3$, lets define:
-  $$s_k=\inf\{\delta: \text{there exists} O(2^{\delta n}) k-\text{SAT solver.}\}$$
-  It is claim that $s_k>0$.
-\end{definition}
-
-This result has some equivalent formulations.
-
-\begin{proposition}[theorem 1. \cite{impagliazzo2001complexity}]
-  The following statements are equivalent:
-  \begin{enumerate}
-  \item ETH: for all $k\ge 3$, $s_k > 0$.
-  \item For some $k$, $s_k \ge 0$.
-  \item $s_3 \ge 0$.
-
-  \end{enumerate}
-  \end{proposition}
-
-This theorem is prove making use of Sparsification Lemma, which is based in turn on the ideas of critical and forced variables. By the time of the publication of the article, Zane has already worked with these ideas for the development of the PPZ algorithm\cite{paturi1997satisfiability}. Although we are not going to prove this result, we are going to present this ideas when analyzing the Paturi-Pudlák-Zane Algorithm[\ref{subsec:PPZ}].
- 
-This claim is harder that $P\ne NP$, as it not only declares that SAT is not polynomial time, but neither is sub-exponential time. 
-
-\section{Postponed results}
-In this section we will develop some result that where intentionally postponed, in order to talk about them once complexity classes has been introduced, although they belong thematically to previous sections. 
-\subsection{Tseitin Theorem}
-Now that we are able to talk about efficiency is time to talk about an interesting, anticipated result. If we remember Lindenbaum algebra[\ref{def:linden}] we have defined a quotient space on the formulas in terms of satisfiability. In order to solve GSAT, we are not in need of solving all formulas.  Instead we can learn how to solve a language of formulas $\mathsrc{F}$ such that for every class $[\phi_1]\in Form/\sim$ there  is a formula $f\in\mathsrc{F}$ such that $f \in [\phi_1]$. Also, we will need a method that allow us to find such $f\in\mathsrc{F}$ given any element of $[\phi_1]$.We want to prove that SAT is a language that satisfy this restrictions. The naive approach to the problem is straightforward:\\
-
-\begin{proposition}
-  There is a $CNF$ formula in each equivalence class. Moreover, given a function $f\in Form$ we are able to find an equivalent $CNF$ formula.
-\end{proposition}
-\begin{proof}
- Given $\phi_1 \in Form$ we make the truth table of $\phi_1$. Two formulas are in the same equivalent classes if, and only if, they share the same truth table. \\
-
-  We can generate a $CNF$ formula that has the same table this way: for every row $[x_1\to a_1,...,x_n\to a_n]$ ($x_i$ variables, $a_i\in \{0,1\}$) that falsify $\phi_1$ we add a clause $(z_1\vee ... \vee z_n)$ with $z_i = x_i$ if $a_i = 0$ and  $z_i =\neg x_i$ if $a_i = 1$.
-\end{proof}
-
-
-  This method is interesting as it show the truth table, as the collection of all two-valued assignments$\alpha$ such that $Var(\alpha) = \phi_1$. Nonetheless is not a method that should be considered useful, as is has exponential time. Tseitin theorem provide us with a solution to this problem that run in polynomial time. We will need a lemma first:
-
-  \begin{lemma}
-    For every \emph{SAT} formula there is an associated circuit.
-  \end{lemma}
-  \begin{proof}
-    Every operator can be seen as a gate and every variable as an input.\\
-  \end{proof}
-  
-  \begin{theorem}[Tseitin \cite{tseitin1983complexity}] \label{the:Tseitin}
-    There is a 3-CNF formula on each equivalent class. Moreover, given an element $F$  there is a equivalent formula $G$  in 3-CNF which could be computed in polynomial time. 
-  \end{theorem}
-
-  \begin{proof}
-    We will show that for every circuit with $n$ inputs and $m$ binary gates there is a formula in \emph{3-CNF}  that could be constructed in polynomial time in $n$ and $m$. Then, given a formula we will work with it considering its associated circuit.\\
-    <
-    We will construct the formula considering variables $x_1,...,x_n$ that will represent the inputs and $y_1,...,y_m$ that will represents the output of each gate. 
-
-    $$ G = (y_1) \wedge \bigwedge_{i=1}^m (y_i \iff f_i(z_{i,1},z_{i,2}))$$
-
-    Where $f_i$ represents the formula associated to the $i$-gate, $z_{i,1},z_{i,2}$ each of the two inputs of the $i$-gate, whether they are $x_-$ or $y_-$ variables. This formula is not \emph{3-CNF} yet, but for each configuration being $f_i$ a Boolean operator there would be a \emph{3-CNF} equivalent.
-
-    \begin{itemize}
-    \item $z \iff( x \vee y )  = \neg  ( z \vee  x \vee y    ) \vee (z \wedge ( x \vee y )  ) = \neg  ( z \vee  x \vee y    ) \vee (z \wedge x)  \vee (z \wedge y ) =$\\$= ( \neg  z \wedge  \neg  x \wedge \neg   y    ) \vee (z \wedge x)  \vee (z \wedge y )  =$$
-      (\neg  z \vee (z \wedge x)  \vee (z \wedge y ))  \wedge  
-      (\neg  x \vee (z \wedge x)  \vee (z \wedge y )) \wedge
-      (\neg  y \vee (z \wedge x)  \vee (z \wedge y ))   =
-      (\neg  z \vee x  \vee y )  \wedge  
-      (\neg  x \vee z  ) \wedge
-      (\neg  y \vee z ) $   
-    \item $z \iff( x \wedge y ) = \neg ( z \vee ( x \wedge y )) \vee (z \wedge ( x \wedge y )) = (z\wedge x \wedge y ) \vee  (\neg  z\wedge \neg  x \wedge \neg  y )  =$\\$\ \ \ ((z\vee  (\neg  z\wedge \neg  x \wedge \neg  y )  ) \wedge (x \vee  (\neg  z\wedge \neg  x \wedge \neg  y )  ) \wedge (y\vee  (\neg  z\wedge \neg  x \wedge \neg  y )  ) ) = (\neg  x \vee z) \wedge (\neg  y \vee z ) \wedge (\neg  z \vee x ) \wedge (\neg  y \vee x ) \wedge(\neg  z\vee y )\wedge (\neg  x\vee y )$
-      
-    \item $z \iff( x \iff y ) =  \neg ( z \vee ( x \iff y ) ) \vee (z \wedge ( x \iff y ) = \neg ( z \vee (\neg  x \wedge \neg  y) \vee (x \wedge y)) \vee (z \wedge(\neg  x \wedge \neg  y) \vee (x \wedge y))  )=(\neg  z \wedge \neg  (\neg  x \wedge \neg  y) \wedge \neg  (x \wedge y)) \vee (z \wedge(\neg  x \wedge \neg  y) \vee (x \wedge y))  )=(\neg  z \wedge  (x \vee  y) \wedge (\neg  x \vee \neg  y)) \vee (z \wedge(\neg  x \wedge \neg  y) \vee (x \wedge y))  )=z \vee ( \neg  x \wedge \neg  y) = (\neg x \vee \neg y \vee z) \wedge (\neg x \vee \neg z \vee y) \wedge (y \vee z \vee x) \wedge (y \vee \neg y \vee x) \wedge (\neg z \vee z \vee x) \wedge (\neg z \vee \neg y \vee x)$
-      
-    \item $z \iff( x \oplus y ) =  z \iff(\neg  x \iff y )  $	
-
-    \end{itemize}
-    In the last item we use the third one.
-    
-  \end{proof}
-
-  The fact that they are reachable on polynomial time is important because it means it could be done efficiently. Should this be impossible it will not be of much relevance in practice, as we yearn to solve this problem as efficient as possible (in fact, as polynomial as possible). This result implies that if we know how to solve $3$-SAT we know how to solve GSAT.
-
-
-  \subsection{Tautologies}
-
-  \begin{definition}
-    A formula $F$ such that for every assignment  $\alpha$  happens that $F\alpha=1$ is a tautology. Given two formulas $G,F$ it is said that $G$ follows from $F$ if $F\to G$ is a tautology. 
-  \end{definition}
-
-  \begin{proposition}
-    Given a tautology $F \to G$, there exists a formula $I$ such that $Var(I) = Var(F)\cap Var(G)$ and both $F\to I$ and $I \to G$ are tautologies. A polynomial algorithm to solve this problem is not known. 
-  \end{proposition}
-
-  \begin{proof} Let $\{x_1,...,x_k\} = Var(F)\cup Var(G)$ then we will build $I$ by defining its truth table in the following way: Given an assignment $\alpha$:
-    \[   
-      I\alpha = 
-      \begin{cases}
-        1&\quad\text{if $\alpha$ could be extended to an assignment that \emph{satisfies} $F$}, \\
-        0&\quad\text{if $\alpha$ could be extended to an assignment that \emph{nullifies} $G$},\\
-        * &\quad\text{otherwise.} \\ 
-      \end{cases}
-    \]
-
-    Where * mean that it could be either 0 or 1.  This is well defined because if for an arbitrary $\alpha$ it happens that $G\alpha = 0$ then $F\alpha = 0$.
-
-    For every assignment $\beta$ such that $Var(\beta) = Var(F)\cup Var(G)$ then if $\beta(F) = 1$ then $\beta(I) = 1$ so $F \to I$  is a tautology. Similarly it can not happen that $I\beta = 1 $ and $G\beta = 0$, because the second will imply that   $I\beta = 0$.\\
-
-    For the last part we will refer to the paper on the topic by: \red{TODO}
-  \end{proof}
-
-  \subsection{From non-constructive to constructive}
-  \label{sub:fromnon}
-  This subsection we explain how a constructive SAT-solver can be made from a non-constructive SAT-solver without changing is asymptotic time complexity, assuming true the exponential time hypothesis[\ref{hyp:exponential_time}]
-
-  \begin{proposition}
-    Let $\phi$ be an oracle that decides SAT in $O(\varphi(n+m))$ where $n$ is the number of variables and $m$ the number of clauses. Then we can make an algorithm  that computes FSAT on $O((n(\varphi(n+m))+m)$ 
-  \end{proposition}
-  \begin{proof}
-    We will iteratively expand a partial assignment $\alpha$. $\alpha$ initially maps all variables to $\upsilon$. The procedure take as input a CNF formula $F$. The algorithm that solve FSAT is described in [\ref{alg:constructive}]. It is based in the notion that, if  $F$ is satisfiable, either $F\{x=1\}$ or $F\{x=0\}$ is satisfiable. We are able to explore the variable lineally being sure that we are always assigning the correct value to each variable. 
-
-    
-    \begin{algorithm}
-  \caption{FSAT routine}\label{alg:constructive}
-  \begin{algorithmic}[1]
-
-    
-  \Procedure{Solver}{$F$}
-  \State $F_0 \gets F$
-  \State $\alpha \gets$ empty partial assignment.
-  \State
-    \For{$x\in Var(F)$}
-    \If{$\phi(F_0\{x=1\})$}
-    \State $\alpha += \{x = 1\}$
-    \State $F_0 \gets F_0\{x=1\}$
-    \Else \If{$\phi(F_0\{x=0\})$} 
-    \State $\alpha += \{x = 0\}$
-    \State $F_0 \gets F_0\{x=0\}$
-    \Else
-    \State \Retun Unsatisfiable
-    \EndIf
-    \EndIf
-    \EndFor
-    \State \Return $\alpha$
-  \end{algorithmic}
-\end{algorithm}
-
-Let's analyze the complexity of this algorithm. We make at most $n$ repetitions of the for loop, and on each repetition we call $\phi$ and assign a variable in a formula.Therefore the procedure run in $O(n\varphi(n+m)+m)$
-\end{proof}
-
-Assuming ETH we assume that $\phi$ is exponential in time, an therefore asymptotic complexity $O(\varphi(n+m))$ is the same as $O(n(\varphi(n+m)+m))$, so, until $ETH$ is proved wrong we can consider SAT and FSAT as being equal in complexity. On this text we will only deal with non-constructive  solver on the combinatorics section[\ref{sec:combu}].
-
-
 
