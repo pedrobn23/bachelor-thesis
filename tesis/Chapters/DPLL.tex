@@ -207,7 +207,7 @@ The first UIP tend to produce smaller clauses and experimental results \cite{tic
 \section{Other complete algorithms}
 
 \subsection{Monien-Speckenmeyer (MS) Algorithm}
-
+\label{alg:MS}
 This algorithm is a variation of the DPLL-Shortest Clause algorithm, specifying that once you choose the shortest clause, all variables you choose should be from that clause until you satisfy it, as it will continue to be the shortest given that there is no clause with repeated literals as well as no clause that is a tautology. This algorithm (DPLLSC) on $k$-SAT generates a recursion such that $T(n) = \sum_{i=1}^kT(n-i)$. Under the hypothesis that MS does not has a under-exponential worst case complexity, then $T(n) = a^n$ for some $a \in (1,\infty)$.  Then
 
 $$a^k = \sum_{i=1}^kT(i) = \frac{1-a^k}{1-a}$$

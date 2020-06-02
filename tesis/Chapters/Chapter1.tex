@@ -35,7 +35,7 @@ In this chapter we present the bases of Logic and formal languages. Logic will p
 
 The same way I started my journey on the university, we could have started this text right from the axioms, making a really romantic thesis. Nonetheless, given the goal we want to achieve, it seems excessive. We will refer to the commonly used \emph{Zermelo-Fraenkel axioms}, in order to have a point of reference, and therefore we will work without more considerations with sets and sets operations. We will put \emph{Zorn's lemma} to work, so the axiom of choice will also be needed, although in practice we will only work with finite sets of formulas.\\
 
-Further on this section we will present Boolean Algebra in a classic lattice-based way that could be found in related literature. In particular we follow Introduction to mathematics of satisfiability\cite{marek2009introduction} for the definition of Booblean Algebra and Propositional Logic.
+Further on this section we will present Boolean Algebra in a classic lattice-based way that could be found in related literature. In particular we follow Introduction to mathematics of satisfiability\cite{marek2009introduction} for the definition of Booblean Algebra and Propositional Logic. The definition of Lattice of Partitions is adapted from \cite{sakallah2009symmetry}
 
 \begin{definition}
   A partial ordered set, also poset, is a pair $\{X, \le\}$ where $X$ is a set and $\le$ is a partial order of $X$. A chain $Y$ of $\{X, \le\}$ is a subset of $X$ where $\le$ is a total order. 
@@ -89,7 +89,30 @@ With the concept of lattice just included, we present the \emph{Knaster and Tars
 \end{definition}
 
 
+\begin{definition}[Lattice of Partitions]
+Given a set $X\ne \emptyset$, we denote as $\mathcal{P}(X)$ the partitions of $X$. Let $\pi,\pi'\in \mathcal{P}(X)$. We say that $\pi\le_{\mathcal{P}}\pi'$ if for every $A\in \pi$ there exists $b\in \pi'$ such that $A\subset B$. The \emph{lattice of partitions} of $X$ is the lattice $\{\mathcal{P}(X),\le_{\mathcal{P}}\}$.
+\end{definition}
 
+For example given the lattice $\{\mathcal{P}(\{1,2,3,4\}),\le_{\mathcal{P}}\}$ and the two partitions:
+
+\begin{equation}
+    \begin{split}
+      \pi_1 & = \{\{1,2\},\{3,4\}\}\\
+      \pi_2 & = \{\{1,2,3\},\{4\}\}
+\end{split}
+\end{equation}
+
+We have that:
+\begin{equation}
+    \begin{split}
+      \pi_1\land\pi_2 & = \{\{1,2\},\{3\},\{4\}\}\\
+      \pi_1\lor\pi_2 & = \{\{1,2,3,4\}\}
+\end{split}
+\end{equation}
+
+
+
+  
 \section{Propositional Logic}
 Propositional logic is the framework that will allow us define the main topics of this text.  Let's define some concepts:
 \begin{itemize}
@@ -240,9 +263,25 @@ The interest of Lindenbaum algebra resides in the fact that $\{Form, \vee,\wedge
 
 \section{Modal Logic}
 
+\section{Satisfiability Problem}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \chapter{Definition of the problem}
-\section{Decision Problems}
+\section{Satisfiability Problem}
+\subsection{Decision Problems}
 Computability and complexity theory attempt to answer questions regarding how to efficiently solve real-world problems. In this section we provide a formal approach to the concept of problem, and its resolution.\\
 
 We will study the complexity of functions. In order to standardize the approach we code the input of the function and the output of the functions using words over a finite alphabet. As for every finite alphabet $A$ there is a bijective mapping from $A^*$ to $\{0,1\}^*$ we can assume when its convenient that the alphabet is $\{0,1\}$. With this convention we are now ready to define what is a decision problem.
@@ -254,7 +293,7 @@ We will study the complexity of functions. In order to standardize the approach 
 
 When we have a named language, we refer indistinctly by this name to both the language and the associated decision problem. In order to define a decision problem is only needed to define a language over an alphabet. Therefore a decision problem may be defined implicitly, that is, as the set of the words in an alphabet that satisfy some condition. As semantics provide meaning to the languages, real world problems can be addressed as decision problems.
 
-\section{Satisfiability Problem}
+
 \subsection{Definition}
 
 Given the previous definitions, we are now almost prepared to define the central part of this thesis: the satisfiability decision problem of propositional logic, SAT for short. To this end we define a special subset of formulas in Propositional Logic: the formulas in Conjunctive Normal Form.
@@ -277,7 +316,7 @@ We will refer with the acronym $SAT$ to both the language and the associated dec
   A \emph{SAT-Solver} is an algorithm that, being given a formula $F$ in \emph{CNF} as input, answer whether or not is satisfiable.
 \end{definition}
 
-On chapter[\ref{chap:2}] we analyze the main SAT-solver developed in the literature. We will differentiate two types of SAT-Solver. The algorithms that, given enough time always output the correct result at the end are called \emph{complete}. The SAT-solvers that doesn't guaranty its result are called \emph{incomplete}. Of particular interest among incomplete SAT-solvers are the one-sided bounded error SAT-solvers. These are the called probabilistic algorithms, discussed on section\ref{sec:prob}   
+On chapter[\ref{chap:2}] we analyze the main SAT-solver developed in the literature. We will differentiate two types of SAT-Solver. The algorithms that, given enough time always output the correct result at the end are called \emph{complete}. The SAT-solvers that doesn't guaranty its result are called \emph{incomplete}. Of particular interest among incomplete SAT-solvers are the one-sided bounded error SAT-solvers. These are the called probabilistic algorithms, discussed on section[\ref{sec:prob}]
 
 
 \subsection{Variations}
@@ -372,7 +411,54 @@ Therefore the CSP problem is solvable, if and only if, the SAT problem is satisf
 
 In practice we will use CSP as a methodology of problem defining. It will provide easy solutions for complex problem, given that we solve SAT problem. More on this will be shown on [\ref{chap:3}]
 
+\section{Some Properties about SAT}
+In this section we explain some concepts of SAT that are interesting on that they have beautiful maths theories related and can be useful on resolving and analyzing complexity. In particular we will talk about:
+\begin{itemize}
+\item Symmetric Clauses. 
+\item Autarks assignments.
+\end{itemize}
 
+The first of them are useful when modelling a problem in order to generate SAT problems on which we can work more efficiently. Then second of them is an useful technique that is used extensively on SAT solvers.
+\subsection{Symmetry}
+
+In this section we talk about symmetry groups and its application to SAT. The information and examples resemble the ones in \cite{sakallah2009symmetry}. We will start this section with a motivating example.
+\begin{itemize}
+ \item[Start of example]
+Consider the boolean formula:
+
+$$ F = (\neg a \land b  \land c) \lor (a \land \neg b \land c)$$
+
+It is not difficult to see that this functions remains invariant under some variations, namely:
+
+\begin{itemize}
+\item The trivial variation: the identity. For the example, we will denote this transformation by  $I$.
+
+\item Swapping the inputs of $a$ and $b$. It is equivalent to renaming $a$ as $b$ and $b$ as $a$. For the example, we will denote this transformation as $\alpha$: 
+  $$\alpha(F) = (\neg b \land a  \land c) \lor (b \land \neg a \land c) = (\neg a \land b  \land c) \lor (a \land \neg b \land c) = F$$
+\item Swapping the inputs of $a$ and $\neg b$. It is equivalent to renaming $a$ as $\neg b$ and $b$ as $\neg a$. For the example, we will denote this transformation as $\beta$: 
+  $$\beta(F) = (\neg \neg b \land \neg a  \land c) \lor (\neg b \land \neg \neg a \land c) = (\neg a \land b  \land c) \lor (a \land \neg b \land c) = F$$
+
+\item Swapping $a$ with $\neg a$ and $b$ with $\neg b$. For the example, we will denote this transformation as $\gamma$: 
+  $$\gamma(F) = (\neg \neg a \land \neg b  \land c) \lor (\neg a \land \neg \neg b \land c) = (\neg a \land b  \land c) \lor (a \land \neg b \land c) = F$$
+\end{itemize}
+
+With these three invariants we can also see that the composition of each one of these invariants with each other produce another invariant. Moreover, each invariant is its own inverse, as $\varphi \circ \varphi = I $ for $\varphi \in \{I, \alpha, \beta, \gamma\}$.\\
+
+We can see therefore that by invariant $\gamma$, it does not matter what value does we assign to $a$, as either both $F\{a = 1\}$ and $F\{a=0\}$ are satisfiable or none are. Therefore we can solve$F\{a=1\}$, and we have a simplified problem to examine. For the record, the formula is not satisfiable.
+\item[End of example]
+
+  This is what is called \emph{symmetry breaking}. And avid reader would have already recognized the group structure on the invariants.  On this section we are going to explore the concepts related to define a symmetry, explore the group of negations and permutations, and develop some strategies to implement \emph{symmetry breaking}.
+
+  \begin{definition}
+    Given a set of variables $X = \{x_1,...,x_n\}$, a \emph{permutation} is any  an injective mapping $\alpha:X \to X$. Each permutation induces a homonym function on $\alpha: Form_X \to Form_X}$ that replaces every variable by its image by $\alpha$. 
+    \begin{definition}
+
+      For example given $X = \{a\}$, $$
+  
+
+
+  
+\end{itemize}
 \subsection{Autarks assignments}
 \label{sec:autark}
 
@@ -392,14 +478,17 @@ Should it happen that we have an algorithm for the Autarks Finding Problem, iter
   $$R = \{(F,\alpha): F \in CNF\wedge \forall C \in F( Var(C)\cap Var(\alpha)\ne\emptyset \implies C\alpha=1 )\}$$
 \end{definition}
 
-\begin{proposition} There is a reduction from FSAT to the Autark-Finding problem.
-  \begin{proof} Suppose that an algorithm such that if it exists any autark it return one of them, and end with an error code otherwise is given.  \\
+\begin{proposition}
+  There is a reduction from FSAT to the Autark-Finding problem.
+\end{proposition}
+\begin{proof} Suppose that an algorithm such that if it exists any autark it return one of them, and end with an error code otherwise is given.  \\
 
     Given a formula $F$, if there is not an autark then there is no solution for the SAT problem. If it finds an Autark-assignment $\alpha$ then we apply the same algorithm to $\alpha(F)$. Also, as it happens that $|Var(\alpha(F))|<|Var(F)|$ so we would only apply the algorithm finitely many times. Also, $F$ will be solvable if, and only if, $F\alpha$ is solvable.
-  \end{proof}
-  
-\end{proposition}
+\end{proof}
 
+
+The most common autark assignment are the pure literal. A literal $l$ is a pure literal for a formula $F$ if there is no $\neg l$ in $F$. The partial-assignment that only maps $u\to 1$ is an autark assignment for $F$. This type of autark are used on DPLL algorithm[\ref{sec:dpll}]. The MS algorithm[\ref{alg:MS}] also uses an autark finding technique
+. 
 
 \chapter{Complexity Classes and Relevance of the Problem}
 \section{Models of Computation}
@@ -598,7 +687,7 @@ Now that we are able to talk about efficiency is time to talk about an interesti
     Let $\phi$ be an oracle that decides SAT in $O(\varphi(n+m))$ where $n$ is the number of variables and $m$ the number of clauses. Then we can make an algorithm  that computes FSAT on $O((n(\varphi(n+m))+m)$ 
   \end{proposition}
   \begin{proof}
-    We will iteratively expand a partial assignment $\alpha$. $\alpha$ initially maps all variables to $\upsilon$. The procedure take as input a CNF formula $F$. The algorithm that solve FSAT is described in \ref{alg:constructive}. It is based in the notion that, if  $F$ is satisfiable, either $F\{x=1\}$ or $F\{x=0\}$ is satisfiable. We are able to explore the variable lineally being sure that we are always assigning the correct value to each variable. 
+    We will iteratively expand a partial assignment $\alpha$. $\alpha$ initially maps all variables to $\upsilon$. The procedure take as input a CNF formula $F$. The algorithm that solve FSAT is described in [\ref{alg:constructive}]. It is based in the notion that, if  $F$ is satisfiable, either $F\{x=1\}$ or $F\{x=0\}$ is satisfiable. We are able to explore the variable lineally being sure that we are always assigning the correct value to each variable. 
 
     
     \begin{algorithm}

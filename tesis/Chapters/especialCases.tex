@@ -16,10 +16,10 @@ A goal for a SAT-solver could be to find a backdoor of minimum size. DPLL would 
 
 Unit propagation is a simple concept that is worth standing out because it is commonplace. Given a CNF formula $F$ if there is a clause with only one element then the value of the variable should be assigned accordingly to the clause, otherwise $F$ is unsatisfiable. This lead to the unit propagation concept. Whenever we have a unitary clause $\{p\}$ we should \emph{resolve} it and start working with $F[p=1]$ being $[p=1]$ the assignment that maps the value of the metavariable $p$ to 1, which could possibly imply mapping a variable to $0$.  \\
 
-Also, the unit propagation might result on a recursive problem, as other unit clauses could appear. Unit propagation is a usefull way to find autark assignments. \\ 
+Also, the unit propagation might result on a recursive problem, as other unit clauses could appear. Unit propagation is a usefull way to simplify . \\ 
 
 
-Similar to this concept is the concept of pure literal. A literal $u$ is a pure literal for a formula $F$ if there is no $\neg u$ in $F$. The assignment that only maps $u\to 1$ is autark for $F$.
+
 
 
 
