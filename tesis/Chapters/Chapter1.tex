@@ -89,26 +89,26 @@ With the concept of lattice just included, we present the \emph{Knaster and Tars
 \end{definition}
 
 
-\begin{definition}[Lattice of Partitions]
-Given a set $X\ne \emptyset$, we denote as $\mathcal{P}(X)$ the partitions of $X$. Let $\pi,\pi'\in \mathcal{P}(X)$. We say that $\pi\le_{\mathcal{P}}\pi'$ if for every $A\in \pi$ there exists $b\in \pi'$ such that $A\subset B$. The \emph{lattice of partitions} of $X$ is the lattice $\{\mathcal{P}(X),\le_{\mathcal{P}}\}$.
-\end{definition}
+% \begin{definition}[Lattice of Partitions]
+% Given a set $X\ne \emptyset$, we denote as $\mathcal{P}(X)$ the partitions of $X$. Let $\pi,\pi'\in \mathcal{P}(X)$. We say that $\pi\le_{\mathcal{P}}\pi'$ if for every $A\in \pi$ there exists $b\in \pi'$ such that $A\subset B$. The \emph{lattice of partitions} of $X$ is the lattice $\{\mathcal{P}(X),\le_{\mathcal{P}}\}$.
+% \end{definition}
 
-For example given the lattice $\{\mathcal{P}(\{1,2,3,4\}),\le_{\mathcal{P}}\}$ and the two partitions:
+% For example given the lattice $\{\mathcal{P}(\{1,2,3,4\}),\le_{\mathcal{P}}\}$ and the two partitions:
 
-\begin{equation}
-    \begin{split}
-      \pi_1 & = \{\{1,2\},\{3,4\}\}\\
-      \pi_2 & = \{\{1,2,3\},\{4\}\}
-\end{split}
-\end{equation}
+% \begin{equation}
+%     \begin{split}
+%       \pi_1 & = \{\{1,2\},\{3,4\}\}\\
+%       \pi_2 & = \{\{1,2,3\},\{4\}\}
+% \end{split}
+% \end{equation}
 
-We have that:
-\begin{equation}
-    \begin{split}
-      \pi_1\land\pi_2 & = \{\{1,2\},\{3\},\{4\}\}\\
-      \pi_1\lor\pi_2 & = \{\{1,2,3,4\}\}
-\end{split}
-\end{equation}
+% We have that:
+% \begin{equation}
+%     \begin{split}
+%       \pi_1\land\pi_2 & = \{\{1,2\},\{3\},\{4\}\}\\
+%       \pi_1\lor\pi_2 & = \{\{1,2,3,4\}\}
+% \end{split}
+% \end{equation}
 
 
 
@@ -442,23 +442,59 @@ It is not difficult to see that this functions remains invariant under some vari
   $$\gamma(F) = (\neg \neg a \land \neg b  \land c) \lor (\neg a \land \neg \neg b \land c) = (\neg a \land b  \land c) \lor (a \land \neg b \land c) = F$$
 \end{itemize}
 
-With these three invariants we can also see that the composition of each one of these invariants with each other produce another invariant. Moreover, each invariant is its own inverse, as $\varphi \circ \varphi = I $ for $\varphi \in \{I, \alpha, \beta, \gamma\}$.\\
+With these three invariants we can also see that the composition of each one of these invariants with each other produce another invariant. Moreover, each invariant is its own inverse, as $\varphi \circ \varphi = I $ for $\varphi \in \{I, \alpha, \beta, \gamma\}$.
 
 We can see therefore that by invariant $\gamma$, it does not matter what value does we assign to $a$, as either both $F\{a = 1\}$ and $F\{a=0\}$ are satisfiable or none are. Therefore we can solve$F\{a=1\}$, and we have a simplified problem to examine. For the record, the formula is not satisfiable.
-\item[End of example]
-
+\item[End of example] 
+\end{itemize}
   This is what is called \emph{symmetry breaking}. And avid reader would have already recognized the group structure on the invariants.  On this section we are going to explore the concepts related to define a symmetry, explore the group of negations and permutations, and develop some strategies to implement \emph{symmetry breaking}.
 
-  \begin{definition}
-    Given a set of variables $X = \{x_1,...,x_n\}$, a \emph{permutation} is any  an injective mapping $\alpha:X \to X$. Each permutation induces a homonym function on $\alpha: Form_X \to Form_X}$ that replaces every variable by its image by $\alpha$. 
-    \begin{definition}
+\begin{definition}
+Let $F$ be a formula and $\phi$ be a function $\alpha:Form_{Var(F)}\to Form_{Var(F)}$. We say that $\phi$ is an invariant of $F$ if $\phi(F) = F$.
+\end{definition}
+    
+\begin{definition}[Permutation]
+    Given a set of variables $X = \{x_1,...,x_n\}$, a \emph{permutation} of $X$ is any injective mapping $\alpha:X \to X$. Each permutation induces a homonym function on $\alpha: Form_X \to Form_X}$ that replaces every variable by its image by $\alpha$.
+\end{definition}
 
-      For example given $X = \{a\}$, $$
+      For example given $X = \{a,b,c\}$, and a injective mapping $\alpha:X\to X$ such that: 
+  \begin{equation}
+     \begin{split}
+       \alpha(a) \to c,\\
+       \alpha(b) \to b,\\
+       \alpha(c) \to a.
+     \end{split}
+ \end{equation}
+
+ We have a function $\alpha :Form_{X}\to Form_{X}$ that maps $F = (\neg a \land b  \land c) \lor (a \land \neg b \land c)$ to $\alpha(F) = (\neg c \land b  \land a) \lor (c \land \neg b \land a)$.\\
+
+
+ We can see set of all permutations over a set $X$ such that $|X|=n$ along with composition is the \emph{permutation group} on $n$ elements. This group is studied in algebra, and is usually introduced as the group of mappings of $X=\{1,...,n\}$ and composition. Nonetheless we are more interested on calling those elements $\{x_1,...,x_n\}$ in order to have it frame on satisfiability. We can use this without more regards as the definition of the permutation group is element-free. As this is a well known group we will not prove that is, in fact, a group.\\
+
+
+\begin{definition}
+  Let $X$ be an non-empty set of variables. Given $A\subset X$ a negation of $A$ is a mapping $\sigma_{A}:Lit(X) \to Lit(X)$ defined by:
+  $$
+\sigma_{A}(x_{i})=
+\begin{cases}
+  \neg l & if l \in A,
+  l & \text{otherwise}.
+\end{cases}
+$$
+
+Where $Lit(X)$ is the set of literals over $X$. Each negation induces a homonym function $\sigma_{A}:Form_{X}\to Form_{X}$.
+\end{definition}
+
+\begin{proposition}
+  The set of negations over a set $X$ and composition is a group.
+\end{proposition}
+\begin{prove}
+  \begin{itemize}
+    \item 
+  \end{itemize}
   
+\end{prove}
 
-
-  
-\end{itemize}
 \subsection{Autarks assignments}
 \label{sec:autark}
 
