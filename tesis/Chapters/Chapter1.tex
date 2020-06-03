@@ -265,8 +265,6 @@ The interest of Lindenbaum algebra resides in the fact that $\{Form, \vee,\wedge
 
 \section{Modal Logic}
 
-\section{Satisfiability Problem}
-
 
 
 
@@ -357,7 +355,7 @@ As we will see, most SAT-solvers are FSAT-solvers. In related literature the FSA
 
 \subsection{Constraint Satisfaction Problem}
 
-We want to introduce the notion of Constraint Satisfaction Problem (CSP) because it defines a new optic over the SAT problem. CSP is, in fact, a generalization of SAT. On a CSP we want to find a solution among certain restriction. A example can of what is a CSP is watching film with your family. Each member impose its restrictions, and then we look for a film that satisfy them all. Should it happen that no film is found, we have a problem. This concept very naturally translates into propositional logic formulation, therefore giving propositional logic a greater area of work. Lets define CSP formally:
+We want to introduce the notion of Constraint Satisfaction Problem (CSP) because it defines a new optic over the SAT problem. CSP is, in fact, a generalization of SAT. When dealing with CSP problem we want to find a solution with certain restriction. A example of what is a CSP is watching film with your family: each member impose its restrictions, and then we look for a film that satisfy them all. Should it happen that no film is found, we have other type of problem. This concept naturally translates into propositional logic formulation. Lets define CSP formally:
 
 \begin{definition}[\cite{schoning2013satisfiability}]
   A \emph{Constraint Satisfaction Problem}(CSP) is a triple $\{X,D,C\}$ where:
@@ -422,7 +420,6 @@ In this section we explain some concepts of SAT that are interesting on that the
 
 The first of them are useful when modelling a problem in order to generate SAT problems on which we can work more efficiently. Then second of them is an useful technique that is used extensively on SAT solvers.
 \subsection{Symmetry}
-\subsubsection{Motivation}
 In this section we talk about symmetry groups and its application to SAT. The information and examples resemble the ones in \cite{sakallah2009symmetry}. We will start this section with a motivating example.
 \begin{itemize}
  \item[Start of example]
@@ -446,13 +443,11 @@ It is not difficult to see that this functions remains invariant under some vari
 
 With these three invariants we can also see that the composition of each one of these invariants with each other produce another invariant. Moreover, each invariant is its own inverse, as $\varphi \circ \varphi = I $ for $\varphi \in \{I, \alpha, \beta, \gamma\}$.
 
-We can see therefore that by invariant $\gamma$, it does not matter what value does we assign to $a$, as either both $F\{a = 1\}$ and $F\{a=0\}$ are satisfiable or none are. Therefore we can solve$F\{a=1\}$, and we have a simplified problem to examine. For the record, the formula is not satisfiable.
-\item[End of example] 
+We can see therefore that by invariant $\gamma$, it does not matter what value does we assign to $a$, as either both $F\{a = 1\}$ and $F\{a=0\}$ are satisfiable or none are. Therefore we can solve$F\{a=1\}$, and we have a simplified problem to examine. For the record, the formula is not satisfiable.\item[End of example] 
 \end{itemize}
 
 This is what is called \emph{symmetry breaking}. And avid reader would have already recognized the group structure on the invariants.  On this section we are going to explore the concepts related to define a symmetry, explore the group of negations and permutations, and develop some strategies to implement \emph{symmetry breaking}.  Now we are going to define a few concepts.
 
-\subsubsection{Definitions}
 
 \begin{definition}
 Let $F$ be a formula and $\phi$ be a function $\alpha:Form_{Var(F)}\to Form_{Var(F)}$. We say that $\phi$ is an invariant of $F$ if $\phi(F) = F$.
@@ -554,8 +549,6 @@ Note that the inverse property on groups and the two properties of group actions
 \end{proposition}
 
 
-
-\subsubsection{Symmetry detection}
 We are going to search symmetries a CNF formulas $F$. Until now we have a naive method in order to do this: for every $\phi \in NP_n$ check whether $\phi$ is an invariant of $F$. Nonetheless the complexity of this process is as hard as solving SAT. Instead, we will in fact reduce the problem of symmetries detection to a colored graph  automorphism problem[\ref{sec:complexity}].
 
 \begin{definition}

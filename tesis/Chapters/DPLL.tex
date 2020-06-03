@@ -10,7 +10,7 @@ We  will start with the approach based on the simple and well-known backtracking
 \begin{algorithm}
   \caption{Backtrack}\label{bt}
   \begin{algorithmic}[1]
-    \Procedure{backtracking}{$F$}
+    \Procedure{\texttt{backtracking}}{$F$}
     \If{$0 \in F$} \Return 0
     \EndIf
     \If{$F=1$} \Return 1
@@ -286,29 +286,43 @@ There is a natural way to generalize the idea of exploring all the space of assi
 We can note that the only important thing about $X$ on a covering code is the number of variables that it has. Therefore a covering code $(A,\delta)$ for $X=\{x_1,...,x_n\}$ is also, after a renaming, a covering code for $Y=\{y_1,...,y_n\}$, therefore we can consider that $A$ is a \emph{covering code of length} $n$. 
 
 
-\begin{lemma}
-For every $\epsilon > 0$ and $\delta \in (0, \frac{1}{2})$ there is a length $n_0$ so that there is a covering code $C_0 = (\{\alpha_i : 1\le i\le t\}, \delta n_0)$ of length $n_0$, with $t\le 2^{1-h(\delta)+\epsilon)n_0}$.
+\begin{lemma}[lemma 5.3\cite{schoning2013satisfiability}]
+For every $\epsilon > 0$ and $\delta \in (0, \frac{1}{2})$ there is a length $n_0$ so that there is a covering code $C_0 = (A=\{\alpha_i : 1\le i\le t\}, \delta n_0)$ of length $n_0$, with $t\le 2^{1-h(\delta)+\epsilon)n_0}$, where $h(\delta)$ is a  polynomial function on $\delta$.
 \end{lemma}
 
 \begin{proof}
-  As done with the LLL, we will prove this result with probabilistic existence. We fix a set of variables $X=\{ x_i : 1 \le i \le n\}$ choose $t$ random assignments over $x$. We will use a bit of new notation for this prove. We add a operator $\llbracket \cdot \rrbracket$ such that
+  As done with the LLL, we will prove this result with probabilistic existence. We fix a set of variables $X=\{ x_i : 1 \le i \le n\}$ choose $t$ random assignments over $x$ following a uniform distribution. 
 
   We are going to prove that
 
-  $$P(\exists \alpha_0 \forall i\in 1,...,t : d_\mathcal{H} (\alpha_0,\alpha_1)  > \delta n)$$.
+  $$P(\exists \alpha_0 \forall i\in 1,...,t : d_\mathcal{H} (\alpha_0,\alpha_1)  > \delta n) < 1.$$
 
   We can see that 
 
 \begin{equation}
 \begin{split}
-  P(\exists \alpha_0 \forall i\in 1,...,t : d_\mathcal{H} (\alpha_0,\alpha_1)  < \delta n)   \llbracket
+  P(\exists \alpha_0 \forall i\in 1,...,t : d_\mathcal{H} (\alpha_0,\alpha_1)  < \delta n)  & =  \sum_{\alpha_0\in A_{X} } \prod_{\alpha \in A} P(d_{\mathcal{H}} (\alpha_0,\alpha) > \delta n)\\
+  & =  \sum_{\alpha_0\in A_{X} } \prod_{\alpha \in A} \left ( 1-P(d_{\mathcal{H}} (\alpha_0,\alpha) \le \delta n) \right )\\
+  & =^{1.}  \sum_{\alpha_0\in A_{X} } \prod_{\alpha \in A} \left ( 1- \frac{\sum_{j=0}^{\delta n} {n\choose j}}{2^n} \right )\\
+  & =^{2.}  2^n \left ( 1- \frac{\sum_{j=0}^{\delta n} {n\choose j}}{2^n} \right )^t\\
+  & \le^{3.}  2^n  e^{-t \frac{\sum_{j=0}^{\delta n} {n\choose j}}{2^n}}\\
+  & =^{4.}  \left (\frac{2}{e}\right )^n  \to_{n\to \infty} 0. 
 \end{split}
 \end{equation}
 
+Where $A_{X}$ is the set of all two-valued assignments over $X$, 1. is because of results on binomials distribution, 2. is because the expresion is independent of eithet $\alpha_0$ and $\alpha$, 3. is because properties derived on the fact that $\lim (1-\frac{1}{n})^n \to e$ and 4. is because we have yet to define $t$ and we choose to define it as:
+$$ t = \frac{n2^n}{\sum_{j=0}^{\delta n} {n\choose j}}.$$
 
+As  $(\frac{2}{e}\right )^n  \to_{n\to \infty} 0 $ for some $n_0$ big enough we have that $P(\exists \alpha_0 \forall i\in 1,...,t : d_\mathcal{H} (\alpha_0,\alpha_1)  < \delta n) < 1$ and therefore there exists a covering on which  such $\alpha$ does not exists. To end the proof, we can also consider that 
+
+$$ t = \frac{n_02^n_0}{\sum_{j=0}^{\delta n_0} {n_0\choose j}} \le 2^{1-h(\delta)+\epsilon)n_0} ,$$
+
+for some polynomial function over $\delta$.
 
 \end{proof}
 
+Once we know that such covering exists we can look for it on a rather difficult task. It in fact does not matter because we only have to run the search the first time we will run the algorithm because we can store it an used when necessary.\\
+  
 \subsection{GRASP - Todavía sin rehacer }
 \label{sub:grasp}
 We present now one of the most cited algorithms.  GRASP(Generic seaRch Algorithm for the Satisfiability Problem) was introduced by Marques-Silva and Sakallah\cite{marques1999grasp} that works on CNF formulas. It is based on clause learning techniques, and unit propagation. It divides the search process in four parts:
