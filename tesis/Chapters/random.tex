@@ -160,7 +160,7 @@ This algorithm includes a preprocessing of the formula prior to the searching al
 \begin{algorithm}
   \caption{Resolve subroutine}\label{alg:resolve}
   \begin{algorithmic}[1]
-    \Procedure{Resolve}{$F, s$}
+    \Procedure{\texttt{Resolve}}{$F, s$}
     \State $F_s = F$
     \While{$F_s$ has a s-bounded pair $(C_1,C_2)$ with $R(C_1,C_2) \not \in F_s$}
     \State $F_s  = F_s \wedge R(C_1, C_2)$
@@ -168,9 +168,9 @@ This algorithm includes a preprocessing of the formula prior to the searching al
     \State \Return $F_s$
     \EndProcedure
     \State
-    \Procedure{ResolveSat}{$F, s, I$}
-    \State $F_s = Resolve(F,s)$
-    \State \Return $Search(F,s)$
+    \Procedure{\texttt{ResolveSat}}{$F, s, I$}
+    \State $F_s =$ \texttt{Resolve}$(F,s)$
+    \State \Return \texttt{Search}$(F,s)$
     \EndProcedure    
   \end{algorithmic}
 \end{algorithm}

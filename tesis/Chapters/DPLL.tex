@@ -34,7 +34,7 @@ An easy modification can be done to improve a little its efficiency in the conte
 This algorithm is an improvement of the backtracking algorithm, still really simple and prone to multiple modifications and improvements. 
 
 \begin{algorithm}
-  \caption{DPLL}\label{bt}
+  \caption{DPLL}\label{dpll}
   \begin{algorithmic}[1]
     \Procedure{DPLL}{$F$}
     \If{$0 \in F$} \Return 0
@@ -118,7 +118,7 @@ The implication graph  is the directed graph that has as nodes a pair with a var
   \end{itemize}
   We say that $x$ was assigned at \emph{decision level} $i$ if $x\in Var(F_{i-1})$ and $x \not\in F_i$. 
  \end{definition} 
- As we can see a decisión graph is dependent of the order on which the variables are assigned (should a decision be maked) and the value choosen for each variable when this decision happens.\\
+ As we can see a decision graph is dependent of the order on which the variables are assigned (should a decision be made) and the value chosen for each variable when this decision happens.\\
 
  We will show a little example in order to clarify this definition.
 \begin{itemize}
@@ -216,40 +216,100 @@ that solved in the equation $a^{k+1}+1 = 2a^k$. The difference between MS and DP
 
 
 \begin{algorithm}
-  \caption{DPLL}\label{bt}
+  \caption{Monien-Speckenmeyer}\label{MS}
   \begin{algorithmic}[1]
-    \Procedure{MS}{$F$}
+    \Procedure{\texttt{MS}}{$F$}
     \If{$0 \in F$} \Return 0
     \EndIf
     \If{$F=1$} \Return 1
     \EndIf
     \State
-    \If{$F$ contains a unit clause $\{p\}$} \Return $MS(F\{p=1\})$
+    \If{$F$ contains a unit clause $\{p\}$} \Return $MS(F\{p\to 1\})$
     \EndIf
-    \If{$F$ contains a pure literal u} \Return $MS(F\{u=1\}})$
+    \If{$F$ contains a pure literal l} \Return $MS(F\{l\to 1\}})$
   \EndIf
   \State Choose the shortest clause $C = \{u_1,...,u_m\}$
   \For{$i \in \{1,...,m\}$ }
-  \State $\alpha_1 := [u_1=0,...,u_{i-1}=0,u_i=1]$
-  \If{$\alpha_i$ is autark } \Return $ MS(F\alpha_i)$
+  \State $\alpha_1 := \{u_1\to 0,...,u_{i-1}\to 0,u_i\to 1\}$
+  \If{$\alpha_i$ is autark } \Return \texttt{MS}$(F\alpha_i)$
   \EndIf
   \EndFor
-  \If{$MS(F\{u_1=1\})$} \Return 1
+  \If{\texttt{MS}$(F\{u_1=1\})$} \Return 1
   \EndIf
   \State \Return $MS(F\{u_1=0\})$
 \end{algorithmic}
 \end{algorithm}
 
 
-Other version of the algorithm repeats the last for-loop  in the successive calls of $F$ (calling $MS(F\alpha_i)$). Nonetheless we consider that with a deterministic heuristic (that, for example, choose the first clause between the set of clauses with minimum size) the result is equivalent and this provide a simpler algorithm.\\
+Other version of the algorithm repeats the last for-loop  in the successive calls of $F$ (calling \texttt{MS}$(F\alpha_i)$). Nonetheless we consider that with a deterministic heuristic (that, for example, choose the first clause between the set of clauses with minimum size) the result is equivalent and this provide a simpler algorithm.\\
 
 For the $k$-SAT complexity analysis we have to consider whether or not an autark was found. If so, $T(n) \le T(n-1)$. Otherwise we are applying a non autark assignment that necessarily collide with a clause which size is at most $k-1$. Let us denote by $B(n)$ the number of recursive calls with n variables and under the hypothesis that there is a clause with at most $k-1$ variables. In this case $T(n) \le \sum_{i=1}^{k}B(n-i)$ and $B(n) \le \sum_{i=1}^{k-1}B(n-i)$. Both of these cases are worse than $T(n-1)$ so in order to study a worst case complexity we have to study the case when no autark is found. Under the hypothesis that $B(n) = a^n$ we get $a^k+1=2^{k-1}$. For $k=3$ we obtain $a=\frac{1 + \sqrt{5}}{2}$.
 
 
 
+\subsection{Deterministic Local Search}
+
+The local search procedure on sat context is the same as in other branches of computer science. The idea is that we start with an initial assignment $\alpha$ and search in the \emph{neighborhood} of $\alpha$ for a satisfying assignment, that is, those assignments that are close to $\alpha$ according to a distance $d$. 
+
+\begin{definition}
+  Let $\alpha$ and $\beta$ be assignments, we define the Hamming distance $d_\mathcal{H}$ as:
+  $$d_\mathcal{H}(\alpha,\beta) = \left |\{ x \in Var(\alpha) \cup \Var(\beta)\}\right : \alpha(x) \ne \beta(x) \}\right |$$
+  Note that in case that for every $y \in Var(\alpha) \backslash Var(\beta)$, we can  consider that $\alpha(y) = \upsilon$, and respectively with $\beta$.
+\end{definition}
+
+For every $\alpha$ we define its neighborhood as $D(\alpha,\delta) = \{\beta : d_\mathcal{H}(\alpha,\beta) \le \delta\}$. In order for this algorithm to work is necessary that $\delta > 0$ and is preferable that $\delta << |Var(\alpha) \cup Var(\beta)|$, in order to avoid doing a backtrack. The procedure determine whether or not there is a satisfying assignment for $F$ in $D(\alpha,\delta)$. The procedure take as input a CNF formula $F$, an assignment $\alpha$ and a positive integer $\delta$.
+
+\begin{algorithm}
+  \caption{Local Search\cite{schoning2013satisfiability}}\label{ds}
+  \begin{algorithmic}[1]
+    \Procedure{\texttt{LS}}{$F$, $\alpha$, $\delta$}
+    \If{$F\alpha=1$} \Return Satisfiable
+    \EndIf
+    \If{$\delta=0$} \Return Unsatisfiable 
+    \EndIf
+    \State Choose $C={l_1,...,l_n}\inF$ such that $C\alpha=0$
+  \For{$i \in \{1,...,n\}$ }
+  \State \Return \texttt{LS}($F$, $\alpha\circ\{l_1 \to 1\}$, $\delta$ -1)
+  \EndFor
+\end{algorithmic}
+\end{algorithm}
 
 
-\subsection{GRASP - Todavía sin rehacer}
+For 3-SAT the running time is $O(m3^\delta)$ where $m$ is the number of clauses. This technique is useful on formulas with a great density of satisfying assignments. Nonetheless, until now this is an incomplete algorithm. The strategy to prove incompleteness is the following. Let $F$ be a CNF formula, such that $Var(F)=\{x_1,...,x_n\}$ and consider $\delta = n//2+n\%2$ where // is the integer division and \% is the modulo, and $\alpha_a = \{x_1 \to a,...,x_n\to a\}$. Then by running \texttt{LS}($F,\alpha_0,\delta$) and \texttt{LS}($F,\alpha_1,\delta)$ we have a complete algorithm. The asymptotic complexity for this algorithm is $O(3^{n/2}) \approx O(2^{0.793n})$. Note that in this context we only work with two-valued assignment, as we are not dealing with partial assignments.\\
+
+There is a natural way to generalize the idea of exploring all the space of assignments by coordinates local searches, and that is the covering codes.
+
+\begin{definition}
+  Let $X$ be a set of variables and let $A = \{\alpha_i: 1 \le i \le n\}$ a set of two valued assignments over $X$, and $\delta$ be a positive integer. The pair $(A,\delta)$ is a \emph{covering code with Hamming radius} $\delta$ if for any  two-valued assignment  $\alpha$  over $X$, there exists $\alpha'\in A$ such that $d_\mathcal{H} (\alpha, \alpha') < \delta$.
+\end{definition}
+
+We can note that the only important thing about $X$ on a covering code is the number of variables that it has. Therefore a covering code $(A,\delta)$ for $X=\{x_1,...,x_n\}$ is also, after a renaming, a covering code for $Y=\{y_1,...,y_n\}$, therefore we can consider that $A$ is a \emph{covering code of length} $n$. 
+
+
+\begin{lemma}
+For every $\epsilon > 0$ and $\delta \in (0, \frac{1}{2})$ there is a length $n_0$ so that there is a covering code $C_0 = (\{\alpha_i : 1\le i\le t\}, \delta n_0)$ of length $n_0$, with $t\le 2^{1-h(\delta)+\epsilon)n_0}$.
+\end{lemma}
+
+\begin{proof}
+  As done with the LLL, we will prove this result with probabilistic existence. We fix a set of variables $X=\{ x_i : 1 \le i \le n\}$ choose $t$ random assignments over $x$. We will use a bit of new notation for this prove. We add a operator $\llbracket \cdot \rrbracket$ such that
+
+  We are going to prove that
+
+  $$P(\exists \alpha_0 \forall i\in 1,...,t : d_\mathcal{H} (\alpha_0,\alpha_1)  > \delta n)$$.
+
+  We can see that 
+
+\begin{equation}
+\begin{split}
+  P(\exists \alpha_0 \forall i\in 1,...,t : d_\mathcal{H} (\alpha_0,\alpha_1)  < \delta n)   \llbracket
+\end{split}
+\end{equation}
+
+
+
+\end{proof}
+
+\subsection{GRASP - Todavía sin rehacer }
 \label{sub:grasp}
 We present now one of the most cited algorithms.  GRASP(Generic seaRch Algorithm for the Satisfiability Problem) was introduced by Marques-Silva and Sakallah\cite{marques1999grasp} that works on CNF formulas. It is based on clause learning techniques, and unit propagation. It divides the search process in four parts:
 

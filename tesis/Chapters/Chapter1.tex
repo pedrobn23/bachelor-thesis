@@ -1,4 +1,4 @@
-% Chapter 1
+ç% Chapter 1
 
 \part{Satisfiability Problem: Definition and Relevance} % Main chapter title
 
@@ -525,6 +525,8 @@ We will denote the group of negations over $n$ variables as $N_n$.
 Note that due to the property aforementioned, $NP_n = P_nN_n$ and $P_n\cap N_n = I$. Therefore $NP_n$ is the semi direct product of $P_n$ and $N_n$.
 \end{proof}
 
+For us, a symmetry of a formula $F$ is any $\phi\in NP_{|Var(n)|}$ that is an invariant for $F$.
+
 \begin{definition}[Group Action]
   An \emph{action} of a group $G$ on a set $S$ is a map $G \times S \to S$ such that:
   \begin{itemize}
@@ -534,7 +536,7 @@ Note that due to the property aforementioned, $NP_n = P_nN_n$ and $P_n\cap N_n =
 \end{definition}
 
 
-The concept of group action is important because it induces a partition over the elements of a set. Partitions will be the tool necessary in order to find symmetries
+The concept of group action is important because it induces a partition over the elements of a set. Partitions will be the tool necessary in order to find symmetries.
 
 \begin{definition}[Group-Induced Equivalence Partition]
   Let $G$ be a group and $X$ be a set. The action of the group $G$ over $X$ induces an equivalence relation such that, for $x_1,x_2 \in X$:
@@ -562,7 +564,7 @@ We are going to search symmetries a CNF formulas $F$. Until now we have a naive 
   $$d(u,V_i) = d(v,V_i), \qquad  \forall u,v \in V_j,\ \forall i,j \in 1,...,n$$
 \end{definition}
 
-From every coloring $\pi$ of $G$ we can make a stable coloring $\pi'$ by iteratively splitting colors with different vertex degree. We can see that $\pi' \le_\mathcal{P} \pi$. If $\pi'$ is a discrete partition, i.e., $|\pi'| = |V|$,  $G$ has no symmetries beyond the identity. Otherwise we have some candidates for symmetry. 
+From every coloring $\pi$ of $G$ we can make a stable coloring $\pi'$ by iteratively splitting colors with different vertex degree. We can see that $\pi' \le_\mathcal{P} \pi$. If $\pi'$ is a discrete partition, i.e., $|\pi'| = |V|$,  $G$ has no symmetries beyond the identity. Otherwise we have some candidates for symmetry. \\
 
 
 
