@@ -33,17 +33,17 @@ In this chapter we present the bases of Logic and formal languages. Logic will p
 
 \section{Boolean Algebra}
 
-The same way I started my journey on the university, we could have started this text right from the axioms, making a really romantic thesis. Nonetheless, given the goal we want to achieve, it seems excessive. We will refer to the commonly used \emph{Zermelo-Fraenkel axioms}, in order to have a point of reference, and therefore we will work without more considerations with sets and sets operations. We will put \emph{Zorn's lemma} to work, so the axiom of choice will also be needed, although in practice we will only work with finite sets of formulas.\\
+The same way I started my journey on the university, we could have started this text right from the axioms, making a really romantic thesis. Nonetheless, given the goal we want to achieve, it seems excessive. We will refer to the commonly used \emph{Zermelo-Fraenkel axioms}, in order to have a point of reference, and therefore we will work without more considerations with sets and set operations. We will put \emph{Zorn's lemma} to work, so the axiom of choice will also be needed, although in practice we will only work with finite sets of formulas.\\
 
-Further on this section we will present Boolean Algebra in a classic lattice-based way that could be found in related literature. In particular we follow Introduction to mathematics of satisfiability\cite{marek2009introduction} for the definition of Booblean Algebra and Propositional Logic. The definition of Lattice of Partitions is adapted from \cite{sakallah2009symmetry}
+Further on this section we will present Boolean Algebra in a classic lattice-based way that could be found in related literature. In particular we follow Introduction to mathematics of satisfiability\cite{marek2009introduction} for the definition of Boolean Algebra and Propositional Logic. The definition of Lattice of Partitions is adapted from \cite{sakallah2009symmetry}
 
 \begin{definition}
   A partial ordered set, also poset, is a pair $\{X, \le\}$ where $X$ is a set and $\le$ is a partial order of $X$. A chain $Y$ of $\{X, \le\}$ is a subset of $X$ where $\le$ is a total order. 
 \end{definition}
 
-\begin{proposition}[Zorn lemma]
+\begin{theorem}[Zorn lemma]
   If every chain in a poset $\{X,\le\}$ is bounded, then $X$ possesses a maximal elements and for every $x\inX$ there is a maximal element $y$ such that $x\le y$.
-\end{proposition}
+\end{theorem}
 
 
 
@@ -55,11 +55,11 @@ Further on this section we will present Boolean Algebra in a classic lattice-bas
 \end{definition}
 
 
-  A lattice is complete if every subset has a unique largest element and a unique lowest element. A lattice is presented generally as a duple $\{L,\le\}$, a triple $\{X,\vee,\wedge\}$ and, whenever possible, is presented as a quintuple $\{X, \vee, \wedge, \top,\bot\}$ where $\top$ is the greatest element and $\bot$ the lowest element. A lattice is called distributive if $x\vee(y \wedge z) = (x\vee y) \wedge (x \vee z)$ and $x\wedge(y \vee z) = (x\wedge y) \vee (x \wedge z)$
+  A lattice is complete if every subset has an unique largest element and an unique lowest element. A lattice is presented generally as a duple $\{L,\le\}$, a triple $\{X,\vee,\wedge\}$ and, whenever possible, is presented as a quintuple $\{X, \vee, \wedge, \top,\bot\}$ where $\top$ is the greatest element and $\bot$ the lowest element. A lattice is called distributive if $x\vee(y \wedge z) = (x\vee y) \wedge (x \vee z)$ and $x\wedge(y \vee z) = (x\wedge y) \vee (x \wedge z)$
 
 
 
-With the concept of lattice just included, we present the \emph{Knaster and Tarski fixpoint theorem} fixpoint theorem. In order to do that we will introduce some notation. Given a function $f:\{L,\le\}\to \{L,\le\}$, a prefixpoint (resp. postfixpoint) is a point $x \in L$ such that $f(x) \le x$ (resp. $f(x) \ge x$). A fixpoint is a point that is both prefixpoint and postfixpoint. Note that, given that they exists, $\top$ and $bot$ are a prefixpoint and a postfixpoint of $f$ respectively.
+With the concept of lattice just included, we present the \emph{Knaster and Tarski fixpoint theorem} fixpoint theorem. In order to do that we will introduce some notation. Given a function $f:\{L,\le\}\to \{L,\le\}$, a prefixpoint (resp. postfixpoint) is a point $x \in L$ such that $f(x) \le x$ (resp. $f(x) \ge x$). A fixpoint is a point that is both prefixpoint and postfixpoint. Note that, given that they exists, $\top$ and $\bot$ are a prefixpoint and a postfixpoint of $f$ respectively.
 
 \begin{theorem}[Knaster and Tarski fixpoint theorem \cite{marek2009introduction}]
   Let $f:\{L,\le\}\to \{L,\le\}$ be a monotone function in a complete lattice. Then:
@@ -72,7 +72,7 @@ With the concept of lattice just included, we present the \emph{Knaster and Tars
   
   \begin{enumerate}
   \item We know that there is at least a prefixpoint. Let
-    $$l = \bigwedge_{\{x\in X: x\text{ is a prefixpoint}\}} x $$. 
+    $$l = \bigwedge_{\{x\in X: x\text{ is a prefixpoint}\}} x .$$ 
     Lets prove that $l$ is a fixpoint. Le $x$ be an arbitrary fixpoint, therefore, $l \le x \le f(x)$. Since $x$ was arbitrary, $f(l) \le l$. To show that it a fixpoint it suffices to see that $f(l)$ is a prefixpoint to, as $f$ is monotone.
   \item Apply the previous result on $f:\{L,\le\}\to \{L,\le\}$.
   \end{enumerate}
@@ -82,9 +82,9 @@ With the concept of lattice just included, we present the \emph{Knaster and Tars
 \begin{definition}
   A \emph{Boolean algebra} is a distributive lattice  $\{X, \vee, \wedge, \top,\bot\}$ with an additional operation $\neg$, called complement or negation, such that for all $x\inX$:
   \begin{enumerate}
-  \item $ x\wedge \neg x = \bot,\ x\vee \neg x = \top $
-  \item $ \neg(x \vee y) = \neg x \wedge \neg y,  \neg(x \wedge y) = \neg x \vee \neg y$
-  \item $\neg \neg x = x$
+  \item $ x\wedge \neg x = \bot,\ x\vee \neg x = \top $.
+  \item $ \neg(x \vee y) = \neg x \wedge \neg y,  \neg(x \wedge y) = \neg x \vee \neg y$.
+  \item $\neg \neg x = x$.
   \end{enumerate}
 \end{definition}
 
@@ -220,7 +220,7 @@ Note that we have a really restrictive constraint on assignments: they should ma
 \end{table}
 
 
-In practice partial assignments will be only define by denoting only the variables that are mapped to either 0 or 1. We can see that the composition of assignments (seen as functions over $Form_{var}$ is also a partial assignment. Also, when applying a partial assignment to a formula, instead of mapping it to $\upsilon$ we will avoid operating over the variables assigned to $\upsilon$. For example given a partial assignment $\alpha_0 = \{x_1 \to 1, x_2\to 1, x_3 \to 0\}$ and $F_0=x_1\to (x_2\wedge x_4)$ then  $F_0\alpha_0=1 \to (1\wedge x_4)= 1 \to (x_4)$. Although $F_0$ is mapped to another formula by $\alpha_0$, $\alpha_0$ is still providing a meaning to it (the unknown meaning). \\
+In practice partial assignments will be only define by denoting only the variables that are mapped to either 0 or 1. We can see that the composition of assignments (seen as functions over $Form_{var}$) is also a partial assignment. Also, when applying a partial assignment to a formula, instead of mapping it to $\upsilon$ we will avoid operating over the variables assigned to $\upsilon$. For example given a partial assignment $\alpha_0 = \{x_1 \to 1, x_2\to 1, x_3 \to 0\}$ and $F_0=x_1\to (x_2\wedge x_4)$ then  $F_0\alpha_0=1 \to (1\wedge x_4)= 1 \to (x_4)$. Although $F_0$ is mapped to another formula by $\alpha_0$, $\alpha_0$ is still providing a meaning to it (the unknown meaning). \\
 
 
 
@@ -235,9 +235,9 @@ $$
 \end{cases}
 $$
 
-We can see that $\alpha_2$ expands $\alpha_1$ in the sense that the truth value assigned to a formula by $\alpha_1$ holds in $\alpha_2$ if it where different that unknown. Therefore we are expanding the 'known' values of the formulas. Note that in the definition of $\alpha_1$ it where not necessary to state what variables were mapped to $\upsilon$ at it was implicit that every variable not listed were of unknown  value.\\
+We can see that $\alpha_2$ expands $\alpha_1$ in the sense that the truth value assigned to a formula by $\alpha_1$ holds in $\alpha_2$ if it were different that unknown. Therefore we are expanding the 'known' values of the formulas. Note that in the definition of $\alpha_1$ it were not necessary to state what variables were mapped to $\upsilon$ at it was implicit that every variable not listed were of unknown  value.\\
 
-In practice we will try to avoid refer to this process whenever is evidently enough what is being done. Nonetheless partial assignments will be a central part of later explained algorithms such as DPLL[\ref{sec:dpll}]. When context is clear enough, assignments will be used for both assignments and partial assignments.\\
+In practice we will try to avoid refer to this process whenever is evidently enough what is being done. Nonetheless partial assignments will be a central part of algorithms such as DPLL[\ref{sec:dpll}]. When context is clear enough, assignments will be used for both assignments and partial assignments.\\
 
 Arguably, the most special case of partial assignment are autarks assignments[\ref{sec:autark}]. An autark assignment is a partial assignment that simplify a formula in a sense latter explained.\\
 
@@ -257,7 +257,7 @@ With $\sim$ defined we can have what is called a \emph{Lindenbaum algebra}, as a
 \item $ [\phi_1] \wedge [\phi_2]= [\phi_1 \wedge \phi_2]$
 \end{itemize}
 
-The interest of Lindenbaum algebra resides in the fact that $\{Form, \vee,\wedge,[1],[0]\}$ is a Boolean algebra, providing therefore a nexus between the algebraic formulation of the problem an its semantics.
+The interest of Lindenbaum algebra resides in the fact that $\{Form/\sim, \vee,\wedge,[1],[0]\}$ is a Boolean algebra, providing therefore a nexus between the algebraic formulation of the problem an its semantics.
 
 
 
@@ -282,16 +282,16 @@ The interest of Lindenbaum algebra resides in the fact that $\{Form, \vee,\wedge
 \chapter{Definition of the problem}
 \section{Satisfiability Problem}
 \subsection{Decision Problems}
-Computability and complexity theory attempt to answer questions regarding how to efficiently solve real-world problems. In this section we provide a formal approach to the concept of problem, and its resolution.\\
+Computability and complexity theory attempts to answer questions regarding how to solve real-world problems efficiently. In this subsection we provide a formal approach to the concept of problem, and its resolution.\\
 
-We will study the complexity of functions. In order to standardize the approach we code the input of the function and the output of the functions using words over a finite alphabet. As for every finite alphabet $A$ there is a bijective mapping from $A^*$ to $\{0,1\}^*$ we can assume when its convenient that the alphabet is $\{0,1\}$. With this convention we are now ready to define what is a decision problem.
+We will study the complexity of functions. In order to standardize the approach we code the input of the function and the output of the functions using words over a finite alphabet. As for every finite alphabet $A$ there is a bijective mapping from $A^*$ to $\{0,1\}^*$ we can assume when it is convenient that the alphabet is $\{0,1\}$. With this convention we are now ready to define what a decision problem is.
 
 \begin{definition}[Decision Problem\cite{arora2009computational}]
-  Given a language $L$ over an alphabet $A$, it has an associated decision problem that consist on, given a word $w\in A^*$ check whether $w$ is in $L$. 	
+  Given a language $L$ over an alphabet $A$, it has an associated decision problem that consists on, given a word $w\in A^*$ check whether $w$ is in $L$. 	
 \end{definition}
 
 
-When we have a named language, we refer indistinctly by this name to both the language and the associated decision problem. In order to define a decision problem is only needed to define a language over an alphabet. Therefore a decision problem may be defined implicitly, that is, as the set of the words in an alphabet that satisfy some condition. As semantics provide meaning to the languages, real world problems can be addressed as decision problems.
+When we have a named language, we refer indistinctly by this name to both the language and the associated decision problem. In order to define a decision problem it is only needed to define a language over an alphabet. Therefore a decision problem may be defined implicitly, that is, as the set of the words in an alphabet that satisfy some condition. As semantics provide meaning to the languages, real world problems can be addressed as decision problems.
 
 
 \subsection{Definition}
@@ -300,11 +300,11 @@ Given the previous definitions, we are now almost prepared to define the central
 
 \begin{definition}
   A formula $F$ is said to be in Conjunctive Normal Form ($CNF$) if $F$ is written as:
-  $$F = C_1\wedge ... \wedge C_n$$
+  $$F = C_1\wedge ... \wedge C_n.$$
   Where $C_i$  are clauses.
 \end{definition}
 
-Note that every formula in $CNF$ can be regarded as a set of clauses. This approach is really useful in some contexts and will be often used.
+Note that every formula in $CNF$ can be regarded as a set of clauses. This approach is really useful in some contexts and will be used continously on this text.
 
 \begin{definition}
   The Satisfiability Language of Propositional Logic (SAT) is the language over the alphabet of propositional logic that includes all formulas that are both satisfiable and in $CNF$.
@@ -346,16 +346,16 @@ Other variations of SAT could be achieved by generalizing the concept of decisio
 \end{definition}
 That is, is the problem of finding an assignment that satisfy a formula. Most of SAT-solvers not only try to solve SAT but also to solve FSAT, i.e., try to find an assignment that satisfy  the formula should it exists.
 \begin{definition}
-  Let $CNF$ be the set of propositional formulas in CNF and $B$ the set of assignments. The Maximum Satisfiability Problem (MAXSAT) is the problem. function problem defined by the relation $$R=\{(F,n) : F\in CNF, n = \max_{\alpha \in B}\{ | \{C\in F : C\alpha =1 \}| \}.$$
+  Let $CNF$ be the set of propositional formulas in CNF and $B$ the set of assignments. The Maximum Satisfiability Problem (MAXSAT) is the problem. function problem defined by the relation $$R=\{(F,n) : F\in CNF, n = \max_{\alpha \in B}\{ | \{C\in F : C\alpha =1 \}| \}\}.$$
 \end{definition}
 
 That is, is the problem of finding the maximum number of assignments that can be satisfied simultaneously.\\
 
-As we will see, most SAT-solvers are FSAT-solvers. In related literature the FSAT-solver are called constructive SAT-solvers, as they provide a constructive solution of the problem. Solvers that only solve sat are called non-constructive SAT-solvers. After presenting the concept of algorithmic complexity we will see that from a non constructive SAT-solver, a constructive SAT-solver can be made so that the latter is not much less efficient[\ref{sub:fromnon}].
+As we will see, most SAT-solvers are FSAT-solvers. In related literature the FSAT-solver are called constructive SAT-solvers, as they provide a constructive solution of the problem. Solvers that only solve SAT are called non-constructive SAT-solvers. After presenting the concept of algorithmic complexity we will see that from a non constructive SAT-solver, a constructive SAT-solver can be made so that the latter is not much less efficient[\ref{sub:fromnon}].
 
 \subsection{Constraint Satisfaction Problem}
 
-We want to introduce the notion of Constraint Satisfaction Problem (CSP) because it defines a new optic over the SAT problem. CSP is, in fact, a generalization of SAT. When dealing with CSP problem we want to find a solution with certain restriction. A example of what is a CSP is watching film with your family: each member impose its restrictions, and then we look for a film that satisfy them all. Should it happen that no film is found, we have other type of problem. This concept naturally translates into propositional logic formulation. Lets define CSP formally:
+We want to introduce the notion of Constraint Satisfaction Problem (CSP) because it defines a new optic over the SAT problem. CSP is, in fact, a generalization of SAT. When dealing with CSP problem we want to find a solution with certain restriction. A example of what is a CSP is watching film with your family: each member impose its restrictions, and then we look for a film that satisfiesx them all. Should it happen that no film is found, we have other type of problem. This concept naturally translates into propositional logic formulation. Lets define CSP formally:
 
 \begin{definition}[\cite{schoning2013satisfiability}]
   A \emph{Constraint Satisfaction Problem}(CSP) is a triple $\{X,D,C\}$ where:
@@ -364,8 +364,8 @@ We want to introduce the notion of Constraint Satisfaction Problem (CSP) because
   \item $D=\{D_1,...,D_n\}$ is the set of the domains. Each $D_i={d_{i,1},..,d_{i,n_i}}$ is the domain of the variable $x_i$.
   \item $C=\{C_1,...,C_m\}$ is the set of constraints over the variables. For our intentions, these constraints must be written as:
     \begin{itemize}
-    \item An equality, for example: $(x_i, x_j) = (d_{i,k}, d_{j,k'})$
-    \item An inequality, for example: $(x_i, x_j) \ne (d_{i,k}, d_{ºj,k'})$
+    \item An equality, for example: $(x_i, x_j) = (d_{i,k}, d_{j,k'})$.
+    \item An inequality, for example: $(x_i, x_j) \ne (d_{i,k}, d_{ºj,k'})$.
     \item Concatenation with a Propositional Logic operator of two equalities or inequalities, for example: $((x_1) = (d_{1,1}) \vee (x_2 \ne d_{2,5}) \wedge \neg((x_8,x_9) = (d_{8,3},d_{9,7}))$ .
     \end{itemize}
   \end{itemize}
@@ -387,7 +387,7 @@ SAT could be seen as a CSP where every domain is $\{0,1\}$ and each clause is a 
 \begin{proof}
   Let $ \{X,D,C\}$ be a CSP problem. To define a equivalent SAT problem we are going to define a SAT problem that can be solved if, and only if, the CSP problem can be solved. We will also request that from every assignment that satisfy the equivalent SAT problem, we can deduce an assignment that satisfy the CSP problem, and conversely. In order to define a SAT problem we are going to define a set of variable and a set of clauses to be satisfy.\\
 
-  Our set of variables consists on a variable $y_{i,j}$ for each variable $x_i\in X$, and each value $d_{i,j}\in D_i$ that represent whether or not $x_i = d_{i,j}$. Now we define the set of clauses. The first to group of clauses are added for consistency reason, and the later is added in order to maintain the constraints.
+  Our set of variables consists on a variable $y_{i,j}$ for each variable $x_i\in X$, and each value $d_{i,j}\in D_i$ that represent whether or not $x_i = d_{i,j}$. Now we define the set of clauses. The first to group of clauses are added for consistency reason, and the latter is added in order to maintain the constraints.
   \begin{enumerate}
   \item $(y_{i,1}\vee ... \vee y_{i,n_i})$ for all $i\in 1,...,n$ that represents that every variable should take a value.
   \item $(\neg y_{i,j} \vee \neg y_{i,j})$ for all $i\in 1,...,n,\ j\in 1,...,n_i$ that represents that a variable can not take more that one value.
@@ -401,7 +401,7 @@ SAT could be seen as a CSP where every domain is $\{0,1\}$ and each clause is a 
 $$
 \alpha(x_{i})=
 \begin{cases}
-  1 & \beta(x{i}) = d_{i,j}\\
+  1 & \beta(x_{i}) = d_{i,j}\\
   0 & \text{otherwise}.
 \end{cases}
 $$
@@ -409,7 +409,7 @@ $$
 Therefore the CSP problem is solvable, if and only if, the SAT problem is satisfiable, and given a satisfying assignment of either the SAT or CSP problem we know how to generate a satisfying assignment of the other problem.
 \end{proof}
 
-In practice we will use CSP as a methodology of problem defining. It will provide easy solutions for complex problem, given that we solve SAT problem. More on this will be shown on [\ref{chap:3}]
+In practice we will use CSP as a methodology for define problems. It will provide easy solutions for complex problems, given that we solve the SAT problem. More on this will be shown on [\ref{chap:3}].
 
 \section{Some Properties about SAT}
 In this section we explain some concepts of SAT that are interesting on that they have beautiful maths theories related and can be useful on resolving and analyzing complexity. In particular we will talk about:
@@ -569,7 +569,7 @@ Once we have defined what is a CNF formula and what is a problem we can proceed 
   An partial assignment $\alpha$ is called autark for a CNF formula $F$ if for every clause $C \in F$ it happens that if $Var(C) \cap Var(\alpha) \ne \emptyset $ then $C\alpha = 1$.
 \end{definition}
 
-An autark assignment $\alpha$  for a CNF formula $F$ is an assignment that satisfies all clauses that it 'touches'. These assignments provide simplifications of the CNF Formulas in the context of satisfiability, as they generate a new CNF formula $F\alpha$ that are satisfiable if, and only if,  $F$ is satisfiable. In set notation we can state that $\alpha$ is autark for $F$ if $F\alpha \subsetneq F$. Subsequently, trying to find simple autark assignment, i.e. assignment with not many variables,is a good praxis.\\
+An autark assignment $\alpha$  for a CNF formula $F$ is an assignment that satisfies all clauses that it 'touches'. These assignments provide simplifications of the CNF formulas in the context of satisfiability, as they generate a new CNF formula $F\alpha$ that are satisfiable if, and only if,  $F$ is satisfiable. In set notation we can state that $\alpha$ is autark for $F$ if $F\alpha \subsetneq F$. Subsequently, trying to find simple autark assignment, is a good praxis.\\
 
 
 Should it happen that we have an algorithm for the Autarks Finding Problem, iterating it, we could find a satisfying assignment of any given formula if it exists such assignment, therefore solving FSAT.  Let's define the problem formally:
@@ -584,7 +584,7 @@ Should it happen that we have an algorithm for the Autarks Finding Problem, iter
 \end{proposition}
 \begin{proof} Suppose that an algorithm such that if it exists any autark it return one of them, and end with an error code otherwise is given.  \\
 
-    Given a formula $F$, if there is not an autark then there is no solution for the SAT problem. If it finds an Autark-assignment $\alpha$ then we apply the same algorithm to $\alpha(F)$. Also, as it happens that $|Var(\alpha(F))|<|Var(F)|$ so we would only apply the algorithm finitely many times. Also, $F$ will be solvable if, and only if, $F\alpha$ is solvable.
+    Given a formula $F$, if there is not an autark then there is no solution for the SAT problem. If it finds an Autark-assignment $\alpha$ then we apply the same algorithm to $\alpha(F)$. Also, as it happens that $|Var(\alpha(F))|<|Var(F)|$ so we only apply the algorithm finitely many times. Also, $F$ will be solvable if, and only if, $F\alpha$ is solvable.
 \end{proof}
 
 

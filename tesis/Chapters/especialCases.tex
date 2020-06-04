@@ -7,7 +7,7 @@ In this section we will discuss some cases of the SAT problem solvable in P. The
   Let $F$ be a formula. A subset $ V \subset Var(F)$ is called a backdoor if $F\alpha \in \text{P}$ for every assignment $\alpha$ that maps all $V$.
 \end{definition}
 
-Let us explain this concept. Given a formula $F$ a backdoor is a expecial subset of the variables such that if all of it is assigned then we can solve the remaning formula in polynomial time, i.e., once we have assigned this variables the problem is easy. The trivial backdoor is the set of all variables. For a backdoor the smaller, the better.\\
+Let us explain this concept. Given a formula $F$ a backdoor is a expecial subset of the variables such that if all of it is assigned then we can solve the remaning formula in polynomial time, i.e., once we have assigned these variables the problem is easy. The trivial backdoor is the set of all variables. For a backdoor the smaller, the better.\\
 
 
 A goal for a SAT-solver could be to find a backdoor of minimum size. DPLL would try to search for a backdoor, using heuristics in order not to explore all subsets (only achievable if such backdoor exists).

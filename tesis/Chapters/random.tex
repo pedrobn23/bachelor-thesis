@@ -15,11 +15,10 @@ In this subsection we will present the PPZ algorithm and in the next subsection 
 
 To define the algorithms, we first define some subroutines. The first of them take a CNF formula $F$, an assignment $\alpha$ and a permutation $\pi$ and returns other assignment $u$.Note that in line 5 and 7 on the procedure \texttt{modify}[\ref{alg:modify}]is only checking whether or not we can unit propagate the variable $x_{\pi(i)}$. The algorithm \texttt{Search} is obtained by running \texttt{Modify} on many pairs $(\alpha, \pi)$ where $\alpha$ is a random assignment and $\pi$ a random permutation.\\ 
 
-
 \begin{algorithm}
   \caption{\texttt{Modify subroutine}}\label{alg:modify}
   \begin{algorithmic}[1]
-    \Procedure{Modify}{$\alpha, \pi$, $F$}
+    \Procedure{\texttt{Modify}}{$\alpha, \pi$, $F$}
     \State $F_0 \gets F$
     \State $u \gets$ empty partial assignment. 
     \State
@@ -32,12 +31,12 @@ To define the algorithms, we first define some subroutines. The first of them ta
     \State $u += \{x_{\pi(i)} = \alpha(x_{\pi(i)})\}$
     \EndIf
     \EndIf
+    \EndFor    
     \State $F_{i+1} = F_iu $
-    \EndFor
     \State \Return u
-    \EndProcedure
   \end{algorithmic}
 \end{algorithm}
+
 
 
 
@@ -47,7 +46,7 @@ This procedure is the named PPZ algorithm. As we can see is a pretty simple algo
 \begin{algorithm}
   \caption{\texttt{Search subroutine}}\label{search}
   \begin{algorithmic}[1]
-    \Procedure{Search}{$F$, $I$}
+    \Procedure{\texttt{Search}}{$F$, $I$}
     \For{$i \in \{0,...,I\}$}
     \State $\alpha\gets$   random assignment on $Var(F)$
     \State $\pi\gets$    random permutation on $1,...,|Var(F)|$
@@ -65,25 +64,25 @@ This procedure is the named PPZ algorithm. As we can see is a pretty simple algo
 
 
 
-Search always answers Unsatisfiable if $F$ is unsatisfiable. The only problem is to upper bound the error probability in the case that $F$ is unsatisfiable. In fact, we only have to to find $\tau(F)$: the probability that modify($F,\pi, \alpha$) find a satisfying assignment. The error probability  of search would be therefore $(1-\tau(F))^{I}$. As $1-x \le exp(-x)$ with $x \in [0,1]$ them $(1-\tau(F))^{I} \le exp(-I\tau(F))$, which is at most $exp(-n)$ where $n= |Var(F)|$ provided  $I>n/\tau(F)$ . it suffices to give good upper bounds on $\tau(F)$. In order to do that we will prove first two lemmas.\\
+\texttt{Search} always answers Unsatisfiable if $F$ is unsatisfiable. The only problem is to upper bound the error probability in the case that $F$ is unsatisfiable. In fact, we only have to to find $\tau(F)$: the probability that modify($F,\pi, \alpha$) find a satisfying assignment. The error probability  of search would be therefore $(1-\tau(F))^{I}$. As $1-x \le exp(-x)$ with $x \in [0,1]$ them $(1-\tau(F))^{I} \le exp(-I\tau(F))$, which is at most $exp(-n)$ where $n= |Var(F)|$ provided  $I>n/\tau(F)$ . it suffices to give good upper bounds on $\tau(F)$. In order to do that we will prove first two lemmas.\\
 
 To prove the first lemma we introduce some notation:
 
 \begin{definition}
-  A variable $x$ is forced for an assignment $\alpha$, a formula $F$ and a permutation $\pi$ if $x$ is unit propagated in the procedure Modify$(\alpha, \pi, F)$. $Forced(\alpha, \pi, F)$ is the set of all variables that are forced for $(\alpha, \pi, F)$
+  A variable $x$ is forced for an assignment $\alpha$, a formula $F$ and a permutation $\pi$ if $x$ is unit propagated in the procedure \texttt{Modify}$(\alpha, \pi, F)$. $Forced(\alpha, \pi, F)$ is the set of all variables that are forced for $(\alpha, \pi, F)$
 \end{definition}
 
-\begin{lemma} Let $z$ be a satisfying assignment of a CNF formula $G$, and let $\pi$ be a permutation of $\{1,...,n\}$ and $y$ be any assignment to the variables. Then, Modify($G,\pi,y$)=$z$ if and only if $y(x) = z(x)\ \  \forall x \in Var(G) \backslash \text{Forced}(z, \pi, G)$.
+\begin{lemma} Let $z$ be a satisfying assignment of a CNF formula $G$, and let $\pi$ be a permutation of $\{1,...,n\}$ and $y$ be any assignment to the variables. Then,  \texttt{Modify}($G,\pi,y$)=$z$ if and only if $y(x) = z(x)\ \  \forall x \in Var(G) \backslash \text{Forced}(z, \pi, G)$.
 \end{lemma}
 
 \begin{proof}
   
-  If $y(x) = z(x)\ \  \forall x \in Var(G) \backslash \text{Forced}(z, \pi, G)$ we prove that $u$ = $z$ where $u$ is the assignment provided by  Modify($i,\pi,F$). by induction on $i$.  $x_\{\pi(0)\}$ is forced only if $F$ has a unit clause on $x$, therefore either it is forced for all assignments or it is not forced for any of them. Otherwise $u(x_{\pi(0)}) = z(x_{\pi(0)})= y(x_{\pi(0)})$ Therefore $u(x_{\pi(0)}) = z(x_{\pi(0)})$. Let suppose that $u(x_{\pi(j)}) = z(x_{\pi(j)})$ for $j < i$. If the variable $x_{\pi(i)}$ is forced on $z$ it should be forced on $u$ to (and to the same value). Otherwise $u(x_{\pi(j)}) = z(x_{\pi(j)})= y(x_{\pi(j)})$. \\
+  If $y(x) = z(x)\ \  \forall x \in Var(G) \backslash \text{Forced}(z, \pi, G)$ we prove that $u$ = $z$ where $u$ is the assignment provided by  \texttt{Modify}($i,\pi,F$). by induction on $i$.  $x_\{\pi(0)\}$ is forced only if $F$ has a unit clause on $x$, therefore either it is forced for all assignments or it is not forced for any of them. Otherwise $u(x_{\pi(0)}) = z(x_{\pi(0)})= y(x_{\pi(0)})$ Therefore $u(x_{\pi(0)}) = z(x_{\pi(0)})$. Let suppose that $u(x_{\pi(j)}) = z(x_{\pi(j)})$ for $j < i$. If the variable $x_{\pi(i)}$ is forced on $z$ it should be forced on $u$ to (and to the same value). Otherwise $u(x_{\pi(j)}) = z(x_{\pi(j)})= y(x_{\pi(j)})$. \\
 
   Let $i$ be the first index such that $y(x_{\pi(i)})\ne z(x_{\pi(i)})$ with $x_{\pi(i)} \not \in \text{Forced}(z, \pi, G)$ therefore $u(x_{\pi(i)})=y(x_{\pi(i)})\ne z(x_{\pi(i)})$.
 \end{proof}
 
-Now, let $\tau(F,z)$ the probability that $Modify(\alpha,\pi,F)$ would return $z$ with random $\pi$ and $\alpha$. From the previous lemma:
+Now, let $\tau(F,z)$ the probability that \textt{Modify}$(\alpha,\pi,F)$ would return $z$ with random $\pi$ and $\alpha$. From the previous lemma:
 
 $$ \tau(F,z) = 2^{-n} \mathbb{E}_{\pi}[2^{|\text{Forced}(z, \pi, F)|}] \ge^{1.} 2^{-n +E_{\pi}[{|\text{Forced}(z, \pi, F)|}] }$$
 
@@ -128,7 +127,7 @@ Then we can think that it is unusual that it is easier to guess a satisfying ass
 \end{proof}
 
 
-Given a formula $F$ we will apply this lemma to the set $sat(F)$ of assignments that satisfy $F$, and obtain a family of $\{B_z : z \in sat(F)\}$. We will analyze the probability $\tau(F, z | B_z)$, that is, the probability of $Modify(y, \pi, F)$ returns $z$ given that $y \in B_z$. It is easy to follow that:
+Given a formula $F$ we will apply this lemma to the set $sat(F)$ of assignments that satisfy $F$, and obtain a family of $\{B_z : z \in sat(F)\}$. We will analyze the probability $\tau(F, z | B_z)$, that is, the probability of \texttt{Modify}$(y, \pi, F)$ returns $z$ given that $y \in B_z$. It is easy to follow that:
 
 
 
@@ -149,7 +148,7 @@ Therefore $P(v,z,F) \ge 1/k$ for $v\in N$. This is true because z is the unique 
 \end{theorem}
 
 
-With that we could analyze the complexity of this algorithm. Modify run on $O(nC)$ where $n$ is the number of variables and $C$ is the number of clauses (assign CNF-formula has a worst case of $C$).  Search run on $O(I\cdot O(\text{Modify}))$ supposing that we can get a random number in $O(1)$ and therefore a random assignment and a  random permutation on $O(n)$. As we will set $I> n/\tau(G,z|B)>n/\tau(F)$ we get a running time of $O(n\cdot C\cdot 2^{1-\frac{1}{k}n})$, with a one-sided error probability of $e^{-n}$ (0.049 for 3-SAT).
+With that we could analyze the complexity of this algorithm. \texttt{Modify} run on $O(nC)$ where $n$ is the number of variables and $C$ is the number of clauses (assign CNF-formula has a worst case of $C$).  \texttt{Search} run on $O(I\cdot O(\text{Modify}))$ supposing that we can get a random number in $O(1)$ and therefore a random assignment and a  random permutation on $O(n)$. As we will set $I> n/\tau(G,z|B)>n/\tau(F)$ we get a running time of $O(n\cdot C\cdot 2^{1-\frac{1}{k}n})$, with a one-sided error probability of $e^{-n}$ (0.049 for 3-SAT).
 
 
 \subsection{Paturi-Pudlák-Saks-Zane}
@@ -183,6 +182,8 @@ $$ \mu_k = \sum_{j=1}^\infty \frac{1}{j \left (j + \frac{1}{k-1}\right )}$$
   $$\tau(F_s) \ge 2^{-(1-\frac{\mu_k}{k-1})n-o(n)}$$
 
   Hence ResolveSat(F,s,I) with $I = 2^{+(1-\frac{\mu_k}{k-1})n+o(n)}$ has an error probability $o(1)$ and running time $2^{-(1-\frac{\mu_k}{k-1})n-o(n)$ on any satisfiable $k$-CNF formula, provided that $s(n)$ goes to infinity sufficiently slowly.
-\end{theorem}
+\end{theorem} 
 
 By slowly the theorem means that $s(n)$ diverge in $o(log(n))$. Also the term $o(n)$ can be reduced as wished.
+
+\section{Schöning WalkSAT algorithm}
