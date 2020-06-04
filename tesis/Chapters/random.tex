@@ -64,7 +64,7 @@ This procedure is the named PPZ algorithm. As we can see is a pretty simple algo
 
 
 
-\texttt{Search} always answers Unsatisfiable if $F$ is unsatisfiable. The only problem is to upper bound the error probability in the case that $F$ is unsatisfiable. In fact, we only have to to find $\tau(F)$: the probability that modify($F,\pi, \alpha$) find a satisfying assignment. The error probability  of search would be therefore $(1-\tau(F))^{I}$. As $1-x \le exp(-x)$ with $x \in [0,1]$ them $(1-\tau(F))^{I} \le exp(-I\tau(F))$, which is at most $exp(-n)$ where $n= |Var(F)|$ provided  $I>n/\tau(F)$ . it suffices to give good upper bounds on $\tau(F)$. In order to do that we will prove first two lemmas.\\
+\texttt{Search} always answers Unsatisfiable if $F$ is unsatisfiable. The only problem is to upper bound the error probability in the case that $F$ is unsatisfiable. In fact, we only have to to find $\tau(F)$: the probability that \texttt{Modify}($F,\pi, \alpha$) find a satisfying assignment. The error probability  of search would be therefore $(1-\tau(F))^{I}$. As $1-x \le exp(-x)$ with $x \in [0,1]$ them $(1-\tau(F))^{I} \le exp(-I\tau(F))$, which is at most $exp(-n)$ where $n= |Var(F)|$ provided  $I>n/\tau(F)$ . it suffices to give good upper bounds on $\tau(F)$. In order to do that we will prove first two lemmas.\\
 
 To prove the first lemma we introduce some notation:
 
@@ -153,8 +153,7 @@ With that we could analyze the complexity of this algorithm. \texttt{Modify} run
 
 \subsection{Paturi-Pudlák-Saks-Zane}
 
-This algorithm includes a preprocessing of the formula prior to the searching algorithm. This preprocessing will try to find isolated assignments improving its running time (or at least its complexity analysis). The preprocessing takea as input a CNF formula $F$ and a positive integer $I$. It uses the concept of resolution: should it happen that we have to clauses $C_1 = \{x_1,...,x_n\}$, $C_2 = \{y_1,...,y_{n'}\}$  such that $C_1,C_2 \in G$ and the literal $x_i = \neg y_j; \ i\in\{1,...,n\},\ j \in \{1,...,n'\} $ them we could generate a clause $C = R(C_1,C_2) = \{x_k : k \in\{1,...,n\}\backslash i\} \cup \{y_k : k \in\{1,...,n'\}\backslash j\}$ and the formula $F' = F \wedge C$ has the same satisfying assignment that $F$. A pair of clauses $(C_1,C_2)$ are said to be s-bounded if they are resolvable and $|C_1|,|C_2|, |R(C_1,C_2)| < s$.
-
+This algorithm includes a preprocessing of the formula prior to the searching algorithm. This preprocessing will try to find isolated assignments improving its running time (or at least its complexity analysis). The preprocessing takes as input a CNF formula $F$ and a positive integer $I$. It uses the concept of resolution: should it happen that we have to clauses $C_1 = \{x_1,...,x_n\}$, $C_2 = \{y_1,...,y_{n'}\}$  such that $C_1,C_2 \in G$ and the literal $x_i = \neg y_j; \ i\in\{1,...,n\},\ j \in \{1,...,n'\} $ them we could generate a clause $C = R(C_1,C_2) = \{x_k : k \in\{1,...,n\}\backslash i\} \cup \{y_k : k \in\{1,...,n'\}\backslash j\}$ and the formula $F' = F \wedge C$ has the same satisfying assignment that $F$. A pair of clauses $(C_1,C_2)$ are said to be s-bounded if they are resolvable and $|C_1|,|C_2|, |R(C_1,C_2)| < s$.
 
 \begin{algorithm}
   \caption{Resolve subroutine}\label{alg:resolve}
@@ -164,16 +163,16 @@ This algorithm includes a preprocessing of the formula prior to the searching al
     \While{$F_s$ has a s-bounded pair $(C_1,C_2)$ with $R(C_1,C_2) \not \in F_s$}
     \State $F_s  = F_s \wedge R(C_1, C_2)$
     \EndWhile
+    \State \Return Satisfiable
     \State \Return $F_s$
     \EndProcedure
     \State
     \Procedure{\texttt{ResolveSat}}{$F, s, I$}
     \State $F_s =$ \texttt{Resolve}$(F,s)$
     \State \Return \texttt{Search}$(F,s)$
-    \EndProcedure    
+
   \end{algorithmic}
 \end{algorithm}
-
 
 With this prepossessing added to the algorithm a better upper bound is proved. Defining
 $$ \mu_k = \sum_{j=1}^\infty \frac{1}{j \left (j + \frac{1}{k-1}\right )}$$
@@ -182,8 +181,28 @@ $$ \mu_k = \sum_{j=1}^\infty \frac{1}{j \left (j + \frac{1}{k-1}\right )}$$
   $$\tau(F_s) \ge 2^{-(1-\frac{\mu_k}{k-1})n-o(n)}$$
 
   Hence ResolveSat(F,s,I) with $I = 2^{+(1-\frac{\mu_k}{k-1})n+o(n)}$ has an error probability $o(1)$ and running time $2^{-(1-\frac{\mu_k}{k-1})n-o(n)$ on any satisfiable $k$-CNF formula, provided that $s(n)$ goes to infinity sufficiently slowly.
-\end{theorem} 
+  \end{theorem}  
 
 By slowly the theorem means that $s(n)$ diverge in $o(log(n))$. Also the term $o(n)$ can be reduced as wished.
 
-\section{Schöning WalkSAT algorithm}
+  \section{Schöning WalkSAT algorithm}
+
+  In this section we consider the Schöning WalkSAT algorithm, first introduced on 1998 \cite{schoning1999probabilistic}. At the time of publication provides the best complexity for 3-SAT, achieving $O(2^{1.334n})$, and it remained so until the Hertli result. It is also one of the most simple algorithms. The information presented here follows the discussion in the original paper \cite{schoning1999probabilistic} as well as the book \cite{schoning2013satisfiability}, also by Schöning himself.  Without further ado, we present the algorithm.
+  
+
+\begin{algorithm}
+  \caption{WalkSAT algorithm}\label{alg:ws}
+  \begin{algorithmic}[1]
+    \Procedure{\texttt{WalkSAT}}{$F, r$}
+    \State $n \gets |Var(F)|$
+    \For{$i \in 1,...,r$}   
+    \State $\alpha \gets $ random two-valued assignment on $Var(F)$
+    \If{\texttt{LS}($F, \alpha, n$) = Satisfiable} \Return Satisfiable 
+    \EndIf
+    \EndFor
+    \State \Return Unsatisfiable
+  \end{algorithmic}
+\end{algorithm}
+
+
+Note that we look in a Local Search with as many steps as the number of variables. this parameter, in the original paper, was set to $3n$, but it was later prove that $n$ is enough. This is not really important in terms of complexity, as a constant variation does not imply a difference on its big O complexity. Nonetheless is a sensible difference on running time on industrial applications. 
