@@ -1,4 +1,4 @@
-ç% Chapter 1
+% Chapter 1
 
 \part{Satisfiability Problem: Definition and Relevance} % Main chapter title
 
@@ -421,8 +421,7 @@ In this section we explain some concepts of SAT that are interesting on that the
 The first of them are useful when modelling a problem in order to generate SAT problems on which we can work more efficiently. Then second of them is an useful technique that is used extensively on SAT solvers.
 \subsection{Symmetry}
 In this section we talk about symmetry groups and its application to SAT. The information and examples resemble the ones in \cite{sakallah2009symmetry}. We will start this section with a motivating example.
-\begin{itemize}
- \item[Start of example]
+\begin{example}
 Consider the boolean formula:
 
 $$ F = (\neg a \land b  \land c) \lor (a \land \neg b \land c)$$
@@ -443,8 +442,8 @@ It is not difficult to see that this functions remains invariant under some vari
 
 With these three invariants we can also see that the composition of each one of these invariants with each other produce another invariant. Moreover, each invariant is its own inverse, as $\varphi \circ \varphi = I $ for $\varphi \in \{I, \alpha, \beta, \gamma\}$.
 
-We can see therefore that by invariant $\gamma$, it does not matter what value does we assign to $a$, as either both $F\{a = 1\}$ and $F\{a=0\}$ are satisfiable or none are. Therefore we can solve$F\{a=1\}$, and we have a simplified problem to examine. For the record, the formula is not satisfiable.\item[End of example] 
-\end{itemize}
+We can see therefore that by invariant $\gamma$, it does not matter what value does we assign to $a$, as either both $F\{a = 1\}$ and $F\{a=0\}$ are satisfiable or none are. Therefore we can solve$F\{a=1\}$, and we have a simplified problem to examine. For the record, the formula is not satisfiable.
+\end{example}
 
 This is what is called \emph{symmetry breaking}. And avid reader would have already recognized the group structure on the invariants.  On this section we are going to explore the concepts related to define a symmetry, explore the group of negations and permutations, and develop some strategies to implement \emph{symmetry breaking}.  Now we are going to define a few concepts.
 

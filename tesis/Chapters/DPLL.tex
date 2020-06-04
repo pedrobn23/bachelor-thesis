@@ -16,9 +16,9 @@ We  will start with the approach based on the simple and well-known backtracking
     \If{$F=1$} \Return 1
     \EndIf
     \State Choose $x \in Var(F)$
-    \If{$backtracking(F\{x=0\})$} \Return 1
+    \If{\texttt{backtracking}($F\{x=0\}$)} \Return 1
     \EndIf
-    \State \Return $backtracking(F\{x=1\})$
+    \State \Return \texttt{backtracking}($F\{x=1\}$)
   \end{algorithmic}
 \end{algorithm}
 
@@ -36,21 +36,21 @@ This algorithm is an improvement of the backtracking algorithm, still really sim
 \begin{algorithm}
   \caption{DPLL}\label{dpll}
   \begin{algorithmic}[1]
-    \Procedure{DPLL}{$F$}
+    \Procedure{\texttt{DPLL}}{$F$}
     \If{$0 \in F$} \Return 0
     \EndIf
     \If{$F=1$} \Return 1
     \EndIf
     \State
-    \If{$F$ contains a unit clause $\{p\}$} \Return $DPLL(F\{p=1\})$
+    \If{$F$ contains a unit clause $\{p\}$} \Return \texttt{DPLL}($F\{p=1\}$)
     \EndIf
-    \If{$F$ contains a pure literal u} \Return $DPLL(F\{u=1\}})$
+    \If{$F$ contains a pure literal u} \Return \texttt{DPLL}($F\{u=1\}$)
   \EndIf
   \State
   \State Choose $x \in Var(F)$ with an strategy.
-  \If{$DPLL(F\{x=0\})$} \Return 1
+  \If{\texttt{DPLL}($F\{x=0\}$)} \Return 1
   \EndIf
-  \State \Return $DPLL(F\{x=1\})$
+  \State \Return \texttt{DPLL}$1(F\{x=1\})$
 \end{algorithmic}
 \end{algorithm}
 
@@ -58,7 +58,7 @@ We could see to main differences:
 \begin{itemize}
 \item The algorithm try to look for backdoors and simplifications in lines 5 and 6. Although only some of these techniques are present, and even some implementations skip the pure  literal search, is an improvement. Search for autarks assignments or renames could also be a good idea.
 
-\item It uses heuristics to select variables. It does not imply that they always are better chosen  (and there would be cases that run worse), but tend to be better. In practice, hard heuristics approaches give excellent results. {\color{red} citation needed }. The roles of heuristics is to reduce the branching steps. Because of this, many heuristics functions have been proposed. For the formulation of some of them we will define:
+\item It uses heuristics to select variables. It does not imply that they always are better chosen  (and there would be cases that run worse), but tend to be better. In practice, hard heuristics approaches give excellent results. {\color{red} citation needed }. The idea behind heuristics is trying to reduce as much as possible the number of branching steps. Many heuristics functions have been proposed. For the formulation of some of them we will define:
   \begin{equation}
     \begin{split}
       f_k(u) & = \text{number of occurrences of literal } u \text{ in clauses of size k}\\
@@ -121,8 +121,7 @@ The implication graph  is the directed graph that has as nodes a pair with a var
  As we can see a decision graph is dependent of the order on which the variables are assigned (should a decision be made) and the value chosen for each variable when this decision happens.\\
 
  We will show a little example in order to clarify this definition.
-\begin{itemize}
- \item[Start of example] Suppose that we have $F = \{(x_1\vee x_2 \vee x_3), ( x_1 \vee x_2), (\neg x_1 \vee \neg x_2), (\neg x_3 \vee \neg x_4), (x_4 \vee x_2 \vee \neg x_3) \}$. We make a list $A=\{1,1,1,0\}$ of values associated to each variable. We start by adding the node $(x_1,1)$ to $\mathcal{G}_1$. \\
+\begin{example} Suppose that we have $F = \{(x_1\vee x_2 \vee x_3), ( x_1 \vee x_2), (\neg x_1 \vee \neg x_2), (\neg x_3 \vee \neg x_4), (x_4 \vee x_2 \vee \neg x_3) \}$. We make a list $A=\{1,1,1,0\}$ of values associated to each variable. We start by adding the node $(x_1,1)$ to $\mathcal{G}_1$. \\
 
 
 \begin{figure}[H]
@@ -181,8 +180,7 @@ Once we have $F_1$ and $\mathcal{G}_i$ we continue the iteration. Therefore we c
 \end{figure}
 
 We can see that a conflict has arise. Therefore we can not continue iterating throw the process and $\mathcal{G}_{F,A} = \mathcal{G}_2$. Note that have we wanted to assign the values in other order, only a renaming would have been necessary. 
-\item[End of example]
-\end{itemize}
+\end{example}
 As we already stated, the purpose of the implication graph is to show the root of the conflict. That is, we want to know what assignments led to the conflict. This could be made by making a set of nodes $N=\{(x_j,a_j: j\in 1,...,k)\}$ such that every path from a decision node to the conflict has to include one node of the set. This will be named a cut, not confuse with the graph theory concept.\\
 
 
@@ -277,13 +275,30 @@ For every $\alpha$ we define its neighborhood as $D(\alpha,\delta) = \{\beta : d
 
 For 3-SAT the running time is $O(m3^\delta)$ where $m$ is the number of clauses. This technique is useful on formulas with a great density of satisfying assignments. Nonetheless, until now this is an incomplete algorithm. The strategy to prove incompleteness is the following. Let $F$ be a CNF formula, such that $Var(F)=\{x_1,...,x_n\}$ and consider $\delta = n//2+n\%2$ where // is the integer division and \% is the modulo, and $\alpha_a = \{x_1 \to a,...,x_n\to a\}$. Then by running \texttt{LS}($F,\alpha_0,\delta$) and \texttt{LS}($F,\alpha_1,\delta)$ we have a complete algorithm. The asymptotic complexity for this algorithm is $O(3^{n/2}) \approx O(2^{0.793n})$. Note that in this context we only work with two-valued assignment, as we are not dealing with partial assignments.\\
 
+\begin{algorithm}
+  \caption{Complete Local Search}\label{cls}
+  \begin{algorithmic}[1]
+    \Procedure{\texttt{CLS}}{$F$}
+    \State $n \gets |Var(F)|$
+    \State $\alpha_0 \gets \{x_i \to 0 : 1 \le i \le n\}$
+    \State $\alpha_1 \gets \{x_i \to 1 : 1 \le i \le n\}$
+    \State
+    \If{\texttt{LS}($F$,$\alpha_0$, $n//2 + n\%2$)} \Return Satisfiable 
+    \EndIf
+    \State \Return \texttt{LS}($F$,$\alpha_1$, $n//2 + n\%2$)
+
+\end{algorithmic}
+\end{algorithm}
+
+
+
 There is a natural way to generalize the idea of exploring all the space of assignments by coordinates local searches, and that is the covering codes.
 
 \begin{definition}
   Let $X$ be a set of variables and let $A = \{\alpha_i: 1 \le i \le n\}$ a set of two valued assignments over $X$, and $\delta$ be a positive integer. The pair $(A,\delta)$ is a \emph{covering code with Hamming radius} $\delta$ if for any  two-valued assignment  $\alpha$  over $X$, there exists $\alpha'\in A$ such that $d_\mathcal{H} (\alpha, \alpha') < \delta$.
 \end{definition}
 
-We can note that the only important thing about $X$ on a covering code is the number of variables that it has. Therefore a covering code $(A,\delta)$ for $X=\{x_1,...,x_n\}$ is also, after a renaming, a covering code for $Y=\{y_1,...,y_n\}$, therefore we can consider that $A$ is a \emph{covering code of length} $n$. 
+We can note that the only important thing about $X$ on a covering code is the number of variables that it has. Therefore a covering code $(A,\delta)$ for $X=\{x_1,...,x_n\}$ is also, after a renaming, a covering code for $Y=\{y_1,...,y_n\}$, therefore we can consider that $A$ is a \emph{covering code of length} $n$. When no details about the set of variables is given other than its length $n$ we assume is a covering code over the set $X = \{x_1,...,x_n\}$
 
 
 \begin{lemma}[lemma 5.3\cite{schoning2013satisfiability}]
@@ -317,11 +332,62 @@ As  $(\frac{2}{e}\right )^n  \to_{n\to \infty} 0 $ for some $n_0$ big enough we 
 
 $$ t = \frac{n_02^n_0}{\sum_{j=0}^{\delta n_0} {n_0\choose j}} \le 2^{1-h(\delta)+\epsilon)n_0} ,$$
 
-for some polynomial function over $\delta$.
+for some polynomial function $h$ over $\delta$.
 
 \end{proof}
 
-Once we know that such covering exists we can look for it on a rather difficult task. It in fact does not matter because we only have to run the search the first time we will run the algorithm because we can store it an used when necessary.\\
+\begin{remark}
+  Every covering code $C = (\{\alpha_i : 1 \le i \l1 k\},\delta)$ of length $n$ can be \emph{truncated} to a covering code $C' = (\{\alpha_i' : 1 \le i \le k\},\delta)$ of length $m < n$  with $\alpha_i'$ defined as:
+  $$
+\alpha_i'(x)=
+\begin{cases}
+  \alpha_i(x) & x \in \{x_i:1\le i \le m\}\\
+  \upsilon& \text{otherwise}.
+\end{cases}
+$$
+
+
+\end{remark}
+
+\begin{remark}
+  Every covering code  $C = (\{\alpha_i : 1 \le i \l1 k\},\delta n_0)$ of length $n$ can be \emph{extended} to a covering code $C' = (\{\alpha_{i_1,...,i_{m//n+1}}' : 1 \le i_j \le k \},\delta n)$ of length $m > n$  with $\alpha_i'$ defined as:
+
+  $$
+\alpha_{i_1,...,i_{m//n+1}}'(x)=
+\begin{cases}
+  \alpha_{i_j}(x) & x \in \{x_i:n(j-1)+1\le i \le nj\}\\
+  \upsilon& \text{otherwise}.
+\end{cases}
+$$
+
+\end{remark}
+
+Then, for every $\epsilon >0$, setting $\delta = 0.5$ we have a covering code $C_0$. We can suppose that for implementing our algorithm we have such covering without any need of processing for our algorithm, as we can brute-force look for it once, and then the algorithm can run as many time as required without any need of repeating those computations. 
+
+
+
+\begin{algorithm}
+  \caption{Covering Code Local Search}}\label{ccls}
+\begin{algorithmic}[1]
+  \State $C_0 \gets $ the covering code provided by the lemma for $\epsilon > 0\land \delta = 0.5$ 
+  \Procedure{\texttt{Covering-Codes-LS}}{$F$}
+  \State $n \gets |Var(F)|$
+  \If{$n \le n_0$} \Return \texttt{CLS}($F$)
+  \EndIf 
+  \State $C=(A,\delta n_0) \gets $ the extended covering code of $C_0$ to $n$ variables
+  \For{$\alpha \in A$ }
+  \If{\texttt{LS}($F$, $\alpha$, $\delta n$) = Satisfiable} \Return Satisfiable
+  \EndIf
+  \EndFor
+  \State \Return Unsatisfiable
+
+\end{algorithmic}
+\end{algorithm}
+
+This algorithm for $3$-SAT run on $O((1.5 + \epsilon)^n)$\ref{dantsin2000deterministic}.\\
+
+
+In fact what made this algorithm relevant is that its performs different from DPLL algorithm. No only on complexity but on what formulas it is able to solve efficiently.When we reduce a problem to SAT we have to take into account how a SAT will behave with our formulas, and from that we have to consider how to code it (if several alternative codings are available). LS allows us to not only design formulas that will work well in a DPLL search. For more information on how to take advantage of these differences see\ref{gomes2009exploiting}.
   
 \subsection{GRASP - Todavía sin rehacer }
 \label{sub:grasp}
@@ -337,25 +403,27 @@ We present now one of the most cited algorithms.  GRASP(Generic seaRch Algorithm
 
 The method \texttt{Erase} is needed as the assignment is considered a global variable. The way that the algorithm work is that each time, either a new conflict clause is added to the formula, and therefore we \texttt{Erase} our last assignment to explore other options, or we find an assignment that satisfy the formula.
 
-\begin{algorithm}
-  \caption{GRASP}\label{bt}
-  \begin{algorithmic}[1]
-    \Procedure{\texttt{Search}($d$)}{$F$}
-    \State //d: decision level
-    \If{\texttt{Decide}($d$)} \Return 1
-    \EndIf
-    \While{True}
-    \If{\texttt{Deduce}(d) != Conflict}
-    \State \texttt{Search}(d+1)
-    \EndIf
-    \If{\texttt{Deduce}(d) == Conflict}
-    \If{\texttt{Diagnose}(d)}\texttt{ Erase(); } \Return Conflict
-    \EndIf
-    \EndIf
-    \State Erase
-    \EndWhile
-    \EndProcedure
-    \State \Return \texttt{Search}
-\end{algorithmic}
-\end{algorithm}
+
+
+% \begin{algorithm}
+%   \caption{GRASP}\label{bt}
+%   \begin{algorithmic}[1]
+%     \Procedure{\texttt{Search}($d$)}{$F$}
+%     \State //d: decision level
+%     \If{\texttt{Decide}($d$)} \Return 1
+%     \EndIf
+%     \While{True}
+%     \If{\texttt{Deduce}(d) != Conflict}
+%     \State \texttt{Search}(d+1)
+%     \EndIf
+%     \If{\texttt{Deduce}(d) == Conflict}
+%     \If{\texttt{Diagnose}(d)}\texttt{ Erase(); } \Return Conflict
+%     \EndIf
+%     \EndIf
+%     \State Erase
+%     \EndWhile
+%     \EndProcedure
+%     \State \Return \texttt{Search}
+% \end{algorithmic}
+% \end{algorithm}
 
