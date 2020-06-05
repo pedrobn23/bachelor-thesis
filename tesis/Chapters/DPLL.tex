@@ -1,4 +1,5 @@
 
+
 \chapter{Complete Algorithms}
 \section{Backtracking and DPLL Algorithms}
 \label{sec:dpll}
@@ -128,7 +129,7 @@ The implication graph  is the directed graph that has as nodes a pair with a var
   \centering
   \begin{tikzpicture}[
     node distance=1.5cm and 2.5cm,
-    mynode/.style={draw,circle,text width=1cm,align=center}
+    mynode/.style={draw=myred!50,very thick,fill=myred!25,minimum size=1.2cm,circle}
     ]
 
     \node[mynode] (1) {\((x_1,1)\)};
@@ -142,7 +143,7 @@ The implication graph  is the directed graph that has as nodes a pair with a var
   \centering
   \begin{tikzpicture}[
     node distance=1.5cm and 2.5cm,
-    mynode/.style={draw,circle,text width=1cm,align=center}
+    mynode/.style={draw=myred!50,very thick,fill=myred!25,minimum size=1.2cm,circle}
     ]
 
     \node[mynode] (1) {\((x_1,1)\)};
@@ -160,7 +161,7 @@ Once we have $F_1$ and $\mathcal{G}_i$ we continue the iteration. Therefore we c
   \centering
   \begin{tikzpicture}[
     node distance=1.5cm and 1.5cm,
-    mynode/.style={draw,circle,text width=1cm,align=center}
+    mynode/.style={draw=myred!50,very thick,fill=myred!25,minimum size=1.2cm,circle}
     ]
 
     \node[mynode] (1) {\((x_1,1)\)};
@@ -251,7 +252,7 @@ The local search procedure on sat context is the same as in other branches of co
 
 \begin{definition}
   Let $\alpha$ and $\beta$ be assignments, we define the Hamming distance $d_\mathcal{H}$ as:
-  $$d_\mathcal{H}(\alpha,\beta) = \left |\{ x \in Var(\alpha) \cup \Var(\beta)\}\right : \alpha(x) \ne \beta(x) \}\right |$$
+  $$d_\mathcal{H}(\alpha,\beta) =  |\{ x \in Var(\alpha) \cup \Var(\beta) : \alpha(x) \ne \beta(x) \} |$$
   Note that in case that for every $y \in Var(\alpha) \backslash Var(\beta)$, we can  consider that $\alpha(y) = \upsilon$, and respectively with $\beta$.
 \end{definition}
 
