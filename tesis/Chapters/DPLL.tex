@@ -299,11 +299,14 @@ There is a natural way to generalize the idea of exploring all the space of assi
   Let $X$ be a set of variables and let $A = \{\alpha_i: 1 \le i \le n\}$ a set of two valued assignments over $X$, and $\delta$ be a positive integer. The pair $(A,\delta)$ is a \emph{covering code with Hamming radius} $\delta$ if for any  two-valued assignment  $\alpha$  over $X$, there exists $\alpha'\in A$ such that $d_\mathcal{H} (\alpha, \alpha') < \delta$.
 \end{definition}
 
+
+TODO: Explore Shannons entropy function
+
 We can note that the only important thing about $X$ on a covering code is the number of variables that it has. Therefore a covering code $(A,\delta)$ for $X=\{x_1,...,x_n\}$ is also, after a renaming, a covering code for $Y=\{y_1,...,y_n\}$, therefore we can consider that $A$ is a \emph{covering code of length} $n$. When no details about the set of variables is given other than its length $n$ we assume is a covering code over the set $X = \{x_1,...,x_n\}$
 
 
 \begin{lemma}[lemma 5.3\cite{schoning2013satisfiability}]
-For every $\epsilon > 0$ and $\delta \in (0, \frac{1}{2})$ there is a length $n_0$ so that there is a covering code $C_0 = (A=\{\alpha_i : 1\le i\le t\}, \delta n_0)$ of length $n_0$, with $t\le 2^{1-h(\delta)+\epsilon)n_0}$, where $h(\delta)$ is a  polynomial function on $\delta$.
+For every $\epsilon > 0$ and $\delta \in (0, \frac{1}{2})$ there is a length $n_0$ so that there is a covering code $C_0 = (A=\{\alpha_i : 1\le i\le t\}, \delta n_0)$ of length $n_0$, with $t\le 2^{1-h(\delta)+\epsilon)n_0}$, where $h(\delta)$ is Shannon's \emph{binary entropy function}.
 \end{lemma}
 
 \begin{proof}

@@ -218,19 +218,17 @@ By slowly the theorem means that $s(n)$ diverge in $o(log(n))$. Also the term $o
 
 Note that we look in a random walk with as many steps as the number of variables. this parameter, in the original paper, was set to $3n$, but it was later prove that $n$ is enough. This is not really important in terms of complexity, as a constant variation does not imply a difference on its big O complexity. Nonetheless is a sensible difference on running time on industrial applications. \\
 
-\begin{proposition}
-WalkSAT is a correct Probabilistic Algorithm.
-\end{proposition}
+\begin{theorem}
+WalkSAT is a correct Probabilistic Algorithm. The algorithm run on $O^*(2 (1 - \frac{1}{k})^n)$.
+\end{theormn}
 
 \begin{proof}
 Let's analyze this algorithms for a $k$-CNF formula $F$. As previously explained, to prove that this is a correct probabilistic algorithm, we have to prove that it has a one-sided bounded error. It is clear that, if no satisfiable assignment exists, the \texttt{WalkSAT} algorithm will always get the correct results, so the stress of the proof on bounding the probability of not finding a satisfying assignment in the case that $F$ is satisfiable.\\
 
 
-Let's now suppose that $F$ is satisfiable, and therefore there is a satisfying assignments $\alpha_0$. The will analyze the probability that this satisfying assignment $\alpha$ is obtained on each iteration of the algorithm. In order to do that we can analyze the process as a Markov Chain, that is, a sequence of random variables where the value of each variable is independent of all others except the previous one.\\
+Suppose that $F$ is satisfiable, and therefore there is a satisfying assignments $\alpha_0$. Let $n=|Var(F)|$.  We will analyze the probability that $\alpha_0$ is obtanied on after $n$ iterationa of the algorithm. In order to do that we can analyze the process as a Markov Chain, that is, a sequence of random variables where the value of each variable is independent of all others except the previous one. We have secuence of random variables ($X_j$) that represents the distance $d_\mathcal{H}$ from $\alpha_0$ to a randomly drawn $\alpha$ after $j$ steps on the for loop. This random variables has an image $\{0,...,n\}$. Is easy to see that the value of the random variable $X_{i+1}$ depend only on the value on $X_i$. In particular we have a  Markov chain on a finite state space.\\
 
-We can see that we have ¿Random Variable? that represents the distance $d_\mathcal{H}$ from $\alpha_0$ to $\alpha$. Informally, we try to see the probability that an uniformly drawn assignment $\alpha$ get to $\alpha_0$ after $n$ steps at most.\\
-
-Now let's suppose that we have an assignment $\alpha$ such that $d_\mathcal{H}(\alpha, \alpha_0) = n$. If $n=0$ we have a satisfying assignment, so there is nothing let to do. Otherwise there is a clause $C\in F$ such that $C\alpha = 0$. Let $C = (\lor_{i\in 1,..,n} l_i )$ where each $l_i$ is a literal. In the next steps of our process we will change $\alpha$ forcing a map from one $l_i$ to 1. It is clear that $\alpha_0$ maps at least one of those literals to 1. Let $p = |\{l \in C : \alpha_0(l) = 1\}|$. There on each iterations there is a probability of $p/k$ of decreasing the distance between $\alpha$ and $\alpha_0$ by 1 and $1-p/k$ of increasing it by 1.
+Now let's suppose that we have an assignment $\alpha$ such that $d_\mathcal{H}(\alpha, \alpha_0) = d$. If $d=0$ we have a satisfying assignment, so there is nothing left to do. Otherwise there is a clause $C\in F$ such that $C\alpha = 0$. Let $C = (\lor_{i\in 1,..,n} l_i )$ where each $l_i$ is a literal. In the next steps of our process we will change $\alpha$ forcing a map from one $l_i$ to 1. It is clear that $\alpha_0$ maps at least one of those literals to 1. Let $p = |\{l \in C : \alpha_0(l) = 1\}|$. There, on each iteration, there is a probability of $p/k$ of decreasing the distance between $\alpha$ and $\alpha_0$ by 1 and $1-p/k$ of increasing it by 1. Therefore on the worst case we have a probability of $1/k$ to progress in the right direction. We will analyze this worst case scenario, a expecto our result to be a bound of the real one. 
 
 
 
@@ -249,12 +247,12 @@ Now let's suppose that we have an assignment $\alpha$ such that $d_\mathcal{H}(\
 
     \path[->] 
     (q_1) edge node {$\frac{1}{k}$} (q_0)
-    (q_1) edge [bend left]node {$\frac{2}{k}$} (q_2)
+    (q_1) edge [bend left]node {$\frac{k-1}{k}$} (q_2)
     (q_2) edge [bend left] node {$\frac{1}{k}$} (q_1)
     (q_3) edge [bend left]node {$\frac{1}{k}$} (q_2)
-    (q_2) edge [bend left]node {$\frac{2}{k}$} (q_3)
-    (q_3) edge [bend left]node {$\frac{2}{k}$} (q_4)
-    (q_4) edge [bend left]node {$\frac{1}{k}$} (q_3)
+    (q_2) edge [bend left]node {$\frac{k-1}{k}$} (q_3)
+    (q_3) edge [bend left]node {$\frac{k-1}{k}$} (q_4)
+    (q_4) edge [bend left]node {$1$} (q_3)
 
   \end{tikzpicture}
 
@@ -262,4 +260,49 @@ Now let's suppose that we have an assignment $\alpha$ such that $d_\mathcal{H}(\
 \end{figure}
 
 
+Therefore we can see that our markov chain is denoted by the matrix:
+
+$$
+\begin{pmatrix}
+1 & 0 & 0& ... & 0\\
+1/k & 0 & (k-1)/k & ... & 0\\
+\vdots & \vdots & \vdots & & \vdots\\
+0 & ... & 1/k & 0 & (k-1)/k\\
+0 & ... & 0 & 1 & 0\\
+
+\end{pmatrix}
+$$
+
+Now that we have all our machineri working we will define and estoy three events:
+
+\begin{itemize}
+\item The event $E_1$ is the event where $X_0 = \lfloor n/k\rfloor$, i.e.,the event of an uniformly drawn variable is at distance $\lfloor n/k\rfloor$, where $\lfloor n/k\rfloor = \max\{a \in \mathbb{N}: a \le n/k \}$. 
+\item The event $E_2$ where $X_n = 0$, given that $X_0= \lfloor n/k\rfloor$.
+
+\item The event $E_3$ is the event when $X_n = 0$
+  \end{itemize}
+
+
+  For the analysis of the probability of $E_1$ we can assume $\alpha_0 = \{ x \to 0 : x \in Var(F)\}$ without loss of generality. To drawn our assignment $\alpha$ we randomly choose a value $a_x \in \{0,1\}$ for every $x \in Var(F)$. Therefore, the number of variables mapped to 1 obtained in a random assignment follows a binomial distribution $B(n, 1/2)$. We can see that:
+  $$P(E_1) = P(B(n,1/2) = \lfloor n/k\rfloor) = {\displaystyle {n \choose \lfloor n/k\rfloor }  \left (\frac{1}{2}\right )^{n}} $$
+
+ Note also that $k\le n$, as by the Pigeon Hole Principle, there exists a variable $x\in Var(F)$ for every $C\in F$ such that both literals $x$ and $\neg x$ belong to $C$, and therefore the formula would be a tautology. We do not consider clauses with repeated literals.\\
+
+ For the probability of the event $E_2$, we 'walk' in the right direction at least $\lfloor n/k\rfloor$. As each step follows a Bernoulli distribution of probability $1/k$ we can see that:
+
+ $$P(E_2) =  P(B(n,1/k) \ge \lfloor n/k\rfloor) = {\displaystyle \sum _{i=\lfloor n/k\rfloor }^{n}{n \choose i }  \left (\frac{1}{k}\right )^{i}  \left (\frac{k-1}{k}\right )^{n-i}} $$
+
+
+ Now we can see that
+\begin{equation}
+    \begin{split}
+      P(E_3) \ge P(E_1 \land E_2)  & = P(E_1)P(E_2) \\
+      & = {\displaystyle {n \choose \lfloor n/k\rfloor  }  2^{-n}} {\displaystyle \sum _{i=\lfloor n/k\rfloor }^{n}{n \choose i }  \left (\frac{1}{k}\right )^{i}  \left (\frac{k-1}{k}\right )^{n-i}}\\
+      & \ge {\displaystyle {n \choose \lfloor n/k\rfloor  }^2  2^{-n}   \left (\frac{1}{k}\right )^{\lfloor n/k\rfloor}  \left (\frac{k-1}{k}\right )^{n-\lfloor n/k\rfloor}  } \\
+      & =^{poly} {\displaystyle 2^{2h(1/k) n}  2^{-n}   \left (\frac{1}{k}\right )^{\lfloor n/k\rfloor}  \left (\frac{k-1}{k}\right )^{n-\lfloor n/k\rfloor}  }\\
+\end{split}
+\end{equation}
+TODO: NO SE COMO SALE EL ÚLTIMO PASO , COMO SE RESUELVE ESTO¿??
+
+  
 \end{proof}
