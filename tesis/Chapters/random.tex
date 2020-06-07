@@ -185,7 +185,7 @@ $$ \mu_k = \sum_{j=1}^\infty \frac{1}{j \left (j + \frac{1}{k-1}\right )}$$
 
   By slowly the theorem means that $s(n)$ diverge in $o(log(n))$. Also the term $o(n)$ can be reduced as wished.
 
-  \section{Schöning WalkSAT algorithm}
+\section{Schöning WalkSAT algorithm}
 
   In this section we consider the Schöning WalkSAT algorithm, first introduced on 1998 \cite{schoning1999probabilistic}. At the time of publication provides the best complexity for 3-SAT, achieving $O((4/3)^{n})$, and it remained so until the Hertli result. It is also one of the most simple algorithms. The information presented here follows the discussion in the original paper \cite{schoning1999probabilistic} as well as the book \cite{schoning2013satisfiability}, also by Schöning himself.  Without further ado, we present the algorithm.\\
   
@@ -220,7 +220,7 @@ $$ \mu_k = \sum_{j=1}^\infty \frac{1}{j \left (j + \frac{1}{k-1}\right )}$$
 
   \begin{theorem}
     WalkSAT is a correct Probabilistic Algorithm. The algorithm run on $O^*(2 (1 - \frac{1}{k})^n)$.
-  \end{theormn}
+  \end{theorem}
 
   \begin{proof}
     Let's analyze this algorithms for a $k$-CNF formula $F$. As previously explained, to prove that this is a correct probabilistic algorithm, we have to prove that it has a one-sided bounded error. It is clear that, if no satisfiable assignment exists, the \texttt{WalkSAT} algorithm will always get the correct results, so the stress of the proof on bounding the probability of not finding a satisfying assignment in the case that $F$ is satisfiable.\\
@@ -266,7 +266,6 @@ $$
   \vdots & \vdots & \vdots & & \vdots\\
   0 & ... & 1/k & 0 & (k-1)/k\\
   0 & ... & 0 & 1 & 0\\
-  
 \end{pmatrix}
 $$
 
@@ -295,19 +294,25 @@ Now we can see that
   \begin{split}
     P(E_3) \ge P(E_1 \land E_2)  & = P(E_1)P(E_2) \\
     & = {\displaystyle {n \choose \lfloor n/k\rfloor  }  2^{-n}} {\displaystyle \sum _{i=\lfloor n/k\rfloor }^{n}{n \choose i }  \left (\frac{1}{k}\right )^{i}  \left (\frac{k-1}{k}\right )^{n-i}}\\
-    & \ge {\displaystyle {n \choose \lfloor n/k\rfloor  }^2  2^{-n}   \left (\frac{1}{k}\right )^{\lfloor n/k\rfloor}  \left (\frac{k-1}{k}\right )^{n-\lfloor n/k\rfloor}  } \\
-    & =^{poly \ 1.} {\displaystyle 2^{2\mathfrak{h}(1/k) n}  2^{-n}   \left (\frac{1}{k}\right )^{\lfloor n/k\rfloor}  \left (\frac{k-1}{k}\right )^{n-\lfloor n/k\rfloor}  }\\
+    & \ge {\displaystyle {n \choose \lfloor n/k\rfloor  }^2  2^{-n}   \left (\frac{1}{k}\right )^{n/k}  \left (\frac{k-1}{k}\right )^{n-( n/k)}  } \\
+    & =^{poly \ 1.} {\displaystyle 2^{2\mathfrak{h}(1/k) n}  2^{-n}   \left (\frac{1}{k}\right )^{ n/k}  \left (\frac{k-1}{k}\right )^{n-( n/k )}  }\\
+    & = \frac{ 2^{-n}   \left (\frac{1}{k}\right )^{ n/k}  \left (\frac{k-1}{k}\right )^{n-( n/k )} }{(\frac{1}{k})^{2n/k} (\frac{k-1}{k})^{2((k-1)/k)n}  }
+     =\frac{1}{\left ( 2\left (1-\frac{1}{k}\right ) \right )^n} 
   \end{split}
 \end{equation}
 
-Where 1. is a direct consequence of proposition[\ref{pro:shannon}]
+Where 1. is a direct consequence of proposition[\ref{pro:shannon}]. Now that we have bounded the probability that \texttt{Random-LS} find a satisfiable assingment, we can see that, if $r = c \left ( 2\left (1-\frac{1}{k}\right ) \right )^n$ then the probability of \texttt{WalkSAT} algorithm not finding a correct assignment conditioned on its existence is:
 
+$$ \left ( 1-  \frac{1}{\left ( 2\left (1-\frac{1}{k}\right ) \right )^n} \right )^{\left ( c2\left (1-\frac{1}{k}\right ) \right )^n}  \approx^{2.} e^{-c}$$
 
+On 2. we coinsder $n$ to be big enough in order to approximate to the limit of the expresion.
 \end{proof}
 
+This algorithm was fully derandomized \cite{moser2011full}. 
 
 
-\section{Summary of all algorithms}
+
+\section{Summary of introduced algorithms}
 
 As a last section of this part we will summarize all SAT solver explained and classify them. Note that restricted algorithms are considered to be complete, mean that they are complete for their restricted set of Formulas.
 
@@ -344,7 +349,7 @@ TODO:Incluir ahora sección de algoritmos no incluidos pero dignos de mención
 \item Hoffmeister
 \item Stalmark
 \item Derandomized algorithms
-  \begin{enumerate}
+\end{enumerate}
     
 
     

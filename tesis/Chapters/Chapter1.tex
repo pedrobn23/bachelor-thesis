@@ -35,13 +35,13 @@ In this chapter we present the bases of Logic and formal languages. Logic will p
 
 The same way I started my journey on the university, we could have started this text right from the axioms, making a really romantic thesis. Nonetheless, given the goal we want to achieve, it seems excessive. We will refer to the commonly used \emph{Zermelo-Fraenkel axioms}, in order to have a point of reference, and therefore we will work without more considerations with sets and set operations. We will put \emph{Zorn's lemma} to work, so the axiom of choice will also be needed, although in practice we will only work with finite sets of formulas.\\
 
-Further on this section we will present Boolean Algebra in a classic lattice-based way that could be found in related literature. In particular we follow Introduction to mathematics of satisfiability\cite{marek2009introduction} for the definition of Boolean Algebra and Propositional Logic. The definition of Lattice of Partitions is adapted from \cite{sakallah2009symmetry}
+Further on this section we will present Boolean Algebra in a classic lattice-based way that could be found in related literature. In particular we follow  \emph{Introduction to mathematics of satisfiability}\cite{marek2009introduction} for the definition of boolean algebra and propositional logic. The definition of Lattice of Partitions is adapted from \cite{sakallah2009symmetry}
 
 \begin{definition}
   A partial ordered set, also poset, is a pair $\{X, \le\}$ where $X$ is a set and $\le$ is a partial order of $X$. A chain $Y$ of $\{X, \le\}$ is a subset of $X$ where $\le$ is a total order. 
 \end{definition}
 
-\begin{theorem}[Zorn lemma]
+\begin{theorem}[Zorn's lemma]
   If every chain in a poset $\{X,\le\}$ is bounded, then $X$ possesses a maximal elements and for every $x\inX$ there is a maximal element $y$ such that $x\le y$.
 \end{theorem}
 
@@ -59,7 +59,7 @@ Further on this section we will present Boolean Algebra in a classic lattice-bas
 
 
 
-With the concept of lattice just included, we present the \emph{Knaster and Tarski fixpoint theorem} fixpoint theorem. In order to do that we will introduce some notation. Given a function $f:\{L,\le\}\to \{L,\le\}$, a prefixpoint (resp. postfixpoint) is a point $x \in L$ such that $f(x) \le x$ (resp. $f(x) \ge x$). A fixpoint is a point that is both prefixpoint and postfixpoint. Note that, given that they exists, $\top$ and $\bot$ are a prefixpoint and a postfixpoint of $f$ respectively.
+With the concept of lattice just included, we present the \emph{Knaster and Tarski fixpoint theorem}. In order to do that we will introduce some concepts. Given a function $f:\{L,\le\}\to \{L,\le\}$, a prefixpoint (resp. postfixpoint) is a point $x \in L$ such that $f(x) \le x$ (resp. $f(x) \ge x$). A fixpoint is a point that is both prefixpoint and postfixpoint. Note that, given that they exists, $\top$ and $\bot$ are a prefixpoint and a postfixpoint of $f$ respectively.
 
 \begin{theorem}[Knaster and Tarski fixpoint theorem \cite{marek2009introduction}]
   Let $f:\{L,\le\}\to \{L,\le\}$ be a monotone function in a complete lattice. Then:
@@ -453,7 +453,7 @@ Let $F$ be a formula and $\phi$ be a function $\alpha:Form_{Var(F)}\to Form_{Var
 \end{definition}
     
 \begin{definition}[Permutation]
-    Given a set of variables $X = \{x_1,...,x_n\}$, a \emph{permutation} of $X$ is any injective mapping $\alpha:X \to X$. Each permutation induces a homonym function on $\alpha: Form_X \to Form_X}$ that replaces every variable by its image by $\alpha$.
+    Given a finite set of variables $X = \{x_1,...,x_n\}$, a \emph{permutation} of $X$ is any injective mapping $\alpha:X \to X$. Each permutation induces a homonym function on $\alpha: Form_X \to Form_X}$ that replaces every variable by its image by $\alpha$.
 \end{definition}
 
       For example given $X = \{a,b,c\}$, and a injective mapping $\alpha:X\to X$ such that: 
@@ -499,15 +499,15 @@ Where $Lit(X)$ is the set of literals over $X$. Each negation induces a homonym 
 We will denote the group of negations over $n$ variables as $N_n$.
 
 \begin{proposition}[$NP_n$]
-  The set of negations and permutations on $n$ variables ($NP_n$) along with the composition will be called 
+  The set of negations and permutations on $n$ variables  along with the composition is a group, denoted by $NP_n$. 
 \end{proposition}
 \begin{proof}\\
   Note that every element $x\in NP_n$ can be expressed as $\alpha\circ \sigma$ where $\alpha$ is a permutation and $\sigma$ is a negation. Also note that 
-  \begin{itemize}
+  \begin{itemize}\hfill \\
     \item Closure: $\alpha\circ \sigma_{A} \circ \alpha'\circ \sigma_{A'} = \alpha \circ \alpha' \circ \sigma_{\alpha^{-1} A} \circ \sigma_{A'}  = \alpha''\circ \sigma_{A''}$, where $\alpha''$ is a permutation and $\sigma_{A''}$ is a negation.
-    \item Associativity: Associativity is inherited from the general associativity of composition.
-    \item Identity: We have an identity element $\sigma_{\emptyset}=I$.
-    \item Inverse: For every $\alpha \circ \sigma_A$ the function $\alpha^{-1}\circ \sigma_{\alpha(A)}$ is its inverse.
+    \item Associativity: associativity is inherited from the general associativity of composition.
+    \item Identity: we have an identity element $\sigma_{\emptyset}=I$.
+    \item Inverse: for every $\alpha \circ \sigma_A$ the function $\alpha^{-1}\circ \sigma_{\alpha(A)}$ is its inverse.
   \end{itemize}
 \end{proof}
 

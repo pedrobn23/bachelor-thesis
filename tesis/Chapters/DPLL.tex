@@ -38,20 +38,20 @@ This algorithm is an improvement of the backtracking algorithm, still really sim
   \caption{DPLL}\label{dpll}
   \begin{algorithmic}[1]
     \Procedure{\texttt{DPLL}}{$F$}
-    \If{$0 \in F$} \Return 0
+    \If{$0 \in F$} \Return Unsatisfiable
     \EndIf
-    \If{$F=1$} \Return 1
+    \If{$F=1$} \Return Satisfiable
     \EndIf
     \State
-    \If{$F$ contains a unit clause $\{p\}$} \Return \texttt{DPLL}($F\{p=1\}$)
+    \If{$F$ contains a unit clause $\{l\}$} \Return \texttt{DPLL}($F\{l=1\}$)
     \EndIf
-    \If{$F$ contains a pure literal u} \Return \texttt{DPLL}($F\{u=1\}$)
+    \If{$F$ contains a pure literal l} \Return \texttt{DPLL}($F\{l=1\}$)
   \EndIf
   \State
   \State Choose $x \in Var(F)$ with an strategy.
-  \If{\texttt{DPLL}($F\{x=0\}$)} \Return 1
+  \If{\texttt{DPLL}($F\{x=0\}$) = Satisfiables} \Return Satisfiable
   \EndIf
-  \State \Return \texttt{DPLL}$1(F\{x=1\})$
+  \State \Return \texttt{DPLL}$(F\{x=1\})$
 \end{algorithmic}
 \end{algorithm}
 
@@ -59,6 +59,8 @@ We could see to main differences:
 \begin{itemize}
 \item The algorithm try to look for backdoors and simplifications in lines 5 and 6. Although only some of these techniques are present, and even some implementations skip the pure  literal search, is an improvement. Search for autarks assignments or renames could also be a good idea.
 
+\item We can see that, although we present an algorithm for SAT, it can be adapted to FSAT by keeping a log of the calls to DPLL, and returning this log when Satisfiability is ensured.
+  
 \item It uses heuristics to select variables. It does not imply that they always are better chosen  (and there would be cases that run worse), but tend to be better. In practice, hard heuristics approaches give excellent results. {\color{red} citation needed }. The idea behind heuristics is trying to reduce as much as possible the number of branching steps. Many heuristics functions have been proposed. For the formulation of some of them we will define:
   \begin{equation}
     \begin{split}
@@ -122,12 +124,11 @@ The implication graph  is the directed graph that has as nodes a pair with a var
   \end{itemize}
   We say that $x$ was assigned at \emph{decision level} $i$ if $x\in Var(F_{i-1})$ and $x \not\in F_i$. 
  \end{definition} 
+
  As we can see a decision graph is dependent of the order on which the variables are assigned (should a decision be made) and the value chosen for each variable when this decision happens.\\
 
  We will show a little example in order to clarify this definition.
 \begin{example} Suppose that we have $F = \{(x_1\vee x_2 \vee x_3), ( x_1 \vee x_2), (\neg x_1 \vee \neg x_2), (\neg x_3 \vee \neg x_4), (x_4 \vee x_2 \vee \neg x_3) \}$. We make a list $A=\{1,1,1,0\}$ of values associated to each variable. We start by adding the node $(x_1,1)$ to $\mathcal{G}_1$. \\
-
-
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}[
@@ -136,12 +137,12 @@ The implication graph  is the directed graph that has as nodes a pair with a var
     ]
 
     \node[mynode] (1) {\((x_1,1)\)};
-    \end{tikzpicture}
-    \caption{$\mathcal{G}_1$ before unit propagation}
-  \end{figure}
+  \end{tikzpicture}
+  \caption{$\mathcal{G}_1$ before unit propagation}
+\end{figure}
 
-  Then we define $F_1' = F_0\{x_1\to 1\} =F_0\{x_1\to 1\} = F\{x_1 \to 1\}= \{(\neg x_2), (\neg x_3 \vee \neg x_4), (x_4 \vee x_2 \vee\neg x_3)\}$. We have an unit clause, therefore, we add a node$(x_2, 0)$, as this clause where associated in $F$ with the clause $(\neg x_1 \vee \neg x_2)$ we add an edge $(x_1,1)\to (x_2,0)$. As there were only a unit clause, we can define $F_1 = \{(\neg x_3 \vee \neg x_4), (x_4 \vee \neg x_3)\}$.\\
-  
+Then we define $F_1' = F_0\{x_1\to 1\} =F_0\{x_1\to 1\} = F\{x_1 \to 1\}= \{(\neg x_2), (\neg x_3 \vee \neg x_4), (x_4 \vee x_2 \vee\neg x_3)\}$. We have an unit clause, therefore, we add a node$(x_2, 0)$, as this clause where associated in $F$ with the clause $(\neg x_1 \vee \neg x_2)$ we add an edge $(x_1,1)\to (x_2,0)$. As there were only a unit clause, we can define $F_1 = \{(\neg x_3 \vee \neg x_4), (x_4 \vee \neg x_3)\}$.
+
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}[
@@ -156,9 +157,9 @@ The implication graph  is the directed graph that has as nodes a pair with a var
 
   \end{tikzpicture}
   \caption{$\mathcal{G}_1$ after unit propagation}
-\end{figure}
+\end{figure} 
 
-Once we have $F_1$ and $\mathcal{G}_i$ we continue the iteration. Therefore we choose the variable $x_3$ (as $x_1$ and $x_2$ where already assigned) and assign it to $1$ as we initially decided. Therefore we define $\mathcal{G}_2 = \mathcal{G}_1 $, and immediately after we add the node $(x_3,1)$. We define $F_2' = \{(\neg x_4), (x_4)\}$. We have two unit clauses. Solving them as done above we have:
+Once we have $F_1$ and $\mathcal{G}_i$ we continue the iteration. Therefore we choose the variable $x_3$ (as $x_1$ and $x_2$ where already assigned) and assign it to $1$ as we initially decided. Therefore we define $\mathcal{G}_2 = \mathcal{G}_1 $, and immediately after we add the node $(x_3,1)$. We define $F_2' = \{(\neg x_4), (x_4)\}$. We have two unit clauses. Solving them as done above we have: 
 
 \begin{figure}[H]
   \centering
@@ -181,10 +182,9 @@ Once we have $F_1$ and $\mathcal{G}_i$ we continue the iteration. Therefore we c
 
   \end{tikzpicture}
   \caption{$\mathcal{G}_2$ after unit propagation}
-\end{figure}
-
+\end{figure} 
 We can see that a conflict has arise. Therefore we can not continue iterating throw the process and $\mathcal{G}_{F,A} = \mathcal{G}_2$. Note that have we wanted to assign the values in other order, only a renaming would have been necessary. 
-\end{example}
+\end{example} 
 As we already stated, the purpose of the implication graph is to show the root of the conflict. That is, we want to know what assignments led to the conflict. This could be made by making a set of nodes $N=\{(x_j,a_j: j\in 1,...,k)\}$ such that every path from a decision node to the conflict has to include one node of the set. This will be named a cut, not confuse with the graph theory concept.\\
 
 
@@ -204,7 +204,41 @@ So we only has to learn strategies in order to detect cuts on implication graphs
 \end{itemize}
 
 
-The first UIP tend to produce smaller clauses and experimental results \cite{tichy2006clause} \cite{zhang2001efficient} provide proves in favor of it. It is commonplace on DPLL-based solver. The GRASP[\ref{sub:grasp}] algorithm was one of the first conflict driven solver, that is, a sat solver that implement a DPLL procedure based mainly on Clause Learning. 
+The first UIP tend to produce smaller clauses and experimental results \cite{tichy2006clause} \cite{zhang2001efficient} provide proves in favor of it. It is commonplace on DPLL-based solver. The GRASP[\ref{sub:grasp}] algorithm was one of the first conflict driven solver, that is, a sat solver that implement a DPLL procedure based mainly on Clause Learning. \\
+
+We can incorporate clause learning to DPLL easily:
+ \begin{algorithm}
+  \caption{DPLL}\label{dpll}  \begin{algorithmic}[1]
+   \State $F\gets $  Formula in CNF, global.
+   \Procedure{\texttt{propagate}}{$G$}
+   \State $G_0 \gets G$
+    \While{$G_0$ contains a unit clause or a pure literal$\{ l\}$} 
+    \If{$G_0$ contains a unit clause $\{ l\}$} $G_0 = G_0\{l=1\}$)
+    \EndIf
+    \If{$G_0$ contains a pure literal $l$} $G_0 = G_0\{l=1\}$)
+    \EndIf
+\EndWhile
+\State \Return $G_0$
+\EndProcedure
+    
+    
+\Procedure{\texttt{Clause-Learning-DPLL}}{$F$}
+\State $F_0 \gets $
+    \If{$0 \in F$} \Return 
+    \EndIf
+    \If{$F=1$} \Return 1
+    \EndIf
+    \State
+  \State
+  \State Choose $x \in Var(F)$ with an strategy.
+  \If{\texttt{DPLL}($F\{x=0\}$)} \Return 1
+  \EndIf
+  \State \Return \texttt{DPLL}$1(F\{x=1\})$
+\end{algorithmic}
+\end{algorithm}
+
+
+
 
 \section{Other complete algorithms}
 
@@ -226,7 +260,7 @@ that solved in the equation $a^{k+1}+1 = 2a^k$. The difference between MS and DP
     \If{$F=1$} \Return 1
     \EndIf
     \State
-    \If{$F$ contains a unit clause $\{p\}$} \Return $MS(F\{p\to 1\})$
+    \If{$F$ contains a unit clause $\{l\}$} \Return $MS(F\{l\to 1\})$
     \EndIf
     \If{$F$ contains a pure literal l} \Return $MS(F\{l\to 1\}})$
   \EndIf
