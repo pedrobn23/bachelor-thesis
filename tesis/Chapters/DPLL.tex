@@ -207,37 +207,33 @@ So we only has to learn strategies in order to detect cuts on implication graphs
 The first UIP tend to produce smaller clauses and experimental results \cite{tichy2006clause} \cite{zhang2001efficient} provide proves in favor of it. It is commonplace on DPLL-based solver. The GRASP[\ref{sub:grasp}] algorithm was one of the first conflict driven solver, that is, a sat solver that implement a DPLL procedure based mainly on Clause Learning. \\
 
 We can incorporate clause learning to DPLL easily:
- \begin{algorithm}
-  \caption{DPLL}\label{dpll}  \begin{algorithmic}[1]
-   \State $F\gets $  Formula in CNF, global.
-   \Procedure{\texttt{propagate}}{$G$}
-   \State $G_0 \gets G$
-    \While{$G_0$ contains a unit clause or a pure literal$\{ l\}$} 
-    \If{$G_0$ contains a unit clause $\{ l\}$} $G_0 = G_0\{l=1\}$)
-    \EndIf
-    \If{$G_0$ contains a pure literal $l$} $G_0 = G_0\{l=1\}$)
-    \EndIf
-\EndWhile
-\State \Return $G_0$
-\EndProcedure
-    
-    
-\Procedure{\texttt{Clause-Learning-DPLL}}{$F$}
-\State $F_0 \gets $
-    \If{$0 \in F$} \Return 
-    \EndIf
-    \If{$F=1$} \Return 1
-    \EndIf
-    \State
-  \State
-  \State Choose $x \in Var(F)$ with an strategy.
-  \If{\texttt{DPLL}($F\{x=0\}$)} \Return 1
-  \EndIf
-  \State \Return \texttt{DPLL}$1(F\{x=1\})$
+\begin{algorithm}    
+  \caption{Clause learning DPLL \cite{darwiche2009complete}}\label{cldpll}
+  \begin{algorithmic}[1]
+    \Procedure{\texttt{Clause-Learning-DPLL} }{$F$}
+    \State $D \gets ()$ empty decision sequence
+\State $\Gamma \gets \{\}$ empty set of learned clauses
+\While{True} 
+\If{unit resolution detects a contradiction in $F+\Gamma$ with $D$}
+\If{$D$=()} \Return Unsatisfiable
+\Else
+\State $\C \gets $ conflict clause
+\State $m \gets $ devision level of $C$
+\State $D \gets D[0:m]$ 
+\State $\Gamma += C$
+\EndIf
+
+\Else
+\If{There is no variable not implied by unit resolution} 
+\State\Return Satisfiable
+\Else
+\State Add a decision on a variable $x$ not implied by unit resolution 
+\EndIf
+
 \end{algorithmic}
 \end{algorithm}
 
-
+On the algorithm $D[0:m]$ represents the first $m$ decisions of $D$.
 
 
 \section{Other complete algorithms}

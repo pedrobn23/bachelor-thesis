@@ -47,7 +47,8 @@ Further on this section we will present Boolean Algebra in a classic lattice-bas
 
 
 
-\begin{definition} A lattice is a partial ordered set $\{X,\le\}$ where every pair of elements possesses a least upper bound and a greatest lower bound. A lattice has two new operations defined: given two elements $x,y\in X$
+\begin{definition} A lattice is a partial ordered set 
+$ \{X,\le\} $ where every pair of elements possesses a least upper bound and a greatest lower bound. A lattice has two new operations defined: given two elements $x,y\in X$
   \begin{itemize}
   \item $x\vee y$ denote the least upper bound.
   \item $x\wedge y$  denote the greatest lower bound.
@@ -353,8 +354,19 @@ That is, is the problem of finding the maximum number of assignments that can be
 
 As we will see, most SAT-solvers are FSAT-solvers. In related literature the FSAT-solver are called constructive SAT-solvers, as they provide a constructive solution of the problem. Solvers that only solve SAT are called non-constructive SAT-solvers. After presenting the concept of algorithmic complexity we will see that from a non constructive SAT-solver, a constructive SAT-solver can be made so that the latter is not much less efficient[\ref{sub:fromnon}].
 
-\subsection{Constraint Satisfaction Problem}
 
+\begin{itemize}
+\item {\color{red}POSIBLE FRENTE QUE ABRIR SI DIERA TIEMPO: Certificados de SAT}
+\item Un certificado es FSAT solver que además, si devuelve que no es satisfascible, da una resolución de esta.
+\item Contra: habría que introducir es cálculo de resoluciones, abriendo otro frente más a este trabajo.
+\item Pros:
+  \begin{itemize}
+  \item Es una cosa que en realidad es útil.
+  \item La demostración que usa las fórmulas principio del palomar es guay.
+  \end{itemize}
+\end{itemize}
+\subsection{Constraint Satisfaction Problem}
+  
 We want to introduce the notion of Constraint Satisfaction Problem (CSP) because it defines a new optic over the SAT problem. CSP is, in fact, a generalization of SAT. When dealing with CSP problem we want to find a solution with certain restriction. A example of what is a CSP is watching film with your family: each member impose its restrictions, and then we look for a film that satisfiesx them all. Should it happen that no film is found, we have other type of problem. This concept naturally translates into propositional logic formulation. Lets define CSP formally:
 
 \begin{definition}[\cite{schoning2013satisfiability}]
@@ -411,7 +423,7 @@ Therefore the CSP problem is solvable, if and only if, the SAT problem is satisf
 
 In practice we will use CSP as a methodology for define problems. It will provide easy solutions for complex problems, given that we solve the SAT problem. More on this will be shown on [\ref{chap:3}].
 
-\section{Some Properties about SAT}
+\section{Some Exploitable Properties about SAT}
 In this section we explain some concepts of SAT that are interesting on that they have beautiful maths theories related and can be useful on resolving and analyzing complexity. In particular we will talk about:
 \begin{itemize}
 \item Symmetric Clauses. 
@@ -419,8 +431,13 @@ In this section we explain some concepts of SAT that are interesting on that the
 \end{itemize}
 
 The first of them are useful when modelling a problem in order to generate SAT problems on which we can work more efficiently. Then second of them is an useful technique that is used extensively on SAT solvers.
+
+
 \subsection{Symmetry}
+
 In this section we talk about symmetry groups and its application to SAT. The information and examples resemble the ones in \cite{sakallah2009symmetry}. We will start this section with a motivating example.
+\subsubsection{Example}
+
 \begin{example}
 Consider the boolean formula:
 
@@ -443,7 +460,11 @@ It is not difficult to see that this functions remains invariant under some vari
 With these three invariants we can also see that the composition of each one of these invariants with each other produce another invariant. Moreover, each invariant is its own inverse, as $\varphi \circ \varphi = I $ for $\varphi \in \{I, \alpha, \beta, \gamma\}$.
 
 We can see therefore that by invariant $\gamma$, it does not matter what value does we assign to $a$, as either both $F\{a = 1\}$ and $F\{a=0\}$ are satisfiable or none are. Therefore we can solve$F\{a=1\}$, and we have a simplified problem to examine. For the record, the formula is not satisfiable.
+
 \end{example}
+
+
+\subsubsection{Definitions - Mover parte de aquí a un anexo.}
 
 This is what is called \emph{symmetry breaking}. And avid reader would have already recognized the group structure on the invariants.  On this section we are going to explore the concepts related to define a symmetry, explore the group of negations and permutations, and develop some strategies to implement \emph{symmetry breaking}.  Now we are going to define a few concepts.
 
@@ -453,7 +474,7 @@ Let $F$ be a formula and $\phi$ be a function $\alpha:Form_{Var(F)}\to Form_{Var
 \end{definition}
     
 \begin{definition}[Permutation]
-    Given a finite set of variables $X = \{x_1,...,x_n\}$, a \emph{permutation} of $X$ is any injective mapping $\alpha:X \to X$. Each permutation induces a homonym function on $\alpha: Form_X \to Form_X}$ that replaces every variable by its image by $\alpha$.
+    Given a finite set of variables $X = \{x_1,...,x_n\}$, a \emph{permutation} of $X$ is any injective mapping $\alpha:X \to X$. Each permutation induces a homonym function on $\alpha: Form_X \to Form_X$  that replaces every variable by its image by $\alpha$. This homonym function can be seen as the action of $alpha$ over $Form_X$.
 \end{definition}
 
       For example given $X = \{a,b,c\}$, and a injective mapping $\alpha:X\to X$ such that: 
@@ -476,8 +497,8 @@ Let $F$ be a formula and $\phi$ be a function $\alpha:Form_{Var(F)}\to Form_{Var
   $$
 \sigma_{A}(x_{i})=
 \begin{cases}
-  \neg l & if l \in A,
-  l & \text{otherwise}.
+  \neg l & if l \in A, \\
+  l & \text{ otherwise}.
 \end{cases}
 $$
 
@@ -487,7 +508,7 @@ Where $Lit(X)$ is the set of literals over $X$. Each negation induces a homonym 
 \begin{proposition}
   The set of negations over a set $X$ and composition is a group.
 \end{proposition}
-\begin{proof}\\
+\begin{proof}\hfill 
   \begin{itemize}
     \item Closure: We can see that $\sigma_{A}\circ\sigma_{B} = \sigma_{(A\cup B)\backslash (A\cap B)}$.
     \item Associativity: Associativity is inherited from the general associativity of composition.
@@ -501,9 +522,9 @@ We will denote the group of negations over $n$ variables as $N_n$.
 \begin{proposition}[$NP_n$]
   The set of negations and permutations on $n$ variables  along with the composition is a group, denoted by $NP_n$. 
 \end{proposition}
-\begin{proof}\\
+\begin{proof}
   Note that every element $x\in NP_n$ can be expressed as $\alpha\circ \sigma$ where $\alpha$ is a permutation and $\sigma$ is a negation. Also note that 
-  \begin{itemize}\hfill \\
+  \begin{itemize}
     \item Closure: $\alpha\circ \sigma_{A} \circ \alpha'\circ \sigma_{A'} = \alpha \circ \alpha' \circ \sigma_{\alpha^{-1} A} \circ \sigma_{A'}  = \alpha''\circ \sigma_{A''}$, where $\alpha''$ is a permutation and $\sigma_{A''}$ is a negation.
     \item Associativity: associativity is inherited from the general associativity of composition.
     \item Identity: we have an identity element $\sigma_{\emptyset}=I$.
@@ -514,12 +535,18 @@ We will denote the group of negations over $n$ variables as $N_n$.
 \begin{proposition}
   $NP_n$ s the semi-direct product of $N_n$ and $P_n$. That is:
    $$NP_n = N_n \rtimes P_n$$
-\end{proposition}
+ \end{proposition}
+ 
 \begin{proof}
 Note that due to the property aforementioned, $NP_n = P_nN_n$ and $P_n\cap N_n = I$. Therefore $NP_n$ is the semi direct product of $P_n$ and $N_n$.
 \end{proof}
 
-For us, a symmetry of a formula $F$ is any $\phi\in NP_{|Var(n)|}$ that is an invariant for $F$.
+For us, a symmetry of a formula $F$ is any $\phi\in NP_{|Var(n)|}$ that is an invariant for $F$. We will have three type of symmetries:
+\begin{itemize}
+\item Value: a symmetry $\phi$ will be called a value symmetry if $\phi \in N_n$. The idea behind this name resides in the fact can flip the value of this variable without changing the truth value of the formula.
+\item Variable: a symmetry $\phi$ will be called a variable symmetry if $\phi \in P_n$. The idea behind this name resides in the fact can swap two of this variables without changing the truth value of the formula.
+\item Mixed: a symmetry that is not a value symmetry neither a variable symmetry is a mixed symmetry. The idea behind this name resides in the fact that this symmetries has to be a composition of a value symmetry with a variable symmetry.
+\end{itemize}
 
 \begin{definition}[Group Action]
   An \emph{action} of a group $G$ on a set $S$ is a map $G \times S \to S$ such that:
@@ -548,15 +575,113 @@ Note that the inverse property on groups and the two properties of group actions
 \end{proposition}
 
 
-We are going to search symmetries a CNF formulas $F$. Until now we have a naive method in order to do this: for every $\phi \in NP_n$ check whether $\phi$ is an invariant of $F$. Nonetheless the complexity of this process is as hard as solving SAT. Instead, we will in fact reduce the problem of symmetries detection to a colored graph  automorphism problem[\ref{sec:complexity}].
+We are going to search symmetries a CNF formulas $F$. Until now we have a naive method in order to do this: for every $\phi \in NP_n$ check whether $\phi$ is an invariant of $F$. Nonetheless the complexity of this process is as hard as solving SAT. Instead, we will in fact reduce the problem of symmetries detection to a colored graph  automorphism problem[\ref{sec:complexity}].\\
+
+
+
+
+\subsubsection{Symmetry recognition}
+
+
 
 \begin{definition}
-  Given a graph $G = (V,E)$ be a graph where $V$ is the set of nodes and $E$ the set of edges, represented as unordered pairs. A \emph{coloring} of a graph its a partition  $(V_1,...,V_n)$ of $V$. Each  $V_i$ will be called a \emph{color}. Also, let $v\in V$ we define $$d(v, V_i) = |\{u \in V_i : (u,v)\in E\}|$$
+  Let $G = (V,E)$ be a graph where $V$ is the set of nodes and $E$ the set of edges, represented as unordered pairs. A \emph{coloring} of a graph its a partition  $(V_1,...,V_n)$ of $V$. Each  $V_i$ is called a \emph{color}, and for every $x\in V_i$ it is said that $x$ with color $i$. Also, let $v\in V$ we define $$d(v, V_i) = |\{u \in V_i : (u,v)\in E\}|$$
   We say that a coloring is \emph{stable} if
   $$d(u,V_i) = d(v,V_i), \qquad  \forall u,v \in V_j,\ \forall i,j \in 1,...,n$$
+
+  A \emph{colored graph} is a pair $(G,\pi)$ where $G$ is a graph and $\pi$ is a coloring of it.
 \end{definition}
 
-From every coloring $\pi$ of $G$ we can make a stable coloring $\pi'$ by iteratively splitting colors with different vertex degree. We can see that $\pi' \le_\mathcal{P} \pi$. If $\pi'$ is a discrete partition, i.e., $|\pi'| = |V|$,  $G$ has no symmetries beyond the identity. Otherwise we have some candidates for symmetry. \\
+
+We are going to associated our formula with a colored graph as defined above, and choose a coloring $pi$ of that graph. From every coloring $\pi$ of $G$ we can make a stable coloring $\pi'$ by iteratively splitting colors with different vertex degree. We can see that $\pi' \le_\mathcal{P} \pi$. If $\pi'$ is a discrete partition, i.e. $|\pi'| = |V|$,  $G$ has no symmetries beyond the identity. Otherwise we have some candidates for symmetry. This possible symmetry is checked (or refuted) by selecting a color $V_i\in \pi' = \{V_i : 1 \le i \le n\}$ with more than one element, and, for each $v\in V_i$ we put $v$ in front of $V_i \backslash \{v\}$, generating all symmetries.
+
+\begin{example}
+
+A little example of the prodedure may be of some help:
+\begin{figure}[H]
+  \centering
+  
+  \begin{tikzpicture}[scale = 0.5,node distance=3cm,on grid,auto,thick] 
+    % comentar para estilo básico
+    \tikzstyle{every state}=[draw=myred!50,very thick,fill=myred!25,minimum size=1.2cm]
+    \node[state] (q_0)   {$0$}; 
+    \node[state] (q_1) [below=of q_0] {$1$}; 
+    \node[state](q_2) [below right=of q_1,size = 1.5] {2};
+    \node[state](q_3) [below left=of q_1] {3};
+    
+    \path[->] 
+    (q_1) edge node {} (q_0)
+    (q_0) edge node {} (q_1)
+    (q_1) edge node {} (q_2)
+    (q_2) edge node {} (q_1)
+    (q_3) edge node {} (q_2)
+    (q_2) edge node {} (q_3)
+    (q_3) edge node {} (q_0)
+    (q_0) edge node {} (q_3)
+    (q_2) edge node {} (q_0)
+    (q_0) edge node {} (q_2)
+
+    
+  \end{tikzpicture}
+  
+  \caption{Grafo inicial}
+\end{figure}
+
+ We now have a partition with only one set with all nodes. We will make a refinement by selecting the node with diferentent adjacency. Now we have a new coloring.
+
+\begin{figure}[H]
+  \centering
+  
+  \begin{tikzpicture}[scale = 0.5,node distance=3cm,on grid,auto,thick] 
+    % comentar para estilo básico
+    \tikzstyle{every state}=[draw=myred!50,very thick,fill=myred!25,minimum size=1.2cm]
+    \node[state] (q_0) [draw=blue!50,very thick,fill=blue!25]  {$0$}; 
+    \node[state] (q_1) [below=of q_0] {$1$}; 
+    \node[state](q_2) [below right=of q_1,size = 1.5, draw=blue!50,very thick,fill=blue!25] {2};
+    \node[state](q_3) [below left=of q_1] {3};
+    
+    \path[->] 
+    (q_1) edge node {} (q_0)
+    (q_0) edge node {} (q_1)
+    (q_1) edge node {} (q_2)
+    (q_2) edge node {} (q_1)
+    (q_3) edge node {} (q_2)
+    (q_2) edge node {} (q_3)
+    (q_3) edge node {} (q_0)
+    (q_0) edge node {} (q_3)
+    (q_2) edge node {} (q_0)
+    (q_0) edge node {} (q_2)
+
+    
+  \end{tikzpicture}
+  
+  \caption{Primera modificación.}
+\end{figure}
+
+
+\end{example}
+
+Let's now define the graph associated to a Formula in the context of symmetry.
+
+\begin{definition}
+  Let $F$ be a CNF formula, the associated symmetry graph $S_F$, is a colored undirected graph such that:
+  \begin{itemize}
+  \item has as nodes:
+    \begin{itemize}
+    \item Clause node: there is a node $n_C$ with color 0 for every clause $C \in F$.
+    \item Positive Literal node: there is a node $n_x$ with color 1 for every variable $x\in Var(F)$.
+    \item Negative Literal node: there is a node $n_{\neg x}$ with color 1 every variable $x\in Var(F)$.
+    \end{itemize}
+  \item has as edges (represented as unordered pairs):
+    \begin{itemize}
+    \item Clause edges: for every clause $C\in F$, and for every literal $l\in C$ there is an edge $(n_c, n_l)$.
+    \item Variable edges: for every variable $x\in Var(F)$ there is an edge $(n_x,n_{\neg x})$.
+    \end{itemize}
+  \end{itemize}
+\end{definition}
+
+
+
 
 
 
