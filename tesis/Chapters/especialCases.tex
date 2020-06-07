@@ -23,15 +23,15 @@ Also, the unit propagation might result on a recursive problem, as other unit cl
 
 
 
-\subsection{2CNF}
-It is already know that 3CNF is equivalent to SAT. This is not known for 2CNF and is believed to be false.
+\subsection{2SAT}
+It is already know that 3SAT is equivalent to SAT. This is not known for 2SAT and is believed to be false.
 
 \begin{proposition}
-  2CNF is in P 
+  2SAT is in P 
 \end{proposition}
 \begin{proof}
 
-  To prove that 2CNF is in P, a polynomial algorithm on the number of clauses will be given. Let $F \in$ 2CNF.  Without loss of generality, we will consider that there are no clauses in $F$ $\{u,u\}$ or $\{u,\neg u\}$ as the first one should be handle with unit propagation and the second one is a tautology. Therefore each clause is $(u \vee v)$ with $var(u) \ne var(v)$, which could be seen as $(\neg u \rightarrow v) \wede (\new v \rightwarrow u)$.\\
+  To prove that 2SAT is in P, a polynomial algorithm on the number of clauses will be given. Let $F \in$ 2CNF.  Without loss of generality, we will consider that there are no clauses in $F$ $\{u,u\}$ or $\{u,\neg u\}$ as the first one should be handle with unit propagation and the second one is a tautology. Therefore each clause is $(u \vee v)$ with $var(u) \ne var(v)$, which could be seen as $(\neg u \rightarrow v) \wede (\new v \rightwarrow u)$.\\
 
 
   
@@ -45,12 +45,20 @@ It is already know that 3CNF is equivalent to SAT. This is not known for 2CNF an
 
 \subsection{Horn Formulas}
 
+
+TODO: Mover a la parte de definición de problemas?
+
 In this subsection we will analyze Horn formulas. They named after Alfred Horn\cite{horn1951sentences}. They are of special interest as HORNSAT is P-complete.
 
 
 \begin{definition}
   Let $F$ be a formula in CNF. $F$ is said to be a Horn formula if for every $C \in F$ there is at most one non-negated literal. HORN will be the set of all horn formulas.
+\end{definition}
 
+
+
+
+\begin{definition}
   HORNSAT will be the intersection of HORN and SAT problems. Nonetheless, given the easiness of checking whether a formula is in HORN, it would usually consider as the problem that check the satisfiability of a horn formula.
 \end{definition}
 
