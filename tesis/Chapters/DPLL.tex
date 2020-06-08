@@ -82,7 +82,7 @@ On \cite{gomes2009exploiting} differences in behauvior between differences betwe
 
 
 \subsection{Clause Learning}
-
+\label{sub:clauselearning}
 Despite not being an algorithm, clause learning is a rather useful technique in order to improve any search based algorithm (as DPLL variations).  The technique works adding clauses to ensure that once reached a contradiction it would not be reached again, that is, providing new clauses to the $CNF$ formula that, without being satisfied, the formula could not be satisfied. When we add those clauses we avoid the repetitions that led to the contradiction, bounding some branches in a problem specific manner.  The content of this subsection is in \cite{tichy2006clause}. The information and definition on UIP is in \cite{zhang2001efficient} \\
 
 In the context of Clause Learning we have to think about an algorithm that works by iteratively expanding a partial assignment as is done in DPLL.

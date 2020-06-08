@@ -262,15 +262,6 @@ The interest of Lindenbaum algebra resides in the fact that $\{Form/\sim, \vee,\
 
 
 
-\section{First order Logic}
-
-\section{Modal Logic}
-
-
-
-
-
-
 
 
 
@@ -548,6 +539,9 @@ For us, a symmetry of a formula $F$ is any $\phi\in NP_{|Var(n)|}$ that is an in
 \item Mixed: a symmetry that is not a value symmetry neither a variable symmetry is a mixed symmetry. The idea behind this name resides in the fact that this symmetries has to be a composition of a value symmetry with a variable symmetry.
 \end{itemize}
 
+
+TODO: las acciones de un grupo sirven para generalizar la teoría de grupos a las formulas, esto habría o que hacerlo mucho mejor o que quitarlo directamente. 
+
 \begin{definition}[Group Action]
   An \emph{action} of a group $G$ on a set $S$ is a map $G \times S \to S$ such that:
   \begin{itemize}
@@ -556,8 +550,6 @@ For us, a symmetry of a formula $F$ is any $\phi\in NP_{|Var(n)|}$ that is an in
     \end{itemize}
 \end{definition}
 
-
-The concept of group action is important because it induces a partition over the elements of a set. Partitions will be the tool necessary in order to find symmetries.
 
 \begin{definition}[Group-Induced Equivalence Partition]
   Let $G$ be a group and $X$ be a set. The action of the group $G$ over $X$ induces an equivalence relation such that, for $x_1,x_2 \in X$:
@@ -614,17 +606,15 @@ A little example of the prodedure may be of some help:
     (q_0) edge node {} (q_1)
     (q_1) edge node {} (q_2)
     (q_2) edge node {} (q_1)
-    (q_3) edge node {} (q_2)
-    (q_2) edge node {} (q_3)
-    (q_3) edge node {} (q_0)
-    (q_0) edge node {} (q_3)
+    (q_3) edge node {} (q_1)
+    (q_1) edge node {} (q_3)
     (q_2) edge node {} (q_0)
     (q_0) edge node {} (q_2)
 
     
   \end{tikzpicture}
   
-  \caption{Grafo inicial}
+  \caption{Initial Graph}
 \end{figure}
 
  We now have a partition with only one set with all nodes. We will make a refinement by selecting the node with diferentent adjacency. Now we have a new coloring.
@@ -638,30 +628,73 @@ A little example of the prodedure may be of some help:
     \node[state] (q_0) [draw=blue!50,very thick,fill=blue!25]  {$0$}; 
     \node[state] (q_1) [below=of q_0] {$1$}; 
     \node[state](q_2) [below right=of q_1,size = 1.5, draw=blue!50,very thick,fill=blue!25] {2};
-    \node[state](q_3) [below left=of q_1] {3};
+    \node[state](q_3) [draw=mycolor!50, fill=mycolor!25 , below left=of q_1] {3};
     
     \path[->] 
     (q_1) edge node {} (q_0)
     (q_0) edge node {} (q_1)
     (q_1) edge node {} (q_2)
     (q_2) edge node {} (q_1)
-    (q_3) edge node {} (q_2)
-    (q_2) edge node {} (q_3)
-    (q_3) edge node {} (q_0)
-    (q_0) edge node {} (q_3)
+    (q_3) edge node {} (q_1)
+    (q_1) edge node {} (q_3)
     (q_2) edge node {} (q_0)
     (q_0) edge node {} (q_2)
 
     
   \end{tikzpicture}
-  
-  \caption{Primera modificación.}
+  \caption{First modification.}
 \end{figure}
 
 
+Now we have an stable coloring, with a partition $\pi' = \{V_i: 1\le i\le 3\}$, where $V_1 = \{0,2\}$, $V_2 = \{1\}$ and $V_3 = \{3\}$. We represent this partition with a table:
+
+
+\begin{table}[h]
+  \begin{center}
+    \begin{tabular}{|l|l|l|l|l|}
+      \hline
+      Node & 0 & 2 & 1 & 3 \\
+      \hline
+      Color & 1 & 1 & 2 & 3 \\
+      \hline
+
+    \end{tabular}
+  \end{center}
+  \caption{Coloring Table.}
+\end{table}
+\newpage
+
+
+In order to verify if this is a partition we put each one of the element in the front, change it color.
+
+\begin{table}[h]
+  \begin{center}
+    \begin{tabular}{|l|l|l|l|l|}
+      \hline
+      Original & 0 & 2 & 1 & 3 \\
+      \hline
+      Modified 1 & 0 & 2 & 1 & 3 \\
+      \hline
+      Color Modified 1& 1'  & 1 & 2 & 3 \\
+      \hline
+      Modified 2 & 2 & 0 & 1 & 3 \\
+      \hline
+      Color Modified 2& 1'  & 1 & 2 & 3 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \caption{Partition Table.}
+\end{table}
+
+And now we reach, in both modification, a discrete coloring. Now we have two symmetries, each one induced by one modified coloring. We have all symmetries on the selected graph:
+\begin{itemize}
+\item The first coloring induces the trivial symmetry.
+\item The second induces the symmetry of swaping 0 and 2.
+\end{itemize}
+
 \end{example}
 
-Let's now define the graph associated to a Formula in the context of symmetry.
+Now that we have the right tool we can deepen in our study. In order to discober symmetries between in a formula $F$  we will apply this method to it associated symmetry graph $S_F$.
 
 \begin{definition}
   Let $F$ be a CNF formula, the associated symmetry graph $S_F$, is a colored undirected graph such that:
@@ -682,10 +715,32 @@ Let's now define the graph associated to a Formula in the context of symmetry.
 
 
 
+\subsubsection{Symmetry Breaking}
+
+Once we have detected for our formula $F$  its group of symmetries $\mathfrak{G}_F$ we want to disambiguate it properties. That is, in the same fashion as Clause Learning \ref{sub:clauselearning}, we want to add a predicate in order to allow any algorithm to consider the rest of the values possible automatically.\\
+
+Although this idea tend to be portrayed with a lot of fancy tools, it is in fact really simple idea once well explained: we are going to order the satisfying assignments of $F$ and only consider true the least of them. This idea is correct, as we can easily make a ordering on the assignment of $Var(F)$. The interesting idea of this method resides on how to translate it to propositional logic language.
+
+\begin{definition}[10.7\cite{sakallah2009symmetry}]
+
+  Let $F$ be a CNF formula, $X=\{x_i: 1\le i \le n\}=Var(F)$ and $\pi \in \mathfrak{G}_F$, we define the \emph{lex-leader predicate} $PP(X,\pi)$ as
+  $$PP(X,\pi) = \land_{1\le i \le n} \left (\left (
+    \land_{i+1 \le j \le n} (x_j = \pi(x_j)) \right )  \to (x_i \le \pi(x_i) )\right )$$
+\end{definition}
 
 
+\begin{definition}
 
-\subsection{Autarks assignments}
+  Let $F$ be a CNF formula, and $\mathfrak{G}_F$ be its symmetry group. We define the \emph{symmetry breaking predicate} $\rho(F)$ as:
+
+  $$ \rho(F)  = \land_{\pi \in \mathfrak{G}_F PP(X,\pi)}$$
+
+\end{definition}
+
+
+And we have that, considering $F\land \rho(F)$ only the least of the symmetries can be considered. 
+
+\subsection{Autraks assignments}
 \label{sec:autark}
 
 Once we have defined what is a CNF formula and what is a problem we can proceed to define this anticipated concept.
