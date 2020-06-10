@@ -33,17 +33,13 @@ In this chapter we present the bases of Logic and formal languages. Logic will p
 
 \section{Boolean Algebra}
 
-The same way I started my journey on the university, we could have started this text right from the axioms, making a really romantic thesis. Nonetheless, given the goal we want to achieve, it seems excessive. We will refer to the commonly used \emph{Zermelo-Fraenkel axioms}, in order to have a point of reference, and therefore we will work without more considerations with sets and set operations. We will put \emph{Zorn's lemma} to work, so the axiom of choice will also be needed, although in practice we will only work with finite sets of formulas.\\
+The same way I started my journey on the university, we could have started this text right from the axioms, making a really romantic thesis. Nonetheless, given the goal we want to achieve, it seems excessive. We will refer to the commonly used \emph{Zermelo-Fraenkel axioms}, in order to have a point of reference, and therefore we will work without more considerations with sets and set operations. We will only be concerned with finite sets for most cases.
 
 Further on this section we will present Boolean Algebra in a classic lattice-based way that could be found in related literature. In particular we follow  \emph{Introduction to mathematics of satisfiability}\cite{marek2009introduction} for the definition of boolean algebra and propositional logic. The definition of Lattice of Partitions is adapted from \cite{sakallah2009symmetry}
 
 \begin{definition}
   A partial ordered set, also poset, is a pair $\{X, \le\}$ where $X$ is a set and $\le$ is a partial order of $X$. A chain $Y$ of $\{X, \le\}$ is a subset of $X$ where $\le$ is a total order. 
 \end{definition}
-
-\begin{theorem}[Zorn's lemma]
-  If every chain in a poset $\{X,\le\}$ is bounded, then $X$ possesses a maximal elements and for every $x\inX$ there is a maximal element $y$ such that $x\le y$.
-\end{theorem}
 
 
 
@@ -63,6 +59,7 @@ $ \{X,\le\} $ where every pair of elements possesses a least upper bound and a g
 With the concept of lattice just included, we present the \emph{Knaster and Tarski fixpoint theorem}. In order to do that we will introduce some concepts. Given a function $f:\{L,\le\}\to \{L,\le\}$, a prefixpoint (resp. postfixpoint) is a point $x \in L$ such that $f(x) \le x$ (resp. $f(x) \ge x$). A fixpoint is a point that is both prefixpoint and postfixpoint. Note that, given that they exists, $\top$ and $\bot$ are a prefixpoint and a postfixpoint of $f$ respectively.
 
 \begin{theorem}[Knaster and Tarski fixpoint theorem \cite{marek2009introduction}]
+  \label{the:fixpoint}
   Let $f:\{L,\le\}\to \{L,\le\}$ be a monotone function in a complete lattice. Then:
   \begin{enumerate}
   \item $f$ has a least prefixpoint $l$ that is a fixpoint.
@@ -244,11 +241,18 @@ Arguably, the most special case of partial assignment are autarks assignments[\r
 
 Given an assignment or partial assignment $\alpha$ we will denote the set of variables mapped to either 0 or 1 by $Var(\alpha)$. Analogously, given a formula $F$, $Var(F)$ will denote the variables that appear in $F$. Note that if $F\in Form_{Var}$ then $Var(F)\in Var$ and it is not necessary that $Var(F)=Var$.\\
 
+Naturally, we want theorems to be the formulas that are always true. In the context of propositional logic, theorems are the tautologies.   
 
-Two formulas $F,G$ are said to be equal, represented as $F\sim G$, if for every two-valued assignment $\alpha$ maps $F\alpha = G\alpha$. It follows from the equivalently properties on constants that $\sim$ is an equal relationship. This definition is really intuitive, as it define as equal the formulas that has the same meaning in every possible situation. \\
+  \begin{definition}
+    Let $X$ be a set of variables. A formula $F\in Form_X$ is a \emph{tautology} if for every two-valued assignment $\alpha$ over $X$ we have that $F\alpha=1$. We say that $G$ \emph{follows from} $F$ if $F\to G$ is a tautology. 
+  \end{definition}
 
 
+  
+Two formulas $F,G$ are said to be equal, represented as $F\sim G$, if for every two-valued assignment $\alpha$ maps $F\alpha = G\alpha$. It follows from the equivalently properties on constants that $\sim$ is an equal relationship. This definition is really intuitive, as it define as equal the formulas that has the same meaning in every possible situation. Note that this definition is equivalent to ensure that both $F\to G$ and $G\to F$ are tautologies.\\
 
+
+k
 \label{def:linden}
 With $\sim$ defined we can have what is called a \emph{Lindenbaum algebra}, as a quotient space of $Form = Form_{Var}$ by the relation $\sim$, denoted as $Form/\sim$. It follows that every operator respect the quotient space structure, i.e., for every $[\phi_1],[\phi_2]\in\ Form/\sim$:
 
@@ -259,8 +263,6 @@ With $\sim$ defined we can have what is called a \emph{Lindenbaum algebra}, as a
 \end{itemize}
 
 The interest of Lindenbaum algebra resides in the fact that $\{Form/\sim, \vee,\wedge,[1],[0]\}$ is a Boolean algebra, providing therefore a nexus between the algebraic formulation of the problem an its semantics.
-
-
 
 
 
@@ -291,7 +293,7 @@ When we have a named language, we refer indistinctly by this name to both the la
 Given the previous definitions, we are now almost prepared to define the central part of this thesis: the satisfiability decision problem of propositional logic, SAT for short. To this end we define a special subset of formulas in Propositional Logic: the formulas in Conjunctive Normal Form.
 
 \begin{definition}
-  A formula $F$ is said to be in Conjunctive Normal Form ($CNF$) if $F$ is written as:
+  A formula $F$ is said to be in Conjunctive Normal Form ($CNF$) if $F$ is written as:x
   $$F = C_1\wedge ... \wedge C_n.$$
   Where $C_i$  are clauses.
 \end{definition}
@@ -346,16 +348,74 @@ That is, is the problem of finding the maximum number of assignments that can be
 As we will see, most SAT-solvers are FSAT-solvers. In related literature the FSAT-solver are called constructive SAT-solvers, as they provide a constructive solution of the problem. Solvers that only solve SAT are called non-constructive SAT-solvers. After presenting the concept of algorithmic complexity we will see that from a non constructive SAT-solver, a constructive SAT-solver can be made so that the latter is not much less efficient[\ref{sub:fromnon}].
 
 
-\begin{itemize}
-\item {\color{red}POSIBLE FRENTE QUE ABRIR SI DIERA TIEMPO: Certificados de SAT}
-\item Un certificado es FSAT solver que además, si devuelve que no es satisfascible, da una resolución de esta.
-\item Contra: habría que introducir es cálculo de resoluciones, abriendo otro frente más a este trabajo.
-\item Pros:
+\subsection{SAT certificates}
+
+As SAT solvers become vital in some areas, such as circuit verification, protocols for ensuring the outcome of a SAT-solver are usually needed. When this is required, the so-called SAT certificates will be recalled. These certificates are methods of ensuring the correctness of performance. In this subsection we will present a simple but effective method of performing this task. The information of this subsection appear on chapter 2\cite{schoning2013satisfiability}, chapter 7\cite{marek2009introduction} and section 3.6.6\cite{darwiche2009complete}.\\
+
+
+Let $F$ be a CNF formula. If F is satisfied certifying this property is as easy as printing an assignment that satisfies it, i.e., solving FSAT. The problem arises when we want to prove that F is not satisfiable, i.e., when we want to solve the UNSAT and give a proof of it correctness. For that we are going to use the resolution rule, after which we are going to make a proof system, and proof that is refutation complete. Therefore we could provide a proof of unsatisfiability.
+
+\begin{definition}[\cite{marek2009introduction}]
+  Let $C_1,C_2$ be clauses and $l$ be a literal. The resolution rule is an execution of the following partial binary operation:
+  $$\frac{l \lor C_1 \qquad \neg l \lor C_2}{ C_1 \lor C_2}$$
+\end{definition}
+
+\begin{definition}
+  
+We define \emph{Cla} as the lattice of all clauses regarded as sets, along with inclusion. 
+\end{definition}
+
+\begin{definition}
+ Let $C_1,C_2\in$ Cla  such that the literal $l$ appear only once in $C_1$ and the literal $\neg l$ appear only once in $l_2$. Then we define the \emph{resolution operator} as the partial operator $Res: Cla \times Cla \to Cla$ as
+  $$Res(C_1,C_2) = (C_1 \backslash \{l\}) \cup ((C_1 \backslash \{\neg l\}))$$
+\end{definition}
+
+\begin{definition}
+  Let $F = \{D_i : 1 \le i \le t\}$ be a CNF formula. A \emph{resolution proof} of $F$ is a finite sequence of clauses $\{C_i : 1\le i \le n\}$ such that:
   \begin{itemize}
-  \item Es una cosa que en realidad es útil.
-  \item La demostración que usa las fórmulas principio del palomar es guay.
+  \item $C_n = \{\}$.
+  \item $C_i  = D_i $ for $i\in 1,...,t$.
+  \item For every $i\in t+1,...,n$ there exists two indexes $j,k\le i$ such that $R(C_j,C_k)  = C_i$.
   \end{itemize}
+\end{definition}
+
+Once we have  the resolution operator we want to define the closure of a CNF formula $F$ by res, that it we want to find the least set of clauses that includes $F$ and is a fixpoint under resolution. For that, we define the operator $res_F:\text{Cla}\to\text{Cla}$ as
+
+$$res_F(G) = F \cup \{Res(C_1,C_2) : C_1,C_2 \in F \cup G \text{ and } Res(C_1,C_2) \text{is non-tautological}\}$$
+
+
+We can see that $res_F$ is monotone. As a consequence of [\ref{the:fixpoint}] there is an unique least fixpoint of $res_F$.
+
+\begin{proposition}[Soundness of Resolution] \label{pro:sound}
+  Let $C_1, C_2 \in $Cla, and $\alpha$ be a two-valued assignment on $Var(C_1)\cup Var(C_2)$. If $C_1 \alpha = 1$ and $C_2 \alpha = 1$ and $Res(C_1,C_2)$ can be executed then $Res(C_1,C_2) \alpha = 1$
+\end{proposition}
+\begin{proof}
+As $Res(C_1,C_2)$ can be executed therefore we have two clauses $D_1,D_2$ such that $D_1 \subset C_1$, $D_2 \subset C_2$ and $Res(C_1,C_2) = D_1\vee D_2$. As $C_1\alpha = 1$ (resp. $C_2$) then $D_1\alpha = 1$ (resp. $C_2$). As $1 \vee 1=1$ we have proved the proposition.
+\end{proof}
+
+% \begin{theorem}[Quine theorem]
+% Let $F$ be a CNF formula and $C$ be a non tautological clause. We have that $C \in Res(F)$  a  if and only if there is a clause $D$ such that $D$ is a resolution consequence of $F$ and $D\subset C$.  
+% \end{theorem}
+
+\begin{theorem}[Refutation completeness]
+Let $F$ be a CNF. Then $F$ is satisfiable if and only if $\{\} \not\in Res(F)$
+\end{theorem}
+\begin{proof}\hfill
+  \begin{itemize}\item[\fbox{$\Rightarrow$}] Direct consequence of [\ref{pro:sound}].
+  \item[\fbox{$\Leftarrow$}] We proceed by induction on $n = Var(F)$ and show the contraposition:
+    \begin{itemize}
+    \item[$n=1$] In this case either $F$ is satisfiable or $F = \{\{x\},\{\neg x\}\}$.  When $F = \{\{x\},\{\neg x\}\}$, we can derive $\{\}$ by a resolution proof
+      
+    \item[$n>1$] let's assume the case $n-1$ and proof it for $n$. We select an arbitrary variable $x\in Var(F)$. Then both $F\{x\to 0\}$ and  $F\{x\to 1\}$ are unsatisfiable, therefore, by induction hypothesis we can derive $\{\}$ from both of them. Reestablishing the original clauses in both resolutions we have two resolutions that end with $\{x\}$ and $\{\neg x\}$ respectively. Therefore $\{\} \in Res(F)$.
+    \end{itemize}
+  \end{itemize}
+\end{proof}
+
+With the completeness of resolution proved, we can ensure, and moreover, require an algorithm that provided either a satisfying assignment or a refutation proof of the formula. Thorough the literature other formats for certifying SAT have been proposed an as alternative, as we can see in section 2.5 \cite{schoning2013satisfiability} that the length of these can become exponential.  To comment on the state of the art, the DRAT system, (derivation resolution by asymmetric tautology) has been proposed in the literature, and is the one used today by the international SAT competition. For more information on this system, we refer to \cite{lammich2020efficient} where the process is described and refined thereafter. 
+
+
 \end{itemize}
+
 \subsection{Constraint Satisfaction Problem}
   
 We want to introduce the notion of Constraint Satisfaction Problem (CSP) because it defines a new optic over the SAT problem. CSP is, in fact, a generalization of SAT. When dealing with CSP problem we want to find a solution with certain restriction. A example of what is a CSP is watching film with your family: each member impose its restrictions, and then we look for a film that satisfies them all. Should it happen that no film is found, we have other type of problem. This concept naturally translates into propositional logic formulation. Lets define CSP formally:
@@ -665,7 +725,7 @@ Now we have an stable coloring, with a partition $\pi' = \{V_i: 1\le i\le 3\}$, 
   \end{center}
   \caption{Coloring Table.}
 \end{table}
-\newpage
+
 
 
 In order to verify if this is a partition we put each one of the element in the front, change it color.

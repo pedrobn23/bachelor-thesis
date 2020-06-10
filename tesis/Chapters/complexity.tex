@@ -77,11 +77,14 @@ In this section we are going to define what a complexity class is and then we ar
 
 \begin{enumerate}
   \item TODO:
-\item To study the complexity of the SAT problem and its variants so far.
-\item To give one more justification of the relevance of the problem.
-\item Include graph automorphism complexity.
+  \item To study the complexity of the SAT problem and its variants so far.
+  \item To give one more justification of the relevance of the problem.
+  \item Include graph automorphism complexity.
   \item SSAT es PSPACE Completo
-\end{enumerate}
+  \item Resultado craig interpolant
+  \item Look for a CONP complete problem
+
+  \end{enumerate}
 
 \subsection{Exponential Time Hypothesis}
 \label{hyp:exponential_time}
@@ -168,12 +171,9 @@ Now that we are able to talk about efficiency is time to talk about an interesti
   The fact that they are reachable on polynomial time is important because it means it could be done efficiently. Should this be impossible it will not be of much relevance in practice, as we yearn to solve this problem as efficient as possible (in fact, as polynomial as possible). This result implies that if we know how to solve $3$-SAT we know how to solve GSAT.
 
 
-  \subsection{Tautologies}
+  \subsection{Tautologies Revisited}
 
-  \begin{definition}
-    A formula $F$ such that for every assignment  $\alpha$  happens that $F\alpha=1$ is a tautology. Given two formulas $G,F$ it is said that $G$ follows from $F$ if $F\to G$ is a tautology. 
-  \end{definition}
-
+  TODO: include information about craig interpolants.
   \begin{proposition}
     Given a tautology $F \to G$, there exists a formula $I$ such that $Var(I) = Var(F)\cap Var(G)$ and both $F\to I$ and $I \to G$ are tautologies. A polynomial algorithm to solve this problem is not known. 
   \end{proposition}
