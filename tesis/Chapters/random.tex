@@ -34,6 +34,7 @@ To define the algorithms, we first define some subroutines. The first of them ta
     \EndFor    
     \State $F_{i+1} = F_iu $
     \State \Return u
+    \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
@@ -56,6 +57,7 @@ This procedure is the named PPZ algorithm. As we can see is a pretty simple algo
     \EndIf
     \EndFor
     \State \Return Unsatisfiable
+    \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
@@ -72,7 +74,9 @@ To prove the first lemma we introduce some notation:
   A variable $x$ is forced for an assignment $\alpha$, a formula $F$ and a permutation $\pi$ if $x$ is unit propagated in the procedure \texttt{Modify}$(\alpha, \pi, F)$. $Forced(\alpha, \pi, F)$ is the set of all variables that are forced for $(\alpha, \pi, F)$
 \end{definition}
 
-\begin{lemma} Let $z$ be a satisfying assignment of a CNF formula $G$, and let $\pi$ be a permutation of $\{1,...,n\}$ and $y$ be any assignment to the variables. Then,  \texttt{Modify}($G,\pi,y$)=$z$ if and only if $y(x) = z(x)\ \  \forall x \in Var(G) \backslash \text{Forced}(z, \pi, G)$.
+\begin{lemma} Let $z$ be a satisfying assignment of a CNF formula $G$, and let $\pi$ be a permutation of 
+$\{1,...,n\}$ and $y$ be any assignment to the variables. Then,
+  \texttt{Modify}( $G,\pi,y$)=$z$ if and only if $y(x) = z(x)\ \  \forall x \in Var(G) \backslash \text{Forced}(z, \pi, G)$ .
 \end{lemma}
 
 \begin{proof}
@@ -82,7 +86,7 @@ To prove the first lemma we introduce some notation:
   Let $i$ be the first index such that $y(x_{\pi(i)})\ne z(x_{\pi(i)})$ with $x_{\pi(i)} \not \in \text{Forced}(z, \pi, G)$ therefore $u(x_{\pi(i)})=y(x_{\pi(i)})\ne z(x_{\pi(i)})$.
 \end{proof}
 
-Now, let $\tau(F,z)$ the probability that \textt{Modify}$(\alpha,\pi,F)$ would return $z$ with random $\pi$ and $\alpha$. From the previous lemma:
+Now, let $\tau (F,z)$ the probability that \texttt{Modify}$(\alpha,\pi,F)$ would return $z$ with random $\pi$ and $\alpha$. From the previous lemma:
 
 $$ \tau(F,z) = 2^{-n} \mathbb{E}_{\pi}[2^{|\text{Forced}(z, \pi, F)|}] \ge^{1.} 2^{-n +E_{\pi}[{|\text{Forced}(z, \pi, F)|}] }$$
 
@@ -170,7 +174,7 @@ This algorithm includes a preprocessing of the formula prior to the searching al
     \Procedure{\texttt{ResolveSat}}{$F, s, I$}
     \State $F_s =$ \texttt{Resolve}$(F,s)$
     \State \Return \texttt{Search}$(F,s)$
-
+	\EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
@@ -180,7 +184,7 @@ $$ \mu_k = \sum_{j=1}^\infty \frac{1}{j \left (j + \frac{1}{k-1}\right )}$$
 \begin{theorem}[theorem 1. \cite{paturi2005improved}] Let $k\ge 3$\footnote{Here we are also using the Hertli Result\cite{hertli20143}.}, let $s(n)$ a function going to infinity. Then, for any satisfiable $k$-CNF formula $F$ on $n$ variables,
   $$\tau(F_s) \ge 2^{-(1-\frac{\mu_k}{k-1})n-o(n)}$$
 
-  Hence ResolveSat(F,s,I) with $I = 2^{+(1-\frac{\mu_k}{k-1})n+o(n)}$ has an error probability $o(1)$ and running time $2^{-(1-\frac{\mu_k}{k-1})n-o(n)$ on any satisfiable $k$-CNF formula, provided that $s(n)$ goes to infinity sufficiently slowly.
+  Hence ResolveSat(F,s,I) with $I = 2^{+(1-\frac{\mu_k}{k-1})n+o(n)}$ has an error probability $o(1)$ and running time $2^{-(1-\frac{\mu_k}{k-1})n-o(n)}$ on any satisfiable $k$-CNF formula, provided that $s(n)$ goes to infinity sufficiently slowly.
   \end{theorem}  
 
   By slowly the theorem means that $s(n)$ diverge in $o(log(n))$. Also the term $o(n)$ can be reduced as wished.
@@ -197,7 +201,7 @@ $$ \mu_k = \sum_{j=1}^\infty \frac{1}{j \left (j + \frac{1}{k-1}\right )}$$
       \For{$i \in \{1,...,t\}$ }
       \If{$F\alpha=1$} \Return Satisfiable
       \EndIf
-      \State Choose $C={l_1,...,l_n}\inF$ such that $C\alpha=0$
+      \State Choose $C={l_1,...,l_n}\in F$ such that $C\alpha =0$
       \State Choose randomly $n\in 1,...,n$..
       \State  $\alpha \gets \alpha\circ\{l_1 \to 1\}$
       \EndFor
@@ -212,6 +216,7 @@ $$ \mu_k = \sum_{j=1}^\infty \frac{1}{j \left (j + \frac{1}{k-1}\right )}$$
       \EndIf
       \EndFor
       \State \Return Unsatisfiable
+      \EndProcedure
     \end{algorithmic}
   \end{algorithm}
 
@@ -238,7 +243,7 @@ $$ \mu_k = \sum_{j=1}^\infty \frac{1}{j \left (j + \frac{1}{k-1}\right )}$$
     \tikzstyle{every state}=[draw=myred!50,very thick,fill=myred!25,minimum size=1.2cm]
     \node[state,accepting] (q_0)   {$0$}; 
     \node[state] (q_1) [right=of q_0] {$1$}; 
-    \node[state](q_2) [right=of q_1,size = 1.5] {$...$};
+    \node[state](q_2) [right=of q_1] {$...$};
     \node[state](q_3) [right=of q_2] {$n-1$};
     \node[state](q_4) [right=of q_3] {$n$};
     
@@ -249,7 +254,7 @@ $$ \mu_k = \sum_{j=1}^\infty \frac{1}{j \left (j + \frac{1}{k-1}\right )}$$
     (q_3) edge [bend left]node {$\frac{1}{k}$} (q_2)
     (q_2) edge [bend left]node {$\frac{k-1}{k}$} (q_3)
     (q_3) edge [bend left]node {$\frac{k-1}{k}$} (q_4)
-    (q_4) edge [bend left]node {$1$} (q_3)
+    (q_4) edge [bend left]node {$1$} (q_3);
     
   \end{tikzpicture}
   
@@ -351,5 +356,4 @@ TODO:Incluir ahora sección de algoritmos no incluidos pero dignos de mención
 \item Derandomized algorithms
 \end{enumerate}
     
-
     

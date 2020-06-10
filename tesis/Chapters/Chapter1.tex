@@ -16,6 +16,7 @@
 % ----------------------------------------------------------------------------------------
 
 \chapter{Logic}
+
 \begin{itemize}
 \item[TODO:]$\qquad$ Incluir introducción del problema.
 
@@ -66,9 +67,7 @@ With the concept of lattice just included, we present the \emph{Knaster and Tars
   \item $f$ has a largest postfixpoint $l$ that is a fixpoint.
   \end{enumerate}
 \end{theorem}
-\begin{proof}\\
-  
-  \begin{enumerate}
+\begin{proof}\hfill  \begin{enumerate}
   \item We know that there is at least a prefixpoint. Let
     $$l = \bigwedge_{\{x\in X: x\text{ is a prefixpoint}\}} x .$$ 
     Lets prove that $l$ is a fixpoint. Le $x$ be an arbitrary fixpoint, therefore, $l \le x \le f(x)$. Since $x$ was arbitrary, $f(l) \le l$. To show that it a fixpoint it suffices to see that $f(l)$ is a prefixpoint to, as $f$ is monotone.
@@ -78,7 +77,7 @@ With the concept of lattice just included, we present the \emph{Knaster and Tars
 
 
 \begin{definition}
-  A \emph{Boolean algebra} is a distributive lattice  $\{X, \vee, \wedge, \top,\bot\}$ with an additional operation $\neg$, called complement or negation, such that for all $x\inX$:
+  A \emph{Boolean algebra} is a distributive lattice  $\{X, \vee, \wedge, \top,\bot\}$ with an additional operation $\neg$, called complement or negation, such that for all $x\in X$:
   \begin{enumerate}
   \item $ x\wedge \neg x = \bot,\ x\vee \neg x = \top $.
   \item $ \neg(x \vee y) = \neg x \wedge \neg y,  \neg(x \wedge y) = \neg x \vee \neg y$.
@@ -131,7 +130,7 @@ We will define now propositional logic, or zeroth-order-logic. \\
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[width=5cm]{figures/sintax2.png}
+    \includegraphics[width=5cm]{/home/pedro/Carrera/Quinto/TFG/tesis/figures/sintax2.png}
     \caption{Diagram showing the different classes which are constructed on the formal language of Propositional Logic.}
   \end{center}
 \end{figure} 
@@ -206,10 +205,10 @@ Note that we have a really restrictive constraint on assignments: they should ma
       $p$ & $q$ & $\neg p$& $p\vee q$ & $p\wedge q$ & $p \oplus q$ & $p \to q $  & $p \iff q$  \\ 
       \hline
       
-      \upsilon & 0 & \upsilon & \upsilon & 0 & \upsilon & \upsilon &\upsilon\\
-      \upsilon & 1 & \upsilon & 1 & \upsilon & \upsilon & 1 &\upsilon\\
-      0 & \upsilon & 1 & \upsilon & 0 & \upsilon & 1 &\upsilon\\
-      1 & \upsilon & 0 & 1 & \upsilon & \upsilon & \upsilon &\upsilon\\
+      $\upsilon$ & 0 & $\upsilon$ & $\upsilon$ & 0 & $\upsilon$ & $\upsilon$ & $\upsilon$\\
+      $\upsilon$ & 1 & $\upsilon$ & 1 & $\upsilon$ & $\upsilon$ & 1 &$\upsilon$\\
+      0 & $\upsilon$ & 1 & $\upsilon$ & 0 & $\upsilon$ & 1 &$\upsilon$\\
+      1 & $\upsilon$ & 0 & 1 & $\upsilon$ & $\upsilon$ & $\upsilon$ &$\upsilon$\\
       \hline
 
     \end{tabular}
@@ -414,7 +413,6 @@ Let $F$ be a CNF. Then $F$ is satisfiable if and only if $\{\} \not\in Res(F)$
 With the completeness of resolution proved, we can ensure, and moreover, require an algorithm that provided either a satisfying assignment or a refutation proof of the formula. Thorough the literature other formats for certifying SAT have been proposed an as alternative, as we can see in section 2.5 \cite{schoning2013satisfiability} that the length of these can become exponential.  To comment on the state of the art, the DRAT system, (derivation resolution by asymmetric tautology) has been proposed in the literature, and is the one used today by the international SAT competition. For more information on this system, we refer to \cite{lammich2020efficient} where the process is described and refined thereafter. 
 
 
-\end{itemize}
 
 \subsection{Constraint Satisfaction Problem}
   
@@ -568,7 +566,7 @@ Note that the inverse property on groups and the two properties of group actions
 
  We can see set of all permutations over a set $X$ such that $|X|=n$ along with composition is the \emph{permutation group} on $n$ elements, $P_n$.\\
 
- In algebra the permutations group (further on \emph{classic permutation group}) consists in the group of injective mappings of ${1,...,n\}$ along with composition, studied in most group algebra courses. In fact, what we define as permutation group is the action group of the classic permutation group over the set of variables. 
+ In algebra the permutations group (further on \emph{classic permutation group}) consists in the group of injective mappings of $\{1,...,n\}$ along with composition, studied in most group algebra courses. In fact, what we define as permutation group is the action group of the classic permutation group over the set of variables. 
 
 \begin{definition}
   Let $X$ be an non-empty set of variables. Given $A\subset X$ a negation of $A$ is a mapping $\sigma_{A}:Lit(X) \to Lit(X)$ defined by:
@@ -661,8 +659,8 @@ A little example of the procedure may be of some help:
     \tikzstyle{every state}=[draw=myred!50,very thick,fill=myred!25,minimum size=1.2cm]
     \node[state] (q_0)   {$0$}; 
     \node[state] (q_1) [below=of q_0] {$1$}; 
-    \node[state](q_2) [below right=of q_1,size = 1.5] {2};
-    \node[state](q_3) [below left=of q_1] {3};
+    \node[state](q_2) [right=of q_1] {$2$};
+    \node[state](q_3) [left=of q_1] {3};
     
     \path[->] 
     (q_1) edge node {} (q_0)
@@ -672,7 +670,7 @@ A little example of the procedure may be of some help:
     (q_3) edge node {} (q_1)
     (q_1) edge node {} (q_3)
     (q_2) edge node {} (q_0)
-    (q_0) edge node {} (q_2)
+    (q_0) edge node {} (q_2);
 
     
   \end{tikzpicture}
@@ -682,6 +680,9 @@ A little example of the procedure may be of some help:
 
  We now have a partition with only one set with all nodes. We will make a refinement by selecting the node with different adjacency. Now we have a new coloring.
 
+
+\definecolor{mycolor}{RGB}{0, 128, 0}
+
 \begin{figure}[H]
   \centering
   
@@ -690,8 +691,8 @@ A little example of the procedure may be of some help:
     \tikzstyle{every state}=[draw=myred!50,very thick,fill=myred!25,minimum size=1.2cm]
     \node[state] (q_0) [draw=blue!50,very thick,fill=blue!25]  {$0$}; 
     \node[state] (q_1) [below=of q_0] {$1$}; 
-    \node[state](q_2) [below right=of q_1,size = 1.5, draw=blue!50,very thick,fill=blue!25] {2};
-    \node[state](q_3) [draw=mycolor!50, fill=mycolor!25 , below left=of q_1] {3};
+    \node[state](q_2) [right=of q_1, draw=blue!50,very thick,fill=blue!25] {2};
+    \node[state](q_3) [draw=mycolor!50, fill=mycolor!25 , left=of q_1] {3};
     
     \path[->] 
     (q_1) edge node {} (q_0)
@@ -701,7 +702,7 @@ A little example of the procedure may be of some help:
     (q_3) edge node {} (q_1)
     (q_1) edge node {} (q_3)
     (q_2) edge node {} (q_0)
-    (q_0) edge node {} (q_2)
+    (q_0) edge node {} (q_2);
 
     
   \end{tikzpicture}
