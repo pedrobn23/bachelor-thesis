@@ -61,11 +61,6 @@ As a brief note before going on, we have not define the empty word yet, as in pr
 
 The circuit model provide another computation model that is naturally related to propositional logic. We define it briefly in order to prove some results on the area. Circuits are the computation model that is used in practice. One of the most important area of industrial application of SAT is circuit verification. This is going to be discussed further on AÑADIR CAPITULO.
 
-\begin{enumerate}
-  \item TODO:
-\item Moreover, as checking whether an assignment is autark is linear on the number of clauses, then this make the autark-finding problem NP-Complete(NP-C further on).
-\end{enumerate}
-
 \subsection{Reduction}
 
 \section{Complexity Classes}
@@ -83,7 +78,7 @@ In this section we are going to define what a complexity class is and then we ar
   \item SSAT es PSPACE Completo
   \item Resultado craig interpolant
   \item Look for a CONP complete problem
-
+  \item Moreover, as checking whether an assignment is autark is linear on the number of clauses, then this make the autark-finding problem NP-Complete(NP-C further on).
   \end{enumerate}
 
 \subsection{Exponential Time Hypothesis}
@@ -142,7 +137,7 @@ Now that we are able to talk about efficiency is time to talk about an interesti
 
   \begin{proof}
     We will show that for every circuit with $n$ inputs and $m$ binary gates there is a formula in \emph{3-CNF}  that could be constructed in polynomial time in $n$ and $m$. Then, given a formula we will work with it considering its associated circuit.\\
-    <
+    
     We will construct the formula considering variables $x_1,...,x_n$ that will represent the inputs and $y_1,...,y_m$ that will represents the output of each gate. 
 
     $$ G = (y_1) \wedge \bigwedge_{i=1}^m (y_i \iff f_i(z_{i,1},z_{i,2}))$$
@@ -223,7 +218,7 @@ Now that we are able to talk about efficiency is time to talk about an interesti
     \State $\alpha += \{x = 0\}$
     \State $F_0 \gets F_0\{x=0\}$
     \Else
-    \State \Retun Unsatisfiable
+    \State \Return Unsatisfiable
     \EndIf
     \EndIf
     \EndFor
