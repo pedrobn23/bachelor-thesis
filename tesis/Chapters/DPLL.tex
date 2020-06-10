@@ -1,6 +1,8 @@
 
 
 \chapter{Complete Algorithms}
+
+
 \section{Backtracking and DPLL Algorithms}
 \label{sec:dpll}
 In this section we will talk about algorithms that explore the space of possible assignments in order to find one that satisfies a given formula, or otherwise prove its non-existence. Onward whenever a formula is given, it would be a CNF formula.
@@ -20,6 +22,7 @@ We  will start with the approach based on the simple and well-known backtracking
     \If{\texttt{backtracking}($F\{x=0\}$)} \Return 1
     \EndIf
     \State \Return \texttt{backtracking}($F\{x=1\}$)
+    \EndProcedure
   \end{algorithmic}
 \end{algorithm}
 
@@ -52,6 +55,7 @@ This algorithm is an improvement of the backtracking algorithm, still really sim
   \If{\texttt{DPLL}($F\{x=0\}$) = Satisfiables} \Return Satisfiable
   \EndIf
   \State \Return \texttt{DPLL}$(F\{x=1\})$
+  \EndProcedure
 \end{algorithmic}
 \end{algorithm}
 
@@ -107,16 +111,16 @@ The implication graph  is the directed graph that has as nodes a pair with a var
 
 
 \begin{definition}
-  Let $F$ be a CNF formula,$\{x_i : 1,...,n\} = Var(F)$, and $A=\{ a_i\in{0,1\}:$$\ i\in 1,...,n\}$. The associated implication graph $\mathcal{G}_{F,A}$ is defined inductively:
+  Let $F$ be a CNF formula,$\{x_i : 1,...,n\} = Var(F)$, and $A=\{ a_i\in \{0,1\}:$ $ i\in \{1,...,n\}$. The associated implication graph $\mathcal{G}_{F,A}$ is defined inductively:
   \begin{itemize}
   \item $\mathcal{G}_0$ is the empty graph, and $F_0 = F$.
-  \item From $\math{G}_{i-1}, F_{i-1}$ we define $\math{G}_{i},F_i$:
+  \item From $\mathcal{G}_{i-1}, F_{i-1}$ we define $\mathcal{G}_{i},F_i$:
     \begin{itemize}
   \item Let $x_j$ be the first variable in $Var(F_i)$. We add the node named $(x_j,a_j)$.
-  \item We define $F_i' = F_{i-1}\{x_j\to a_j\}$ and $\math{G}_{i}=\math{G}_{i-1}$.
-  \item Every unit clause $\{l\}$ in $F_{i}$, we add to $\math{G}_{i}$ a node $(x,a)$ such that $(l)\{x\to a\} = 1$. Note that $(x,a)$ is unique as $l$ is a literal.
+  \item We define $F_i' = F_{i-1}\{x_j\to a_j\}$ and $\mathcal{G}_{i}=\mathcal{G}_{i-1}$.
+  \item Every unit clause $\{l\}$ in $F_{i}$, we add to $\mathcal{G}_{i}$ a node $(x,a)$ such that $(l)\{x\to a\} = 1$. Note that $(x,a)$ is unique as $l$ is a literal.
 
-  \item Every unit clause $\{l\}$ has an associated clause $C=\{l_{i_1},..,l_{i_{k}}\}\in F$ and a associated node $(x,a)$. Necessarily, all other literals in $C$ has been assigned already, so they has an associated node in the graph $(y,b)$. We add to $\math{G}_{i}$ an edge from every associated node $(y,b)\to (x,a)$.
+  \item Every unit clause $\{l\}$ has an associated clause $C=\{l_{i_1},..,l_{i_k}\}\in F$ and a associated node $(x,a)$. Necessarily, all other literals in $C$ has been assigned already, so they has an associated node in the graph $(y,b)$. We add to $\mathcal{G}_{i}$ an edge from every associated node $(y,b)\to (x,a)$.
   \item We define:
     $$F_i = F_i'\{x\to a : (x,a) \text{ is a node associated to a unit clause in } F_i' \}$$
   \end{itemize}
@@ -128,7 +132,9 @@ The implication graph  is the directed graph that has as nodes a pair with a var
  As we can see a decision graph is dependent of the order on which the variables are assigned (should a decision be made) and the value chosen for each variable when this decision happens.\\
 
  We will show a little example in order to clarify this definition.
-\begin{example} Suppose that we have $F = \{(x_1\vee x_2 \vee x_3), ( x_1 \vee x_2), (\neg x_1 \vee \neg x_2), (\neg x_3 \vee \neg x_4), (x_4 \vee x_2 \vee \neg x_3) \}$. We make a list $A=\{1,1,1,0\}$ of values associated to each variable. We start by adding the node $(x_1,1)$ to $\mathcal{G}_1$. \\
+\begin{example} Suppose that we have 
+$F = \{(x_1\vee x_2 \vee x_3), ( x_1 \vee x_2), (\neg x_1 \vee \neg x_2), (\neg x_3 \vee \neg x_4), (x_4 \vee x_2 \vee \neg x_3) \}$. 
+We make a list $A=\{1,1,1,0\}$ of values associated to each variable. We start by adding the node$(x_1,1)$ to $\mathcal{G}_1$. \\
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}[
@@ -212,24 +218,26 @@ We can incorporate clause learning to DPLL easily:
   \begin{algorithmic}[1]
     \Procedure{\texttt{Clause-Learning-DPLL} }{$F$}
     \State $D \gets ()$ empty decision sequence
-\State $\Gamma \gets \{\}$ empty set of learned clauses
-\While{True} 
-\If{unit resolution detects a contradiction in $F+\Gamma$ with $D$}
-\If{$D$=()} \Return Unsatisfiable
-\Else
-\State $\C \gets $ conflict clause
-\State $m \gets $ devision level of $C$
-\State $D \gets D[0:m]$ 
-\State $\Gamma += C$
-\EndIf
+	\State $\Gamma \gets \{\}$ empty set of learned clauses
+	\While{True} 
+		\If{unit resolution detects a contradiction in $F+\Gamma$ with $D$}
+			\If{$D$=()} \Return Unsatisfiable
+			\Else
+				\State $C \gets $ conflict clause
+				\State $m \gets $ devision level of $C$
+				\State $D \gets D[0:m]$ 
+				\State $\Gamma += C$
+			\EndIf
 
-\Else
-\If{There is no variable not implied by unit resolution} 
-\State\Return Satisfiable
-\Else
-\State Add a decision on a variable $x$ not implied by unit resolution 
-\EndIf
-
+		\Else
+			\If{There is no variable not implied by unit resolution} 
+				\State\Return Satisfiable
+			\Else
+				\State Add a decision on a variable $x$ not implied by unit resolution 
+			\EndIf
+		\EndIf
+	\EndWhile
+\EndProcedure
 \end{algorithmic}
 \end{algorithm}
 
@@ -256,9 +264,9 @@ that solved in the equation $a^{k+1}+1 = 2a^k$. The difference between MS and DP
     \If{$F=1$} \Return 1
     \EndIf
     \State
-    \If{$F$ contains a unit clause $\{l\}$} \Return $MS(F\{l\to 1\})$
+    \If{$F$ contains a unit clause $\{l\}$} \Return \texttt{MS}$(F\{l\to 1\})$
     \EndIf
-    \If{$F$ contains a pure literal l} \Return $MS(F\{l\to 1\}})$
+    \If{$F$ contains a pure literal l} \Return{ \texttt{MS}$(F\{l\to 1\})$}
   \EndIf
   \State Choose the shortest clause $C = \{u_1,...,u_m\}$
   \For{$i \in \{1,...,m\}$ }
@@ -269,6 +277,7 @@ that solved in the equation $a^{k+1}+1 = 2a^k$. The difference between MS and DP
   \If{\texttt{MS}$(F\{u_1=1\})$} \Return 1
   \EndIf
   \State \Return $MS(F\{u_1=0\})$
+  \EndProcedure
 \end{algorithmic}
 \end{algorithm}
 
@@ -285,7 +294,7 @@ The local search procedure on sat context is the same as in other branches of co
 
 \begin{definition}
   Let $\alpha$ and $\beta$ be assignments, we define the Hamming distance $d_\mathcal{H}$ as:
-  $$d_\mathcal{H}(\alpha,\beta) =  |\{ x \in Var(\alpha) \cup \Var(\beta) : \alpha(x) \ne \beta(x) \} |$$
+  $$d_\mathcal{H}(\alpha,\beta) =  | \{ x \in Var(\alpha) \cup Var(\beta) : \alpha(x) \ne \beta(x) \} |$$
   Note that in case that for every $y \in Var(\alpha) \backslash Var(\beta)$, we can  consider that $\alpha(y) = \upsilon$, and respectively with $\beta$.
 \end{definition}
 
@@ -299,10 +308,11 @@ For every $\alpha$ we define its neighborhood as $D(\alpha,\delta) = \{\beta : d
     \EndIf
     \If{$\delta=0$} \Return Unsatisfiable 
     \EndIf
-    \State Choose $C={l_1,...,l_n}\inF$ such that $C\alpha=0$
+    \State Choose $C={l_1,...,l_n}\in F$ such that $C\alpha=0$
   \For{$i \in \{1,...,n\}$ }
   \State \Return \texttt{LS}($F$, $\alpha\circ\{l_1 \to 1\}$, $\delta$ -1)
   \EndFor
+  \EndProcedure
 \end{algorithmic}
 \end{algorithm}
 
@@ -320,7 +330,7 @@ For 3-SAT the running time is $O(m3^\delta)$ where $m$ is the number of clauses.
     \If{\texttt{LS}($F$,$\alpha_0$, $n//2 + n\%2$)} \Return Satisfiable 
     \EndIf
     \State \Return \texttt{LS}($F$,$\alpha_1$, $n//2 + n\%2$)
-
+	\EndProcedure
 \end{algorithmic}
 \end{algorithm}
 
@@ -436,7 +446,7 @@ Then, for every $\epsilon >0$, setting $\delta = 0.5$ we have a covering code $C
   \EndIf
   \EndFor
   \State \Return Unsatisfiable
-
+   \EndProcedure	
 \end{algorithmic}
 \end{algorithm}
 
@@ -460,8 +470,6 @@ We present now one of the most cited algorithms.  GRASP(Generic seaRch Algorithm
 
 
 The method \texttt{Erase} is needed as the assignment is considered a global variable. The way that the algorithm work is that each time, either a new conflict clause is added to the formula, and therefore we \texttt{Erase} our last assignment to explore other options, or we find an assignment that satisfy the formula.
-
-
 
 % \begin{algorithm}
 %   \caption{GRASP}\label{bt}
