@@ -24,7 +24,7 @@ A configuration should be understand as a state of the machine, where $q$ is the
 
 As a brief note before going on, we have not define the empty word yet, as in propositional logic is not a valid formula so it lacks our interest until now. We will note the empty word as $\epsilon$ and would consist of an empty sequence of symbols. We can  now define a relation between configurations:
 
-\begin{definition}
+\begin{definition}\label{def:paso}
   Let $M$ be a Turing Machine and $C=(q,u,v)$, $C'=(q,u,v)$ be two configurations of $M$. We say that $C\vdash C'$ if there is a transition $\delta (q,v_1) = (q', b, D) $ with $D\in{L,R}$ and:
   \begin{itemize}
   \item if $D=L$, then if $u=u_1...u_n$ and $v = v_1...v_m$, it should happen that $u' = u_1...u_{n-1}$ and $v' = u_n bv_2...v_n$ with two exceptions:
@@ -46,7 +46,7 @@ As a brief note before going on, we have not define the empty word yet, as in pr
   A Turing machine solves a decision problem, i.e. having an alphabet $\Sigma$  (its input alphabet) it takes a word in $\Sigma^*$ and decides whether it belongs to a language or not.The intuitive idea is that we write the word in question on the tape and the machine tells us the results after some computations. In this way we will consider that a word belongs to the language decided by the Turing machine if and only if it is \emph{accepted} by that machine. Let's define when this concept.
 
   \begin{definition}
-     Let $M$ be a Turing Machine. We say that $u\in\Sigma^*$ is \emph{accepted} by $M$ if there exists a final configuration $C$ such that $(q_0,\epsilon,u)\vdash^* C$. The language \emph{accepted} by $M$ is the collection of all words accepted. We say that $M$ \emph{decides} a language $L$ if $L$ is the language accepted by $M$.
+     Let $M$ be a Turing Machine. We say that $u\in\Sigma^*$ is \emph{accepted} by $M$ if there exists a final configuration $C$ such that $(q_0,\epsilon,u)\vdash^* C$. The language \emph{accepted} by $M$ denoted as $L(M)$ is the collection of all words accepted. We say that $M$ \emph{decides} a language $L$ if $L$ is the language accepted by $M$.
   \end{definition}
 
   We can also consider a Turing Machine that can solve a function problem. The intuitive idea is that we write the input on the tape and after some computations we have written on the tape a word that is related to the input one. Formally:
@@ -56,6 +56,10 @@ As a brief note before going on, we have not define the empty word yet, as in pr
     Let $f:\Sigma^*\to \Sigma^*$. A Turing Machine $M$ \emph{compute} $f$ if for every $u\in \Sigma^*$ there is an accepting configuration $C=(q',v,v')$ of $M$  such that $(q,\epsilon,u)\vdash C$ and $f(u)=vv'$. A Turing Machine $M$ computes a function problem defined by $R$ if it computes a function $f_M:Sigma^*\to \Sigma^*$ such that $(u,f(u)) \in R$ for all $ u\in \Sigma^*$.
   \end{definition}
 
+
+  Thorough literature (in  \cite{hopcroft2007introduction} for a concrete reference, but pretty much everywhere) multiple variations of the defined Turing Machine are provided, such as multiple tape Turing's Machines. It is proved also that this variations has the same computing power as the one defined, therefore we do not find it necessary to provide this variations.
+
+%  Among the turing machines, the universal turing machine should be highlighted.It was Turing who elucidated that a turing machine could be built such that by giving as an input the description of a Turing machine and a word would act as the described machine when receiving that word as input.
   
 \subsection{Circuits}
 
@@ -65,10 +69,73 @@ The circuit model provide another computation model that is naturally related to
 
 \section{Complexity Classes}
 \label{sec:complexity}
-In this section we are going to define what a complexity class is and then we are going to discuss some results of the complexity of the sat problem. This is for two reasons: 
 
+In this section we are going to define what a complexity class is and then we are going to discuss some results of the complexity of the SAT-problem.
 
+\subsection{Deterministic complexity}
+\label{sub:detcomp}
+There are different approaches as how to measure the complexity of given algorithm. We will focus primarily on \emph{worst-case time complexity}. We will also introduce\emph{worst-case space complexity} and provide some results.
 
+\begin{definition}
+  Let $g:\mathbb{N}\to\mathbb{N}$, the:
+  $$O(g) = \left\{ f \in \mathbb{N}^\mathbb{N}\ :\ \exists N,C \in \mathbb{N} : f(n) \le Cg(n) \ \forall  n \ge N\right\}$$
+\end{definition}
+
+\begin{definition}
+  Let $f: \mathbb{N}\to  \mathbb{N}$.
+\begin{enumerate}
+  \item We let \emph{TIME}$(f)$  the set of all problems that can be decided/computed by a Turing machine $M$ using less that $g(n)$ steps where $g\in O(f)$ and $n$ is the number of characters of the input.  
+  \item We let \emph{SPACE}$(f)$  the set of all problems that can be decided/computed by a Turing machine $M$ using less that $g(n)$ cells where $g\in O(f)$ and $n$ is the number of characters of the input.  
+  \end{enumerate}
+
+\end{definition}
+
+This definition let us a great tool in order to define collections of problems, and to compare them. We introduce some classes. Arguably the most important of the complexity classes is P.
+\begin{definition}[P]
+  We define the class P as:
+  $$\text{P} =  \bigcup_{f \text{ is a polynomial}} \{ TIME(f)\} $$
+\end{definition}
+
+\subsection{Non-Deterministic Complexity}
+
+Analogous to the concept of Turing Machine, another recurrent idea in computation is the concept of non-deterministic computing. These models allow an algorithm to react different to the same input. These models are useful as there as they encapsulate various problem of interest and give upper bound to the deterministic complexity. In order to formalize this concept we will define non-deterministic Turing Machines.\\
+
+Intuitively, a non-deterministic Turing Machine is a Turing Machine that, at any point on its computation, can choose from several different 'paths' to compute. This choice is made in a non-deterministic manner, that is, it is not known what the result will be until the computation is done.
+
+\begin{definition} We describe a Non-Deterministic Turing Machine as a 7-tuple $M=(Q, \Sigma, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
+  \begin{itemize}
+  \item $Q$ the finite set of \emph{states} of the finite control.
+  \item $\Sigma$ the finite set of \emph{input symbols}.
+  \item $\Gamma$ the finite set of \emph{tape symbols}. $\Sigma$ is always a subset of $\Gamma$.
+  \item  $\delta\subset (Q\times \Gamma)\times( Q\times\Gamma\times\{L,R\})$ the transition relation.
+  \item $q_0$ the \emph{start state}.
+  \item $B$ the \emph{blank symbol}.
+  \item $F$ the \emph{accepting states}.
+  \end{itemize}
+
+  A configuration of a Turing machine is a triplet $C=(q,u,v)$ where $q\in Q$, $u,v\in \Gamma^*$. A configuration is accepting if $q\in F$.
+\end{definition}
+
+The definition [\ref{def:paso}] holds for non-deterministic Turing machines, with the consideration that now instead of finding the image of a function we have to find a related triple. Using analogous notions we define when a problem is decided/computed by a Non-deterministic Turing Machine.\\
+
+\begin{definition}
+  Let $f: \mathbb{N}\to  \mathbb{N}$.
+\begin{enumerate}
+  \item We let \emph{NTIME}$(f)$  the set of all problems that can be decided/computed by a non-deterministic Turing machine $M$ using less that $g(n)$ steps where $g\in O(f)$ and $n$ is the number of characters of the input.  
+  \item We let \emph{MSPACE}$(f)$  the set of all problems that can be decided/computed by a non-deterministic Turing machine $M$ using less that $g(n)$ cells where $g\in O(f)$ and $n$ is the number of characters of the input.  
+\end{enumerate}
+\end{definition}
+  
+We can now prove a simple result that relates the concepts defined so far.
+
+\begin{proposition}
+  Let $f: \mathbb{N}\to  \mathbb{N}$.
+  \begin{enumerate}
+  \item $SPACE(f) \subset NSPACE(f)$\\
+    $TIME(f) \subset NTIME(f)$\\
+  \item 
+  \end{enumerate}
+\end{proposition}
 
 \begin{enumerate}
   \item TODO:

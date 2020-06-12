@@ -284,7 +284,14 @@ We will study the complexity of functions. In order to standardize the approach 
 \end{definition}
 
 
-When we have a named language, we refer indistinctly by this name to both the language and the associated decision problem. In order to define a decision problem it is only needed to define a language over an alphabet. Therefore a decision problem may be defined implicitly, that is, as the set of the words in an alphabet that satisfy some condition. As semantics provide meaning to the languages, real world problems can be addressed as decision problems.
+When we have a named language, we refer indistinctly by this name to both the language and the associated decision problem. In order to define a decision problem it is only needed to define a language over an alphabet. Therefore a decision problem may be defined implicitly, that is, as the set of the words in an alphabet that satisfy some condition. As semantics provide meaning to the languages, real world problems can be addressed as decision problems.\\
+
+As a last definition of this subsection, we introduce the complement decision problem.
+\begin{definition}[Complement Decision Problem\cite{arora2009computational}]
+  Given a decision problem it has a Complement Decision Problem that consists on, given a word $w\in A^*$ check whether $w$ is in $L$. 	
+\end{definition}
+
+This definition will be used further in [\ref{sub:detcomp}] in order to define complexity classes.
 
 
 \subsection{Definition}
