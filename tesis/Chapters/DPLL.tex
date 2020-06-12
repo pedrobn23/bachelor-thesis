@@ -438,15 +438,19 @@ Then, for every $\epsilon >0$, setting $\delta = 0.5$ we have a covering code $C
   \State $C_0 \gets $ the covering code provided by the lemma for $\epsilon > 0\land \delta = 0.5$ 
   \Procedure{\texttt{Covering-Codes-LS}}{$F$}
   \State $n \gets |Var(F)|$
+
   \If{$n \le n_0$} \Return \texttt{CLS}($F$)
   \EndIf 
+
   \State $C=(A,\delta n_0) \gets $ the extended covering code of $C_0$ to $n$ variables
+
   \For{$\alpha \in A$ }
   \If{\texttt{LS}($F$, $\alpha$, $\delta n$) = Satisfiable} \Return Satisfiable
   \EndIf
   \EndFor
+
   \State \Return Unsatisfiable
-   \EndProcedure	
+  \EndProcedure	
 \end{algorithmic}
 \end{algorithm}
 
