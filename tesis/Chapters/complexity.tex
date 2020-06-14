@@ -1,7 +1,7 @@
 \chapter{Complexity Classes and Relevance of the Problem}
-\section{Models of Computation}
+\section{Model of Computation}
 
-In this section we will discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximations to Turing machines, so we present a quick formal approach to the area. 
+In this section we discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximations to Turing machines, so we present a quick formal approach to the area. 
 
 \subsection{Turing Machines}
 Turing machines are arguably the epicenter of  models of computation. A Turing Machine  represents a long mechanical tape on which we are going to operate. The tape is divided in to discrete positions, such that we can see the tape as a one-dimensional array. Operating on this tape we can focus on a cell, scan its contents, overwrite  its contents or move to an adjacent cell. These operations try to resemble the process of human calculus, as done with paper and pencil when applying the long division method  for example. Formally:
@@ -25,7 +25,7 @@ A configuration should be understand as a state of the machine, where $q$ is the
 As a brief note before going on, we have not define the empty word yet, as in propositional logic is not a valid formula so it lacks our interest until now. We will note the empty word as $\epsilon$ and would consist of an empty sequence of symbols. We can  now define a relation between configurations:
 
 \begin{definition}\label{def:paso}
-  Let $M$ be a Turing Machine and $C=(q,u,v)$, $C'=(q,u,v)$ be two configurations of $M$. We say that $C\vdash C'$ if there is a transition $\delta (q,v_1) = (q', b, D) $ with $D\in{L,R}$ and:
+  Let $M$ be a Turing Machine (TM) and $C=(q,u,v)$, $C'=(q,u,v)$ be two configurations of $M$. We say that $C\vdash C'$ if there is a transition $\delta (q,v_1) = (q', b, D) $ with $D\in{L,R}$ and:
   \begin{itemize}
   \item if $D=L$, then if $u=u_1...u_n$ and $v = v_1...v_m$, it should happen that $u' = u_1...u_{n-1}$ and $v' = u_n bv_2...v_n$ with two exceptions:
     \begin{itemize}
@@ -40,24 +40,22 @@ As a brief note before going on, we have not define the empty word yet, as in pr
     \end{itemize}
   \end{itemize}
 
-  Note that on both cases the two exceptions can be given simultaneously (if $b = B$) and then give $(q, \epsilon, u_1) \vdash (q', \epsilon, B)$. We say $C\vdash^* C'$ if there exists a finite sequence $\{C_i\}_{i\in 1,...,n}$ such that $C_1 = C$, $C_n=C'$ and $C_i\vdash C_{i+1}$ for every $i\in 1,...,n-1$.  
+  Note that on both cases the two exceptions can be given simultaneously. We say $C\vdash^* C'$ if there exists a finite sequence $\{C_i\}_{i\in 1,...,n}$ such that $C_1 = C$, $C_n=C'$ and $C_i\vdash C_{i+1}$ for every $i\in 1,...,n-1$.  
   \end{definition}
 
-  A Turing machine solves a decision problem, i.e. having an alphabet $\Sigma$  (its input alphabet) it takes a word in $\Sigma^*$ and decides whether it belongs to a language or not.The intuitive idea is that we write the word in question on the tape and the machine tells us the results after some computations. In this way we will consider that a word belongs to the language decided by the Turing machine if and only if it is \emph{accepted} by that machine. Let's define when this concept.
+  We now describe the use of Turing Machine: solving problems. We consider that Turing Machines solve both decision and function problems. Lets start by explaining how a Turing Machine solves a decision problem.
 
   \begin{definition}
      Let $M$ be a Turing Machine. We say that $u\in\Sigma^*$ is \emph{accepted} by $M$ if there exists a final configuration $C$ such that $(q_0,\epsilon,u)\vdash^* C$. The language \emph{accepted} by $M$ denoted as $L(M)$ is the collection of all words accepted. We say that $M$ \emph{decides} a language $L$ if $L$ is the language accepted by $M$.
   \end{definition}
 
-  We can also consider a Turing Machine that can solve a function problem. The intuitive idea is that we write the input on the tape and after some computations we have written on the tape a word that is related to the input one. Formally:
+  With regard to solving a function problem, the intuitive idea is that we write the input on the tape and after some computations we have written on the tape a word that is related to the input one. Formally:
 
 
   \begin{definition}
-    Let $f:\Sigma^*\to \Sigma^*$. A Turing Machine $M$ \emph{compute} $f$ if for every $u\in \Sigma^*$ there is an accepting configuration $C=(q',v,v')$ of $M$  such that $(q,\epsilon,u)\vdash C$ and $f(u)=vv'$. A Turing Machine $M$ computes a function problem defined by $R$ if it computes a function $f_M:Sigma^*\to \Sigma^*$ such that $(u,f(u)) \in R$ for all $ u\in \Sigma^*$.
+    Let $R\subset\Sigma^*\times \Sigma^*$. A Turing Machine $M$ \emph{compute} $R$ if for every $u\in \Sigma^*$ there is an accepting configuration $C=(q',v,v')$ of $M$  such that $(q,\epsilon,u)\vdash C$ and $(u,vv') \in R$. A Turing Machine $M$ computes a function problem defined by $R$ if it computes $R$.
   \end{definition}
 
-
-  Thorough literature (in  \cite{hopcroft2007introduction} for a concrete reference, but pretty much everywhere) multiple variations of the defined Turing Machine are provided, such as multiple tape Turing's Machines. It is proved also that this variations has the same computing power as the one defined, therefore we do not find it necessary to provide this variations.
 
 %  Among the turing machines, the universal turing machine should be highlighted.It was Turing who elucidated that a turing machine could be built such that by giving as an input the description of a Turing machine and a word would act as the described machine when receiving that word as input.
   
@@ -65,16 +63,16 @@ As a brief note before going on, we have not define the empty word yet, as in pr
 
 The circuit model provide another computation model that is naturally related to propositional logic. We define it briefly in order to prove some results on the area. Circuits are the computation model that is used in practice. One of the most important area of industrial application of SAT is circuit verification. This is going to be discussed further on AÑADIR CAPITULO.
 
-\subsection{Reduction}
+
 
 \section{Complexity Classes}
 \label{sec:complexity}
 
-In this section we are going to define what a complexity class is and then we are going to discuss some results of the complexity of the SAT-problem.
+In this section we are going to define what a complexity class is and then we are going to discuss some results of the complexity of the SAT-problem. We use as principal reference \cite{arora2009computational}.
 
 \subsection{Deterministic complexity}
 \label{sub:detcomp}
-There are different approaches as how to measure the complexity of given algorithm. We will focus primarily on \emph{worst-case time complexity}. We will also introduce\emph{worst-case space complexity} and provide some results.
+There are different approaches as how to measure the complexity of given algorithm. We will focus primarily on \emph{worst-case time complexity}. We will also introduce \emph{worst-case space complexity} and provide some results.
 
 \begin{definition}
   Let $g:\mathbb{N}\to\mathbb{N}$, the:
@@ -84,17 +82,40 @@ There are different approaches as how to measure the complexity of given algorit
 \begin{definition}
   Let $f: \mathbb{N}\to  \mathbb{N}$.
 \begin{enumerate}
-  \item We let \emph{TIME}$(f)$  the set of all problems that can be decided/computed by a Turing machine $M$ using less that $g(n)$ steps where $g\in O(f)$ and $n$ is the number of characters of the input.  
-  \item We let \emph{SPACE}$(f)$  the set of all problems that can be decided/computed by a Turing machine $M$ using less that $g(n)$ cells where $g\in O(f)$ and $n$ is the number of characters of the input.  
+  \item We let \emph{TIME}$(f)$ (resp. \emph{FTIME}$(f)$) be the set of all decision  problems (resp. function problems) that can be decided (resp. computed) by a Turing machine $M$ using less that $g(n)$ steps where $g\in O(f)$ and $n$ is the number of characters of the input.  
+  \item We let \emph{SPACE}$(f)$ (resp. \emph{FSPACE}$(f)$) be the set of all decision problems (resp. function problems) that can be decided (resp. computed) by a Turing machine $M$ using less that $g(n)$ cells where $g\in O(f)$ and $n$ is the number of characters of the input.  
   \end{enumerate}
 
 \end{definition}
 
-This definition let us a great tool in order to define collections of problems, and to compare them. We introduce some classes. Arguably the most important of the complexity classes is P.
-\begin{definition}[P]
-  We define the class P as:
-  $$\text{P} =  \bigcup_{f \text{ is a polynomial}} \{ TIME(f)\} $$
+This definition let us a great tool in order to define collections of problems, and to compare them. We introduce some classes.
+\begin{definition}
+  Let $\Omega$ be a set of endofunctions of $\mathbb{N}$.
+  \begin{enumerate}
+  \item We have a homonym complexity class $\Omega$:
+  $$\Omega =  \bigcup_{f \in \Omega} \{ TIME(f)\} $$
+  \item We have an associated function complexity class $FA$:
+    $$F\Omega =  \bigcup_{f \in \Omega} \{ FTIME(f)\} $$
+  \end{enumerate}
 \end{definition}
+
+
+Although we have define the complexity classes as collections of decision problems, we can also consider consider a language to be in a class $C$ if its associated decision problem is. During the study we will focus on decision problem complexity classes. Nonetheless ties between this classes and its associated function complexity classes are strong and will be pointed out.\\
+
+
+Arguably the most important of the complexity classes is P. We define P as the set of all polynomials. Therefore we have an homonym complexity class P. We can justify the importance of this class the Feasibility Thesis.
+
+\begin{thesis}[\cite{cook2006p}]
+A natural problem has a feasible algorithm iff it has a polynomial-time algorithm.
+\end{thesis}
+
+That is, only problems with polynomial time complexity are able to be computed, as otherwise their complexity make them not viable, i.e., not computable in a coherent time. The idea of problems being not feasible is the basis of some of the most important conceptions of modern Computer Science. In particular in modern cryptoanalysis the most common encoding technique (private keys protocols) are based upon the conception that no one would be able to solve the presented problem without some added information in a coherent time, independently of their computing capabilities.\\
+
+
+
+\subsection{Reductions}
+A language $L1$ is Turing reducible to a language $L2$ iff there is an oracle Turing machine $M$ that accepts $L1$, where$M$is allowed to make membership queries of the form $x\in L_2$, which are correctly answered by an“oracle” for $L2$. Later, the more restricted notion of many-one reducibility ($\le_m$)was introduced and defined as follows.
+
 
 \subsection{Non-Deterministic Complexity}
 
@@ -102,7 +123,7 @@ Analogous to the concept of Turing Machine, another recurrent idea in computatio
 
 Intuitively, a non-deterministic Turing Machine is a Turing Machine that, at any point on its computation, can choose from several different 'paths' to compute. This choice is made in a non-deterministic manner, that is, it is not known what the result will be until the computation is done.
 
-\begin{definition} We describe a Non-Deterministic Turing Machine as a 7-tuple $M=(Q, \Sigma, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
+\begin{definition} We describe a Non-Deterministic Turing Machine (NDTM) as a 7-tuple $M=(Q, \Sigma, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
   \begin{itemize}
   \item $Q$ the finite set of \emph{states} of the finite control.
   \item $\Sigma$ the finite set of \emph{input symbols}.
@@ -116,26 +137,95 @@ Intuitively, a non-deterministic Turing Machine is a Turing Machine that, at any
   A configuration of a Turing machine is a triplet $C=(q,u,v)$ where $q\in Q$, $u,v\in \Gamma^*$. A configuration is accepting if $q\in F$.
 \end{definition}
 
-The definition [\ref{def:paso}] holds for non-deterministic Turing machines, with the consideration that now instead of finding the image of a function we have to find a related triple. Using analogous notions we define when a problem is decided/computed by a Non-deterministic Turing Machine.\\
+Note that there exists $d_0 \in \mathbb{N}$ such that:
+  $$ \left| \left \{ (q,\gamma',D) \in  ( Q\times\Gamma\times\{L,R\})\ :\ ( (p,\gamma), (q,\gamma',D) ) \in \delta \right \}\right | \le d_0.$$
+  Such $d_0$ is called \emph{branching factor} of $M$.\\
+
+By opposition, the previously defined Turing machines are considered Deterministic Turing Machines(DTM). The definition of Non-Deterministic Turing Machine is adapted from \cite{hopcroft2007introduction}. \\
+  
+The definition [\ref{def:paso}] holds for non-deterministic Turing machines, with the consideration that now instead of finding the image of a function we have to find a related triple. Using analogous notions we define when a problem is decided/computed by a Non-deterministic Turing Machine. A Non-Deterministic Turing machine can be regarded as a tree. In this tree we assume that a branch divides when a decision has to be made. Once this tree is built, we can assume that the execution of our TM will be the progression of one of the possible paths of the tree.\\
 
 \begin{definition}
   Let $f: \mathbb{N}\to  \mathbb{N}$.
 \begin{enumerate}
   \item We let \emph{NTIME}$(f)$  the set of all problems that can be decided/computed by a non-deterministic Turing machine $M$ using less that $g(n)$ steps where $g\in O(f)$ and $n$ is the number of characters of the input.  
-  \item We let \emph{MSPACE}$(f)$  the set of all problems that can be decided/computed by a non-deterministic Turing machine $M$ using less that $g(n)$ cells where $g\in O(f)$ and $n$ is the number of characters of the input.  
+  \item We let \emph{NSPACE}$(f)$  the set of all problems that can be decided/computed by a non-deterministic Turing machine $M$ using less that $g(n)$ cells where $g\in O(f)$ and $n$ is the number of characters of the input.  
 \end{enumerate}
 \end{definition}
   
 We can now prove a simple result that relates the concepts defined so far.
 
-\begin{proposition}
+\begin{theorem}
   Let $f: \mathbb{N}\to  \mathbb{N}$.
   \begin{enumerate}
-  \item $SPACE(f) \subset NSPACE(f)$\\
-    $TIME(f) \subset NTIME(f)$\\
-  \item 
+  \item $SPACE(f) \subset NSPACE(f)$,\\
+    $TIME(f) \subset NTIME(f)$.
+  \item $NTIME(f) \subset SPACE(f)$.
+  \item $NSPACE(f) \subset TIME(K^{ \log(n)+ f(n)} )$.
   \end{enumerate}
+\end{theorem}
+\begin{proof}\hfill
+  \begin{enumerate}
+  \item Every DTM is a NDTM if we consider the transition function as a relation.
+  \item For every $L\NTIME$, let $M$ be its associated NDTM and let $d_0$ be the branching index of $M$. Any sequence of choice can be written as a number of length $f(n)$ in $d_0$-base. Iteratively execute all options possible, and accept if any of them accepts. Reject otherwise.
+  \item Let $L \in NSPACE(f)$ and $M$ be its associated NDTM. We use the Achievement Method. This method is based on building a network in which the nodes are the possible configurations of a Turing Machine, and the arcs connect configurations such that you can get from one to the other in one step of calculation. The maximum number of configuration is $$|Q||\Gamma|^{f(n)} (n + 1) = |Q||\Gamma|^{f(n)+\log(n + 1)} \in O (K^{f(n)+\log(n)}).$$
+Checking if a word is accepted is the same as checking if from a node in a network you can get to an acceptance node. This is checked in quadratic time against the number of nodes, thus obtaining the desired result. As this can be done in quadratic time, the result is proved.
+  \end{enumerate}
+\end{proof}
+
+Analogous with what we done with deterministic complexity, we can define non-deterministic complexity classes.
+
+\begin{definition}
+  Let $F$ be a set of endofunctions of $\mathbb{N}$. We have a complexity class $NF$ defined:
+  $$NF =  \bigcup_{f \in F} \{ NTIME(f)\} $$
+\end{definition}
+
+At this point we can state a corollary of high importance for the mathematical community.
+
+\begin{corollary}
+  $P \subset NP$.
+\end{corollary}
+
+This corollary let itself to a simple doubt: is that inclusion strict? This problem was first stated independently by Stephen Cook and  Leonid Levin in 1971\cite{cook2006p} and is one the Clay Math Institute Millennium Problems.\\
+
+Another characterization of NP is by \emph{verfiers}. Given a language that might not be in P, it may be possible to decide the membership of an element to that language when a \emph{proof} is given. Formally:
+
+\begin{proposition}
+  A language $L\subset A^*$ is in NP if and only if there is an relationship $R\subset A^*\times A^*$  computable in polynomial time and a polynomial $p$ such that
+  $$L = \{x \in A^*:\exists y \in A^* \text{ with } |y | \le p(|x|), R(x, y) = 1\}$$
 \end{proposition}
+\begin{proof}\hfill
+\begin{itemize}
+\item[\fbox{$\Rightarrow$}] If $L\subset A^*$ is in NP, there is a NDTM $M$ that decides $L$ in $O(p)$, with $p$ a polynomial. For every $x\in L$ we have that $M$ accepts $x$ after at most $p(|x|)$ decisions. Let $<d_{x,i} : 1 \le i \le p(|x|)>$ be the word that codify such decisions in the alphabet $A^*$. We can define the relationship:
+  $$R = \{(x,y)  : x \in L, y = <d_{x,i} : 1 \le i \le p(|x|)>\}$$
+  We can compute such relationship with a DTM $M'$ that works as $M$, but at each iteration $i$ make the decision $d_i$. 
+\item[\fbox{$\Leftarrow$}] We define a NDTM $M$ that works like follow, for an input $|x|$:
+  \begin{enumerate}
+  \item Non-deterministically choose a word $y$ that $|y|\le p(|x|)$. The selection of $y$ is done in polynomial time as each symbol takes one step.
+  \item Accepts if $(x,y)\in R$. Rejects otherwise. This can be done in polynomial time as $R$ can be computed in polynomial time.
+    \end{enumerate}
+  \end{itemize}
+  As both steps are computed in polynomial time $M$ runs in polynomial time.  
+\end{proof}
+
+This proposition is analogous with functions problems. This proposition give another meaning to the Pvs.NP problem. We can consider P to be the class of efficiently doable problems, whether NP is the class of efficiently checkable problems.
+
+
+
+
+\section{Completeness}
+
+In this subsection we introduce the notion of completeness. This area was developed in late 1960s and early 1970s parallel by researchers on US and URSS, at the height of the cold war. The first point in the develop of this theory and most important result from the point of view of this text is the Cook-Levin theorem [\ref{ref:cooklevin}], which highlights the theoretical relevance of SAT. The notion of completeness was introduced to the western world first by Cook \cite{cook1971complexity} although the term was coined later. 
+
+\subsection{Definition}
+
+
+
+\subsection{Cook-Levin Theorem}
+At this point we introduce the main theorem of this section. The theorem was first on \cite{cook1971complexity} 
+\begin{theorem}[Cook-Levin theorem]\label{ref:cooklevin}
+
+\end{theorem}
 
 \begin{enumerate}
   \item TODO:
@@ -154,7 +244,7 @@ In this subsection we will introduce the result, shown first on \cite{impagliazz
 
 \begin{definition}[ETH]
   For $k\ge 3$, lets define:
-  $$s_k=\inf\{\delta: \text{there exists} O(2^{\delta n}) k-\text{SAT solver.}\}$$
+  $$s_k=\inf\{\delta: \text{there exists a } O(2^{\delta n})\ \ k-\text{ SAT solver.}\}$$
   It is claim that $s_k>0$.
 \end{definition}
 
