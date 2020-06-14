@@ -63,6 +63,8 @@ As a brief note before going on, we have not define the empty word yet, as in pr
 
 The circuit model provide another computation model that is naturally related to propositional logic. We define it briefly in order to prove some results on the area. Circuits are the computation model that is used in practice. One of the most important area of industrial application of SAT is circuit verification. This is going to be discussed further on AÑADIR CAPITULO.
 
+\section{Reductions}
+A language $L1$ is Turing reducible to a language $L2$ iff there is an oracle Turing machine $M$ that accepts $L1$, where$M$is allowed to make membership queries of the form $x\in L_2$, which are correctly answered by an“oracle” for $L2$. Later, the more restricted notion of many-one reducibility ($\le_m$)was introduced and defined as follows.
 
 
 \section{Complexity Classes}
@@ -112,9 +114,6 @@ A natural problem has a feasible algorithm iff it has a polynomial-time algorith
 That is, only problems with polynomial time complexity are able to be computed, as otherwise their complexity make them not viable, i.e., not computable in a coherent time. The idea of problems being not feasible is the basis of some of the most important conceptions of modern Computer Science. In particular in modern cryptoanalysis the most common encoding technique (private keys protocols) are based upon the conception that no one would be able to solve the presented problem without some added information in a coherent time, independently of their computing capabilities.\\
 
 
-
-\subsection{Reductions}
-A language $L1$ is Turing reducible to a language $L2$ iff there is an oracle Turing machine $M$ that accepts $L1$, where$M$is allowed to make membership queries of the form $x\in L_2$, which are correctly answered by an“oracle” for $L2$. Later, the more restricted notion of many-one reducibility ($\le_m$)was introduced and defined as follows.
 
 
 \subsection{Non-Deterministic Complexity}
@@ -215,17 +214,28 @@ This proposition is analogous with functions problems. This proposition give ano
 
 \section{Completeness}
 
-In this subsection we introduce the notion of completeness. This area was developed in late 1960s and early 1970s parallel by researchers on US and URSS, at the height of the cold war. The first point in the develop of this theory and most important result from the point of view of this text is the Cook-Levin theorem [\ref{ref:cooklevin}], which highlights the theoretical relevance of SAT. The notion of completeness was introduced to the western world first by Cook \cite{cook1971complexity} although the term was coined later. 
+In this subsection we introduce the notion of completeness. This area was developed in late 1960s and early 1970s parallel by researchers on US and URSS, at during the cold war. The first point in the develop of this theory and most important result from the point of view of this text is the Cook-Levin theorem [\ref{ref:cooklevin}], which highlights the theoretical relevance of SAT. The notion of completeness was introduced to the western world first by Cook \cite{cook1971complexity} although the term was coined later. 
 
 \subsection{Definition}
 
 
 
 \subsection{Cook-Levin Theorem}
-At this point we introduce the main theorem of this section. The theorem was first on \cite{cook1971complexity} 
+At this point we introduce the main theorem of this section. The theorem was first on \cite{cook1971complexity}, although some ideas were first spoken about by Leonid Levin on 1969, the formal explanation of the result was first written by Stephen Cook. Due to our lack of knowledge of the Russian language we did not research Levin's original result, although we would like to point out that he did this research on the advice of the famous mathematician Kolmogorov. Also, later in his life, Levin emigrated to the US and was able to share his knowledge with the Western block\cite{cvlevincook}.\\
+
+The theorem proved that SAT is NP-Complete, and was at the time the first completeness result provided. To this day virtually all proofs of problems to be NP-Complete are done by using either this result of the provided idea of it.\\
+
+Focusing on Cook original result we can see that the modern standard statement of the theorem is an adaptation of the original statement done in theorem 1 \cite{cook1971complexity}. In fact, instead of proving the result with the today-standard 3CNF satisfiability he proved the result for DNF tautology problem.\\
+
+For this theorem Cook received on 1983 the Turing Award, the highest honor conceded in the area of Computer Science. Without further ado we introduce the theorem. 
+
 \begin{theorem}[Cook-Levin theorem]\label{ref:cooklevin}
 
 \end{theorem}
+
+\subsubsection{Conclusions}
+
+After some time dealing with the essence of SAT solving we can imagine this theorem to have a pretty simple idea. Any NDTM consists of a series of decision taken over time , and in fact that pretty much what SAT solving do, as we show in chapter 4-6.
 
 \begin{enumerate}
   \item TODO:
