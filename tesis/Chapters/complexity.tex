@@ -77,12 +77,12 @@ In this section we are going to define what a complexity class is and then we ar
 There are different approaches as how to measure the complexity of given algorithm. We will focus primarily on \emph{worst-case time complexity}. We will also introduce \emph{worst-case space complexity} and provide some results.
 
 \begin{definition}
-  Let $g:\mathbb{N}\to\mathbb{N}$, the:
-  $$O(g) = \left\{ f \in \mathbb{N}^\mathbb{N}\ :\ \exists N,C \in \mathbb{N} : f(n) \le Cg(n) \ \forall  n \ge N\right\}$$
+  Let $g:\mathbb{N}^\mathbb{N}$, the:
+  $$O(g) = \left\{ f\in \mathbb{N}^\mathbb{N} :\ \exists N,C \in \mathbb{N} : f(n) \le Cg(n) \ \forall  n \ge N\right\}$$
 \end{definition}
 
 \begin{definition}
-  Let $f: \mathbb{N}\to  \mathbb{N}$.
+  Let $f:\mathbb{N}^\mathbb{N}$.
 \begin{enumerate}
   \item We let \emph{TIME}$(f)$ (resp. \emph{FTIME}$(f)$) be the set of all decision  problems (resp. function problems) that can be decided (resp. computed) by a Turing machine $M$ using less that $g(n)$ steps where $g\in O(f)$ and $n$ is the number of characters of the input.  
   \item We let \emph{SPACE}$(f)$ (resp. \emph{FSPACE}$(f)$) be the set of all decision problems (resp. function problems) that can be decided (resp. computed) by a Turing machine $M$ using less that $g(n)$ cells where $g\in O(f)$ and $n$ is the number of characters of the input.  
@@ -95,14 +95,17 @@ This definition let us a great tool in order to define collections of problems, 
   Let $\Omega$ be a set of endofunctions of $\mathbb{N}$.
   \begin{enumerate}
   \item We have a homonym complexity class $\Omega$:
-  $$\Omega =  \bigcup_{f \in \Omega} \{ TIME(f)\} $$
+  $$\Omega =  \bigcup_{f \in \Omega} TIME(f) $$
   \item We have an associated function complexity class $FA$:
-    $$F\Omega =  \bigcup_{f \in \Omega} \{ FTIME(f)\} $$
-  \end{enumerate}
+    $$F\Omega =  \bigcup_{f \in \Omega} FTIME(f)$$
+  \item We have an associated space complexity class $FA$:
+    $$\Omega SPACE =  \bigcup_{f \in \Omega} SPACE(f)$$  \end{enumerate}
 \end{definition}
 
 
 Although we have define the complexity classes as collections of decision problems, we can also consider consider a language to be in a class $C$ if its associated decision problem is. During the study we will focus on decision problem complexity classes. Nonetheless ties between this classes and its associated function complexity classes are strong and will be pointed out.\\
+
+In general the notation of complexity classes is additive. Therefore is we want to represent the function space complexity class associated to $\Omega$ we denote that by $F\Omega SPACE$.\\
 
 
 Arguably the most important of the complexity classes is P. We define P as the set of all polynomials. Therefore we have an homonym complexity class P. We can justify the importance of this class the Feasibility Thesis.
@@ -122,7 +125,7 @@ Analogous to the concept of Turing Machine, another recurrent idea in computatio
 
 Intuitively, a non-deterministic Turing Machine is a Turing Machine that, at any point on its computation, can choose from several different 'paths' to compute. This choice is made in a non-deterministic manner, that is, it is not known what the result will be until the computation is done.
 
-\begin{definition} We describe a Non-Deterministic Turing Machine (NDTM) as a 7-tuple $M=(Q, \Sigma, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
+\begin{definition}\label{def:NDTM} We describe a Non-Deterministic Turing Machine (NDTM) as a 7-tuple $M=(Q, \Sigma, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
   \begin{itemize}
   \item $Q$ the finite set of \emph{states} of the finite control.
   \item $\Sigma$ the finite set of \emph{input symbols}.
@@ -152,7 +155,7 @@ The definition [\ref{def:paso}] holds for non-deterministic Turing machines, wit
 \end{enumerate}
 \end{definition}
   
-We can now prove a simple result that relates the concepts defined so far.
+As with the previous definitions this notation is additive. We can now prove a simple result that relates the concepts defined so far.
 
 \begin{theorem}
   Let $f: \mathbb{N}\to  \mathbb{N}$.
@@ -176,7 +179,7 @@ Analogous with what we done with deterministic complexity, we can define non-det
 
 \begin{definition}
   Let $F$ be a set of endofunctions of $\mathbb{N}$. We have a complexity class $NF$ defined:
-  $$NF =  \bigcup_{f \in F} \{ NTIME(f)\} $$
+  $$NF =  \bigcup_{f \in F} NTIME(f) $$
 \end{definition}
 
 At this point we can state a corollary of high importance for the mathematical community.
@@ -223,28 +226,74 @@ In this subsection we introduce the notion of completeness. This area was develo
 \subsection{Cook-Levin Theorem}
 At this point we introduce the main theorem of this section. The theorem was first on \cite{cook1971complexity}, although some ideas were first spoken about by Leonid Levin on 1969, the formal explanation of the result was first written by Stephen Cook. Due to our lack of knowledge of the Russian language we did not research Levin's original result, although we would like to point out that he did this research on the advice of the famous mathematician Kolmogorov. Also, later in his life, Levin emigrated to the US and was able to share his knowledge with the Western block\cite{cvlevincook}.\\
 
-The theorem proved that SAT is NP-Complete, and was at the time the first completeness result provided. To this day virtually all proofs of problems to be NP-Complete are done by using either this result of the provided idea of it.\\
 
-Focusing on Cook original result we can see that the modern standard statement of the theorem is an adaptation of the original statement done in theorem 1 \cite{cook1971complexity}. In fact, instead of proving the result with the today-standard 3CNF satisfiability he proved the result for DNF tautology problem.\\
+The theorem proves that SAT is NP-Complete, and was at the time the first completeness result provided. To this day virtually all proofs of problems to be NP-Complete are done by using either this result of the provided idea of it. For this theorem Cook received on 1982 the Turing Award, the highest honor conceded in the area of Computer Science. Without further ado with introduce the theorem, along with a brief lemma.
 
-For this theorem Cook received on 1983 the Turing Award, the highest honor conceded in the area of Computer Science. Without further ado we introduce the theorem. 
+
+
+%TODO: Preguntar Serafín sobre este resultado. In fact, instead of proving the result with the today-standard 3CNF satisfiability he proved the result for DNF tautology problem. Cook original result we can see that the modern standard statement of the theorem is an adaptation of the original statement done in theorem 1\\ \cite{cook1971complexity}. The proof showcased in this paper is the one followed to this dated by most text, with only a few adaptations. 
+
+\begin{lemma}
+  For a set $A = \{a_1,...,a_n\}$ of Propositional Logic variables, we can define a set of clauses $\mathcal{C}(A)$ such that, for an assignment $alpha$ we have   $\mathcal{C}(A)\alpha = 1$ iff $\alpha$ maps to 1 one and only one of the variables in $A$.
+\end{lemma}
+\begin{proof}
+  We define $$\mathcal{C}(A) = D\cup \left (  \cup_{i,j \in 1,..,n} D_{i,j} \right )$$ where:
+  \begin{equation}
+    \begin{split}
+      D & = (a_1 \vee ... \vee a_n ),\\
+      D_{i,j} & = (\neg a_{i} \vee \neg a_{j} ),
+\end{split}
+\end{equation}
+
+From $D$ it follows that $\alpha$ satisfy at least one variable, and from $D_{i,j}$ that $\alpha$ satisfy at most one.
+\end{proof}
+
 
 \begin{theorem}[Cook-Levin theorem]\label{ref:cooklevin}
-
+ SAT is NP-Complete.
 \end{theorem}
+\begin{proof}
+  Suppose that a language $L\subset A^*$ is accepted by a NDTM $M$ within time $O(q(n))$, where $q(n)$ is a polynomial. Given an input  $w\in A^*$ of $M$, we construct a CNF-Formula $\phi(w)$ such that $\phi(w)$ is satisfiable iff $M$ accepts $w$. As the construction is done in polynomial time, we have a polynomial reduction of the problem.
+  
+  Suppose that $\Gamma = \{\gamma_0,\gamma_1,...,\gamma_l\}$ is the tape alphabet  of $M$ with $B=\gamma_0$ .$Q=\{q_1,..,q_s\}$ is the set of states with $q_0$ the initial state and $q_s$ the only final state. $\delta_0$ is the branching factor of $M$. $T(n)$\footnote{$M$ is in NP therefore $M$ is in PSPACE and as a consequence $T(n)$ exists } is the polynomial bound of the number of cells used by $M$. We define $T=T(|w|)$
 
-\subsubsection{Conclusions}
+  \begin{itemize}
+  \item Firstly, we define the variables of $\phi(w)$.
+    \begin{enumerate}
+    \item The variables $\{p_{s,t}^i : 1 \le i \le l,\ 1 \le s,\ t \le T \}$. These variables represents (semantically) if tape square $s$ at step $t$ contains the symbol $\gamma_i$.
+    \item The variables $\{q_{t}^i : 1 \le i \le l,\ t \le T \}$ that represents if at step $t$ the machine is in state $q_i$.
+    \item The variables $\{S_{s,t} :  1 \le s,\ t \le T \}$. These variables represents if tape square $s$  is being scanned at step $t$.
+    \item The variables $\{o_{d,t} :  1 \le d \le \delta_0,\ t \le T \}$. These variables represents that decision $d$ is made at step $t$.
+    \end{enumerate}
 
-After some time dealing with the essence of SAT solving we can imagine this theorem to have a pretty simple idea. Any NDTM consists of a series of decision taken over time , and in fact that pretty much what SAT solving do, as we show in chapter 4-6.
+  \item Once we have the variables, we define the clauses of $\phi(w)$.
+    \begin{enumerate}
+    \item For $t\le T$, the clauses $\mathcal{C}(S_t)$ with $S_t = \{S_{i,j}^t : i,j \le T\}$  that ensures that at time $t$ one and only one cell is being scanned.
+    \item  For $t\le T$, the clauses $\mathcal{C}(C_{t})$ with $C_t = \{p_{s,t}^{i} : 1\le i \le l, 1 \le s \le T\}$ with  that ensures that one and only one symbol is at each step of the machine at each time.
+    \item  For $t\le T$, the clauses $\mathcal{C}(O_{t})$ with $O_t = \{o_{d,t}^{i} : 1\le d \le \delta_0\}$ with  that ensures that one and only one decision is made at each step of the machine at each time.
+    \item For $t\le T$, the clauses $\mathcal{C}(D_{t})$ with $D_t = \{q_t^{i} : 1\le i \le l\}$ with  that ensures that at time $t$ one and only one state is active.
+    \item If $w = <\gamma_{i_1}...\gamma_{i_k}>$ we add the clauses $(p_{j,0}^{i_j})$ for $j$ in $1,...,k$. These clauses ensure the initial state. Also, for $j$ in $k+1,....,T$ we add $(p_{j,0}^0)$.  
+    \item For each pair state-symbol $(q_k,s_d)$ we let $\{(q_{k_1} , s_{d_1} , m_1 ), ... , (q_{k_l} , s_{d_l} , m_l)}$ be the set of related transitions.
+
+    \end{enumerate}
+    
+  \end{itemize}
+
+  
+  
+\end{proof}
+
+
+
+%After some time dealing with the essence of SAT solving we can imagine this theorem to have a pretty simple idea. Any NDTM consists of a series of decision taken over time , and in fact that pretty much what SAT solving do, as we show in chapter 4-6.
 
 \begin{enumerate}
   \item TODO:
   \item To study the complexity of the SAT problem and its variants so far.
-  \item To give one more justification of the relevance of the problem.
   \item Include graph automorphism complexity.
   \item SSAT es PSPACE Completo
   \item Resultado craig interpolant
-  \item Look for a CONP complete problem
+  \item CoNPComplete result
   \item Moreover, as checking whether an assignment is autark is linear on the number of clauses, then this make the autark-finding problem NP-Complete(NP-C further on).
   \end{enumerate}
 
