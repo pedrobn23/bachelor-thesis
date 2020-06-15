@@ -255,14 +255,14 @@ From $D$ it follows that $\alpha$ satisfy at least one variable, and from $D_{i,
 \begin{proof}
   Suppose that a language $L\subset A^*$ is accepted by a NDTM $M$ within time $O(q(n))$, where $q(n)$ is a polynomial. Given an input  $w\in A^*$ of $M$, we construct a CNF-Formula $\phi(w)$ such that $\phi(w)$ is satisfiable iff $M$ accepts $w$. As the construction is done in polynomial time, we have a polynomial reduction of the problem.
   
-  Suppose that $\Gamma = \{\gamma_0,\gamma_1,...,\gamma_l\}$ is the tape alphabet  of $M$ with $B=\gamma_0$ .$Q=\{q_1,..,q_s\}$ is the set of states with $q_0$ the initial state and $q_s$ the only final state. $\delta_0$ is the branching factor of $M$. $T(n)$\footnote{$M$ is in NP therefore $M$ is in PSPACE and as a consequence $T(n)$ exists } is the polynomial bound of the number of cells used by $M$. We define $T=T(|w|)$
+  Suppose that $\Gamma = \{\gamma_0,\gamma_1,...,\gamma_l\}$ is the tape alphabet  of $M$ with $B=\gamma_0$ .$Q=\{q_1,..,q_s\}$ is the set of states with $q_0$ the initial state. $\delta_0$ is the branching factor of $M$. $T(n)$\footnote{$M$ is in NP therefore $M$ is in PSPACE and as a consequence $T(n)$ exists } is the polynomial bound of the number of cells used by $M$. We define $T=T(|w|)$
 
   \begin{itemize}
   \item Firstly, we define the variables of $\phi(w)$.
     \begin{enumerate}
-    \item The variables $\{p_{s,t}^i : 1 \le i \le l,\ 1 \le s,\ t \le T \}$. These variables represents (semantically) if tape square $s$ at step $t$ contains the symbol $\gamma_i$.
+    \item The variables $\{p_{s,t}^i : 1 \le i \le l,\ 1 \le s,\ t \le T \}$. These variables represents (semantically) if tape cell $s$ at step $t$ contains the symbol $\gamma_i$.
     \item The variables $\{q_{t}^i : 1 \le i \le l,\ t \le T \}$ that represents if at step $t$ the machine is in state $q_i$.
-    \item The variables $\{S_{s,t} :  1 \le s,\ t \le T \}$. These variables represents if tape square $s$  is being scanned at step $t$.
+    \item The variables $\{S_{s,t} :  1 \le s,\ t \le T \}$. These variables represents if tape cell $s$  is being scanned at step $t$.
     \item The variables $\{o_{d,t} :  1 \le d \le \delta_0,\ t \le T \}$. These variables represents that decision $d$ is made at step $t$.
     \end{enumerate}
 
@@ -273,10 +273,48 @@ From $D$ it follows that $\alpha$ satisfy at least one variable, and from $D_{i,
     \item  For $t\le T$, the clauses $\mathcal{C}(O_{t})$ with $O_t = \{o_{d,t}^{i} : 1\le d \le \delta_0\}$ with  that ensures that one and only one decision is made at each step of the machine at each time.
     \item For $t\le T$, the clauses $\mathcal{C}(D_{t})$ with $D_t = \{q_t^{i} : 1\le i \le l\}$ with  that ensures that at time $t$ one and only one state is active.
     \item If $w = <\gamma_{i_1}...\gamma_{i_k}>$ we add the clauses $(p_{j,0}^{i_j})$ for $j$ in $1,...,k$. These clauses ensure the initial state. Also, for $j$ in $k+1,....,T$ we add $(p_{j,0}^0)$.  
-    \item For each pair state-symbol $(q_k,s_d)$ we let $\{(q_{k_1} , s_{d_1} , m_1 ), ... , (q_{k_l} , s_{d_l} , m_l)}$ be the set of related transitions.
+    \item For each pair state-symbol $(q_k,\gamma_d)$ we let $\{(q_{k_1} , \gamma_{d_1} , m_1 ), ... , (q_{k_l} , \gamma_{d_l} , m_l)} \subset Q \times \Gamma \times \{-1,1\}$ be the set of related transitions. We add the clauses:
 
-    \end{enumerate}
+    \[
+    (\neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor q_{t+1, k_e})
+    \]
+    \[
+(      \neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor p_{s,t+1}^{d_e})
+    \]
+    \[
+(      \neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor S_{s+m_e, t+1})
+    \]
+
+    with $0 \le s,t \le T$, $0 \le d \le  \delta_0$. 
+
+    If the set of related transitions is empty we add
+    \[
+    (\neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor q_{t+1, k})
+    \]
+    \[
+(      \neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor p_{s,t+1}^{d})
+    \]
+    \[
+(      \neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor S_{s, t+1})
+    \]
+
+    with $0 \le s,t \le T$, $0 \le d \le  \delta_0$.
     
+    This represent the machine's operation.
+  \item In order to maintain the tape unchanged in the cells where no operation is done we add:
+
+    $$\neg s_{t,s} \lor \neg p_{s,t}^i \lor  p_{s,t+1}^i  $$
+    for $0 \le s,t \le T$, $0 \le i \le l$.
+  \item Suppose $\{q_{i_1},...,q_{i_k}\}$ is the set of final states. Then we add the clause:
+    $$ (q_{i_1}^T \lor ... \lor q_{i_k}^T)$$
+
+    That represents the necessity of the machine to end on a final state in order to accept $w$.
+    \end{enumerate}
+
+
+    The equivalence of the Problems is clear from the way the machine is built. The clauses reproduce exactly how the machine works for the entry word $w$ and include a clause that indicates that the word is accepted. If in the end (time $T$) the clause $ (q_{i_1}^T \lor ... \lor q_{i_k}^T)$ can be satisfied, then a state of acceptance can be reached. Then the word is accepted if and only if all are possible satisfy all the clauses.\\
+
+As all operation described to express the clause can be done within polynomial time, we have found a P-reduction of any NP problem to SAT.
   \end{itemize}
 
   
