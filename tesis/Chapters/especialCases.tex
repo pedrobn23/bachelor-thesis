@@ -31,7 +31,7 @@ It is already know that 3SAT is equivalent to SAT. This is not known for 2SAT an
 \end{proposition}
 \begin{proof}
 
-  To prove that 2SAT is in P, a polynomial algorithm on the number of clauses will be given. Let $F \in$ 2CNF.  Without loss of generality, we will consider that there are no clauses in $F$ $\{u,u\}$ or $\{u,\neg u\}$ as the first one should be handle with unit propagation and the second one is a tautology. Therefore each clause is $(u \vee v)$ with $var(u) \ne var(v)$, which could be seen as $(\neg u \rightarrow v) \wede (\new v \rightwarrow u)$.\\
+  To prove that 2SAT is in P, a polynomial algorithm on the number of clauses will be given. Let $F \in$ 2CNF.  Without loss of generality, we will consider that there are no clauses in $F$ $\{u,u\}$ or $\{u,\neg u\}$ as the first one should be handle with unit propagation and the second one is a tautology. Therefore each clause is $(u \vee v)$ with $var(u) \ne var(v)$, which could be seen as $(\neg u \rightarrow v) \wedge (\neg v \rightarrow u)$.\\
 
 
   

@@ -1,9 +1,9 @@
 \chapter{Complexity Classes and Relevance of the Problem}
 \section{Model of Computation}
 
+\subsection{Deterministic Computation}
 In this section we discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximations to Turing machines, so we present a quick formal approach to the area. 
 
-\subsection{Turing Machines}
 Turing machines are arguably the epicenter of  models of computation. A Turing Machine  represents a long mechanical tape on which we are going to operate. The tape is divided in to discrete positions, such that we can see the tape as a one-dimensional array. Operating on this tape we can focus on a cell, scan its contents, overwrite  its contents or move to an adjacent cell. These operations try to resemble the process of human calculus, as done with paper and pencil when applying the long division method  for example. Formally:
 
 \begin{definition}[Turing Machine \cite{hopcroft2007introduction}] We describe a Turing Machine as a 7-tuple $M=(Q, \Sigma, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
@@ -59,10 +59,36 @@ As a brief note before going on, we have not define the empty word yet, as in pr
 
 %  Among the turing machines, the universal turing machine should be highlighted.It was Turing who elucidated that a turing machine could be built such that by giving as an input the description of a Turing machine and a word would act as the described machine when receiving that word as input.
   
-\subsection{Circuits}
 
-The circuit model provide another computation model that is naturally related to propositional logic. We define it briefly in order to prove some results on the area. Circuits are the computation model that is used in practice. One of the most important area of industrial application of SAT is circuit verification. This is going to be discussed further on AÑADIR CAPITULO.
+  \subsection{Non-deterministic Computation}
+Analogous to the concept of Turing Machine, another recurrent idea in computation is the concept of non-deterministic computing. These models allow an algorithm to react different to the same input. These models are useful as there as they encapsulate various problem of interest and give upper bound to the deterministic complexity. In order to formalize this concept we will define non-deterministic Turing Machines.\\
 
+Intuitively, a non-deterministic Turing Machine is a Turing Machine that, at any point on its computation, can choose from several different 'paths' to compute. This choice is made in a non-deterministic manner, that is, it is not known what the result will be until the computation is done.
+
+\begin{definition}\label{def:NDTM} We describe a Non-Deterministic Turing Machine (NDTM) as a 7-tuple $M=(Q, \Sigma, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
+  \begin{itemize}
+  \item $Q$ the finite set of \emph{states} of the finite control.
+  \item $\Sigma$ the finite set of \emph{input symbols}.
+  \item $\Gamma$ the finite set of \emph{tape symbols}. $\Sigma$ is always a subset of $\Gamma$.
+  \item  $\delta\subset (Q\times \Gamma)\times( Q\times\Gamma\times\{L,R\})$ the transition relation.
+  \item $q_0$ the \emph{start state}.
+  \item $B$ the \emph{blank symbol}.
+  \item $F$ the \emph{accepting states}.
+  \end{itemize}
+
+  A configuration of a Turing machine is a triplet $C=(q,u,v)$ where $q\in Q$, $u,v\in \Gamma^*$. A configuration is accepting if $q\in F$.
+\end{definition}
+
+Note that there exists $d_0 \in \mathbb{N}$ such that:
+  $$ \left| \left \{ (q,\gamma',D) \in  ( Q\times\Gamma\times\{L,R\})\ :\ ( (p,\gamma), (q,\gamma',D) ) \in \delta \right \}\right | \le d_0.$$
+  Such $d_0$ is called \emph{branching factor} of $M$.\\
+
+By opposition, the previously defined Turing machines are considered Deterministic Turing Machines(DTM). The definition of Non-Deterministic Turing Machine is adapted from \cite{hopcroft2007introduction}. \\
+  
+The definition [\ref{def:paso}] holds for non-deterministic Turing machines, with the consideration that now instead of finding the image of a function we have to find a related triple. Using analogous notions we define when a problem is decided/computed by a Non-deterministic Turing Machine. A Non-Deterministic Turing machine can be regarded as a tree. In this tree we assume that a branch divides when a decision has to be made. Once this tree is built, we can assume that the execution of our TM will be the progression of one of the possible paths of the tree.\\
+
+
+  
 \section{Reductions}
 A language $L1$ is Turing reducible to a language $L2$ iff there is an oracle Turing machine $M$ that accepts $L1$, where$M$is allowed to make membership queries of the form $x\in L_2$, which are correctly answered by an“oracle” for $L2$. Later, the more restricted notion of many-one reducibility ($\le_m$)was introduced and defined as follows.
 
@@ -121,31 +147,7 @@ That is, only problems with polynomial time complexity are able to be computed, 
 
 \subsection{Non-Deterministic Complexity}
 
-Analogous to the concept of Turing Machine, another recurrent idea in computation is the concept of non-deterministic computing. These models allow an algorithm to react different to the same input. These models are useful as there as they encapsulate various problem of interest and give upper bound to the deterministic complexity. In order to formalize this concept we will define non-deterministic Turing Machines.\\
-
-Intuitively, a non-deterministic Turing Machine is a Turing Machine that, at any point on its computation, can choose from several different 'paths' to compute. This choice is made in a non-deterministic manner, that is, it is not known what the result will be until the computation is done.
-
-\begin{definition}\label{def:NDTM} We describe a Non-Deterministic Turing Machine (NDTM) as a 7-tuple $M=(Q, \Sigma, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
-  \begin{itemize}
-  \item $Q$ the finite set of \emph{states} of the finite control.
-  \item $\Sigma$ the finite set of \emph{input symbols}.
-  \item $\Gamma$ the finite set of \emph{tape symbols}. $\Sigma$ is always a subset of $\Gamma$.
-  \item  $\delta\subset (Q\times \Gamma)\times( Q\times\Gamma\times\{L,R\})$ the transition relation.
-  \item $q_0$ the \emph{start state}.
-  \item $B$ the \emph{blank symbol}.
-  \item $F$ the \emph{accepting states}.
-  \end{itemize}
-
-  A configuration of a Turing machine is a triplet $C=(q,u,v)$ where $q\in Q$, $u,v\in \Gamma^*$. A configuration is accepting if $q\in F$.
-\end{definition}
-
-Note that there exists $d_0 \in \mathbb{N}$ such that:
-  $$ \left| \left \{ (q,\gamma',D) \in  ( Q\times\Gamma\times\{L,R\})\ :\ ( (p,\gamma), (q,\gamma',D) ) \in \delta \right \}\right | \le d_0.$$
-  Such $d_0$ is called \emph{branching factor} of $M$.\\
-
-By opposition, the previously defined Turing machines are considered Deterministic Turing Machines(DTM). The definition of Non-Deterministic Turing Machine is adapted from \cite{hopcroft2007introduction}. \\
-  
-The definition [\ref{def:paso}] holds for non-deterministic Turing machines, with the consideration that now instead of finding the image of a function we have to find a related triple. Using analogous notions we define when a problem is decided/computed by a Non-deterministic Turing Machine. A Non-Deterministic Turing machine can be regarded as a tree. In this tree we assume that a branch divides when a decision has to be made. Once this tree is built, we can assume that the execution of our TM will be the progression of one of the possible paths of the tree.\\
+As with TM we can consider complexity classes based on non-deterministic procedures.
 
 \begin{definition}
   Let $f: \mathbb{N}\to  \mathbb{N}$.
@@ -217,7 +219,11 @@ This proposition is analogous with functions problems. This proposition give ano
 
 \section{Completeness}
 
-In this subsection we introduce the notion of completeness. This area was developed in late 1960s and early 1970s parallel by researchers on US and URSS, at during the cold war. The first point in the develop of this theory and most important result from the point of view of this text is the Cook-Levin theorem [\ref{ref:cooklevin}], which highlights the theoretical relevance of SAT. The notion of completeness was introduced to the western world first by Cook \cite{cook1971complexity} although the term was coined later. 
+In this subsection we introduce the notion of completeness. This area was developed in late 1960s and early 1970s parallel by researchers on US and USSR, at during the cold war. The first point in the develop of this theory and most important result from the point of view of this text is the Cook-Levin theorem [\ref{ref:cooklevin}], which highlights the theoretical relevance of SAT. The notion of completeness was introduced to the western world first by Cook \cite{cook1971complexity} although the term was coined later. \\
+
+As a historical note, one of the first references to this notion is the Gödel's Letter\cite{hartmanis1993godel}, that he wrote to Von Neumann relating with the possibility of polynomially (in particular in linear or quadratic time) solving QBF (a generalization of SAT). He was asking, without knowing it, whether an NP-Complete problem could be solvable within polynomial time, and stating some of the consequence of this.\\
+
+
 
 \subsection{Definition}
 
@@ -227,7 +233,9 @@ In this subsection we introduce the notion of completeness. This area was develo
 At this point we introduce the main theorem of this section. The theorem was first on \cite{cook1971complexity}, although some ideas were first spoken about by Leonid Levin on 1969, the formal explanation of the result was first written by Stephen Cook. Due to our lack of knowledge of the Russian language we did not research Levin's original result, although we would like to point out that he did this research on the advice of the famous mathematician Kolmogorov. Also, later in his life, Levin emigrated to the US and was able to share his knowledge with the Western block\cite{cvlevincook}.\\
 
 
-The theorem proves that SAT is NP-Complete, and was at the time the first completeness result provided. To this day virtually all proofs of problems to be NP-Complete are done by using either this result of the provided idea of it. For this theorem Cook received on 1982 the Turing Award, the highest honor conceded in the area of Computer Science. Without further ado with introduce the theorem, along with a brief lemma.
+
+
+The theorem proves that SAT is NP-Complete, and was at the time the first completeness result provided. To this day virtually all proofs of problems to be NP-Complete are done by using either this result of the provided idea of it. For this theorem Cook received on 1982 the Turing Award, the highest honor conceded in the area of Computer Science. Without further ado with introduce the theorem, along with a brief lemma.\\
 
 
 
@@ -316,14 +324,27 @@ From $D$ it follows that $\alpha$ satisfy at least one variable, and from $D_{i,
 
 As all operation described to express the clause can be done within polynomial time, we have found a P-reduction of any NP problem to SAT.
   \end{itemize}
-
-  
-  
 \end{proof}
 
 
+On the time of publication, this result was a truly breakthrough. On the technical part of the proof we would like to highlight the methods used, are they display two common cases that recurrently appears when reducing a problem to SAT.
 
-%After some time dealing with the essence of SAT solving we can imagine this theorem to have a pretty simple idea. Any NDTM consists of a series of decision taken over time , and in fact that pretty much what SAT solving do, as we show in chapter 4-6.
+\begin{itemize}
+\item One and only one encodings, as the one showcased in the lemma, are common restriction for real-world problems. We decide to express this alternative in order to respect the original proof as much as possible, but also because this formulation is commonly believed to work better with DPLL based - solvers[\ref{sec:dpll}]. Different approaches to this reduction are considered in literature. For more information on this area we refer to subsection 2.2.4 \cite{darwiche2009complete}.
+
+\item The rest of the clauses has at most one positive literal. These are the named Horn clauses. The particularity of this clauses resides in the fact that,
+
+  $$(\neg u_1 \lor \neg u_2 ... \lor \neg u_n \lor v) \iff ((u_1\land ... \land u_n) \to v).$$
+  That is, they are the natural language of implication in CNF. Because of theorem[\ref{theorem:hornsat}] we now that this language is enough to express polynomial DTM.
+\end{itemize}
+
+\subsection{Other Completeness Results}
+
+Although the most important completeness problems are the ones related with NP-Completeness, the concept of completeness can be implemented for every mayor complexity class. Most importantly for us, SAT variations are the norm for a lot of completeness results. On this subsection we will present the most important of these results.
+
+
+\begin{theorem}\label{theorem:hornsat}  HORNSAT is PComplete
+  \end{theorem}
 
 \begin{enumerate}
   \item TODO:

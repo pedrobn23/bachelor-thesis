@@ -319,7 +319,7 @@ We will refer with the acronym $SAT$ to both the language and the associated dec
 On chapter[\ref{chap:2}] we analyze the main SAT-solver developed in the literature. We will differentiate two types of SAT-Solver. The algorithms that, given enough time always output the correct result at the end are called \emph{complete}. The SAT-solvers that doesn't guaranty its result are called \emph{incomplete}. Of particular interest among incomplete SAT-solvers are the one-sided bounded error SAT-solvers. These are the called probabilistic algorithms, discussed on section[\ref{sec:prob}]
 
 
-\subsection{Variations}
+\section{Variations}
 
 The SAT decision problem quite a lot of variations, all of them of interest for certain complexity classes. We will list some of the most important, starting with two decision problems. The first of them is a natural generalization.
 
@@ -356,7 +356,7 @@ That is, is the problem of finding the maximum number of assignments that can be
 As we will see, most SAT-solvers are FSAT-solvers. In related literature the FSAT-solver are called constructive SAT-solvers, as they provide a constructive solution of the problem. Solvers that only solve SAT are called non-constructive SAT-solvers. After presenting the concept of algorithmic complexity we will see that from a non constructive SAT-solver, a constructive SAT-solver can be made so that the latter is not much less efficient[\ref{sub:fromnon}].
 
 
-\subsection{SAT certificates}
+\section{SAT certificates}
 
 As SAT solvers become vital in some areas, such as circuit verification, protocols for ensuring the outcome of a SAT-solver are usually needed. When this is required, the so-called SAT certificates will be recalled. These certificates are methods of ensuring the correctness of performance. In this subsection we will present a simple but effective method of performing this task. The information of this subsection appear on chapter 2\cite{schoning2013satisfiability}, chapter 7\cite{marek2009introduction} and section 3.6.6\cite{darwiche2009complete}.\\
 
@@ -423,7 +423,7 @@ With the completeness of resolution proved, we can ensure, and moreover, require
 
 
 
-\subsection{Constraint Satisfaction Problem}
+\section{Constraint Satisfaction Problem}
   
 We want to introduce the notion of Constraint Satisfaction Problem (CSP) because it defines a new optic over the SAT problem. CSP is, in fact, a generalization of SAT. When dealing with CSP problem we want to find a solution with certain restriction. A example of what is a CSP is watching film with your family: each member impose its restrictions, and then we look for a film that satisfies them all. Should it happen that no film is found, we have other type of problem. This concept naturally translates into propositional logic formulation. Lets define CSP formally:
 
