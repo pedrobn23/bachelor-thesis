@@ -238,9 +238,7 @@ At this point we introduce the main theorem of this section. The theorem was fir
 
 The theorem proves that SAT is NP-Complete, and was at the time the first completeness result provided. To this day virtually all proofs of problems to be NP-Complete are done by using either this result of the provided idea of it. For this theorem Cook received on 1982 the Turing Award, the highest honor conceded in the area of Computer Science. Without further ado with introduce the theorem, along with a brief lemma.\\
 
-
-
-%TODO: Preguntar Serafín sobre este resultado. In fact, instead of proving the result with the today-standard 3CNF satisfiability he proved the result for DNF tautology problem. Cook original result we can see that the modern standard statement of the theorem is an adaptation of the original statement done in theorem 1\\ \cite{cook1971complexity}. The proof showcased in this paper is the one followed to this dated by most text, with only a few adaptations. 
+ Cook original result we can see that the modern standard statement of the theorem is an adaptation of the original statement done in theorem 1\\ \cite{cook1971complexity}. Instead of proving the result with the today-standard 3CNF satisfiability he proved the CoNP-Completeness result for TAUT, proving SAT NP-Completeness in the way. The proof showcased in this paper is the one followed to this dated by most text, with only a few adaptations. 
 
 \begin{lemma}
   For a set $A = \{a_1,...,a_n\}$ of Propositional Logic variables, we can define a set of clauses $\mathcal{C}(A)$ such that, for an assignment $alpha$ we have   $\mathcal{C}(A)\alpha = 1$ iff $\alpha$ maps to 1 one and only one of the variables in $A$.
