@@ -171,7 +171,8 @@ As with the previous definitions this notation is additive. We can now prove a s
 \begin{proof}\hfill
   \begin{enumerate}
   \item Every DTM is a NDTM if we consider the transition function as a relation.
-  \item For every $L\NTIME$, let $M$ be its associated NDTM and let $d_0$ be the branching index of $M$. Any sequence of choice can be written as a number of length $f(n)$ in $d_0$-base. Iteratively execute all options possible, and accept if any of them accepts. Reject otherwise.
+  
+  \item For every $L\in NTIME$, let $M$ be its associated NDTM and let $d_0$ be the branching index of $M$. Any sequence of choice can be written as a number of length $f(n)$ in $d_0$-base. Iteratively execute all options possible, and accept if any of them accepts. Reject otherwise.
   \item Let $L \in NSPACE(f)$ and $M$ be its associated NDTM. We use the Achievement Method. This method is based on building a network in which the nodes are the possible configurations of a Turing Machine, and the arcs connect configurations such that you can get from one to the other in one step of calculation. The maximum number of configuration is $$|Q||\Gamma|^{f(n)} (n + 1) = |Q||\Gamma|^{f(n)+\log(n + 1)} \in O (K^{f(n)+\log(n)}).$$
 Checking if a word is accepted is the same as checking if from a node in a network you can get to an acceptance node. This is checked in quadratic time against the number of nodes, thus obtaining the desired result. As this can be done in quadratic time, the result is proved.
   \end{enumerate}
@@ -281,7 +282,7 @@ From $D$ it follows that $\alpha$ satisfy at least one variable, and from $D_{i,
     \item  For $t\le T$, the clauses $\mathcal{C}(O_{t})$ with $O_t = \{o_{d,t}^{i} : 1\le d \le \delta_0\}$ with  that ensures that one and only one decision is made at each step of the machine at each time.
     \item For $t\le T$, the clauses $\mathcal{C}(D_{t})$ with $D_t = \{q_t^{i} : 1\le i \le l\}$ with  that ensures that at time $t$ one and only one state is active.
     \item If $w = <\gamma_{i_1}...\gamma_{i_k}>$ we add the clauses $(p_{j,0}^{i_j})$ for $j$ in $1,...,k$. These clauses ensure the initial state. Also, for $j$ in $k+1,....,T$ we add $(p_{j,0}^0)$.  
-    \item For each pair state-symbol $(q_k,\gamma_d)$ we let $\{(q_{k_1} , \gamma_{d_1} , m_1 ), ... , (q_{k_l} , \gamma_{d_l} , m_l)} \subset Q \times \Gamma \times \{-1,1\}$ be the set of related transitions. We add the clauses:
+    \item For each pair state-symbol $(q_k,\gamma_d)$ we let $\{(q_{k_1} , \gamma_{d_1} , m_1 ), ... , (q_{k_l} , \gamma_{d_l , m_l)} \subset Q \times \Gamma \times \{-1,1\}$ be the set of related transitions. We add the clauses:
 
     \[
     (\neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor q_{t+1, k_e})
@@ -381,12 +382,6 @@ This result has some equivalent formulations.
 This theorem is prove making use of Sparsification Lemma, which is based in turn on the ideas of critical and forced variables. By the time of the publication of the article, Zane has already worked with these ideas for the development of the PPZ algorithm\cite{paturi1997satisfiability}. Although we are not going to prove this result, we are going to present this ideas when analyzing the Paturi-Pudlák-Zane Algorithm[\ref{subsec:PPZ}].
  
 This claim is harder that $P\ne NP$, as it not only declares that SAT is not polynomial time, but neither is sub-exponential time. 
-
-
-
-
-
-
 
 
 
