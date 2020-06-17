@@ -4,7 +4,7 @@
 \subsection{Deterministic Computation}
 In this section we discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximations to Turing machines, so we present a quick formal approach to the area. 
 
-Turing machines are arguably the epicenter of  models of computation. A Turing Machine  represents a long mechanical tape on which we are going to operate. The tape is divided in to discrete positions, such that we can see the tape as a one-dimensional array. Operating on this tape we can focus on a cell, scan its contents, overwrite  its contents or move to an adjacent cell. These operations try to resemble the process of human calculus, as done with paper and pencil when applying the long division method  for example. Formally:
+Turing machines are arguably the epicenter of  models of computation. A Turing Machine  represents a long mechanical tape on which we are going to operate. The tape is divided into discrete positions, such that we can see the tape as a one-dimensional array. Operating on this tape we can focus on a cell, scan its contents, overwrite  its contents or move to an adjacent cell. These operations try to resemble the process of human calculus, as done with paper and pencil when applying the long division method  for example. Formally:
 
 \begin{definition}[Turing Machine \cite{hopcroft2007introduction}] We describe a Turing Machine as a 7-tuple $M=(Q, \Sigma, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
   \begin{itemize}
@@ -22,7 +22,7 @@ Turing machines are arguably the epicenter of  models of computation. A Turing M
 
 A configuration should be understand as a state of the machine, where $q$ is the current state, $u$ the part of the tape left to the cell on which we focus and $v$ is the part of the tape right to the cell we focus, starting on it.\\
 
-As a brief note before going on, we have not define the empty word yet, as in propositional logic is not a valid formula so it lacks our interest until now. We will note the empty word as $\epsilon$ and would consist of an empty sequence of symbols. We can  now define a relation between configurations:
+As a brief note before going on, we have not defined the empty word yet, as in propositional logic is not a valid formula so it lacks our interest until now. We will note the empty word as $\epsilon$ and would consist of an empty sequence of symbols. We can  now define a relation between configurations:
 
 \begin{definition}\label{def:paso}
   Let $M$ be a Turing Machine (TM) and $C=(q,u,v)$, $C'=(q,u,v)$ be two configurations of $M$. We say that $C\vdash C'$ if there is a transition $\delta (q,v_1) = (q', b, D) $ with $D\in{L,R}$ and:
@@ -53,7 +53,7 @@ As a brief note before going on, we have not define the empty word yet, as in pr
 
 
   \begin{definition}
-    Let $R\subset\Sigma^*\times \Sigma^*$. A Turing Machine $M$ \emph{compute} $R$ if for every $u\in \Sigma^*$ there is an accepting configuration $C=(q',v,v')$ of $M$  such that $(q,\epsilon,u)\vdash C$ and $(u,vv') \in R$. A Turing Machine $M$ computes a function problem defined by $R$ if it computes $R$.
+    Let $R\subset\Sigma^*\times \Sigma^*$ be a relation. A Turing Machine $M$ \emph{compute} $R$ if for every $u\in \Sigma^*$ there is an accepting configuration $C=(q',v,v')$ of $M$  such that $(q,\epsilon,u)\vdash^* C$ and $(u,vv') \in R$. A Turing Machine $M$ computes a function problem defined by $R$ if it computes $R$.
   \end{definition}
 
 
@@ -321,7 +321,7 @@ From $D$ it follows that $\alpha$ satisfy at least one variable, and from $D_{i,
 
     The equivalence of the Problems is clear from the way the machine is built. The clauses reproduce exactly how the machine works for the entry word $w$ and include a clause that indicates that the word is accepted. If in the end (time $T$) the clause $ (q_{i_1}^T \lor ... \lor q_{i_k}^T)$ can be satisfied, then a state of acceptance can be reached. Then the word is accepted if and only if all are possible satisfy all the clauses.\\
 
-As all operation described to express the clause can be done within polynomial time, we have found a P-reduction of any NP problem to SAT.
+As all operation described above can be done within polynomial time, we have found a P-reduction of any NP problem to SAT.
   \end{itemize}
 \end{proof}
 
@@ -355,9 +355,10 @@ Although the most important completeness problems are the ones related with NP-C
   \item Moreover, as checking whether an assignment is autark is linear on the number of clauses, then this make the autark-finding problem NP-Complete(NP-C further on).
   \end{enumerate}
 
+
 \subsection{Exponential Time Hypothesis}
 \label{hyp:exponential_time}
-In this subsection we will introduce the result, shown first on \cite{impagliazzo2001complexity}. This result states simply that no sub-exponential time algorithm can be found for 3-SAT. This hypothesis, although widely accepted, is still unproven. Formally:
+In this subsection we will introduce the hypothesis, shown first on \cite{impagliazzo2001complexity}. It states that no sub-exponential time algorithm can be found for 3-SAT. This hypothesis, although widely accepted, is still unproven. Formally:
 
 \begin{definition}[ETH]
   For $k\ge 3$, lets define:
@@ -377,7 +378,7 @@ This result has some equivalent formulations.
   \end{enumerate}
   \end{proposition}
 
-This theorem is prove making use of Sparsification Lemma, which is based in turn on the ideas of critical and forced variables. By the time of the publication of the article, Zane has already worked with these ideas for the development of the PPZ algorithm\cite{paturi1997satisfiability}. Although we are not going to prove this result, we are going to present this ideas when analyzing the Paturi-Pudlák-Zane Algorithm[\ref{subsec:PPZ}].
+This theorem is proven making use of The Sparsification Lemma, which is based in turn on the ideas of critical and forced variables. By the time of the publication of the article, Zane has already worked with these ideas for the development of the PPZ algorithm\cite{paturi1997satisfiability}. Although we are not going to prove this result, we are going to present this ideas when analyzing the Paturi-Pudlák-Zane Algorithm[\ref{subsec:PPZ}].
  
 This claim is harder that $P\ne NP$, as it not only declares that SAT is not polynomial time, but neither is sub-exponential time. 
 

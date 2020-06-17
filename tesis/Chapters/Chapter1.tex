@@ -89,7 +89,7 @@ With the concept of lattice just included, we present the \emph{Knaster and Tars
 
 
 \begin{definition}[Lattice of Partitions]
-Given a set $X\ne \emptyset$, we denote as $\mathcal{P}(X)$ the partitions of $X$. Let $\pi,\pi'\in \mathcal{P}(X)$. We say that $\pi\le_{\mathcal{P}}\pi'$ if for every $A\in \pi$ there exists $b\in \pi'$ such that $A\subset B$. The \emph{lattice of partitions} of $X$ is the lattice $\{\mathcal{P}(X),\le_{\mathcal{P}}\}$.
+Given a set $X\ne \emptyset$, we denote as $\mathcal{P}(X)$ the partitions of $X$. Let $\pi,\pi'\in \mathcal{P}(X)$. We say that $\pi\le_{\mathcal{P}}\pi'$ if for every $A\in \pi$ there exists $B\in \pi'$ such that $A\subset B$. The \emph{lattice of partitions} of $X$ is the lattice $\{\mathcal{P}(X),\le_{\mathcal{P}}\}$.
 \end{definition}
 
 For example given the lattice $\{\mathcal{P}(\{1,2,3,4\}),\le_{\mathcal{P}}\}$ and two partitions:
@@ -109,13 +109,11 @@ We have that:
 \end{split}
 \end{equation}
 
-
-
   
 \section{Propositional Logic}
 Propositional logic is the framework that will allow us define the main topics of this text.  Let's define some concepts:
 \begin{itemize}
-\item An alphabet $A$ is an arbitrary non-empty set.
+\item An alphabet $A$ is an arbitrary finite non-empty set.
 \item A symbol $a$ is an element of the alphabet.
 \item A word $w = \{a_i:i\in 1,..,n\}$ is a finite sequence of symbols.
 \item The collection of all possible words over an alphabet $A$ is denoted by $A^*$.
@@ -160,8 +158,14 @@ The words of Propositional Logic are called formulas.
 
 Examples of formulas are $x\vee y$ or $x_1\wedge x_2 \vee  ( x_4 \vee \neg  x_3 \wedge (x_5\to x_6) \vee 0 )$.We should distinguish a special type of formula: the clauses. A clause  is a formula with the form $l_1\vee ... \vee l_n$ where $l_i, i \in 1,...,n$ are literals. Clauses are will be often regarded as a finite set of literals. Example of a clause is $(x_1\vee \neg x_4 \vee x_2)$. When regarded as a set every clause $C$ has a cardinal $|C|$, that represents the number of literals contained. \\
 
+
+  We will denote by $Form$ the set of all formulas. We define a special mapping, $Var$, that assigns every formula to its variables. Furthermore, for a given set of variables $X$ we define $Form_{X}$ as the set of all formulas that can be constructed from $X$. The reader should note that $Form_X = Var^{-1}(X)$.
+
+
 \subsection{Semantics of Propositional Logic}
-When facing a way to provide semantic meaning to formulas the use of function In this section we will discuss to ways of providing meaning to the formulas: two-valued logic and three valued logic.\\ 
+The underlying problem of semantics is to develop methods to give meaning to the elements allowed by the syntax.When facing a way to provide semantic meaning to formulas the use of function In this section we will discuss to ways of providing meaning to the formulas: two-valued logic and three valued logic.\\ 
+
+
 
 In two valued logic define the truth value of a formula by assigning a truth value(1 for Truth and 0 for False) to each variable. Note that we assign a meaning of truth to the constants 1 and 0, that until now where meaningless. The truth value of the formulas that involve operators are provide by their truth table.
 
@@ -182,17 +186,18 @@ In two valued logic define the truth value of a formula by assigning a truth val
 \end{table}
 
 
-The truth value of a formula is therefore obtained by replacing each variable by their assigned constant and propagating the value. The tool that we will use to assign a truth value to each variable is the assignments
+The truth value of a formula is therefore obtained by replacing each variable by their assigned constant and propagating the value. The tool that we will use to assign a truth value to each variable is the assignments.
+
 \begin{definition}
-  An assignment is a function $\alpha$ from the $Form_{Var}$ to $Form_{Var}$, on which some variables $\{x_1,...,x_n \}$ are replaced by predefined constants $\{a_1,...,a_n\}$ respectively.\\
+  Let $X$ be a finite set of variables. An assignment is a function $\alpha$ from $Form_X$ to $Form_X$, on which some variables $\{x_1,...,x_n \}$ are replaced by predefined constants $\{a_1,...,a_n\}$ respectively.\\
 \end{definition}
 
-An assignment that assigns a value to a variable $x$ is said to map the variable $x$. In two valued logic we will consider only assignment that maps all variables, and therefore all formulas are given a value by an assignment. We also see that any assignment generate a map from $Var$ to $\{0,1\}$. Conversely, any map from $Var$ to $\{0,1\}$ would uniquely represent a assignment $alpha$ over $Form_{Var}$. In practice when we talk about an assignment $\alpha$ we will refer indistinctly to either the function over $Form_{Var}$ or the mapping  over $Var$.\\
+An assignment that assigns a value to a variable $x$ is said to map the variable $x$. In two valued logic we will consider only assignment that maps all variables, and therefore all formulas are given a value by an assignment. We also see that any assignment generate a map from $X$ to $\{0,1\}$. Conversely, any map from $X$ to $\{0,1\}$ would uniquely represent a assignment $alpha$ over $Form$. In practice when we talk about an assignment $\alpha$ we will refer indistinctly to either the function over $Form_{Var}$ or the mapping  over $Var$.\\
 
 One can then \emph{apply} an assignment $\alpha$ to a formula $F$, denoting it by $F\alpha=\alpha(F)$. To describe an assignment we will use a set that pairs each variable to it value, i.e. $\alpha=\{x_1\to 1,...,x_n\to 0\}$. For example given an assignment $\alpha_0 = \{x_1 \to 1, x_2\to 1, x_3 \to 0, x_4 \to 1\}$ and $F_0=x_1\to (x_2\wedge x_4)$ then  $F_0\alpha_0=1 \to (1\wedge 1)= 1$. \\    
 
 \begin{definition}
-  An assignment is said to \emph{satisfy}  a formula $F$ if $F\alpha=1$ and in the case $F  \alpha = 0 $ it is said to \emph{falsify} the statement. A formula $F$ is called \emph{satisfiable} if is exists an assignment that satisfy it. Otherwise it is called \emph{unsatisfiable}.
+  An assignment is said to \emph{satisfy}  a formula $F$ if $F\alpha=1$ and in the case $F  \alpha = 0 $ it is said to \emph{falsify} the statement. A formula $F$ is called \emph{satisfiable} if is exists an assignment that satisfies it. Otherwise it is called \emph{unsatisfiable}.
 \end{definition}
 
 
@@ -217,7 +222,7 @@ Note that we have a really restrictive constraint on assignments: they should ma
 \end{table}
 
 
-In practice partial assignments will be only define by denoting only the variables that are mapped to either 0 or 1. We can see that the composition of assignments (seen as functions over $Form_{var}$) is also a partial assignment. Also, when applying a partial assignment to a formula, instead of mapping it to $\upsilon$ we will avoid operating over the variables assigned to $\upsilon$. For example given a partial assignment $\alpha_0 = \{x_1 \to 1, x_2\to 1, x_3 \to 0\}$ and $F_0=x_1\to (x_2\wedge x_4)$ then  $F_0\alpha_0=1 \to (1\wedge x_4)= 1 \to (x_4)$. Although $F_0$ is mapped to another formula by $\alpha_0$, $\alpha_0$ is still providing a meaning to it (the unknown meaning). \\
+In practice partial assignments will be only defined by denoting only the variables that are mapped to either 0 or 1. We can see that the composition of assignments (seen as functions over $Form_{var}$) is also a partial assignment. Also, when applying a partial assignment to a formula, instead of mapping it to $\upsilon$ we will avoid operating over the variables assigned to $\upsilon$. For example given a partial assignment $\alpha_0 = \{x_1 \to 1, x_2\to 1, x_3 \to 0\}$ and $F_0=x_1\to (x_2\wedge x_4)$ then  $F_0\alpha_0=1 \to (1\wedge x_4)= 1 \to (x_4)$. Although $F_0$ is mapped to another formula by $\alpha_0$, $\alpha_0$ is still providing a meaning to it (the unknown meaning). \\
 
 
 
@@ -248,10 +253,10 @@ Naturally, we want theorems to be the formulas that are always true. In the cont
 
 
   
-Two formulas $F,G$ are said to be equal, represented as $F\sim G$, if for every two-valued assignment $\alpha$ maps $F\alpha = G\alpha$. It follows from the equivalently properties on constants that $\sim$ is an equal relationship. This definition is really intuitive, as it define as equal the formulas that has the same meaning in every possible situation. Note that this definition is equivalent to ensure that both $F\to G$ and $G\to F$ are tautologies.\\
+Two formulas $F,G$ are said to be equal, represented as $F\sim G$, if for every two-valued assignment $\alpha$ we have $F\alpha = G\alpha$. It follows from the equivalently properties on constants that $\sim$ is an equal relationship. This definition is really intuitive, as it defines as equal the formulas that has the same meaning in every possible situation. Note that this definition is equivalent to ensure that both $F\to G$ and $G\to F$ are tautologies.\\
 
 
-k
+
 \label{def:linden}
 With $\sim$ defined we can have what is called a \emph{Lindenbaum algebra}, as a quotient space of $Form = Form_{Var}$ by the relation $\sim$, denoted as $Form/\sim$. It follows that every operator respect the quotient space structure, i.e., for every $[\phi_1],[\phi_2]\in\ Form/\sim$:
 
@@ -284,7 +289,7 @@ We will study the complexity of functions. In order to standardize the approach 
 \end{definition}
 
 
-When we have a named language, we refer indistinctly by this name to both the language and the associated decision problem. In order to define a decision problem it is only needed to define a language over an alphabet. Therefore a decision problem may be defined implicitly, that is, as the set of the words in an alphabet that satisfy some condition. As semantics provide meaning to the languages, real world problems can be addressed as decision problems.\\
+When we have a named language, we refer indistinctly by this name to both the language and the associated decision problem. In order to define a decision problem it is only needed to define a language over an alphabet. Therefore a decision problem may be defined implicitly, that is, as the set of the words in an alphabet that satisfy some condition. As semantics provides meaning to the languages, real world problems can be addressed as decision problems.\\
 
 As a last definition of this subsection, we introduce the complement decision problem.
 \begin{definition}[Complement Decision Problem\cite{arora2009computational}]
@@ -316,7 +321,7 @@ We will refer with the acronym $SAT$ to both the language and the associated dec
   A \emph{SAT-Solver} is an algorithm that, being given a formula $F$ in \emph{CNF} as input, answer whether or not is satisfiable.
 \end{definition}
 
-On chapter[\ref{chap:2}] we analyze the main SAT-solver developed in the literature. We will differentiate two types of SAT-Solver. The algorithms that, given enough time always output the correct result at the end are called \emph{complete}. The SAT-solvers that doesn't guaranty its result are called \emph{incomplete}. Of particular interest among incomplete SAT-solvers are the one-sided bounded error SAT-solvers. These are the called probabilistic algorithms, discussed on section[\ref{sec:prob}]
+On chapter[\ref{chap:2}] we analyze the main SAT-solver developed in the literature. We will differentiate two types of SAT-Solver. The algorithms that, given enough time always output the correct result at the end are called \emph{complete}. The SAT-solvers that doesn't guaranty its result are called \emph{incomplete}. Of particular interest among incomplete SAT-solvers are the one-sided bounded error SAT-solvers. These are the called probabilistic algorithms, discussed on Section \ref{sec:prob}.
 
 
 \section{Variations}
@@ -425,7 +430,7 @@ With the completeness of resolution proved, we can ensure, and moreover, require
 
 \section{Constraint Satisfaction Problem}
   
-We want to introduce the notion of Constraint Satisfaction Problem (CSP) because it defines a new optic over the SAT problem. CSP is, in fact, a generalization of SAT. When dealing with CSP problem we want to find a solution with certain restriction. A example of what is a CSP is watching film with your family: each member impose its restrictions, and then we look for a film that satisfies them all. Should it happen that no film is found, we have other type of problem. This concept naturally translates into propositional logic formulation. Lets define CSP formally:
+We want to introduce the notion of Constraint Satisfaction Problem (CSP) because it defines a new optic over the SAT problem. CSP is, in fact, a generalization of SAT. When dealing with a CSP problem we want to find a solution with certain restrictions. A example of what is a CSP is watching film with your family: each member impose its restrictions, and then we look for a film that satisfies them all. Should it happen that no film is found, we have other type of problem. This concept naturally translates into propositional logic formulation. Let us define CSP formally:
 
 \begin{definition}[\cite{schoning2013satisfiability}]
   A \emph{Constraint Satisfaction Problem}(CSP) is a triple $\{X,D,C\}$ where:
@@ -442,10 +447,10 @@ We want to introduce the notion of Constraint Satisfaction Problem (CSP) because
 \end{definition}
   The goal of a CSP is to found a mapping \[ \alpha:X\to \cup_{i\in 1,...,n} D_i\]
   
-  such that every variable $x_i$ is mapped to a value on its associated domain $D_i$ and every constraint is satisfied. Such map will be called an \emph{assignment}, and if this map satisfy all constraints it is said that $\alpha$ \emph{satisfy} the CSP problem.\\
+  such that every variable $x_i$ is mapped to a value on its associated domain $D_i$ and every constraint is satisfied. Such map will be called an \emph{assignment}, and if this map satisfy all constraints it is said that $\alpha$ \emph{satisfies} the CSP problem.\\
 
 
-Note that we can use all our artillery from Propositional Logic as both an equalities and inequalities hold a binary truth value (True/False), therefore can be handled as Propositional Logic Variables. \\
+Note that we can use all our artillery from Propositional Logic as both equalities and inequalities hold a binary truth value (True/False), therefore can be handled as Propositional Logic Variables. \\
 
 The value in CSP resides on the simplicity of its formulations.  One can  easily define a CSP just by selecting the desired conditions of a solution and describing its context. Moreover, a lot of real world problems can be defined in terms of constraints. Constraint programming is a programming paradigm that consists on solving problems by defining them as CSP and letting CSP-solvers do the work.\\
 
@@ -455,18 +460,18 @@ SAT could be seen as a CSP where every domain is $\{0,1\}$ and each clause is a 
   Every CSP problem has an equivalent SAT problem.
 \end{proposition}
 \begin{proof}
-  Let $ \{X,D,C\}$ be a CSP problem. To define a equivalent SAT problem we are going to define a SAT problem that can be solved if, and only if, the CSP problem can be solved. We will also request that from every assignment that satisfy the equivalent SAT problem, we can deduce an assignment that satisfy the CSP problem, and conversely. In order to define a SAT problem we are going to define a set of variable and a set of clauses to be satisfy.\\
+  Let $ \{X,D,C\}$ be a CSP problem. To define a equivalent SAT problem we are going to define a SAT problem that can be solved if, and only if, the CSP problem can be solved. We will also request that from every assignment that satisfies the equivalent SAT problem, we can deduce an assignment that satisfy the CSP problem, and conversely. In order to define a SAT problem we are going to define a set of variables and a set of clauses to be satisfy.\\
 
-  Our set of variables consists on a variable $y_{i,j}$ for each variable $x_i\in X$, and each value $d_{i,j}\in D_i$ that represent whether or not $x_i = d_{i,j}$. Now we define the set of clauses. The first to group of clauses are added for consistency reason, and the latter is added in order to maintain the constraints.
+  Our set of variables consists on a variable $y_{i,j}$ for each variable $x_i\in X$, and each value $d_{i,j}\in D_i$ that represents whether or not $x_i = d_{i,j}$. Now we define the set of clauses. The first to group of clauses are added for consistency reason, and the latter is added in order to maintain the constraints.
   \begin{enumerate}
   \item $(y_{i,1}\vee ... \vee y_{i,n_i})$ for all $i\in 1,...,n$ that represents that every variable should take a value.
   \item $(\neg y_{i,j} \vee \neg y_{i,j})$ for all $i\in 1,...,n,\ j\in 1,...,n_i$ that represents that a variable can not take more that one value.
   \item $(y_{i,j})$ for every equality $x_i = d_{i,j}$ and $(\neg y_{i,j})$ for every inequality $x_i \ne d_{i,j}$. If two equalities or inequalities are expressed concatenated by a Propositional Logic operator we express the associated literals of the equalities and inequalities concatenated by the same Propositional Logic Operator. In order to express the resulting formulas as a CNF formula, we use Tseitin's Theorem. A proof of this theorem will be provided on [\ref{the:Tseitin}].
   \end{enumerate}
 
-  If there is an assignment $\alpha$ that satisfy the associated SAT problem, then there is an assignment $\beta$ that satisfy the CSP problem such that $\beta(x_i=d_{i,j}$ if $\alpha(y_{i,j}) = 1$. From the clauses generated in 1. and 2. we can assert that such mapping is well defined, and from the clauses generated by 3. follow that $\beta$ satisfy all constraints.\\
+  If there is an assignment $\alpha$ that satisfies the associated SAT problem, then there is an assignment $\beta$ that satisfies the CSP problem such that $\beta(x_i=d_{i,j}$ if $\alpha(y_{i,j}) = 1$. From the clauses generated in 1. and 2. we can assert that such mapping is well defined, and from the clauses generated by 3. follows that $\beta$ satisfy all constraints.\\
 
-  Conversely we can define an assignment $\alpha$ that satisfy the SAT problem from an assignment $\beta$ that satisfy the CSP problem by mapping $x_{i,j}$ 
+  Conversely we can define an assignment $\alpha$ that satisfies the SAT problem from an assignment $\beta$ that satisfy the CSP problem by mapping $x_{i,j}$ 
 
 $$
 \alpha(x_{i})=
@@ -479,4 +484,4 @@ $$
 Therefore the CSP problem is solvable, if and only if, the SAT problem is satisfiable, and given a satisfying assignment of either the SAT or CSP problem we know how to generate a satisfying assignment of the other problem.
 \end{proof}
 
-In practice we will use CSP as a methodology for define problems. It will provide easy solutions for complex problems, given that we solve the SAT problem. More on this will be shown on [\ref{chap:3}].
+In practice we will use CSP as a methodology to define problems. It will provide easy solutions for complex problems, given that we solve the SAT problem. More on this will be shown on [\ref{chap:3}].
