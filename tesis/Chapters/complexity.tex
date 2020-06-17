@@ -337,6 +337,70 @@ On the time of publication, this result was a truly breakthrough. On the technic
   That is, they are the natural language of implication in CNF. Because of theorem[\ref{theorem:hornsat}] we now that this language is enough to express polynomial DTM.
 \end{itemize}
 
+
+
+\subsection{Graph Isomorphism Problem}
+
+In this subsection we introduce the Graph Isomorphism problem. We introduce this problem for two main reason:
+\begin{itemize}
+\item We want to make use of it in order to detect symmetries in CNF-Formulas.
+\item It has a really interesting complexity class.
+\end{itemize}
+
+In this subsection we focus in the latter topic. In Subsection \ref{sub:Symmetry} we explain the interest of this problem in the context of SAT-solving. For more information on the problem we refer to \cite{fortin1996graph}. \\
+
+In order to define a problem over graph, we have to be able to express them in a language. We can express any finite graph $G=(V,E)$ over an alphabet $\{0,..,9,B\}$:
+\begin{enumerate}
+\item We name each node in $V$ after number in $\mathbb{N}$, that is, we define an injective mapping $\phi: V \to \mathbb{N}$. Without any loss of generalization we can require this naming to be after the first $|V|$ naturals.
+\item We start with the empty word $\epsilon$, and for every edge $(u,v)$\footnote{We consider $E\subset V\times V$.} concatenate at the end a word $\phi(u)B\phi(v)BB$.
+\item When all edges are represented, concatenate at the end a word $BBB|V|$
+\end{enumerate}
+
+For example given:
+
+\begin{figure}[H]
+  \centering
+  
+  \begin{tikzpicture}[scale = 0.5,node distance=3cm,on grid,auto,thick] 
+    % comentar para estilo básico
+    \tikzstyle{every state}=[draw=myred!50,very thick,fill=myred!25,minimum size=1.2cm]
+    \node[state] (q_0)   {$0$}; 
+    \node[state] (q_1) [below=of q_0] {$1$}; 
+    \node[state](q_2) [above right=of q_1] {$2$};
+    \node[state](q_3) [above left=of q_1] {3};
+    
+    \path[->] 
+    (q_1) edge node {} (q_0)
+    (q_0) edge node {} (q_1)
+    (q_1) edge node {} (q_2)
+    (q_2) edge node {} (q_1)
+    (q_3) edge node {} (q_1)
+    (q_1) edge node {} (q_3)
+    (q_2) edge node {} (q_0)
+    (q_0) edge node {} (q_2);
+
+    
+  \end{tikzpicture}
+  
+  \caption{Example Graph}
+\end{figure}
+
+We can code it as $0B2BB2B0BB1B2BB2B1BB0B1BB1B0BB1B3BB3B1BBBBB4$. We name as \emph{GRAPH} to the language over $\{0,..,9,B\}$ that include all well formatted graphs. 
+
+\begin{definition}
+  We define the Graph Isomorphism language ($GI$) as the subset $L\subset$GRAPH$\times$GRAPH such that for every pairs of words $(w_1,w_2)\in L$ theirs associated graphs are isomorphic. We name GI to the associated decision problem. 
+\end{defintion}
+
+Given a mapping between two graphs, it can be checked in polynomial time whether such mapping is an isomorphism. Therefore GI is in NP. GI is not known to be in P, neither to be NP-Complete. A complexity class is named after this problem:
+
+\begin{definition}
+  We define the class GI as the set of all decision problems that can be reduced to GI. 
+\end{definition}
+
+
+Therefore a problem is GI complete if GI is reducible to it. As a historical note Las Vegas Algorithm is a probabilistic algorithm first introduced by László Babai in 1979 to solve this problem. 
+
+
 \subsection{Other Completeness Results}
 
 Although the most important completeness problems are the ones related with NP-Completeness, the concept of completeness can be implemented for every mayor complexity class. Most importantly for us, SAT variations are the norm for a lot of completeness results. On this subsection we will present the most important of these results.
