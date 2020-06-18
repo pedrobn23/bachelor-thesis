@@ -223,8 +223,25 @@ This proposition is analogous with functions problems. This proposition give ano
 The problem of checking whether of not this inclusion is strict is also open to this date.
 
 
-%\subsection{Other complexity Classes}
+\subsection{Complementary Classes}
 
+Building on the complementary problem definition, we can define a new kind of complexity classes.
+
+\begin{definition}
+  Let $\Omega$ be a complexity class. We let $Co\Omega$ be the decision complexity class such that:
+
+  $$Co\Omega = \{CoL : L\in \Omega\}.$$
+\end{definition}
+
+This concept is not useful for Deterministic Complexity classes as we state in the next proposition.
+\begin{proposition}
+Let $\Omega$ be a deterministic Complexity Class. We have that $\Omega = Co\Omega$.
+\end{proposition}
+\begin{proof}
+TODO:
+\end{proof}
+
+Nonetheless, this concept is really important for non-deterministic complexity classes, as the previous proposition is, in general, not known to be true. One of the most relevant open problems is whether or not CoNP = P. For us, CoNP is important also as is the class of TAUT.
 
 
 
@@ -349,6 +366,8 @@ On the time of publication, this result was a truly breakthrough. On the technic
 
 
 
+
+
 \subsection{Graph Isomorphism Problem}
 
 In this subsection we introduce the Graph Isomorphism problem. We introduce this problem for two main reason:
@@ -399,7 +418,7 @@ We can code it as $0B2BB2B0BB1B2BB2B1BB0B1BB1B0BB1B3BB3B1BBBBB4$. We name as \em
 
 \begin{definition}
   We define the Graph Isomorphism language ($GI$) as the subset $L\subset$ GRAPH $\times$ GRAPH such that for every pairs of words $(w_1,w_2)\in L$ theirs associated graphs are isomorphic. We name GI to the associated decision problem. \\
-\end{defintion}
+\end{definition}
 
 Given a mapping between two graphs, it can be checked in polynomial time whether such mapping is an isomorphism. Therefore GI is in NP. GI is not known to be in P, neither to be NP-Complete. A complexity class is named after this problem:\\
 
@@ -420,15 +439,18 @@ The first result regards P-Completeness.
 \begin{theorem}[\cite{creignou1996complexity}]\label{theorem:hornsat}  HORNSAT is P-Complete
 \end{theorem}
 
-TODO: Definir Circutitos o borrar este parrafo.
-To this day, the class P-complete is believed to be characterized by the problems that has to be computed sequentially. However, as many problems in this area, is still an open problem. The formal formulation of this problem is $$NC =^{?} P$$ Where NC is Nick's class. This name was coined by Stephen Cook, in honor to Nick Pippenger and  is the class of decision problems solvable by a uniform family of Boolean circuits, with polynomial size, depth $O(log(n))$, and fan-in 2.\\
+% TODO: Definir Circutitos o borrar este parrafo.
+% To this day, the class P-complete is believed to be characterized by the problems that has to be computed sequentially. However, as many problems in this area, is still an open problem. The formal formulation of this problem is $$NC \myeq P$$ Where NC is Nick's class. This name was coined by Stephen Cook, in honor to Nick Pippenger and  is the class of decision problems solvable by a uniform family of Boolean circuits, with polynomial size, depth $O(log(n))$, and fan-in 2.\\
 
-Finding a parallelizable algorithm for HORNSAT would imply that $NC = P$. Nonetheless, it is widely believed that it is not possible. As being said, is still an open problem.\\
+% Finding a parallelizable algorithm for HORNSAT would imply that $NC = P$. Nonetheless, it is widely believed that it is not possible. As being said, is still an open problem.\\
 
-To end this subsection we  present a brief discussion about FNP-Completeness. The same way we work with decision problems, we could be talking about Function Problem. In particular:
+To continue,  we  present a brief discussion about FNP-Completeness. The same way we work with decision problems, we could be talking about Function Problem. In particular:
 
 \begin{theorem} FSAT is FNP-complete.  
 \end{theorem}
+\begin{proof}
+  TODO:
+\end{proof}
 
 The next problem we will discuss is QBF.
 
@@ -437,7 +459,21 @@ The next problem we will discuss is QBF.
 
 This in an important result as show the implicit difficult of automatically checking theorems in first order Logic. Nonetheless, it is worthy of considering, as the subsequent results of being able to solve this problem efficiently enough will make mathematicians life a lot easier, as theorem resolution will be a topic of well defined axioms and computer reasoning. This idea, was the one showcased in Gödel's Letter. \\
 
-To end this subsection we will talk about CO-NP.
+To end this subsection we will talk about CO-NP. We can use the study of NP Completeness in order to study CoNP Completeness.
+
+\begin{proposition}
+  Let $L$ be a language. $L$ is NP-Complete iff $CoL$ is CoNP-Complete.
+\end{proposition}
+
+\begin{proof}  \hfill
+  \begin{itemize}
+  \item[\fbox{$\Rightarrow$}] 
+    Let $L'$ be a CoNP language. Therefore $CoL'$ is a NP language. There is a reduction $R$ from $CoL'$ to $L$ such that, $x \in CoL' \iff R(x) \in L$. Therefore $x \in L' \iff R(x) \in CoL$.
+  \item[\fbox{$\Leftarrow$}] Analogue.
+  \end{itemize}
+\end{proof}
+
+Therefore, UNSAT is CoNP complete and TAUT is CoNP complete.
 
 \subsection{Exponential Time Hypothesis}
 \label{hyp:exponential_time}

@@ -292,8 +292,8 @@ We will study the complexity of functions. In order to standardize the approach 
 When we have a named language, we refer indistinctly by this name to both the language and the associated decision problem. In order to define a decision problem it is only needed to define a language over an alphabet. Therefore a decision problem may be defined implicitly, that is, as the set of the words in an alphabet that satisfy some condition. As semantics provides meaning to the languages, real world problems can be addressed as decision problems.\\
 
 As a last definition of this subsection, we introduce the complement decision problem.
-\begin{definition}[Complement Decision Problem\cite{arora2009computational}]
-  Given a decision problem it has a Complement Decision Problem that consists on, given a word $w\in A^*$ check whether $w$ is in $L$. 	
+\begin{definition}[Complement Decision Problem\cite{arora2009computational}]\label{def:complement}
+  Given a decision problem  $L$ it has a Complement Decision Problem named $CoL$ that consists on, given a word $w\in A^*$ check whether $w$ is in $L$. 	
 \end{definition}
 
 This definition will be used further in [\ref{sub:detcomp}] in order to define complexity classes.
@@ -370,18 +370,45 @@ All the variations presented to this point were problem that generalizes SAT. We
   HORNSAT is the intersection language of HORN and SAT problems. Nonetheless, given the easiness of checking whether a formula is in HORN, it would usually consider as the problem that check the satisfiability of a horn formula.
 \end{definition}
 
-This problem will be studied further in Subsection \ref{sub:Horn}.\\
+We study this problem further  in Subsection \ref{sub:Horn}.\\
 
 
 
+As we have defined the complement decision problem [\ref{def:complement}] we can use that in order to effortless define CoSAT. The idea of this problem resides in finding whether a CNF-formula is unsatisfiable. This problem is usually called UNSAT, as it looks for Unsatisfiability. 
 
-TODO:
-To end this section we will introduce one of the most complicated generalization. Stochastic SAT or SSAT. This variation was first introduced in \cite{papadimitriou1985games}. The information provided for this problem comes from \cite{majercik2009stochastic}.\\
+\begin{definition}
+  A formula $F$ is said to be in Disjunctive Normal Form ($DNF$) if $F$ is written as:x
+  $$F = C_1\lor ... \lor C_n.$$
+  Where $C_i$  are disjunctions of literals.
+\end{definition}
 
-A SSAT problem is defined by:
-\begin{itemize}
-\item   A \emph{prefix} $Q_1 v_1 ... Q_nv_n$ that orders a set of $N$ variables 
-\end{itemie}
+As done with CNF formulas, we can regard a DNF formula as a set of disjunctions
+
+\begin{definition}[TAUT] The Tautology Language of Propositional Logic (TAUT) is the language over the alphabet of propositional logic that includes all formulas that are both tautologies and in DNF. 
+\end{definition}
+
+This problem is often regard as the complement problem of SAT, instead of UNSAT, due to the following property:
+
+\begin{proposition}
+  For every CNF Formula $F=\{C_1,...,C_n\}$ where $C_i = (l_{1}\lor ... \lor l_{n_i})$, there is a DNF formula $F' = \{C_1',...,C_n'\}$ where $C_i' = (\neg l_1 \land ...\land l_{i_n})$ such that:
+
+  $$F \iff \neg F$$
+\end{proposition}
+\begin{proof}
+These results are a direct consequence of De Morgan's laws.
+\end{proof}
+
+
+Therefore we can choose to solve TAUT instead of CoSAT.
+
+
+% TODO:
+% To end this section we will introduce one of the most complicated generalization. Stochastic SAT or SSAT. This variation was first introduced in \cite{papadimitriou1985games}. The information provided for this problem comes from \cite{majercik2009stochastic}.\\
+
+% A SSAT problem is defined by:
+% \begin{itemize}
+% \item   A \emph{prefix} $Q_1 v_1 ... Q_nv_n$ that orders a set of $N$ variables 
+% \end{itemie}
 
 
 
