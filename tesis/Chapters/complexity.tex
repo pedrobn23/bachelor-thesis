@@ -142,8 +142,7 @@ A natural problem has a feasible algorithm iff it has a polynomial-time algorith
 
 That is, only problems with polynomial time complexity are able to be computed, as otherwise their complexity make them not viable, i.e., not computable in a coherent time. The idea of problems being not feasible is the basis of some of the most important conceptions of modern Computer Science. In particular in modern cryptoanalysis the most common encoding technique (private keys protocols) are based upon the conception that no one would be able to solve the presented problem without some added information in a coherent time, independently of their computing capabilities.\\
 
-
-
+Other important class on complexity is L. We define L as the set of all Linear combination of logarithms. Now we need to point out that in most part of literature, the class L refer to the class we named LSPACE. Nonetheless we decide to maintain out notation for internal coherence of the text. 
 
 \subsection{Non-Deterministic Complexity}
 
@@ -213,7 +212,18 @@ Another characterization of NP is by \emph{verfiers}. Given a language that migh
   As both steps are computed in polynomial time $M$ runs in polynomial time.  
 \end{proof}
 
-This proposition is analogous with functions problems. This proposition give another meaning to the Pvs.NP problem. We can consider P to be the class of efficiently doable problems, whether NP is the class of efficiently checkable problems.
+This proposition is analogous with functions problems. This proposition give another meaning to the Pvs.NP problem. We can consider P to be the class of efficiently doable problems, whether NP is the class of efficiently checkable problems.\\
+ Another interesting class 
+
+
+\begin{corollary}
+  $LSPACE \subset P$.
+\end{corollary}
+
+The problem of checking whether of not this inclusion is strict is also open to this date.
+
+
+%\subsection{Other complexity Classes}
 
 
 
@@ -385,16 +395,16 @@ For example given:
   \caption{Example Graph}
 \end{figure}
 
-We can code it as $0B2BB2B0BB1B2BB2B1BB0B1BB1B0BB1B3BB3B1BBBBB4$. We name as \emph{GRAPH} to the language over $\{0,..,9,B\}$ that include all well formatted graphs. 
+We can code it as $0B2BB2B0BB1B2BB2B1BB0B1BB1B0BB1B3BB3B1BBBBB4$. We name as \emph{GRAPH} to the language over $\{0,..,9,B\}$ that include all well formatted graphs. \\
 
 \begin{definition}
-  We define the Graph Isomorphism language ($GI$) as the subset $L\subset$GRAPH$\times$GRAPH such that for every pairs of words $(w_1,w_2)\in L$ theirs associated graphs are isomorphic. We name GI to the associated decision problem. 
+  We define the Graph Isomorphism language ($GI$) as the subset $L\subset$ GRAPH $\times$ GRAPH such that for every pairs of words $(w_1,w_2)\in L$ theirs associated graphs are isomorphic. We name GI to the associated decision problem. \\
 \end{defintion}
 
-Given a mapping between two graphs, it can be checked in polynomial time whether such mapping is an isomorphism. Therefore GI is in NP. GI is not known to be in P, neither to be NP-Complete. A complexity class is named after this problem:
+Given a mapping between two graphs, it can be checked in polynomial time whether such mapping is an isomorphism. Therefore GI is in NP. GI is not known to be in P, neither to be NP-Complete. A complexity class is named after this problem:\\
 
 \begin{definition}
-  We define the class GI as the set of all decision problems that can be reduced to GI. 
+  We define the class GI as the set of all decision problems that can be reduced to GI. \\
 \end{definition}
 
 
@@ -403,14 +413,27 @@ Therefore a problem is GI complete if GI is reducible to it. As a historical not
 
 \subsection{Other Completeness Results}
 
-Although the most important completeness problems are the ones related with NP-Completeness, the concept of completeness can be implemented for every mayor complexity class. Most importantly for us, SAT variations are the norm for a lot of completeness results. On this subsection we will present the most important of these results.
+Although the most important completeness problems are the ones related with NP-Completeness, the concept of completeness can be implemented for every mayor complexity class. Most importantly for us, SAT variations are the norm for a lot of completeness results. On this subsection we will present the most important of these results.\\
+
+The first result regards P-Completeness. 
+
+\begin{theorem}[\cite{creignou1996complexity}]\label{theorem:hornsat}  HORNSAT is P-Complete
+\end{theorem}
+
+TODO: Definir Circutitos o borrar este parrafo.
+To this day, the class P-complete is believed to be characterized by the problems that has to be computed sequentially. However, as many problems in this area, is still an open problem. The formal formulation of this problem is $$NC =^{?} P$$ Where NC is Nick's class. This name was coined by Stephen Cook, in honor to Nick Pippenger and  is the class of decision problems solvable by a uniform family of Boolean circuits, with polynomial size, depth $O(log(n))$, and fan-in 2.\\
+
+Finding a parallelizable algorithm for HORNSAT would imply that $NC = P$. Nonetheless, it is widely believed that it is not possible. As being said, is still an open problem\\
 
 
-\begin{theorem}\label{theorem:hornsat}  HORNSAT is PComplete
-  \end{theorem}
+The next problem we will discuss is QBF.
 
+\begin{theorem}[\cite{franco2009history}] QBF is PSPACE-Complete.
+\end{theorem}
+
+This in an important result as show the implicit difficult of automatically checking theorems in first order Logic. Nonetheless, it is 
+  
 \begin{enumerate}
-  \item TODO:
   \item To study the complexity of the SAT problem and its variants so far.
   \item Include graph automorphism complexity.
   \item SSAT es PSPACE Completo

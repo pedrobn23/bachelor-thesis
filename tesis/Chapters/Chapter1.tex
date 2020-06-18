@@ -358,7 +358,38 @@ That is, is the problem of finding an assignment that satisfy a formula. Most of
 
 That is, is the problem of finding the maximum number of assignments that can be satisfied simultaneously.\\
 
-As we will see, most SAT-solvers are FSAT-solvers. In related literature the FSAT-solver are called constructive SAT-solvers, as they provide a constructive solution of the problem. Solvers that only solve SAT are called non-constructive SAT-solvers. After presenting the concept of algorithmic complexity we will see that from a non constructive SAT-solver, a constructive SAT-solver can be made so that the latter is not much less efficient[\ref{sub:fromnon}].
+As we will see, most SAT-solvers are FSAT-solvers. In related literature the FSAT-solver are called constructive SAT-solvers, as they provide a constructive solution of the problem. Solvers that only solve SAT are called non-constructive SAT-solvers. After presenting the concept of algorithmic complexity we will see that from a non constructive SAT-solver, a constructive SAT-solver can be made so that the latter is not much less efficient[\ref{sub:fromnon}].\\
+
+All the variations presented to this point were problem that generalizes SAT. We introduce one restricted version of SAT.
+
+\begin{definition}
+  Let $F$ be a formula in CNF. $F$ is said to be a Horn formula if for every $C \in F$ there is at most one non-negated literal. HORN is the language of all horn formulas.
+\end{definition}
+
+\begin{definition}
+  HORNSAT is the intersection language of HORN and SAT problems. Nonetheless, given the easiness of checking whether a formula is in HORN, it would usually consider as the problem that check the satisfiability of a horn formula.
+\end{definition}
+
+This problem will be studied further in Subsection \ref{sub:Horn}.\\
+
+
+
+
+
+To end this section we will introduce one of the most complicated generalization. Stochastic SAT or SSAT. This variation was first introduced in \cite{papadimitriou1985games}. The information provided for this problem comes from \cite{majercik2009stochastic}.\\
+
+
+
+
+
+A SSAT problem is defined by TODO - Incluir en la parte práctica y desarrollar algoritmo.
+\begin{itemize}
+\item   A \emph{prefix} $Q_1 v_1 ... Q_nv_n$ that orders a set of $N$ variables 
+\end{itemie}
+
+
+
+
 
 
 \section{SAT certificates}
