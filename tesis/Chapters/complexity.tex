@@ -423,25 +423,21 @@ The first result regards P-Completeness.
 TODO: Definir Circutitos o borrar este parrafo.
 To this day, the class P-complete is believed to be characterized by the problems that has to be computed sequentially. However, as many problems in this area, is still an open problem. The formal formulation of this problem is $$NC =^{?} P$$ Where NC is Nick's class. This name was coined by Stephen Cook, in honor to Nick Pippenger and  is the class of decision problems solvable by a uniform family of Boolean circuits, with polynomial size, depth $O(log(n))$, and fan-in 2.\\
 
-Finding a parallelizable algorithm for HORNSAT would imply that $NC = P$. Nonetheless, it is widely believed that it is not possible. As being said, is still an open problem\\
+Finding a parallelizable algorithm for HORNSAT would imply that $NC = P$. Nonetheless, it is widely believed that it is not possible. As being said, is still an open problem.\\
 
+To end this subsection we  present a brief discussion about FNP-Completeness. The same way we work with decision problems, we could be talking about Function Problem. In particular:
+
+\begin{theorem} FSAT is FNP-complete.  
+\end{theorem}
 
 The next problem we will discuss is QBF.
 
 \begin{theorem}[\cite{franco2009history}] QBF is PSPACE-Complete.
 \end{theorem}
 
-This in an important result as show the implicit difficult of automatically checking theorems in first order Logic. Nonetheless, it is 
-  
-\begin{enumerate}
-  \item To study the complexity of the SAT problem and its variants so far.
-  \item Include graph automorphism complexity.
-  \item SSAT es PSPACE Completo
-  \item Resultado craig interpolant
-  \item CoNPComplete result
-  \item Moreover, as checking whether an assignment is autark is linear on the number of clauses, then this make the autark-finding problem NP-Complete(NP-C further on).
-  \end{enumerate}
+This in an important result as show the implicit difficult of automatically checking theorems in first order Logic. Nonetheless, it is worthy of considering, as the subsequent results of being able to solve this problem efficiently enough will make mathematicians life a lot easier, as theorem resolution will be a topic of well defined axioms and computer reasoning. This idea, was the one showcased in Gödel's Letter. \\
 
+To end this subsection we will talk about CO-NP.
 
 \subsection{Exponential Time Hypothesis}
 \label{hyp:exponential_time}

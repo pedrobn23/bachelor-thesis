@@ -340,6 +340,11 @@ Then we are going to impose that, for every orbit of a symmetry $\pi \in \mathfr
 
 And we have that, considering $F\land \rho(F)$ only the least of the symmetries can be considered. 
 
+
+
+
+
+ 
 \subsection{Autarks assignments}
 \label{sec:autark}
 
@@ -359,9 +364,9 @@ Should it happen that we have an algorithm for the Autarks Finding Problem, iter
   $$R = \{(F,\alpha): F \in CNF\wedge \forall C \in F,\ C\ne \emptyset\ \ ( Var(C)\cap Var(\alpha)\ne\emptyset \implies C\alpha=1 )\}$$
 \end{definition}
 
-\begin{proposition}
+\begin{theorem}\label{the:autark}
   There is a reduction from FSAT to the Autark-Finding problem.
-\end{proposition}
+\end{theorem}
 \begin{proof} Suppose that an algorithm such that if it exists any autark it return one of them, and end with an error code otherwise is given.  \\
 
     Given a formula $F$, if there is not an autark then there is no solution for the SAT problem. If it finds an Autark-assignment $\alpha$ then we apply the same algorithm to $\alpha(F)$. Also, as it happens that $|Var(\alpha(F))|<|Var(F)|$ so we only apply the algorithm finitely many times. Also, $F$ will be solvable if, and only if, $F\alpha$ is solvable.
@@ -370,6 +375,14 @@ Should it happen that we have an algorithm for the Autarks Finding Problem, iter
 
 The most common autark assignment is the pure literal. A literal $l$ is a pure literal for a formula $F$ if there is no $\neg l$ in $F$. The partial-assignment that only maps $u\to 1$ is an autark assignment for $F$. This type of autark are used on DPLL algorithm[\ref{sec:dpll}]. The MS algorithm[\ref{alg:MS}] also uses an autark finding technique.
 
+\begin{corollary}
+The autark finding problem is FNP-Complete.
+\end{corollary}
+
+\begin{proof}
+As checking whether an assignment is autark is linear on the number of clauses, then this make the autark-finding problem is in FNP. From \ref{the:autark} follows that the autark finding problem is FNP-Complete.
+\end{proof}
+ 
 
 
 \subsection{Tseitin Theorem}
@@ -494,6 +507,4 @@ Let's analyze the complexity of this algorithm. We make at most $n$ repetitions 
 \end{proof}
 
 Assuming ETH we assume that $\phi$ is exponential in time, an therefore asymptotic complexity $O(\varphi(n+m))$ is the same as $O(n(\varphi(n+m)+m))$, so, until $ETH$ is proved wrong we can consider SAT and FSAT as being equal in complexity. On this text we will only deal with non-constructive  solvers on the combinatorics section[\ref{sec:combu}].
-
-
 
