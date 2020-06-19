@@ -1,7 +1,7 @@
 
 \section{Special Cases Solvable in Polynomial Time}
 
-In this section we will discuss some cases of the SAT problem solvable in P. These cases are of interest because polynomial is no achievable in all cases. Nonetheless, they only work with a subset of all possible formulas. They should be use whenever possible as no general polynomial time is believed to exist, nor it is proved its non-existence. In general thorough the section we will follow \emph{The Satisfiability Problem: Algorithms and Analyses}\cite{schoning2013satisfiability}.
+In this section we will discuss some cases of the SAT problem solvable in P. These cases are of interest because polynomial is no achievable in all cases. Nonetheless, they only work with a subset of all possible formulas. They should be used whenever possible as no general polynomial time is believed to exist, nor it is proved its non-existence. In general thorough the section we will follow \emph{The Satisfiability Problem: Algorithms and Analyses}\cite{schoning2013satisfiability}.
 
 \begin{definition}
   Let $F$ be a formula. A subset $ V \subset Var(F)$ is called a backdoor if $F\alpha \in \text{P}$ for every assignment $\alpha$ that maps all $V$.
@@ -24,7 +24,7 @@ Also, the unit propagation might result on a recursive problem, as other unit cl
 
 
 \subsection{2SAT}
-It is already know that 3SAT is equivalent to SAT. This is not known for 2SAT and is believed to be false.
+It is already know that 3-SAT is equivalent to SAT. However, this is not the case of 2-SAT.
 
 \begin{proposition}
   2SAT is in P 
@@ -73,7 +73,7 @@ Now we will discuss a simple generalization of Horn formulas: the renamable Horn
 
 
 \begin{theorem}
-  The CNF formula $F$ is renamable Horn if and only if the associated $F^*$ formula is satisfiable. Moreover, if satisfying assignment $\alpha$ for $F^*$  exists then it encodes a renaming $U$ in the sense that $x \in U \iff \alpha(x) = 1$.
+  The CNF formula $F$ is renamable Horn if and only if the associated $F^*$ formula is satisfiable. Moreover, if a satisfying assignment $\alpha$ for $F^*$  exists then it encodes a renaming $U$ in the sense that $x \in U \iff \alpha(x) = 1$.
 \end{theorem}
 \begin{proof}
   Let $F$ be renamable Horn and $U$ be a renaming. We consider the assignment
@@ -88,7 +88,7 @@ $$
  
   Let $\{u\vee v\} \in F^*$ after the renaming. There should be at least one negative variable so if every variable is set to 0, $F^*$ is satisfiable.\\
 
-  The other direction is analogous: let $\alpha$ be an assignment that satisfy $F^*$. Then there is no to literals in the same clause set to 0. Defining $U=  \{x \in Var(F) : \alpha(x) = 1\}$ there is no two positives variables in a clause.
+  The other direction is analogous: let $\alpha$ be an assignment that satisfies $F^*$. Then there is no to literals in the same clause set to 0. Defining $U=  \{x \in Var(F) : \alpha(x) = 1\}$ there is no two positives variables in a clause.
   \end{proof}
 
 

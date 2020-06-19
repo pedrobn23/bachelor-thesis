@@ -2,7 +2,7 @@
 \label{sec:prob}
 
 
-In this chapter we will talk about probabilistic algorithms for SAT and $k$-SAT.When we talk about probabilistic algorithms, we are trying to define an incomplete SAT-solver, with a bounded probability error. This might seems like a big loss in power. Nonetheless, given the complexity of the problem, neither are complete solvers capable of solving all formulas in a feasible time. Therefore, dropping completeness could be a fair exchange in order to get better time complexity.\\
+In this chapter we consider probabilistic algorithms for SAT and $k$-SAT.When we talk about probabilistic algorithms, we are trying to define an incomplete SAT-solver, with a bounded probability error. This might seems like a big loss in power. Nonetheless, given the complexity of the problem, neither are complete solvers capable of solving all formulas in a feasible time. Therefore, dropping completeness could be a fair exchange in order to get better time complexity.\\
 
 
 \section{Paturi-Pudlák-Zane}
@@ -13,7 +13,7 @@ The first one that we will consider is the Paturi-Pudlák-Zane(PPZ) algorithm \c
 In this subsection we will present the PPZ algorithm and in the next subsection its improved version PPSZ. The information presented here follows the discussion in \cite{paturi2005improved}. The difference between PPZ and PPSZ is some added preprocessing. At the time of release, PPSZ was the asymptotically fastest algorithm for random $k$-SAT with $k \ge 4$ only improved in $3$-SAT by the Schönning random walk algorithm and its improved version the Hofmeister algorithm, because PPSZ were not able to extend the results they found but it was suggested that it should be extendable. At the end, it was proved 9 years later by Hertli \cite{hertli20143} that the bounds hold on general. \\
 
 
-To define the algorithms, we first define some subroutines. The first of them take a CNF formula $F$, an assignment $\alpha$ and a permutation $\pi$ and returns other assignment $u$.Note that in line 5 and 7 on the procedure \texttt{modify}[\ref{alg:modify}]is only checking whether or not we can unit propagate the variable $x_{\pi(i)}$. The algorithm \texttt{Search} is obtained by running \texttt{Modify} on many pairs $(\alpha, \pi)$ where $\alpha$ is a random assignment and $\pi$ a random permutation.\\ 
+To define the algorithms, we first define some subroutines. The first of them take a CNF formula $F$, an assignment $\alpha$ and a permutation $\pi$ and returns other assignment $u$.Note that in line 5 and 7 on the procedure \texttt{modify}[Algorithm\ref{alg:modify}]is only checking whether or not we can unit propagate the variable $x_{\pi(i)}$. The algorithm \texttt{Search}[Algorithm \ref{search}] is obtained by running \texttt{Modify} on many pairs $(\alpha, \pi)$ where $\alpha$ is a random assignment and $\pi$ a random permutation.\\ 
 
 \begin{algorithm}
   \caption{\texttt{Modify subroutine}}\label{alg:modify}

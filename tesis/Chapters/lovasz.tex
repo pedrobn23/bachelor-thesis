@@ -5,12 +5,12 @@
 
 \chapter{Special Cases}
 
-On this part we attack the main problem of SAT: explain the different techniques that can be applied.Onward we will see how it could be solved, and develop applied techniques. There are a lot of approaches to this problem and they differ on their way to attack it. We have to realise that three things are important to judge a algorithm.
+On this part we attack the main problem of SAT: explain the different techniques that can be applied.Onward we will see how it could be solved, and develop applied techniques. There are a lot of approaches to this problem and they differ on their way to attack it. We have to realise that three things are important to judge an algorithm.
 
 \begin{itemize}
 \item The simplicity: following Occam's razor, between two solutions that do not appear to be better or worse, one should choose the easiest one. This solution are far more comprehensible and tends to be more variable and adaptable for our problem. We should not despise an easy solution to a complex problem only because a far more difficult approach give slightly better results.
 
-\item The complexity: and by that I mean its algorithmic ('Big O') complexity. It is important to get good running times in all cases and have a analysis of the worst cases scenario that the algorithm could have.
+\item The complexity: and by that I mean its algorithmic ('Big O') complexity. It is important to get good running times in all cases and have an analysis of the worst cases scenario that the algorithm could have.
 
 \item The efficiency: Some algorithms will have the same complexity as the most simple ones, but will use some plans to be able to solve most part of the cases fast (even in polynomial time). There are some cases that would make this algorithms be pretty slow, but more often than not a trade-off is convenient.
 \end{itemize}
@@ -19,12 +19,12 @@ On this part we attack the main problem of SAT: explain the different techniques
   On this chapter we are going to talk about solvability in special situations where we work with a restricted subset of formulas (more restricted than CNF formulas). We want to exploit special characteristics of these subsets in our favor in order to get a resolution without involving a complex exponential time algorithms (as the ones needed to solve SAT).\\
 
 
-  The first section of this chapter will talk about combinatorics. We proceed to analyze solvability in special cases, i.e., algorithms  that works really well in formulas given that they satisfy some restriction.
+  The first section of this chapter will talk about combinatorics. We proceed to analyze solvability in special cases, i.e., algorithms  that work really well in formulas given that they satisfy some restriction.
 
 \section{Satisfiability by Combinatorics}
 \label{sec:combu<}
 
-To get an intuition about how unsolvable clauses are, we gonna state some simple result about combinatorics and resolution. These techinques present some cases where we can solve the decision problem efficently, although more often that not we would not provide a satisfying assignment, i.e., we do not solve the function problem.
+To get an intuition about how unsolvable clauses are, we gonna state some simple results about combinatorics and resolution. These techinques present some cases where we can solve the decision problem efficently, although more often that not we would not provide a satisfying assignment, i.e., we do not solve the function problem.
 
 
 As there is no complete SAT-solver known to work in polymial time complexity, a polynomial increase does not affect overall the assymptotical complexity.\\
@@ -67,7 +67,7 @@ Let $F$ be a CNF formula. It is said to be minimally unsatisfiable if:
 \end{definition}
 
 
-Then the following prove will be shown as in \cite{schoning2013satisfiability}. For that we will need the well known Hall marriage theorem\cite{hall2009representatives}. A similar result is proved in chapter 7 of \cite{marek2009introduction}, using the König theorem. Both of the version take the idea of associate a graph to each set of clauses. 
+Then the following proof will be shown as in \cite{schoning2013satisfiability}. For that we will need the well known Hall marriage theorem\cite{hall2009representatives}. A similar result is proved in Chapter 7 of \cite{marek2009introduction}, using the König theorem. Both versions take the idea of associate a graph with a set of clauses. 
 
 \begin{definition}
   Let $G=(N,E)$ be a graph where $N$ is the set of nodes and $E$ the set of edges, represented as pair of nodes. Given $n \in X$,  the neighborhood of $n$, denoted as $\Gamma_G(n)$, is defined as:
@@ -76,9 +76,12 @@ Then the following prove will be shown as in \cite{schoning2013satisfiability}. 
         Analogously, the inclusive neighborhood is defined as $\Gamma_G^+(n) = \Gamma_G(n) \cup \{n\}$. The neighborhood of a subset $W \subset X$ is defined as $\Gamma_G(X) = \Cup_{n\in X} \Gamma_G(n)$
 \end{definition}
 
+\begin{definition}
+  Let $G$ be a finite bipartite graph with finite sets of vertices $X,Y$. A matching edge cover is a cover such that every vertex only participate in one edge)
+\end{definition}
 
 \begin{theorem}[Hall marriage graph version]
-  Let $G$ be a finite bipartite graph with finite sets of vertex $X,Y$. There is a matching edge cover(a cover such that every vertex only participate in one edge) of $X$ if and only if $|W| \le |\Gamma_G(W)|$ for every $W\subset X$.  
+  Let $G$ be a finite bipartite graph with finite sets of vertices $X,Y$. There is a matching edge cover of $X$ if and only if $|W| \le |\Gamma_G(W)|$ for every $W\subset X$.  
 \end{theorem}
 
 
@@ -87,7 +90,7 @@ Let F be a CNF formula. If for every subset $G$ of $F$ it holds that $|G|\le |Va
 \end{lemma}
 
 \begin{proof}
-  We will associate a bipartite graph with $F$:  $U, V$ be the two set of vertexes where $U$ consists on the set of clauses and $V$ on the set of variables. There is an edge $(u,v)$ if $v$ takes part on $u$.
+  We will associate a bipartite graph with $F$:  $U, V$ be the two set of vertices where $U$ consists on the set of clauses and $V$ on the set of variables. There is an edge $(u,v)$ if $v$ takes part on $u$.
 
   By the marriage theorem every clause can be associated to a variable. Therefore we could make an assignment that take every variable associated to a clause to the value that the clause requires.
 \end{proof}
@@ -102,7 +105,7 @@ This idea or neighbourhood in clause is important and curious. It defines a rela
   Since $F$ is unsatisfiable, there must be a subset $G$ such that is maximal and satisfy $|G| > Var(G)$. If $G=F$ them the theorem is proved.
 
 
-  Otherwise, let $H \subset F\backslash G$ be an arbitrary subset. If $|H| > |Var(H)\Var(G)|$ then $|G \cup H| > |Var(G\cup H)|$ and $G$ would not be maximal.  Therefore $F\G$ satisfies the condition of the lemma and is satisfiable using an assignment that does not use any variable $x \in Var(G)$. As $G$ is minimally unsatisfiable $G$ is satisfiable by and assignment $\beta$. We could them define an assignment:
+  Otherwise, let $H \subset F\backslash G$ be an arbitrary subset. If $|H| > |Var(H)\Var(G)|$ then $|G \cup H| > |Var(G\cup H)|$ and $G$ would not be maximal.  Therefore $F\G$ satisfies the condition of the lemma and is satisfiable using an assignment that does not use any variable $x \in Var(G)$. As $G$ is minimally unsatisfiable $G$ is satisfiable by an assignment $\beta$. We could then define an assignment:
 
   \[   
 \gamma(x) = 
@@ -118,7 +121,7 @@ this assignment would satisfy F against the hypothesis. We proved $G=F$ by contr
 
 
 \section{Lovász Local Lemma}
-We continue to prove an interesting lemma on the theoretical analysis of satisfiability problem: the Lovász Local Lemma (LLL). This lemma was first proven on 1972 by Erdös and Lovász while they were studying 3-coloration of hypergraphs. Then it was Moser which understood the relationship between  this result and constraint satisfaction problem. SAT could be regarded as the simplest of these problems. \\
+We continue to prove an interesting lemma on the theoretical analysis of satisfiability problem: the Lovász Local Lemma (LLL). This lemma was first proven on 1972 by Erdös and Lovász while they were studying 3-coloration of hypergraphs. Then it was Moser which understood the relationship between  this result and the  constraint satisfaction problem. SAT could be regarded as the simplest of these problems. \\
 
 %Incluir teorema pagina 20? 
 
@@ -254,7 +257,7 @@ We explain the way Erdös, Lovász and Spencer originally proved the Lemma \cite
 
 
 
-Thorough the proof we will use repeatedly the definition of conditional probability, i.e. for any events $\{E_i\}_{i\in 1,...,r}$,
+Thorough the proof we will use repeatedly the Chain Rule. It states that for any events $\{E_i\}_{i\in 1,...,r}$,
 
 \[
 P\left ( \bigcap_{i=1}^r E_1\right ) = \prod_{i=1}^rP \left( E_i \Big | \bigcap_{j=1}^{i-1} E_j\right)\\
@@ -319,7 +322,7 @@ P\left ( \bigcap_{A\in \mathcal{A}} \overline{A}\right ) = \prod_{i=1}^m P \left
 
 \subsection{Constructive proof of [\ref{LLLSC}]}
 
-Moser\cite{moser2013exact} proves that it exists an algorithm such that it gives an assignment satisfying the SAT formula, should it happen that the formula satisfies \ref{LLLS} conditions. This is no a big deal, as a backtrack would be also capable of providing the solution, given that we know its existence. Not so trivial is that it would run in $O(|F|)$. We will show the version of the algorithm shown in \cite{schoning2013satisfiability}.
+Moser\cite{moser2013exact} proves that there exists an algorithm such that it gives an assignment satisfying the SAT formula, should it happen that the formula satisfies \ref{LLLS} conditions. This is no a big deal, as a backtrack would be also capable of providing the solution, given that we know its existence. Not so trivial is that it would run in $O(|F|)$. We will show the version of the algorithm shown in \cite{schoning2013satisfiability}.
 
 
 

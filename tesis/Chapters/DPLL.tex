@@ -65,7 +65,7 @@ We could see to main differences:
 
 \item We can see that, although we present an algorithm for SAT, it can be adapted to FSAT by keeping a log of the calls to DPLL, and returning this log when Satisfiability is ensured.
   
-\item It uses heuristics to select variables. It does not imply that they always are better chosen  (and there would be cases that run worse), but tend to be better. In practice, hard heuristics approaches give excellent results. {\color{red} citation needed }. The idea behind heuristics is trying to reduce as much as possible the number of branching steps. Many heuristics functions have been proposed. For the formulation of some of them we will define:
+\item It uses heuristics to select variables. It does not imply that they always are better chosen  (and there would be cases that run worse), but tend to be better. In practice, hard heuristics approaches give excellent results\cite{sinz2009problem}. The idea behind heuristics is trying to reduce as much as possible the number of branching steps. Many heuristics functions have been proposed. For the formulation of some of them we will define:
   \begin{equation}
     \begin{split}
       f_k(u) & = \text{number of occurrences of literal } u \text{ in clauses of size k}\\
@@ -87,7 +87,7 @@ On \cite{gomes2009exploiting} differences in behauvior between differences betwe
 
 \subsection{Clause Learning}
 \label{sub:clauselearning}
-Despite not being an algorithm, clause learning is a rather useful technique in order to improve any search based algorithm (as DPLL variations).  The technique works adding clauses to ensure that once reached a contradiction it would not be reached again, that is, providing new clauses to the $CNF$ formula that, without being satisfied, the formula could not be satisfied. When we add those clauses we avoid the repetitions that led to the contradiction, bounding some branches in a problem specific manner.  The content of this subsection is in \cite{tichy2006clause}. The information and definition on UIP is in \cite{zhang2001efficient} \\
+Despite not being an algorithm, clause learning is a rather useful technique in order to improve any search based algorithm (as DPLL variations).  The technique works adding clauses to ensure that once reached a contradiction it would not be reached again, that is, providing new clauses to the $CNF$ formula that, without being satisfied, the formula could not be satisfied. When we add those clauses we avoid the repetitions that led to the contradiction, bounding some branches in a problem specific manner.  The content of this subsection is from \cite{tichy2006clause}. The information and definition on UIP is from \cite{zhang2001efficient} \\
 
 In the context of Clause Learning we have to think about an algorithm that works by iteratively expanding a partial assignment as is done in DPLL.
 
@@ -103,11 +103,11 @@ In order to add clarity to the explanation we will introduce some definitions: C
   \end{itemize}
 \end{definition}
 
-It is clear that the third condition of the definition is the one that add meaning to it. Nonetheless the first two are important to bound the clauses that can be interesting. By adding conflict clauses more constraints are added to the formula, avoiding searching on assignments that will not satisfy the formula. The purpose of clause learning is to find conflict clauses. In order to do that we will make a implication graph and examine it when a conflict happens.\\
+It is clear that the third condition of the definition is the one that add meaning to it. Nonetheless the first two are important to bound the clauses that can be interesting. By adding conflict clauses more constraints are added to the formula, avoiding searching on assignments that will not satisfy the formula. The purpose of clause learning is to find conflict clauses. In order to do that we will built a implication graph and examine it when a conflict happens.\\
 
 A decision is made every time a variable is assigned and its not part of a unit clause or is a pure literal, i.e., each time we make a non-forced decision. These decisions anidate, and the decision level refer to the number of anidations done when the literal $u$ was assigned to the value $a$.\\
 
-The implication graph  is the directed graph that has as nodes a pair with a variable an a value assigned to that variable, and there is an edge from $(x,a_x)$ to $(y,a_y)$ if at some point, assign $x$ to $a_x$  make mandatory that $y$ is assigned to $a_y$.  The idea behind this graph is to has a log of the decisions taken to expand the current partial assignment. Formally:
+The implication graph  is the directed graph that has as nodes a pair with a variable an a value assigned to that variable, and there is an edge from $(x,a_x)$ to $(y,a_y)$ if at some point, assign $x$ to $a_x$  makes mandatory that $y$ is assigned to $a_y$.  The idea behind this graph is to has a log of the decisions taken to expand the current partial assignment. Formally:
 
 
 \begin{definition}
@@ -124,7 +124,7 @@ The implication graph  is the directed graph that has as nodes a pair with a var
   \item We define:
     $$F_i = F_i'\{x\to a : (x,a) \text{ is a node associated to a unit clause in } F_i' \}$$
   \end{itemize}
-  \item We repeat the process until either all variables are assigned or a conflict arise. The implication graph has a conflict if there is two nodes with the same variable and opposite value. The resulting graph will be $\mathcal{G}_{F,A}$
+  \item We repeat the process until either all variables are assigned or a conflict arise. The implication graph has a conflict if there are two nodes with the same variable and opposite value. The resulting graph will be $\mathcal{G}_{F,A}$
   \end{itemize}
   We say that $x$ was assigned at \emph{decision level} $i$ if $x\in Var(F_{i-1})$ and $x \not\in F_i$. 
  \end{definition} 
@@ -147,7 +147,7 @@ We make a list $A=\{1,1,1,0\}$ of values associated to each variable. We start b
   \caption{$\mathcal{G}_1$ before unit propagation}
 \end{figure}
 
-Then we define $F_1' = F_0\{x_1\to 1\} =F_0\{x_1\to 1\} = F\{x_1 \to 1\}= \{(\neg x_2), (\neg x_3 \vee \neg x_4), (x_4 \vee x_2 \vee\neg x_3)\}$. We have an unit clause, therefore, we add a node$(x_2, 0)$, as this clause where associated in $F$ with the clause $(\neg x_1 \vee \neg x_2)$ we add an edge $(x_1,1)\to (x_2,0)$. As there were only a unit clause, we can define $F_1 = \{(\neg x_3 \vee \neg x_4), (x_4 \vee \neg x_3)\}$.
+Then we define $F_1' = F_0\{x_1\to 1\} =F_0\{x_1\to 1\} = F\{x_1 \to 1\}= \{(\neg x_2), (\neg x_3 \vee \neg x_4), (x_4 \vee x_2 \vee\neg x_3)\}$. We have an unit clause, therefore, we add a node$(x_2, 0)$, as this clause where associated in $F$ with the clause $(\neg x_1 \vee \neg x_2)$ we add an edge $(x_1,1)\to (x_2,0)$. As there were only one unit clause, we can define $F_1 = \{(\neg x_3 \vee \neg x_4), (x_4 \vee \neg x_3)\}$.
 
 \begin{figure}[H]
   \centering
@@ -189,7 +189,7 @@ Once we have $F_1$ and $\mathcal{G}_i$ we continue the iteration. Therefore we c
   \end{tikzpicture}
   \caption{$\mathcal{G}_2$ after unit propagation}
 \end{figure} 
-We can see that a conflict has arise. Therefore we can not continue iterating throw the process and $\mathcal{G}_{F,A} = \mathcal{G}_2$. Note that have we wanted to assign the values in other order, only a renaming would have been necessary. 
+We can see that a conflict has arised. Therefore we can not continue iterating throw the process and $\mathcal{G}_{F,A} = \mathcal{G}_2$. Note that have we wanted to assign the values in other order, only a renaming would have been necessary. 
 \end{example} 
 As we already stated, the purpose of the implication graph is to show the root of the conflict. That is, we want to know what assignments led to the conflict. This could be made by making a set of nodes $N=\{(x_j,a_j: j\in 1,...,k)\}$ such that every path from a decision node to the conflict has to include one node of the set. This will be named a cut, not confuse with the graph theory concept.\\
 
@@ -210,7 +210,7 @@ So we only has to learn strategies in order to detect cuts on implication graphs
 \end{itemize}
 
 
-The first UIP tend to produce smaller clauses and experimental results \cite{tichy2006clause} \cite{zhang2001efficient} provide proves in favor of it. It is commonplace on DPLL-based solver. The GRASP[\ref{sub:grasp}] algorithm was one of the first conflict driven solver, that is, a sat solver that implement a DPLL procedure based mainly on Clause Learning. \\
+The first UIP tend to produce smaller clauses and experimental results \cite{tichy2006clause} \cite{zhang2001efficient} provide evidence in favor of it. It is commonplace on DPLL-based solver. The GRASP[\ref{sub:grasp}] algorithm was one of the first conflict driven solver, that is, a sat solver that implements a DPLL procedure based mainly on Clause Learning. \\
 
 We can incorporate clause learning to DPLL easily:
 \begin{algorithm}    
@@ -248,7 +248,7 @@ On the algorithm $D[0:m]$ represents the first $m$ decisions of $D$.
 
 \subsection{Monien-Speckenmeyer (MS) Algorithm}
 \label{alg:MS}
-This algorithm is a variation of the DPLL-Shortest Clause algorithm, specifying that once you choose the shortest clause, all variables you choose should be from that clause until you satisfy it, as it will continue to be the shortest given that there is no clause with repeated literals as well as no clause that is a tautology. This algorithm (DPLLSC) on $k$-SAT generates a recursion such that $T(n) = \sum_{i=1}^kT(n-i)$. Under the hypothesis that MS does not has a under-exponential worst case complexity, then $T(n) = a^n$ for some $a \in (1,\infty)$.  Then
+This algorithm is a variation of the DPLL-Shortest Clause algorithm, specifying that once you choose the shortest clause, all variables you choose should be from that clause until you satisfy it, as it will continue to be the shortest given that there is no clause with repeated literals as well as no clause that is a tautology. This algorithm (DPLLSC) on $k$-SAT generates a recursion such that $T(n) = \sum_{i=1}^kT(n-i)$. Under the hypothesis that MS does not has a under-exponential worst case complexity, then $T(n) = a^n$ for some $a \in (1,\infty)$.  Therefore,
 
 $$a^k = \sum_{i=1}^kT(i) = \frac{1-a^k}{1-a}$$
 
@@ -282,7 +282,7 @@ that solved in the equation $a^{k+1}+1 = 2a^k$. The difference between MS and DP
 \end{algorithm}
 
 
-Other version of the algorithm repeats the last for-loop  in the successive calls of $F$ (calling \texttt{MS}$(F\alpha_i)$). Nonetheless we consider that with a deterministic heuristic (that, for example, choose the first clause between the set of clauses with minimum size) the result is equivalent and this provide a simpler algorithm.\\
+Other version of the algorithm repeats the last for-loop  in the successive calls of $F$ (calling \texttt{MS}$(F\alpha_i)$). Nonetheless we consider that with a deterministic heuristic (that, for example, choose the first clause between the set of clauses with minimum size) the result is equivalent and this provides a simpler algorithm.\\
 
 For the $k$-SAT complexity analysis we have to consider whether or not an autark was found. If so, $T(n) \le T(n-1)$. Otherwise we are applying a non autark assignment that necessarily collide with a clause which size is at most $k-1$. Let us denote by $B(n)$ the number of recursive calls with n variables and under the hypothesis that there is a clause with at most $k-1$ variables. In this case $T(n) \le \sum_{i=1}^{k}B(n-i)$ and $B(n) \le \sum_{i=1}^{k-1}B(n-i)$. Both of these cases are worse than $T(n-1)$ so in order to study a worst case complexity we have to study the case when no autark is found. Under the hypothesis that $B(n) = a^n$ we get $a^k+1=2^{k-1}$. For $k=3$ we obtain $a=\frac{1 + \sqrt{5}}{2}$.
 
@@ -290,7 +290,7 @@ For the $k$-SAT complexity analysis we have to consider whether or not an autark
 
 \subsection{Deterministic Local Search}
 
-The local search procedure on sat context is the same as in other branches of computer science. The idea is that we start with an initial assignment $\alpha$ and search in the \emph{neighborhood} of $\alpha$ for a satisfying assignment, that is, those assignments that are close to $\alpha$ according to a distance $d$. 
+The local search procedure on SAT context is the same as in other branches of computer science. The idea is that we start with an initial assignment $\alpha$ and search in the \emph{neighborhood} of $\alpha$ for a satisfying assignment, that is, those assignments that are close to $\alpha$ according to a distance $d$. 
 
 \begin{definition}
   Let $\alpha$ and $\beta$ be assignments, we define the Hamming distance $d_\mathcal{H}$ as:
@@ -298,7 +298,7 @@ The local search procedure on sat context is the same as in other branches of co
   Note that in case that for every $y \in Var(\alpha) \backslash Var(\beta)$, we can  consider that $\alpha(y) = \upsilon$, and respectively with $\beta$.
 \end{definition}
 
-For every $\alpha$ we define its neighborhood as $D(\alpha,\delta) = \{\beta : d_\mathcal{H}(\alpha,\beta) \le \delta\}$. In order for this algorithm to work is necessary that $\delta > 0$ and is preferable that $\delta << |Var(\alpha) \cup Var(\beta)|$, in order to avoid doing a backtrack. The procedure determine whether or not there is a satisfying assignment for $F$ in $D(\alpha,\delta)$. The procedure take as input a CNF formula $F$, an assignment $\alpha$ and a positive integer $\delta$.
+For every $\alpha$ we define its neighborhood as $D(\alpha,\delta) = \{\beta : d_\mathcal{H}(\alpha,\beta) \le \delta\}$. In order for this algorithm to work is necessary that $\delta > 0$ and is preferable that $\delta << |Var(\alpha) \cup Var(\beta)|$, in order to avoid doing a backtrack. The procedure determines whether or not there is a satisfying assignment for $F$ in $D(\alpha,\delta)$. The procedure takes as input a CNF formula $F$, an assignment $\alpha$ and a positive integer $\delta$.
 
 \begin{algorithm}
   \caption{Local Search\cite{schoning2013satisfiability}}\label{ds}
@@ -339,7 +339,7 @@ For 3-SAT the running time is $O(m3^\delta)$ where $m$ is the number of clauses.
 There is a natural way to generalize the idea of exploring all the space of assignments by coordinates local searches, and that is the covering codes.
 
 \begin{definition}
-  Let $X$ be a set of variables and let $A = \{\alpha_i: 1 \le i \le n\}$ a set of two valued assignments over $X$, and $\delta$ be a positive integer. The pair $(A,\delta)$ is a \emph{covering code with Hamming radius} $\delta$ if for any  two-valued assignment  $\alpha$  over $X$, there exists $\alpha'\in A$ such that $d_\mathcal{H} (\alpha, \alpha') < \delta$.
+  Let $X$ be a set of variables and let $A = \{\alpha_i: 1 \le i \le n\}$ be a set of two valued assignments over $X$, and $\delta$ be a positive integer. The pair $(A,\delta)$ is a \emph{covering code with Hamming radius} $\delta$ if for any  two-valued assignment  $\alpha$  over $X$, there exists $\alpha'\in A$ such that $d_\mathcal{H} (\alpha, \alpha') < \delta$.
 \end{definition}
 
 
@@ -403,7 +403,7 @@ where 5. is a direct consequence of proposition[\ref{pro:shannon}].
 \end{proof}
 
 \begin{remark}
-  Every covering code $C = (\{\alpha_i : 1 \le i \l1 k\},\delta)$ of length $n$ can be \emph{truncated} to a covering code $C' = (\{\alpha_i' : 1 \le i \le k\},\delta)$ of length $m < n$  with $\alpha_i'$ defined as:
+  Every covering code $C = (\{\alpha_i : 1 \le i \le k\},\delta)$ of length $n$ can be \emph{truncated} to a covering code $C' = (\{\alpha_i' : 1 \le i \le k\},\delta)$ of length $m < n$  with $\alpha_i'$ defined as:
   $$
 \alpha_i'(x)=
 \begin{cases}
@@ -416,7 +416,7 @@ $$
 \end{remark}
 
 \begin{remark}
-  Every covering code  $C = (\{\alpha_i : 1 \le i \l1 k\},\delta n_0)$ of length $n$ can be \emph{extended} to a covering code $C' = (\{\alpha_{i_1,...,i_{m//n+1}}' : 1 \le i_j \le k \},\delta n)$ of length $m > n$  with $\alpha_i'$ defined as:
+  Every covering code  $C = (\{\alpha_i : 1 \le i \le k\},\delta n_0)$ of length $n$ can be \emph{extended} to a covering code $C' = (\{\alpha_{i_1,...,i_{m//n+1}}' : 1 \le i_j \le k \},\delta n)$ of length $m > n$  with $\alpha_i'$ defined as:
 
   $$
 \alpha_{i_1,...,i_{m//n+1}}'(x)=
