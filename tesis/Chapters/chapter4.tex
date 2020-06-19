@@ -444,7 +444,6 @@ Now that we are able to talk about efficiency is time to talk about an interesti
 
   \subsection{Tautologies Revisited}
 
-  TODO: include information about craig interpolants.
   \begin{proposition}
     Given a tautology $F \to G$, there exists a formula $I$ such that $Var(I) = Var(F)\cap Var(G)$ and both $F\to I$ and $I \to G$ are tautologies. A polynomial algorithm to solve this problem is not known. 
   \end{proposition}
@@ -463,13 +462,13 @@ Now that we are able to talk about efficiency is time to talk about an interesti
 
     For every assignment $\beta$ such that $Var(\beta) = Var(F)\cup Var(G)$ then if $\beta(F) = 1$ then $\beta(I) = 1$ so $F \to I$  is a tautology. Similarly it can not happen that $I\beta = 1 $ and $G\beta = 0$, because the second will imply that   $I\beta = 0$.\\
 
-    For the last part we will refer to the paper on the topic by: \red{TODO}
+    For the last part we will refer to \cite{schoning2007note}.
   \end{proof}
 
   
   \subsection{From non-constructive to constructive}
   \label{sub:fromnon}
-  In this subsection we explain how a constructive SAT-solver can be made from a non-constructive SAT-solver without changing its asymptotic time complexity, assuming true the exponential time hypothesis[\ref{hyp:exponential_time}]
+  In this subsection we explain how a constructive SAT-solver can be made from a non-constructive SAT-solver without changing its asymptotic time complexity, assuming true the exponential time hypothesis[\ref{hyp:exponential_time}]. 
 
   \begin{proposition}
     Let $\phi$ be an oracle that decides SAT in $O(\varphi(n+m))$ where $n$ is the number of variables and $m$ the number of clauses. Then we can make an algorithm  that computes FSAT on $O((n(\varphi(n+m))+m)$ 
@@ -506,5 +505,4 @@ Now that we are able to talk about efficiency is time to talk about an interesti
 Let's analyze the complexity of this algorithm. We make at most $n$ repetitions of the for loop, and on each repetition we call $\phi$ and assign a variable in a formula.Therefore the procedure runs in $O(n\varphi(n+m)+m)$
 \end{proof}
 
-Assuming ETH we assume that $\phi$ is exponential in time, an therefore asymptotic complexity $O(\varphi(n+m))$ is the same as $O(n(\varphi(n+m)+m))$, so, until $ETH$ is proved wrong we can consider SAT and FSAT as being equal in complexity. On this text we will only deal with non-constructive  solvers on the combinatorics section[\ref{sec:combu}].
-
+Assuming ETH we assume that $\phi$ is exponential in time, an therefore asymptotic complexity $O(\varphi(n+m))$ is the same as $O(n(\varphi(n+m)+m))$, so, until $ETH$ is proved wrong we can consider SAT and FSAT as being equal in complexity. On this text we will only deal with non-constructive  solvers on the combinatorics section[\ref{sec:combu}]. 

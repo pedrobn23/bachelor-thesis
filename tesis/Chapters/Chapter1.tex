@@ -399,16 +399,29 @@ These results are a direct consequence of De Morgan's laws.
 \end{proof}
 
 
-Therefore we can choose to solve TAUT instead of CoSAT.
+Therefore we can choose to solve TAUT instead of CoSAT. To end this subsection we introduce a generalization: QBF or quantified boolean formula. For that we have to defined a quantified formula.
 
 
-% TODO:
-% To end this section we will introduce one of the most complicated generalization. Stochastic SAT or SSAT. This variation was first introduced in \cite{papadimitriou1985games}. The information provided for this problem comes from \cite{majercik2009stochastic}.\\
+\begin{definition}
+  Let $F$ be a propositional logic formula, and let $x$ be a variable. We define to operator $\exists_x, \forall_x$ such that:
+  \begin{itemize}
+  \item $\forall_x F = F\{x \to 1\} \land F\{x \to 0\}$
+  \item $\exists_x F = F\{x \to 1\} \lor F\{x \to 0\}$
+  \end{itemize}
 
-% A SSAT problem is defined by:
-% \begin{itemize}
-% \item   A \emph{prefix} $Q_1 v_1 ... Q_nv_n$ that orders a set of $N$ variables 
-% \end{itemie}
+  We define a quantified boolean formula as a pair $(O,P)$ where $O=\{o_1,...,o_n\}$ is a finite sequence of operators and $P$ is a propositional logic formula. We say that $(O,P)$ is \emph{satisfiable} iff $(o_1\circ ...\circ o_n) (P)$ is satisfiable. The language of quantified boolean formulas is also defined inductively.
+  \begin{itemize}
+  \item Every propositional logic formula is a quantified boolean formula.
+  \item The concatenation of an operator and a quantified boolean formula is a quantified boolean formula.
+  \end{itemize}
+\end{definition}
+
+
+\begin{definition}
+  The Generalized Satisfiability Language of Quantified Boolean Logic (QBF) is the language over the alphabet of quantified boolean formulas that includes all quantified boolean formulas that are Satisfiable.
+\end{definition}
+
+
 
 
 

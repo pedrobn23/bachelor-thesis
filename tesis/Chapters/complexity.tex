@@ -208,7 +208,7 @@ This corollary let itself to a simple doubt: is that inclusion strict? This prob
 
 Another characterization of NP is by \emph{verfiers}. Given a language that might not be in P, it may be possible to decide the membership of an element to that language when a \emph{proof} is given. Formally:
 
-\begin{proposition}
+\begin{proposition}[Alternative definition of NP]
   A language $L\subset A^*$ is in NP if and only if there is an relationship $R\subset A^*\times A^*$  computable in polynomial time and a polynomial $p$ such that
   $$L = \{x \in A^*:\exists y \in A^* \text{ with } |y | \le p(|x|), R(x, y) = 1\}$$
 \end{proposition}
@@ -323,9 +323,10 @@ If $L_1 \le_{F} L_2$ we say that $L_1$ \emph{is reduced in $F$} to $L_2$.
   \item For every $L' \in N\Omega$, we have that $L' \le_F L$ and where $F \le time(\Omega)$.
   \end{itemize}
 \end{enumerate}
-
+If only the latter condition is satisfied, we say that $L$ is $\Omega$\emph{-Hard}.
 
 \end{definition}
+
 
 Now we must have some consideration: in general, what we are stating is difficult to define because of the notion of $TIME$, that is rather difficult to calculate for a arbitrary set of decision problems. Nonetheless, it is pretty clear that for $F\subset \mathbb{N}^\mathbb{N}$ we have that $time(TIME(F)) = F$. Therefore we have a great tool in order to define completeness for time complexity classes. The set of $P$ complete problem is the set of all problem that are reducible in polynomial time to a problem $P$ and are in $P$. For non-deterministic classes, in most cases, is not know what the least time required to compute/decide every problem encompassed. Therefore the most common approach is to define the completeness with the associated deterministic complexity, as we have done.\\
 
@@ -525,13 +526,14 @@ The first result regards P-Completeness.
 
 % Finding a parallelizable algorithm for HORNSAT would imply that $NC = P$. Nonetheless, it is widely believed that it is not possible. As being said, is still an open problem.\\
 
+
+
 To continue,  we  present a brief discussion about FNP-Completeness. The same way we work with decision problems, we could be talking about Function Problem. In particular:
 
-\begin{theorem} FSAT is FNP-complete.  
+
+\begin{theorem} FSAT is FNP-Complete.  
 \end{theorem}
-\begin{proof}
-  TODO:
-\end{proof}
+To briefly sketch the proof, it  follows the one of the Cook-Levin theorem, only that we have the considerations of a function problem and therefore we have to state different final conditions.\\
 
 The next problem we will discuss is QBF.
 
