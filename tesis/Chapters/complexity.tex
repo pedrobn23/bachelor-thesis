@@ -43,6 +43,9 @@ As a brief note before going on, we have not defined the empty word yet, as in p
   Note that on both cases the two exceptions can be given simultaneously. We say $C\vdash^* C'$ if there exists a finite sequence $\{C_i\}_{i\in 1,...,n}$ such that $C_1 = C$, $C_n=C'$ and $C_i\vdash C_{i+1}$ for every $i\in 1,...,n-1$.  
   \end{definition}
 
+  When it is beneficial we can consider a TM $M$ to have an output, that is, to explicitly say whether or not $M$ accepts a word.\\
+
+  
   We now describe the use of Turing Machine: solving problems. We consider that Turing Machines solve both decision and function problems. Lets start by explaining how a Turing Machine solves a decision problem.
 
   \begin{definition}
@@ -89,8 +92,16 @@ The definition [\ref{def:paso}] holds for non-deterministic Turing machines, wit
 
 
   
-\section{Reductions}
-A language $L1$ is Turing reducible to a language $L2$ iff there is an oracle Turing machine $M$ that accepts $L1$, where$M$is allowed to make membership queries of the form $x\in L_2$, which are correctly answered by an“oracle” for $L2$. Later, the more restricted notion of many-one reducibility ($\le_m$)was introduced and defined as follows.
+\subsection{Reductions}
+
+Once we now how to make a TM for one problem, we may ask ourselves: can we make a TM machine in order to solve more that one problem?. To answer this question we define the notion of reduction. Intuitively, a reduction is a process in which, instead of solving two problem $L_1$ and $L_2$, we choose to only solve $L_1$ and use its resolution in order to solve $L_2$. Formally:
+
+\begin{definition}
+If $L_1$ and $L_2$ are decision problems, then we say that $L_1$ is reduced to $L_2$ is there is an TM that always stops and computes a function $f$ such that for every input $w$ to $L_1$ , we have that $L_2$ produces the same answer for the input $f (w )$.  
+\end{definition}
+
+
+This notion also provides us with a partial order relationship. For function problem we can state the analogue definition. 
 
 
 \section{Complexity Classes}
@@ -116,7 +127,7 @@ There are different approaches as how to measure the complexity of given algorit
 
 \end{definition}
 
-This definition let us a great tool in order to define collections of problems, and to compare them. We introduce some classes.
+Sometimes we will also consider the TM $M$ that decides/computes the problem to be in $TIME(f)$ if the context is clear enough. This definition let us a great tool in order to define collections of problems, and to compare them. We introduce some classes.
 \begin{definition}
   Let $\Omega$ be a set of endofunctions of $\mathbb{N}$.
   \begin{enumerate}
@@ -171,8 +182,11 @@ As with the previous definitions this notation is additive. We can now prove a s
   \begin{enumerate}
   \item Every DTM is a NDTM if we consider the transition function as a relation.
   
-  \item For every $L\in NTIME$, let $M$ be its associated NDTM and let $d_0$ be the branching index of $M$. Any sequence of choice can be written as a number of length $f(n)$ in $d_0$-base. Iteratively execute all options possible, and accept if any of them accepts. Reject otherwise.
-  \item Let $L \in NSPACE(f)$ and $M$ be its associated NDTM. We use the Achievement Method. This method is based on building a network in which the nodes are the possible configurations of a Turing Machine, and the arcs connect configurations such that you can get from one to the other in one step of calculation. The maximum number of configuration is $$|Q||\Gamma|^{f(n)} (n + 1) = |Q||\Gamma|^{f(n)+\log(n + 1)} \in O (K^{f(n)+\log(n)}).$$
+  \item For every $L\in NTIME$, let $M$ be its associated NDTM and let $d_0$ be the branching index of $M$. Any sequence of choice can be written as a number of length $f(n)$ in $d_0$-base. Iteratively execute all options possible, and accept if any of them accepts. Reject otherwise. 
+
+    
+  \item Let $L \in NSPACE(f)$ and $M$ be its associated NDTM. We use the Achievement Method. This method is based on building a network in which the nodes are the possible configurations of a Turing Machine, and the arcs connect configurations such that you can get from one to the other in one step of calculation. The maximum number of configuration is
+    $$|Q||\Gamma|^{f(n)} (n + 1) = |Q||\Gamma|^{f(n)+\log(n + 1)} \in O (K^{f(n)+\log(n)}).$$
 Checking if a word is accepted is the same as checking if from a node in a network you can get to an acceptance node. This is checked in quadratic time against the number of nodes, thus obtaining the desired result. As this can be done in quadratic time, the result is proved.
   \end{enumerate}
 \end{proof}
@@ -238,8 +252,16 @@ This concept is not useful for Deterministic Complexity classes as we state in t
 Let $\Omega$ be a deterministic Complexity Class. We have that $\Omega = Co\Omega$.
 \end{proposition}
 \begin{proof}
-TODO:
+  For every $L\in \Omega$, we have a DTM $M$ that decides $L$ in a time $O(g(n))$. We can construct a DTM $M'$ that runs $M$ and change the value of the output. Therefore, we can decide $CoL$ in $O(g(n))$. \\
 \end{proof}
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{/home/pedro/Carrera/Quinto/TFG/tesis/figures/Turing.png}
+  \end{center}
+  \caption{Turing Machine showcased in the proof.}
+\end{figure}
+
 
 Nonetheless, this concept is really important for non-deterministic complexity classes, as the previous proposition is, in general, not known to be true. One of the most relevant open problems is whether or not CoNP = P. For us, CoNP is important also as is the class of TAUT.
 
@@ -255,6 +277,65 @@ As a historical note, one of the first references to this notion is the Gödel's
 
 \subsection{Definition}
 
+Once we have defined classes over the decision problems, and we have the concept of reduction, we want to used that in order to being able to solve whole classes only solving one of it problems.\\
+
+Prior to that we have to revisit reductions. We have defined reductions without take care of its complexity. Now we can fully define reductions
+
+\begin{definition}
+  Let $F,G$ be a set of endofunctions $F$ of $\mathbb{N}$:
+  \begin{enumerate}
+  \item  We say that a set of endofunctions $F$ of $\mathbb{N}$ is autocomposable if for every $f,g\in F$ there exists $h\in F$ such that $f\circ g \in O(h)$
+  \item We say that $F\le G$ if for every $f \in F, g \in G$ there exists $h\in G$ such that $g\circ f \in O(h)$. If $F$
+  \end{enumerate}
+\end{definition}
+
+
+We can see that the defined relationship over the set of autocomposable endofunctions is a preorder.
+\begin{proposition}
+P is autocomposable.
+\end{proposition}
+
+
+\begin{definition}
+  If $L_1$ and $L_2$ are decision problems , and let $F$ be an autocomposable set of endofunctions of $\mathbb{N}$.
+\begin{enumerate}
+\item We say that $L_1 \le_{F} L_2$ if there is an TM $M$ that always stops and computes a function $f$ such that for every input $w$ to $L_1$ , we have that $L_2$ produces the same answer for the input $f (w )$, there is an $g\in F$ such that $M \in FTIME(g)$, and there is another $g'\in F$ such that $|f(w)| \in O(g(|w|))$.
+  \item We say that $L_1 \le_{F\text{-}SPACE} L_2$ if there is an TM $M$ that always stops and computes a function $f$ such that for every input $w$ to $L_1$ , we have that $L_2$ produces the same answer for the input $f (w )$, there is an $g\in F$ such that $M \in FSPACE(g)$, and there is another $g'\in F$ such that $|f(w)| \in O(g(|w|))$.
+  \end{enumerate}
+If $L_1 \le_{F} L_2$ we say that $L_1$ \emph{is reduced in $F$} to $L_2$.
+\end{definition}
+
+
+
+ Prior to our last definition, we need to note a concept. For every complexity class $\Omega$ we can define $TIME(\Omega)$ as the set of endofunctions of $\mathbb{N}$ such that $time(\Omega) = \{f:\mathbb{N}^\mathbb{N} : f \text{ is the least time required to compute/decide } M, \forall M \in \Omega\}$.
+
+\begin{definition}
+  Let $\Omega$ be a deterministic complexity class.
+\begin{enumerate}
+\item  We say that a problem $L$ is $\Omega$\emph{-Complete} iff:
+  \begin{itemize}
+  \item $L \in\Omega$
+  \item For every $L' \in \Omega$, we have that $L' \le_F L$ and where $F \le time(\Omega)$.
+  \end{itemize}
+\item We say that a problem $L$ is $N\Omega$\emph{-Complete} iff:
+  \begin{itemize}
+  \item $L \in N\Omega$
+  \item For every $L' \in N\Omega$, we have that $L' \le_F L$ and where $F \le time(\Omega)$.
+  \end{itemize}
+\end{enumerate}
+
+
+\end{definition}
+
+Now we must have some consideration: in general, what we are stating is difficult to define because of the notion of $TIME$, that is rather difficult to calculate for a arbitrary set of decision problems. Nonetheless, it is pretty clear that for $F\subset \mathbb{N}^\mathbb{N}$ we have that $time(TIME(F)) = F$. Therefore we have a great tool in order to define completeness for time complexity classes. The set of $P$ complete problem is the set of all problem that are reducible in polynomial time to a problem $P$ and are in $P$. For non-deterministic classes, in most cases, is not know what the least time required to compute/decide every problem encompassed. Therefore the most common approach is to define the completeness with the associated deterministic complexity, as we have done.\\
+
+Now we can define both $P-Completeness$ and $NP-Completeness$ effortlessly, and continue our study. This notion are really important because of its application. If one NP-Complete problem can be solve in Polynomial time, then P=NP. We have, nonetheless, a problem: How do we prove a problem to be NP-Complete? We have two ways:
+\begin{enumerate}
+\item To prove that every problem is reducible.
+\item To reduce another NP-Complete problem in $P$.
+\end{enumerate}
+
+We can see that the latter option is preferable, as involve less work. This option require that one problem, at least, have been proven to be NP-Complete first, arguably with the first method. The next subsection deal with this matter, and reintroduce SAT as the main point of the text. 
 
 
 \subsection{Cook-Levin Theorem}
@@ -454,7 +535,7 @@ To continue,  we  present a brief discussion about FNP-Completeness. The same wa
 
 The next problem we will discuss is QBF.
 
-\begin{theorem}[\cite{franco2009history}] QBF is PSPACE-Complete.
+\begin{theorem}[\cite{franco2009history},theorem 4.11 \cite{arora2009computational}] QBF is PSPACE-Complete.
 \end{theorem}
 
 This in an important result as show the implicit difficult of automatically checking theorems in first order Logic. Nonetheless, it is worthy of considering, as the subsequent results of being able to solve this problem efficiently enough will make mathematicians life a lot easier, as theorem resolution will be a topic of well defined axioms and computer reasoning. This idea, was the one showcased in Gödel's Letter. \\
