@@ -269,83 +269,72 @@ Nonetheless, this concept is really important for non-deterministic complexity c
 
 \section{Completeness}
 
-In this subsection we introduce the notion of completeness. This area was developed in late 1960s and early 1970s parallel by researchers on US and USSR, at during the cold war. The first point in the develop of this theory and most important result from the point of view of this text is the Cook-Levin theorem [\ref{ref:cooklevin}], which highlights the theoretical relevance of SAT. The notion of completeness was introduced to the western world first by Cook \cite{cook1971complexity} although the term was coined later. \\
+In this subsection we introduce the notion of completeness. This area was developed in late 1960s and early 1970s parallel by researchers on the US and the USSR, at during the Cold War. The first point in the development  of this theory and the most important result from the point of view of this text is the Cook-Levin theorem [\ref{ref:cooklevin}], which highlights the theoretical relevance of SAT. The notion of completeness was introduced to the Western World first by Cook \cite{cook1971complexity} although the term was coined later. \\
 
-As a historical note, one of the first references to this notion is the Gödel's Letter\cite{hartmanis1993godel}, that he wrote to Von Neumann relating with the possibility of polynomially (in particular in linear or quadratic time) solving QBF (a generalization of SAT). He was asking, without knowing it, whether an NP-Complete problem could be solvable within polynomial time, and stating some of the consequence of this.\\
+As a historical note, one of the first references to this notion is the Gödel's Letter\cite{hartmanis1993godel}, that he wrote to Von Neumann relating with the possibility of polynomially (in particular in linear or quadratic time) solving QBF (a generalization of SAT). He was asking, without knowing it, whether an NP-Complete problem could be solvable within polynomial time, and stating some of the consequences of this.\\
 
 
 
 \subsection{Definition}
 
-Once we have defined classes over the decision problems, and we have the concept of reduction, we want to used that in order to being able to solve whole classes only solving one of it problems.\\
+Once we have defined classes over the decision problems, and we have the concept of reduction, we want to use that in order to be able to solve whole classes only solving one of it problems.\\
 
-Prior to that we have to revisit reductions. We have defined reductions without take care of its complexity. Now we can fully define reductions
+Prior to that we have to revisit reductions. We have defined reductions without taking care of its complexity. Now we can fully define reductions
+
+% \begin{definition}
+%   Let $F,G$ be sets of endofunctions of $\mathbb{N}$:
+%   \begin{enumerate}
+%   \item  We say that a set of endofunctions $F$ of $\mathbb{N}$ is autocomposable if for every $f,g\in F$ there exists $h\in F$ such that $f\circ g \in O(h)$
+%   \item We say that $F\le G$ if for every $f \in F, g \in G$ there exists $h\in G$ such that $g\circ f \in O(h)$. If $F$
+%   \end{enumerate}
+% \end{definition}
+
+
+% We can see that the defined relationship over the set of autocomposable endofunctions is a preorder.
+% \begin{proposition}
+% P is autocomposable.
+% \end{proposition}
+
 
 \begin{definition}
-  Let $F,G$ be a set of endofunctions $F$ of $\mathbb{N}$:
-  \begin{enumerate}
-  \item  We say that a set of endofunctions $F$ of $\mathbb{N}$ is autocomposable if for every $f,g\in F$ there exists $h\in F$ such that $f\circ g \in O(h)$
-  \item We say that $F\le G$ if for every $f \in F, g \in G$ there exists $h\in G$ such that $g\circ f \in O(h)$. If $F$
-  \end{enumerate}
+  If $L_1$ and $L_2$ are decision problems.
+\begin{enumerate}
+\item We say that $L_1 \le_P L_2$ if there is an TM $M$ that always stops and computes a function $f$ such that for every $w \in L_1$ , we have that $f(w) \in L_2$, there is an $g\in P$ such that $M \in FTIME(g)$, and there is another $g'\in P$ such that $|f(w)| \in O(g(|w|))$.
+\end{enumerate}
+If $L_1 \le_{P} L_2$ we say that $L_1$ \emph{is reduced} to $L_2$.
 \end{definition}
 
 
-We can see that the defined relationship over the set of autocomposable endofunctions is a preorder.
-\begin{proposition}
-P is autocomposable.
-\end{proposition}
 
 
 \begin{definition}
-  If $L_1$ and $L_2$ are decision problems , and let $F$ be an autocomposable set of endofunctions of $\mathbb{N}$.
-\begin{enumerate}
-\item We say that $L_1 \le_{F} L_2$ if there is an TM $M$ that always stops and computes a function $f$ such that for every input $w$ to $L_1$ , we have that $L_2$ produces the same answer for the input $f (w )$, there is an $g\in F$ such that $M \in FTIME(g)$, and there is another $g'\in F$ such that $|f(w)| \in O(g(|w|))$.
-  \item We say that $L_1 \le_{F\text{-}SPACE} L_2$ if there is an TM $M$ that always stops and computes a function $f$ such that for every input $w$ to $L_1$ , we have that $L_2$ produces the same answer for the input $f (w )$, there is an $g\in F$ such that $M \in FSPACE(g)$, and there is another $g'\in F$ such that $|f(w)| \in O(g(|w|))$.
-  \end{enumerate}
-If $L_1 \le_{F} L_2$ we say that $L_1$ \emph{is reduced in $F$} to $L_2$.
-\end{definition}
-
-
-
- Prior to our last definition, we need to note a concept. For every complexity class $\Omega$ we can define $TIME(\Omega)$ as the set of endofunctions of $\mathbb{N}$ such that $time(\Omega) = \{f\in\mathbb{N}^\mathbb{N} : f \text{ is the least time required to compute/decide } M, \forall M \in \Omega\}$.
-
-\begin{definition}
-  Let $\Omega$ be a deterministic complexity class.
-\begin{enumerate}
-\item  We say that a problem $L$ is $\Omega$\emph{-Complete} iff:
+  Let $\Omega$ be a deterministic complexity class.  We say that a problem $L$ is $\Omega$\emph{-Complete} iff:
   \begin{itemize}
   \item $L \in\Omega$
-  \item For every $L' \in \Omega$, we have that $L' \le_F L$ and where $F \le time(\Omega)$.
+  \item For every $L' \in \Omega$, we have that $L' \le_P L$.
   \end{itemize}
-\item We say that a problem $L$ is $N\Omega$\emph{-Complete} iff:
-  \begin{itemize}
-  \item $L \in N\Omega$
-  \item For every $L' \in N\Omega$, we have that $L' \le_F L$ and where $F \le time(\Omega)$.
-  \end{itemize}
-\end{enumerate}
+
 If only the latter condition is satisfied, we say that $L$ is $\Omega$\emph{-Hard}.
 
 \end{definition}
 
 
-Now we must have some consideration: in general, what we are stating is difficult to define because of the notion of $TIME$, that is rather difficult to calculate for a arbitrary set of decision problems. Nonetheless, it is pretty clear that for $F\subset \mathbb{N}^\mathbb{N}$ we have that $time(TIME(F)) = F$. Therefore we have a great tool in order to define completeness for time complexity classes. The set of $P$ complete problem is the set of all problem that are reducible in polynomial time to a problem $P$ and are in $P$. For non-deterministic classes, in most cases, is not know what the least time required to compute/decide every problem encompassed. Therefore the most common approach is to define the completeness with the associated deterministic complexity, as we have done.\\
-
-Now we can define both $P-Completeness$ and $NP-Completeness$ effortlessly, and continue our study. This notion are really important because of its application. If one NP-Complete problem can be solve in Polynomial time, then P=NP. We have, nonetheless, a problem: How do we prove a problem to be NP-Complete? We have two ways:
+The set of P-Complete problems is the set of all problems that are reducible in polynomial time to a problem P and are in $P$. Now that we have defined both P-Completeness and NP-Completeness, we can continue our study. If one NP-Complete problem can be solve in Polynomial time, then P=NP. We have, nonetheless, a problem: How do we prove a problem to be NP-Complete? We have two ways:
 \begin{enumerate}
 \item To prove that every problem is reducible.
 \item To reduce another NP-Complete problem in $P$.
 \end{enumerate}
 
-We can see that the latter option is preferable, as involve less work. This option require that one problem, at least, have been proven to be NP-Complete first, arguably with the first method. The next subsection deal with this matter, and reintroduce SAT as the main point of the text. 
+We can see that the latter option is preferable, as it involve less work. This option requires that one problem, at least, has been proven to be NP-Complete first, arguably with the first method. The next subsection deals with this matter, and reintroduces SAT as the main point of the text. 
 
 
 \subsection{Cook-Levin Theorem}
-At this point we introduce the main theorem of this section. The theorem was first on \cite{cook1971complexity}, although some ideas were first spoken about by Leonid Levin on 1969, the formal explanation of the result was first written by Stephen Cook. Due to our lack of knowledge of the Russian language we did not research Levin's original result, although we would like to point out that he did this research on the advice of the famous mathematician Kolmogorov. Also, later in his life, Levin emigrated to the US and was able to share his knowledge with the Western block\cite{cvlevincook}.\\
+At this point we introduce the main theorem of this section. The theorem was first sated on \cite{cook1971complexity}, although some ideas were first spoken about by Leonid Levin on 1969, the formal explanation of the result was first written by Stephen Cook. Due to our lack of knowledge of the Russian language we did not research Levin's original result, although we would like to point out that he did this research on the advice of the famous mathematician Kolmogorov. Also, later in his life, Levin emigrated to the US and was able to share his knowledge with the Western block\cite{cvlevincook}.\\
 
 
 
 
-The theorem proves that SAT is NP-Complete, and was at the time the first completeness result provided. To this day virtually all proofs of problems to be NP-Complete are done by using either this result of the provided idea of it. For this theorem Cook received on 1982 the Turing Award, the highest honor conceded in the area of Computer Science. Without further ado with introduce the theorem, along with a brief lemma.\\
+The theorem proves that SAT is NP-Complete, and was at the time the first completeness result provided. To this day virtually all proofs of problems to be NP-Complete are done by using either this result or using its ideas. For this theorem Cook received on 1982 the Turing Award, the highest honor conceded in the area of Computer Science. Without further ado with introduce the theorem, along with a brief lemma.\\
 
  Cook original result we can see that the modern standard statement of the theorem is an adaptation of the original statement done in theorem 1\\ \cite{cook1971complexity}. Instead of proving the result with the today-standard 3CNF satisfiability he proved the CoNP-Completeness result for TAUT, proving SAT NP-Completeness in the way. The proof showcased in this paper is the one followed to this dated by most text, with only a few adaptations. 
 
