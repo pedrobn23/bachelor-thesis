@@ -1,10 +1,11 @@
-from pysat.solvers import Glucose3
 """
 A simple Python Module, demonstrating the essential
 facts and functionalities of graphs.
 
 Improved from: https://www.python-course.eu/graphs_python.php
 """
+
+from pysat.solvers import Glucose3
 
 
 class Graph(dict):
@@ -98,29 +99,29 @@ class Graph(dict):
 
     def find_hamiltonian_path(self):
         """
-        should it exists, find a Hamiltonian on 
+        should it exists, find a Hamiltonian on
         current graph. Otherwise return empty list.
         """
         if not self.edges():
             return []
 
-        length = len(self.vertex)
+        length = len(self.vertices())
         solver = Glucose3()
         names = {}
 
-        for vertex, integer in enumerate(self.vertices):
-            names[integer] = name
+        for vertex, integer in enumerate(self.vertices()):
+            names[integer] = vertex
 
         # Every position in the path must be occupied
         for position_in_path in range(1, length + 2):
-            solver.add([
+            solver.add_clause([
                 position_in_path * length + vertex
                 for vertex in range(1, length + 1)
             ])
 
         # Every vertex must have a position in path
         for vertex in range(1, length + 1):
-            solver.add([
+            solver.add_clause([
                 position_in_path * length + vertex
                 for position_in_path in range(1, length + 2)
             ])
@@ -129,12 +130,12 @@ class Graph(dict):
         for position_in_path in range(1, length + 2):
             for vertex_a in range(1, length + 1):
                 for vertex_b in range(vertex_a, length + 1):
-                    solver.add([
+                    solver.add_clause([
                         -(position_in_path * length + vertex_a),
                         -(position_in_path * length + vertex_b)
                     ])
             for vertex_a in range(2, length + 1):
-                solver.add([
+                solver.add_clause([
                     -(position_in_path * length + vertex_a),
                     -(position_in_path * length + length + 1)
                 ])
@@ -142,9 +143,9 @@ class Graph(dict):
         # Every two consecutive vertex has to be adjacent
         for vertex_a in range(1, length + 1):
             for vertex_b in range(vertex_a, length + 2):
-                if (names[vertex_a], names[vertex_b]) not in self.edges:
+                if (names[vertex_a], names[vertex_b]) not in self.edges():
                     for position_in_path in range(1, length + 1):
-                        solver.add([
+                        solver.add_clause([
                             -(position_in_path * length + vertex_a),
                             -((position_in_path + 1) * length + vertex_b)
                         ])
