@@ -112,7 +112,7 @@ class Graph(dict):
             names[integer] = name
 
         # Every position in the path must be occupied
-        for position_in_path in range(1,length + 2):
+        for position_in_path in range(1, length + 2):
             solver.add([
                 position_in_path * length + vertex
                 for vertex in range(1, length + 1)
@@ -125,32 +125,26 @@ class Graph(dict):
                 for position_in_path in range(1, length + 2)
             ])
 
-        
         # Only one vertex must have a position in path
         for position_in_path in range(1, length + 2):
-            for vertex_a in range(1, length+1):
-                for vertex_b in range(vertex_a, length+1):
+            for vertex_a in range(1, length + 1):
+                for vertex_b in range(vertex_a, length + 1):
                     solver.add([
                         -(position_in_path * length + vertex_a),
                         -(position_in_path * length + vertex_b)
                     ])
+            for vertex_a in range(2, length + 1):
+                solver.add([
+                    -(position_in_path * length + vertex_a),
+                    -(position_in_path * length + length + 1)
+                ])
 
-            for vertex_a in range(2,length+1):
-                    solver.add([
-                        -(position_in_path * length + vertex_a),
-                        -(position_in_path * length + length+1)
-                    ])
-                
-                
         # Every two consecutive vertex has to be adjacent
-        for vertex_a in range(1, length+1):
-            for vertex_b in range(vertex_a, length+2):
-                if (names[vertex_a],names[vertex_b]) not in self.edges:
-                    for position_in_path in range(1, length +1):
+        for vertex_a in range(1, length + 1):
+            for vertex_b in range(vertex_a, length + 2):
+                if (names[vertex_a], names[vertex_b]) not in self.edges:
+                    for position_in_path in range(1, length + 1):
                         solver.add([
                             -(position_in_path * length + vertex_a),
-                            -((position_in_path + 1)* length + vertex_b)
+                            -((position_in_path + 1) * length + vertex_b)
                         ])
-            
-        
-        
