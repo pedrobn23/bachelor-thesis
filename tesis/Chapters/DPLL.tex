@@ -87,7 +87,7 @@ On \cite{gomes2009exploiting} differences in behauvior between differences betwe
 
 \subsection{Clause Learning}
 \label{sub:clauselearning}
-Despite not being an algorithm, clause learning is a rather useful technique in order to improve any search based algorithm (as DPLL variations).  The technique works adding clauses to ensure that once reached a contradiction it would not be reached again, that is, providing new clauses to the $CNF$ formula that, without being satisfied, the formula could not be satisfied. When we add those clauses we avoid the repetitions that led to the contradiction, bounding some branches in a problem specific manner.  The content of this subsection is from \cite{tichy2006clause}. The information and definition on UIP is from \cite{zhang2001efficient} \\
+Despite not being an algorithm, clause learning is a rather useful technique in order to improve any search based algorithm (as DPLL variations).  The technique works adding clauses to ensure that once reached a contradiction it would not be reached again, that is, providing new clauses to the $CNF$ formula that, without being satisfied, the formula could not be satisfied. When we add those clauses we avoid the repetitions that led to the contradiction, bounding some branches in a problem specific manner. The technique that we introduce is the so called Conflict Driven Clause Learning(CDCL), as we focus on learning clauses after conflict arise. The content of this subsection is from \cite{tichy2006clause}. The information and definition on UIP is from \cite{zhang2001efficient} \\
 
 In the context of Clause Learning we have to think about an algorithm that works by iteratively expanding a partial assignment as is done in DPLL.
 
@@ -461,7 +461,7 @@ In fact what made this algorithm relevant is that its performs different from DP
 
 
   
-\subsection{GRASP - Todavía sin rehacer }
+\subsection{GRASP }
 \label{sub:grasp}
 We present now one of the most cited algorithms.  GRASP(Generic seaRch Algorithm for the Satisfiability Problem) was introduced by Marques-Silva and Sakallah\cite{marques1999grasp} that works on CNF formulas. It is based on clause learning techniques, and unit propagation. It divides the search process in four parts:
 
@@ -473,7 +473,9 @@ We present now one of the most cited algorithms.  GRASP(Generic seaRch Algorithm
 \end{enumerate}
 
 
-The method \texttt{Erase} is needed as the assignment is considered a global variable. The way that the algorithm work is that each time, either a new conflict clause is added to the formula, and therefore we \texttt{Erase} our last assignment to explore other options, or we find an assignment that satisfy the formula.
+The method \texttt{Erase} is needed as the assignment is considered a global variable. The way that the algorithm work is that each time, either a new conflict clause is added to the formula, and therefore we \texttt{Erase} our last assignment to explore other options, or we find an assignment that satisfy the formula.\\
+
+GRASP is important as it popularized the Clause Learning, and introduced non-chronological backtrack as a standard.
 
 % \begin{algorithm}
 %   \caption{GRASP}\label{bt}

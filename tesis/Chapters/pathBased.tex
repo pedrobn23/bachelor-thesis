@@ -4,21 +4,53 @@
 \label{chap:3}
 
 
+\chapter{Development}
+\section{Development Environment}
 
-\chapter{Development Enviroment}
+In this chapter we briefly introduce the development environment used to program reductions.\\
 
-In this chapter we briefly introduce the development 
+We use the programming language \texttt{Python} for three main reasons:
 
+\begin{itemize}
+\item \texttt{Python} is interpreted. Furthermore, it is compatible with major platforms and systems. This allow us to develop a program that is accessible to virtually everyone without the need of compiling the program multi-platform. 
+
+\item \texttt{Python} is considered to have one of the most accessible learning curves. Therefore, is excellent to introduce to reductions programming to those who are mostly interested in the theoretical part.
+
+\item \texttt{Python}  and all necessary software dependencies is  free software\cite{stallman2002free}. I believe that, whenever possible, public-funded research should be accessible to everyone interested. This implies reducing the barriers to access to knowledge to a minimum.  Furthermore, it must not encourage the economic gain of a third party private entity that is not even aware of the existence of the project by making it compulsory to use it for the full exploitation of the project carried out.
+\end{itemize}
+
+
+
+All test cases are done in an ARCH-BASED OS. In particular:
+
+  {\begin{center}
+      \texttt{Linux 4.19.122-1-MANJARO  2020 x86\_64\ GNU/Linux}\\
+    \end{center} }
+
+  With 4 physical (8 virtual) processor \texttt{Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz}. 
+
+  
 \section{PySAT}
+PySAT\cite{imms-sat18} is a library developed for python SAT solving. It has been primarily develop by Alexey Ignatiev, Antonio Morgado, Joao Marques-Silva since 2018. Among their feature we can highlight:
 
-\section{A competition winning solver: MAPLE-CM}
+\begin{itemize}
+\item Solvers:  PySAT include some solvers of great diffusion. Namely
+  \begin{itemize}
+  \item CaDiCaL: A CDCL based, developed by Armin Biere et al. Armin Biere is one of the leading voices in SAT Solving. Is one of editors of Handbook of Satisfiability. CaDiCaL won the SAT Race 2019.
+  \item Maplesat: 
+  \item Minisat
+  \end{itemize}
+
+  
+\item Cardinality Encodings:
+
+\end{itemize}
 
 
+\section{Path based Problems}
 
-\chapter{Path based Problems}
 
-
- In order to demonstrate the utility a series of reductions will be developed. This will imply a formal approach to the resolution of the problems, as well as deploying a little theoretical background to some problems when needed. Also we would like to show that this techniches provide sometimes really simple approximations to the problems.\\
+ In order to demonstrate the utility a series of reductions will be developed. This will imply a formal approach to the resolution of the problems, as well as deploying a little theoretical background to some problems when needed. Also we would like to show that this technique provide sometimes really simple approximations to the problems.\\
 
 \section{Hamiltonian Cycle}
 \subsection{Resolution}
@@ -43,7 +75,7 @@ Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. To reduce it to a SA
 \item Two consecutive vertex have to be adjacent: $\neg x_{i,j} \vee \neg x_{i+1,k}\ \forall (k,j) \not \in E$.
 \end{enumerate}
 
-Let now solve that this is a correct reduction, i.e., that an assignment that can satisfy these clauses exists if, and only if, the graph $G$ has a Hamiltonian graph. If such an assignment exists we can make a Hamiltonian cycle with the variables sasigned to 1. On the other hand if such cycle exists an assignment that assign to 1 the variable $x_{i,j}$ given that the vertex $v_i$ is in position $j$ in the path would satisfy all the clauses. 
+Let now solve that this is a correct reduction, i.e., that an assignment that can satisfy these clauses exists if, and only if, the graph $G$ has a Hamiltonian graph. If such an assignment exists we can make a Hamiltonian cycle with the variables assigned to 1. On the other hand if such cycle exists an assignment that assign to 1 the variable $x_{i,j}$ given that the vertex $v_i$ is in position $j$ in the path would satisfy all the clauses. 
 
 \subsection{Implementation}
 
