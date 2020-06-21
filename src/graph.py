@@ -5,7 +5,7 @@ facts and functionalities of graphs.
 Improved from: https://www.python-course.eu/graphs_python.php
 """
 
-from pysat.solvers import Glucose4
+from pysat.solvers import Solver
 
 
 class Graph(dict):
@@ -34,7 +34,7 @@ class Graph(dict):
                     raise ValueError('Destinies should be a node.')
 
         super().__init__(graph_dict)
-
+        
     def vertices(self):
         """ returns the vertices of a graph """
         return list(self.keys())
@@ -58,9 +58,11 @@ class Graph(dict):
             self[vertex] = set()
 
     def add_edge(self, ori, des):
-        """ assumes that edge is of type set, tuple or list;
-            between two vertices can be multiple edges! TBD: SOLVE THIS
+        """ 
+        Add a new edge to the graph. If the 
+        requires that nodes are of type str.
         """
+
         if not isinstance(ori, str) or not isinstance(des, str):
             raise ValueError('Nodes should be identified with str')
 
@@ -70,6 +72,22 @@ class Graph(dict):
 
         self[ori].add(des)
         self[des].add(ori)
+
+    def add_from_text(self, filename):
+        """
+        A method that read a graph from text.
+
+        Format done as in http://wwwinfo.deis.unical.it/npdatalog/-
+        experiments/hamiltoniancycle.htm
+        """
+        with open(filename) as file_:
+            for line in  file_:
+                if 'node' == line[0:4]:
+                    self.add_vertex(line[5:-3])
+                else:
+                    formated_line = line[5:-3]
+                    ori, des = formated_line.split(',')
+                    self.add_edge(ori, des)
 
     def iterate_edges(self):
         """ A static method generating the edges of the
@@ -102,13 +120,13 @@ class Graph(dict):
         should it exists, find a Hamiltonian on
         current graph. Otherwise return empty list.
         """
+
         if not self.edges():
             return []
 
         length = len(self.vertices())
-        solver = Glucose4()
+        solver = Solver(name='cd')
         names = {}
-        inverse_names = {}
 
         for integer, vertex in enumerate(self.vertices()):
             names[integer + 1] = vertex
@@ -164,6 +182,7 @@ class Graph(dict):
                         ])
 
         solution = []
+        solver.solve()
 
         if solver.solve():
             for variable in solver.get_model():
@@ -171,3 +190,7 @@ class Graph(dict):
                     solution.append(names[variable % length])
 
         return solution
+
+graph = Graph()
+graph.add_from_text('graphs/structured-type1-900nodes.txt')
+graph.find_hamiltonian_path()

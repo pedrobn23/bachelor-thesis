@@ -39,6 +39,9 @@ class GraphTestCase(TestCase):
         self.graph.add_edge('x', 'y')
         self.assertTrue(('x', 'y') in self.graph.edges())
 
+    def test_add_from_text(self):
+        
+        
     def test_hamiltonian_path(self):
         self.assertTrue(self.graph2.find_hamiltonian_path(
         ) in [["a", "b", "c", "a"], ["a", "c", "b", "a"], ["b", "c", "a", "b"],
