@@ -97,8 +97,15 @@ class Graph(dict):
 
         return res
 
-    def hamilton_solver(self):
-                length = len(self.vertices())
+    def find_hamiltonian_path(self):
+        """
+        should it exists, find a Hamiltonian on
+        current graph. Otherwise return empty list.
+        """
+        if not self.edges():
+            return []
+
+        length = len(self.vertices())
         solver = Glucose4()
         names = {}
         inverse_names={}
@@ -156,17 +163,6 @@ class Graph(dict):
                             -(position_in_path * length + vertex_a),
                             -((position_in_path + 1) * length + vertex_b)
                         ])
-
-
-
-    
-    def find_hamiltonian_path(self):
-        """
-        should it exists, find a Hamiltonian on
-        current graph. Otherwise return empty list.
-        """
-        if not self.edges():
-            return []
 
 
         solution = []
