@@ -20,28 +20,6 @@ def find_hamiltonian_path(graph):
         names[integer + 1] = vertex
     names[0] = names[length]
 
-    print(' -> Codifying: Adjacency Matrix')
-    # Every two consecutive vertex has to be adjacent
-    edges = graph.edges()
-    for vertex_a in range(1, length + 1):
-        for vertex_b in range(vertex_a+1, length + 1):
-            if (names[vertex_a], names[vertex_b]) not in edges:
-                print(names[vertex_a], names[vertex_b])
-                for position_in_path in range(length-1):
-                    solver.add_clause([
-                        -(position_in_path * length + vertex_a),
-                        -((position_in_path + 1) * length + vertex_b)
-                    ])
-                    solver.add_clause([
-                        -(position_in_path * length + vertex_b),
-                        -((position_in_path + 1) * length + vertex_a)
-                    ])
-
-                solver.add_clause([-vertex_b,-(length*(length-1) + vertex_a)  ])
-                solver.add_clause([-vertex_a,-(length*(length-1) + vertex_b)  ])
-
-
-
     print(' -> Codifying: All Positions occupied')
     # Every position in the path must be occupied
     for position_in_path in range(length):
@@ -66,6 +44,28 @@ def find_hamiltonian_path(graph):
         cnf = CardEnc.equals(lits=var_list, encoding=EncType.pairwise)
         solver.append_formula(cnf)
 
+    print(' -> Codifying: Adjacency Matrix')
+    # Every two consecutive vertex has to be adjacent
+    edges = graph.edges()
+    for vertex_a in range(1, length + 1):
+        for vertex_b in range(vertex_a+1, length + 1):
+            if (names[vertex_a], names[vertex_b]) not in edges:
+                print(names[vertex_a], names[vertex_b])
+                for position_in_path in range(length-1):
+                    solver.add_clause([
+                        -(position_in_path * length + vertex_a),
+                        -((position_in_path + 1) * length + vertex_b)
+                    ])
+                    solver.add_clause([
+                        -(position_in_path * length + vertex_b),
+                        -((position_in_path + 1) * length + vertex_a)
+                    ])
+
+                solver.add_clause([-vertex_b,-(length*(length-1) + vertex_a)  ])
+                solver.add_clause([-vertex_a,-(length*(length-1) + vertex_b)  ])
+
+
+        
 
     print('Running SAT Solver...')
     solution = []
