@@ -326,7 +326,7 @@ On chapter[\ref{chap:2}] we analyze the main SAT-solver developed in the literat
 
 \section{Variations}
 
-The SAT decision problem quite a lot of variations, all of them of interest for certain complexity classes. We will list some of the most important, starting with two decision problems. The first of them is a natural generalization.
+The SAT decision problem does has quite a lot of variations, all of them of interest for certain complexity classes. We will list some of the most important, starting with two decision problems. The first of them is a natural generalization.
 
 \begin{definition}
   The Generalized Satisfiability Language of Propositional Logic (GSAT) is the language over the alphabet of propositional logic that includes all formulas that are Satisfiable.
@@ -340,13 +340,14 @@ With Tseitin's Theorem[\ref{the:Tseitin}] we can see that these two problems are
   Let $F$ be a formula. $F$ is said to be $k$-CNF formula (equivalently a formula in $k$-CNF) if it is in CNF and $\forall C \in F, |C| = k$. $k$-SAT is the language of the formulas that are both satisfiable and in $k$-CNF.
 \end{definition}
 
-Other variations of SAT could be achieved by generalizing the concept of decision problem.
+
+Some authors define $k$-CNF relaxing the condition from $|C| = k$ to $|C| \le k$. Nonetheless, for the purpose of this text we prefer this more restricted version, because all the results that we introduce remain true in both versions.  Other variations of SAT could be achieved by generalizing the concept of decision problem.
 
 \begin{definition}[Function Problem]
-  Let $A,B$ be two sets. Given a relation $R\subset A\times B$, it has an associated function problem that consists on, given a word $a\in X$ find a word $b\in B$ such that $(a,b)\in R$.
+  Let $A,B$ be two languages defined over two alphabets. Given a relation $R\subset A\times B$, it has an associated function problem that consists on, given a word $a\in X$ find a word $b\in B$ such that $(a,b)\in R$.
 \end{definition}
 
-We can consider decisions problems as a particular subset of function problems: Given a language $L\subset A^*$ we define the relationship $R\subset A^*\times \{0,1\}$ such that $(x,1)\in R$ iff $x\in L$ and $(x,0)\in R$ otherwise.history of the cook theorem   
+We can consider decisions problems as a particular subset of function problems: Given a language $L\subset A^*$ we define the relationship $R\subset A^*\times \{0,1\}$ such that $(x,1)\in R$ iff $x\in L$ and $(x,0)\in R$ otherwise.
 
 \begin{definition}
   Let $CNF$ be the set of propositional formulas in CNF and $B$ the set of assignments.  The Satisfiability Function Problem of Propositional Logic (FSAT) is the function problem defined by the relation $$R=\{(F, b): F\in CNF, b \in B, Fb = 1\}.$$
@@ -356,25 +357,25 @@ That is, is the problem of finding an assignment that satisfy a formula. Most of
   Let $CNF$ be the set of propositional formulas in CNF and $B$ the set of assignments. The Maximum Satisfiability Problem (MAXSAT) is the problem. function problem defined by the relation $$R=\{(F,n) : F\in CNF, n = \max_{\alpha \in B}\{ | \{C\in F : C\alpha =1 \}| \}\}.$$
 \end{definition}
 
-That is, is the problem of finding the maximum number of assignments that can be satisfied simultaneously.\\
+That is, is the problem of maximizing the number of assignments that can be satisfied simultaneously.\\
 
 As we will see, most SAT-solvers are FSAT-solvers. In related literature the FSAT-solver are called constructive SAT-solvers, as they provide a constructive solution of the problem. Solvers that only solve SAT are called non-constructive SAT-solvers. After presenting the concept of algorithmic complexity we will see that from a non constructive SAT-solver, a constructive SAT-solver can be made so that the latter is not much less efficient[\ref{sub:fromnon}].\\
 
-All the variations presented to this point were problem that generalizes SAT. We introduce one restricted version of SAT.
+All the variations presented to this point were problems that generalizes SAT. We introduce one restricted version of SAT.
 
 \begin{definition}
-  Let $F$ be a formula in CNF. $F$ is said to be a Horn formula if for every $C \in F$ there is at most one non-negated literal. HORN is the language of all horn formulas.
+  Let $F$ be a formula in CNF. $F$ is said to be a Horn formula if for every $C \in F$ there is at most one non-negated literal. HORN is the language of all Horn formulas.
 \end{definition}
 
 \begin{definition}
-  HORNSAT is the intersection language of HORN and SAT problems. Nonetheless, given the easiness of checking whether a formula is in HORN, it would usually consider as the problem that check the satisfiability of a horn formula.
+  HORNSAT is the intersection language of HORN and SAT problems. Nonetheless, given the easiness of checking whether a formula is in HORN, it would usually consider as the problem that check the satisfiability of a Horn formula.
 \end{definition}
 
 We study this problem further  in Subsection \ref{sub:Horn}.\\
 
 
 
-As we have defined the complement decision problem [\ref{def:complement}] we can use that in order to effortless define CoSAT. The idea of this problem resides in finding whether a CNF-formula is unsatisfiable. This problem is usually called UNSAT, as it looks for Unsatisfiability. 
+As we have defined the complement of a decision problem [\ref{def:complement}] we can use that in order to effortless define CoSAT. The idea of this problem resides in finding whether a CNF-formula is unsatisfiable. This problem is usually called UNSAT, as it looks for Unsatisfiability. 
 
 \begin{definition}
   A formula $F$ is said to be in Disjunctive Normal Form ($DNF$) if $F$ is written as:x
@@ -387,10 +388,10 @@ As done with CNF formulas, we can regard a DNF formula as a set of disjunctions
 \begin{definition}[TAUT] The Tautology Language of Propositional Logic (TAUT) is the language over the alphabet of propositional logic that includes all formulas that are both tautologies and in DNF. 
 \end{definition}
 
-This problem is often regard as the complement problem of SAT, instead of UNSAT, due to the following property:
+This problem is often regarded as the complement problem of SAT, instead of UNSAT, due to the following property:
 
 \begin{proposition}
-  For every CNF Formula $F=\{C_1,...,C_n\}$ where $C_i = (l_{1}\lor ... \lor l_{n_i})$, there is a DNF formula $F' = \{C_1',...,C_n'\}$ where $C_i' = (\neg l_1 \land ...\land l_{i_n})$ such that:
+  For every CNF Formula $F=\{C_1,...,C_n\}$ where $C_i = (l_{1}\lor ... \lor l_{n_i})$, there is a DNF formula $F' = \{C_1',...,C_n'\}$ where $C_i' = (\neg l_1 \land ...\land \neg l_{i_n})$ such that:
 
   $$F \iff \neg F$$
 \end{proposition}
@@ -430,10 +431,10 @@ Therefore we can choose to solve TAUT instead of CoSAT. To end this subsection w
 
 \section{SAT certificates}
 
-As SAT solvers become vital in some areas, such as circuit verification, protocols for ensuring the outcome of a SAT-solver are usually needed. When this is required, the so-called SAT certificates will be recalled. These certificates are methods of ensuring the correctness of performance. In this subsection we will present a simple but effective method of performing this task. The information of this subsection appear on chapter 2\cite{schoning2013satisfiability}, chapter 7\cite{marek2009introduction} and section 3.6.6\cite{darwiche2009complete}.\\
+As SAT solvers become vital in some areas, such as circuit verification, protocols for ensuring the outcome of a SAT-solver are usually needed. When this is required, the so-called SAT certificates will be recalled. These certificates are methods of ensuring the correctness of performance. In this subsection we will present a simple but effective method of performing this task. The information of this subsection appears on Chapter 2\cite{schoning2013satisfiability}, Chapter 7\cite{marek2009introduction} and Section 3.6.6\cite{darwiche2009complete}.\\
 
 
-Let $F$ be a CNF formula. If F is satisfied certifying this property is as easy as printing an assignment that satisfies it, i.e., solving FSAT. The problem arises when we want to prove that F is not satisfiable, i.e., when we want to solve the UNSAT and give a proof of it correctness. For that we are going to use the resolution rule, after which we are going to make a proof system, and proof that is refutation complete. Therefore we could provide a proof of unsatisfiability.
+Let $F$ be a CNF formula. If F is satisfied certifying this property is as easy as printing an assignment that satisfies it, i.e., solving FSAT. The problem arises when we want to prove that F is not satisfiable, i.e., when we want to solve the UNSAT and give a proof of its correctness. For that we are going to use the resolution rule, after which we are going to make a proof system, and proof that is refutation complete. Therefore we could provide a proof of unsatisfiability.
 
 \begin{definition}[\cite{marek2009introduction}]
   Let $C_1,C_2$ be clauses and $l$ be a literal. The resolution rule is an execution of the following partial binary operation:
@@ -481,7 +482,7 @@ As $Res(C_1,C_2)$ can be executed therefore we have two clauses $D_1,D_2$ such t
 Let $F$ be a CNF. Then $F$ is satisfiable if and only if $\{\} \not\in Res(F)$
 \end{theorem}
 \begin{proof}\hfill
-  \begin{itemize}\item[\fbox{$\Rightarrow$}] Direct consequence of [\ref{pro:sound}].
+  \begin{itemize}\item[\fbox{$\Rightarrow$}] Direct consequence of proposition[\ref{pro:sound}].
   \item[\fbox{$\Leftarrow$}] We proceed by induction on $n = Var(F)$ and show the contraposition:
     \begin{itemize}
     \item[$n=1$] In this case either $F$ is satisfiable or $F = \{\{x\},\{\neg x\}\}$.  When $F = \{\{x\},\{\neg x\}\}$, we can derive $\{\}$ by a resolution proof
