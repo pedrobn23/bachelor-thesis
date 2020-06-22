@@ -11,6 +11,7 @@ def find_hamiltonian_path(graph):
     if not graph.edges():
         return []
 
+    print('Codifying SAT Solver...')
     length = len(graph.vertices())
     solver = Solver(name='cd')
     names = {}
@@ -19,37 +20,13 @@ def find_hamiltonian_path(graph):
         names[integer + 1] = vertex
     names[0] = names[length]
 
-    # Every position in the path must be occupied
-    for position_in_path in range(length):
-        var_list = [
-            position_in_path * length + vertex
-            for vertex in range(1, length + 1)
-        ] 
-
-        cnf = CardEnc.equals(lits=var_list, encoding=EncType.pairwise)
-        print(cnf.clauses)
-        solver.append_formula(cnf)
-    print()
-
-    # Every vertex must have a position in path
-    for vertex in range(1, length + 1):
-        var_list = [
-            position_in_path * length + vertex
-            for position_in_path in range(length)
-        ]
-        
-        cnf = CardEnc.equals(lits=var_list, encoding=EncType.pairwise)
-        solver.append_formula(cnf)
-        print(cnf.clauses)
-
-    print()
+    print(' -> Codifying: Adjacency Matrix')
     # Every two consecutive vertex has to be adjacent
     edges = graph.edges()
     for vertex_a in range(1, length + 1):
         for vertex_b in range(vertex_a+1, length + 1):
-            print(vertex_a, vertex_b)
             if (names[vertex_a], names[vertex_b]) not in edges:
-                print('not consecutive')
+                print(names[vertex_a], names[vertex_b])
                 for position_in_path in range(length-1):
                     solver.add_clause([
                         -(position_in_path * length + vertex_a),
@@ -65,6 +42,32 @@ def find_hamiltonian_path(graph):
 
 
 
+    print(' -> Codifying: All Positions occupied')
+    # Every position in the path must be occupied
+    for position_in_path in range(length):
+        var_list = [
+            position_in_path * length + vertex
+            for vertex in range(1, length + 1)
+        ] 
+
+        cnf = CardEnc.equals(lits=var_list, encoding=0)
+        print(cnf.clauses)
+        solver.append_formula(cnf)
+
+
+    print(' -> Codifying: All vertex visited')
+    # Every vertex must have a position in path
+    for vertex in range(1, length + 1):
+        var_list = [
+            position_in_path * length + vertex
+            for position_in_path in range(length)
+        ]
+        
+        cnf = CardEnc.equals(lits=var_list, encoding=EncType.pairwise)
+        solver.append_formula(cnf)
+
+
+    print('Running SAT Solver...')
     solution = []
     if solver.solve():
         for variable in solver.get_model():
@@ -75,8 +78,7 @@ def find_hamiltonian_path(graph):
 
 
 
-
-g2 = {"a": {"b","c"}, "b": {"c","a"}, "c": {"b","a"}}
+g2 = {"a":{'b','c'},'b':{'a','c'}, 'c':{'a','b'}}
 graph = Graph(g2)
-# graph.add_from_text('graphs/structured-type1-100nodes.txt')
-print(find_hamiltonian_path2(graph))
+#graph.add_from_text('graphs/structured-type1-400nodes.txt')
+print(find_hamiltonian_path(graph))
