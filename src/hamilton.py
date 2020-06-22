@@ -3,8 +3,7 @@ from pysat.solvers import Solver
 from pysat.card import CardEnc, EncType
 
 
-
-def find_hamiltonian_path2(graph):
+def find_hamiltonian_path(graph):
     """
     should it exists, find a Hamiltonian on
     current graph. Otherwise return empty list.
