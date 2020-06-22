@@ -37,45 +37,55 @@ PySAT\cite{imms-sat18} is a library developed for python SAT solving. It has bee
 \item Solvers:  PySAT include some solvers of great diffusion. Namely
   \begin{itemize}
   \item CaDiCaL: A CDCL based, developed by Armin Biere et al. Armin Biere is one of the leading voices in SAT Solving. Is one of editors of Handbook of Satisfiability. CaDiCaL won the SAT Race 2019.
-  \item Maplesat: 
-  \item Minisat
+  \item MapleSAT: Another variations of DPLL. It used an specific heuristic: the learning rate branching heuristic (LRB), which is inspired in the ones that are used for in Machine Learning as in Decision Trees. MapleSAT is develop by the University of Waterloo, and is the winner of SAT competition 2018.
+  \item Minisat: is ''a minimalistic, open-source SAT solver, developed to help researchers and developers alike to get started on SAT.'' Is one of the main references in SAT solving. This year SAT competitions included a MiniSAT Hack Track, that aim to display the best improvements possible to the classical MiniSAT with only minor changes (<10 lines).
   \end{itemize}
 
+  We will use generally the solver CaDiCal, in order to get the best for our money.
   
-\item Cardinality Encodings:
+\item Cardinality Encodings: PySAT includes a series of cardinality encodings. This will take an important in the development. In particular, we highlight the pairwise encoding. This is the implementation of the formula explained in the lemma[\ref{lemma:cooklevin}]. For the rest of the problems we do not care so much, because the techniques that use extra variables might collide, as it overlap with variables that we might already have defined for other purpose.
 
 \end{itemize}
 
 
-\section{Path based Problems}
+\section{Path based Problems - Hamiltonian Cycle}
 
 
  In order to demonstrate the utility a series of reductions will be developed. This will imply a formal approach to the resolution of the problems, as well as deploying a little theoretical background to some problems when needed. Also we would like to show that this technique provide sometimes really simple approximations to the problems.\\
 
-\section{Hamiltonian Cycle}
+
 \subsection{Resolution}
 
-The problem of, given a graph, find a Hamiltonian Cycle is well know to be NP-Complete. Then by Cook Theorem it is known that a reduction from the problem of the Hamiltonian Cycle to SAT exists. This theorem is constructive, so it effectively does give a reduction. Nonetheless, this reduction is unmanageable and in order to use SAT-solvers to improve Hamiltonian cycle resolution it would be necessary to improve it. On this subsection an alternative reduction will be proven.
+The problem of, given a graph, whether it exists  a Hamiltonian Cycle is well know to be NP-Complete. Then by Cook Theorem it is known that a reduction from the problem of the Hamiltonian Cycle to SAT exists. This theorem is constructive, so it effectively does gives a reduction. Nonetheless, this reduction is unmanageable and in order to use SAT-solvers to improve Hamiltonian cycle resolution it would be necessary to provide easier programming techniques. On this subsection an alternative reduction will be shown.
 
 \begin{definition}
-  A Hamiltonian cycle is a cycle that visit every node in a graph. The associated problem is to check, given a graph, whether whether cycle exists.
+  A Hamiltonian cycle is a cycle that visits every node in a graph. The associated problem is to check, given a graph, whether whether cycle exists.
 \end{definition}
 
 We will consider the problem of the Hamiltonian cycle of undirected graphs. Therefore an edge would have two sources instead of a source and a target as it is regarded on directed graphs.\\
 
-This problem is a very good example to represent what mean to use a SAT-solver to solve a hard problem. The presented reduction is done as shown in \cite{49593}, with a minor error solved. It move the complexity of the problem from how to solve it to how to implement a SAT-solver. Therefore it only left a worry about what do I need to satisfy in order to solve this problem In order to make the reduction we will represent with Boolean clauses the conditions:\\
+This problem is a very good example to represent what means to use a SAT-solver to solve a hard problem. The presented reduction is done as shown in \cite{49593}, with a minor error solved.\\
 
-Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. To reduce it to a SAT problem, we will first define the variables $\{x_{i,j}: i\in 1,...,n ; j\in 1,...,n+1 \}$. If the variable $x_{i,j}$ is assign to true it would mean that the vertex $v_i$ is in position $j$ in the path. We would like to find a assignment of these variables that satisfy the following clauses:
 
+It moves the complexity of the problem from how to solve it to how to implement a SAT-solver. Therefore it only left a worry about what do I need to satisfy in order to solve this problem.\\
+
+
+
+In order to make the reduction we will represent with Boolean clauses the conditions:\\
+
+Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. To reduce it to a SAT problem, we will first define the variables $\{x_{i,j}: i\in 1,...,n ; j\in 1,...,n \}$. If the variable $x_{i,j}$ is assigned to true it would mean that the vertex $v_i$ is in position $j$ in the path. We would like to find a assignment of these variables that satisfy the following clauses:
+
+
+TODO: Check minor errors.
 \begin{enumerate}
 \item Each vertex must appear at least once in the path, for every vertex $v_i$:
   $ x_{i,1} \vee ... \vee x_{i,n +1},\ i \in 1,...,n$.
 \item Each vertex must not appear twice in the path, unless it is the first and last node: $\neg x_{i,j} \vee \neg x_{i,k},\ i \in 1,...,n ,\ j \in 2,...,m+1, k \in 1,...,m$.
-\item Every position in the path must be occupied:   $ x_{1,i} \vee ... \vee \x_{n,i},\ i \in 1,...,m+1$.
-\item Two consecutive vertex have to be adjacent: $\neg x_{i,j} \vee \neg x_{i+1,k}\ \forall (k,j) \not \in E$.
+\item Every position in the path must be occupied:   $ x_{1,i} \vee ... \vee x_{n,i},\ i \in 1,...,m+1$.
+\item Two consecutive vertices have to be adjacent: $\neg x_{i,j} \vee \neg x_{i+1,k}\ \forall (k,j) \not \in E$.
 \end{enumerate}
 
-Let now solve that this is a correct reduction, i.e., that an assignment that can satisfy these clauses exists if, and only if, the graph $G$ has a Hamiltonian graph. If such an assignment exists we can make a Hamiltonian cycle with the variables assigned to 1. On the other hand if such cycle exists an assignment that assign to 1 the variable $x_{i,j}$ given that the vertex $v_i$ is in position $j$ in the path would satisfy all the clauses. 
+Let now prove that this is a correct reduction, i.e., that an assignment that can satisfy these clauses exists if, and only if, the graph $G$ has a Hamiltonian graph. If such an assignment exists we can make a Hamiltonian cycle with the variables assigned to 1. On the other hand if such cycle exists an assignment that assign to 1 the variable $x_{i,j}$ given that the vertex $v_i$ is in position $j$ in the path would satisfy all the clauses. 
 
 \subsection{Implementation}
 

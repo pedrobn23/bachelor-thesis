@@ -1,3 +1,4 @@
+
 \chapter{Complexity Classes and Relevance of the Problem}
 \section{Model of Computation}
 
@@ -338,7 +339,7 @@ The theorem proves that SAT is NP-Complete, and was at the time the first comple
 
  Cook original result we can see that the modern standard statement of the theorem is an adaptation of the original statement done in theorem 1\\ \cite{cook1971complexity}. Instead of proving the result with the today-standard 3CNF satisfiability he proved the CoNP-Completeness result for TAUT, proving SAT NP-Completeness in the way. The proof showcased in this paper is the one followed to this dated by most text, with only a few adaptations. 
 
-\begin{lemma}
+\begin{lemma}\label{lemma:cooklevin}
   For a set $A = \{a_1,...,a_n\}$ of Propositional Logic variables, we can define a set of clauses $\mathcal{C}(A)$ such that, for an assignment $alpha$ we have   $\mathcal{C}(A)\alpha = 1$ iff $\alpha$ maps to 1 one and only one of the variables in $A$.
 \end{lemma}
 \begin{proof}
