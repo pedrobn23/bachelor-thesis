@@ -63,8 +63,6 @@ def find_hamiltonian_path(graph):
 
                 solver.add_clause([-vertex_b,-(length*(length-1) + vertex_a)  ])
                 solver.add_clause([-vertex_a,-(length*(length-1) + vertex_b)  ])
-
-
         
 
     print('Running SAT Solver...')
