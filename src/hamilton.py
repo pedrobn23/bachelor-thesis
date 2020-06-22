@@ -7,7 +7,7 @@ def find_hamiltonian_path(graph):
     should it exists, find a Hamiltonian on
     current graph. Otherwise return empty list.
     """
-
+    print('Codifying SAT problem...')
     if not graph.edges():
         return []
 
@@ -69,6 +69,7 @@ def find_hamiltonian_path(graph):
                         -((position_in_path + 1) * length + vertex_b)
                     ])
 
+    print('Solving SAT problem...')
     solution = []
     solver.solve()
     if solver.solve():
@@ -84,7 +85,6 @@ def find_hamiltonian_path2(graph):
     should it exists, find a Hamiltonian on
     current graph. Otherwise return empty list.
     """
-
     if not graph.edges():
         return []
 
@@ -97,6 +97,7 @@ def find_hamiltonian_path2(graph):
     names[0] = names[length]
 
     cnf = CardEnc.equals(lits=[1, 2, 3], encoding=EncType.pairwise)
+    print(cnf)
     # Every position in the path must be occupied
     for position_in_path in range(1, length + 2):
         solver.add_clause([
@@ -158,4 +159,4 @@ def find_hamiltonian_path2(graph):
 
 graph = Graph()
 graph.add_from_text('graphs/structured-type1-100nodes.txt')
-print(find_hamiltonian_path(graph))
+print(find_hamiltonian_path2(graph))
