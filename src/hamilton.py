@@ -19,10 +19,10 @@ def find_hamiltonian_path(graph, check_cycle=False):
     solver = Solver(name='cd')
     names = {}
     vpool = IDPool()
-    
+
     for integer, vertex in enumerate(graph.vertices()):
         names[integer + 1] = vertex
-    names[0] = names[length]  
+    names[0] = names[length]
 
     print(' -> Codifying: All Positions occupied')
     for position_in_path in range(length):
@@ -58,7 +58,7 @@ def find_hamiltonian_path(graph, check_cycle=False):
                         -(position_in_path * length + vertex_b),
                         -((position_in_path + 1) * length + vertex_a)
                     ])
-                    
+
                 if check_cycle:
                     solver.add_clause(
                         [-vertex_b, -(length * (length - 1) + vertex_a)])
@@ -75,7 +75,6 @@ def find_hamiltonian_path(graph, check_cycle=False):
     return solution
 
 
-
 def check_correctness(graph, path):
     for i, e in enumerate(path):
         if path[(i + 1) % len(path)] not in graph[e]:
@@ -87,22 +86,20 @@ def check_correctness(graph, path):
 def backtrack_hamilton(graph, start_v):
     size = len(graph)
     # if None we are -unvisiting- comming back and pop v
-    to_visit = [ None, start_v]
+    to_visit = [None, start_v]
     path = []
     visited = set([])
-    while(to_visit):
+    while (to_visit):
         v = to_visit.pop()
-        if v : 
+        if v:
             path.append(v)
             if len(path) == size:
                 break
 
             visited.add(v)
-            for x in graph[v]-visited:
-                to_visit.append(None) # out
-                to_visit.append(x) # in
-        else: # if None we are comming back and pop v
+            for x in graph[v] - visited:
+                to_visit.append(None)  # out
+                to_visit.append(x)  # in
+        else:  # if None we are comming back and pop v
             visited.remove(path.pop())
     return path
-
-

@@ -23,7 +23,7 @@ def vertex_cover(graph, k=1, verbose=True):
 
     vpool = IDPool()
     vertices_ids = [vpool.id(vertex) for vertex in graph.vertices()]
-    
+
     if verbose:
         print(' -> Codifying: Every vertex must be accessible')
 
@@ -32,13 +32,10 @@ def vertex_cover(graph, k=1, verbose=True):
             [vpool.id(vertex)] +
             [vpool.id(adjacent_vertex) for adjacent_vertex in graph[vertex]])
 
-
     if verbose:
-        print(' -> Codifying: At most', k ,'vertices should be selected')
+        print(' -> Codifying: At most', k, 'vertices should be selected')
 
-    cnf = CardEnc.atmost(lits=vertices_ids,
-                         bound=k,
-                         vpool=vpool)
+    cnf = CardEnc.atmost(lits=vertices_ids, bound=k, vpool=vpool)
 
     solver.append_formula(cnf)
 
@@ -49,7 +46,7 @@ def vertex_cover(graph, k=1, verbose=True):
 
 def minimun_cover(graph):
     old = len(graph)
-    new = len(graph)//2
+    new = len(graph) // 2
 
     while old != new:
         if vertex_cover(graph, new, False):
@@ -61,7 +58,7 @@ def minimun_cover(graph):
 
     return new
 
+
 g2 = {"a": {"b", "c"}, "b": {"a"}, "c": {"a"}}
 graph = Graph(g2)
-print(vertex_cover(graph,2))
-
+print(vertex_cover(graph, 2))

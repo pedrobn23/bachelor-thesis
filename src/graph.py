@@ -89,7 +89,6 @@ class Graph(dict):
                     ori, des = formated_line.split(',')
                     self.add_edge(ori, des)
 
-
     def iterate_edges(self):
         """ A static method generating the edges of the
             graph "graph". Edges are represented as sets
