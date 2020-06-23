@@ -6,7 +6,6 @@ Improved from: https://www.python-course.eu/graphs_python.php
 """
 
 
-
 class Graph(dict):
     """
     Class that implements a directed graph. Inherited from
@@ -33,7 +32,7 @@ class Graph(dict):
                     raise ValueError('Destinies should be a node.')
 
         super().__init__(graph_dict)
-        
+
     def vertices(self):
         """ returns the vertices of a graph """
         return list(self.keys())
@@ -80,13 +79,16 @@ class Graph(dict):
         experiments/hamiltoniancycle.htm
         """
         with open(filename) as file_:
-            for line in  file_:
+            for line in file_:
                 if 'node' == line[0:4]:
                     self.add_vertex(line[5:-3])
+                elif 'start' == line[0:5]:
+                    pass
                 else:
                     formated_line = line[5:-3]
                     ori, des = formated_line.split(',')
                     self.add_edge(ori, des)
+
 
     def iterate_edges(self):
         """ A static method generating the edges of the
@@ -113,4 +115,3 @@ class Graph(dict):
             index += 1
 
         return res
-

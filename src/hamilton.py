@@ -27,14 +27,13 @@ def find_hamiltonian_path(graph):
     print(' -> Codifying: All Positions occupied')
     # Every position in the path must be occupied
     for position_in_path in range(length):
-        var_list = [                
+        var_list = [
             vpool.id('v{}pos{}'.format(vertex, position_in_path))
             for vertex in range(1, length + 1)
-        ] 
+        ]
 
         cnf = CardEnc.equals(lits=var_list, encoding=0)
         solver.append_formula(cnf)
-
 
     print(' -> Codifying: All vertex visited')
     # Every vertex must have a position in path
@@ -43,7 +42,7 @@ def find_hamiltonian_path(graph):
             vpool.id('v{}pos{}'.format(vertex, position_in_path))
             for position_in_path in range(length)
         ]
-        
+
         cnf = CardEnc.equals(lits=var_list, encoding=EncType.pairwise)
         solver.append_formula(cnf)
 
@@ -51,9 +50,9 @@ def find_hamiltonian_path(graph):
     # Every two consecutive vertex has to be adjacent
     edges = graph.edges()
     for vertex_a in range(1, length + 1):
-        for vertex_b in range(vertex_a+1, length + 1):
+        for vertex_b in range(vertex_a + 1, length + 1):
             if (names[vertex_a], names[vertex_b]) not in edges:
-                for position_in_path in range(length-1):
+                for position_in_path in range(length - 1):
                     solver.add_clause([
                         -(position_in_path * length + vertex_a),
                         -((position_in_path + 1) * length + vertex_b)
@@ -63,9 +62,10 @@ def find_hamiltonian_path(graph):
                         -((position_in_path + 1) * length + vertex_a)
                     ])
 
-                solver.add_clause([-vertex_b,-(length*(length-1) + vertex_a)  ])
-                solver.add_clause([-vertex_a,-(length*(length-1) + vertex_b)  ])
-        
+                solver.add_clause(
+                    [-vertex_b, -(length * (length - 1) + vertex_a)])
+                solver.add_clause(
+                    [-vertex_a, -(length * (length - 1) + vertex_b)])
 
     print('Running SAT Solver...')
     solution = []
@@ -76,20 +76,11 @@ def find_hamiltonian_path(graph):
 
     return solution
 
+
 def check_correctness(graph, path):
-    for i,e in enumerate(path):
-        if path[(i+1)%len(path)] not in graph[e]:
+    for i, e in enumerate(path):
+        if path[(i + 1) % len(path)] not in graph[e]:
+            print('not cool', path[(i + 1) % len(path)], e)
             return False
     return True
 
-
-
-
-graph = Graph()
-graph.add_from_text('graphs/structured-type1-100nodes.txt')
-
-start_time =  time.time()
-path = find_hamiltonian_path(graph)
-print('Solving last: ',(time.time() - start_time), 'segs.')
-
-print('Checking correctness:', check_correctness(graph, path))
