@@ -6,7 +6,7 @@ from pysat.card import CardEnc, EncType
 from pysat.formula import IDPool, CNF
 
 
-def find_hamiltonian_path(graph):
+def find_hamiltonian_path(graph, check_cycle=False):
     """
     should it exists, find a Hamiltonian on
     current graph. Otherwise return empty list.
