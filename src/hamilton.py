@@ -1,7 +1,7 @@
 from graph import Graph
 from pysat.solvers import Solver
 from pysat.card import CardEnc, EncType
-
+from pysat.formula import CNF
 
 def find_hamiltonian_path(graph):
     """
@@ -20,6 +20,7 @@ def find_hamiltonian_path(graph):
         names[integer + 1] = vertex
     names[0] = names[length]
 
+    cnf = CNF()
     print(' -> Codifying: All Positions occupied')
     # Every position in the path must be occupied
     for position_in_path in range(length):
@@ -29,7 +30,6 @@ def find_hamiltonian_path(graph):
         ] 
 
         cnf = CardEnc.equals(lits=var_list, encoding=0)
-        print(cnf.clauses)
         solver.append_formula(cnf)
 
 
@@ -50,7 +50,6 @@ def find_hamiltonian_path(graph):
     for vertex_a in range(1, length + 1):
         for vertex_b in range(vertex_a+1, length + 1):
             if (names[vertex_a], names[vertex_b]) not in edges:
-                print(names[vertex_a], names[vertex_b])
                 for position_in_path in range(length-1):
                     solver.add_clause([
                         -(position_in_path * length + vertex_a),
@@ -76,7 +75,7 @@ def find_hamiltonian_path(graph):
 
 
 
-g2 = {"a":{'b','c'},'b':{'a','c'}, 'c':{'a','b'}}
-graph = Graph(g2)
-#graph.add_from_text('graphs/structured-type1-400nodes.txt')
+
+graph = Graph()
+graph.add_from_text('graphs/structured-type1-100nodes.txt')
 print(find_hamiltonian_path(graph))
