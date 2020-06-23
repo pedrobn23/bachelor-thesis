@@ -1,40 +1,55 @@
 import random
 import time
+import hamilton 
 from graph import Graph
-from hamilton import find_hamiltonian_path, check_correctness
+
 
 def random_graph(n_vertices, n_edges):
     graph = Graph()
-
     for i in range(n_vertices):
         graph.add_vertex(str(i))
 
     for i in range(n_edges):
-        ori = randint(0, n_vertices)
-        des = randint(0, n_vertices)
-        graph.add_edge(ori, des)
+        ori = random.randint(0, n_vertices-1)
+        des = random.randint(0, n_vertices-1)
+        graph.add_edge(str(ori), str(des))
 
     return graph
+
         
 
 def experiment(graph):
-        start_time =  time.time()
-        path = find_hamiltonian_path(graph)
-        print('Solving last: ',(time.time() - start_time), 'segs.')
-        print('Checking correctness:', check_correctness(graph, path))
+    print('Graph info:')
+    print(' - vertices:', len(graph.vertices()))
+    print(' - edges:', len(graph.edges()))
+    print()
+    
+    start_time =  time.time()
+    print('SAT solving - ' )
+    path = hamilton.find_hamiltonian_path(graph)
+    print('Solving last: ',(time.time() - start_time), 'segs.')
+    print('Checking correctness:', hamilton.check_correctness(graph, path))
+    print(path)
+    print('\n\n')
 
+    print('Backtrack solving - ' )
+    start_time =  time.time()
+    path = hamilton.backtrack_hamilton(graph, graph.vertices()[0])
+    print('Solving last: ',(time.time() - start_time), 'segs.')
+    print('Checking correctness:', hamilton.check_correctness(graph, path))
+    print('\n\n')
 
-if name == '__main__':
+if __name__ == '__main__':
     graph_list = [
         'graphs/structured-type1-100nodes.txt'
         ]
     
-    for filename in graph_list():
-        graph = Graph()
-        graph.add_from_text(filename)
-        experiment(graph)
+    # for filename in graph_list:
+    #     graph = Graph()
+    #     graph.add_from_text(filename)
+    #     experiment(graph)
 
-    for n_vertex in range(100,250,30):
-        for n_edges in range(100,1000,100):
+    for n_vertices in range(100,250,30):
+        for n_edges in range(n_vertices, int((n_vertices)**(1.5)),n_vertices):
             graph = random_graph(n_vertices, n_edges)
             experiment(graph)

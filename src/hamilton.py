@@ -18,14 +18,13 @@ def find_hamiltonian_path(graph):
     length = len(graph.vertices())
     solver = Solver(name='cd')
     names = {}
-
+    vpool = IDPool()
+    
     for integer, vertex in enumerate(graph.vertices()):
         names[integer + 1] = vertex
-    names[0] = names[length]
+    names[0] = names[length]  
 
-    vpool = IDPool()
     print(' -> Codifying: All Positions occupied')
-    # Every position in the path must be occupied
     for position_in_path in range(length):
         var_list = [
             vpool.id('v{}pos{}'.format(vertex, position_in_path))
@@ -36,7 +35,6 @@ def find_hamiltonian_path(graph):
         solver.append_formula(cnf)
 
     print(' -> Codifying: All vertex visited')
-    # Every vertex must have a position in path
     for vertex in range(1, length + 1):
         var_list = [
             vpool.id('v{}pos{}'.format(vertex, position_in_path))
@@ -47,7 +45,6 @@ def find_hamiltonian_path(graph):
         solver.append_formula(cnf)
 
     print(' -> Codifying: Adjacency Matrix')
-    # Every two consecutive vertex has to be adjacent
     edges = graph.edges()
     for vertex_a in range(1, length + 1):
         for vertex_b in range(vertex_a + 1, length + 1):
@@ -77,6 +74,7 @@ def find_hamiltonian_path(graph):
     return solution
 
 
+
 def check_correctness(graph, path):
     for i, e in enumerate(path):
         if path[(i + 1) % len(path)] not in graph[e]:
@@ -84,3 +82,29 @@ def check_correctness(graph, path):
             return False
     return True
 
+
+def backtrack_hamilton(graph, start_v):
+    size = len(graph)
+    # if None we are -unvisiting- comming back and pop v
+    to_visit = [ None, start_v]
+    path = []
+    visited = set([])
+    while(to_visit):
+        v = to_visit.pop()
+        if v : 
+            path.append(v)
+            if len(path) == size:
+                break
+
+            visited.add(v)
+            for x in graph[v]-visited:
+                to_visit.append(None) # out
+                to_visit.append(x) # in
+        else: # if None we are comming back and pop v
+            visited.remove(path.pop())
+    return path
+
+
+g2 = {"a": {"b","c"}, "b": { "a"}, "c": {"a"}}
+graph = Graph(g2)
+print(backtrack_hamilton(graph, "a"))
