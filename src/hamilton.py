@@ -1,9 +1,16 @@
-import time
+"""
+Module implements two versions of the
+problem of finding a Hamiltonian path.
 
-from graph import Graph
+Implements a function find_hamiltonian_path
+that reduces the problem to SAT.
+
+We uses internally the CaDiCaL solver.
+"""
+
 from pysat.solvers import Solver
 from pysat.card import CardEnc, EncType
-from pysat.formula import IDPool, CNF
+from pysat.formula import IDPool
 
 
 def find_hamiltonian_path(graph, check_cycle=False):
@@ -76,30 +83,34 @@ def find_hamiltonian_path(graph, check_cycle=False):
 
 
 def check_correctness(graph, path):
-    for i, e in enumerate(path):
-        if path[(i + 1) % len(path)] not in graph[e]:
-            print('not cool', path[(i + 1) % len(path)], e)
+    """
+    Check the correctness of a path in
+    order to solve the Hamiltonian path
+    """
+    length = len(graph)
+    for i in range(length-1):
+        if path[(i + 1)] not in graph[path[i]]:
             return False
     return True
 
 
-def backtrack_hamilton(graph, start_v):
-    size = len(graph)
-    # if None we are -unvisiting- comming back and pop v
-    to_visit = [None, start_v]
-    path = []
-    visited = set([])
-    while (to_visit):
-        v = to_visit.pop()
-        if v:
-            path.append(v)
-            if len(path) == size:
-                break
+# def backtrack_hamilton(graph, start_v):
+#     size = len(graph)
+#     # if None we are -unvisiting- comming back and pop v
+#     to_visit = [None, start_v]
+#     path = []
+#     visited = set([])
+#     while to_visit:
+#         v = to_visit.pop()
+#         if v:
+#             path.append(v)
+#             if len(path) == size:
+#                 break
 
-            visited.add(v)
-            for x in graph[v] - visited:
-                to_visit.append(None)  # out
-                to_visit.append(x)  # in
-        else:  # if None we are comming back and pop v
-            visited.remove(path.pop())
-    return path
+#             visited.add(v)
+#             for x in graph[v] - visited:
+#                 to_visit.append(None)  # out
+#                 to_visit.append(x)  # in
+#         else:  # if None we are comming back and pop v
+#             visited.remove(path.pop())
+#     return path

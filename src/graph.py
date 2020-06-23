@@ -56,8 +56,8 @@ class Graph(dict):
             self[vertex] = set()
 
     def add_edge(self, ori, des):
-        """ 
-        Add a new edge to the graph. If the 
+        """
+        Add a new edge to the graph. If the
         requires that nodes are of type str.
         """
 
@@ -80,9 +80,9 @@ class Graph(dict):
         """
         with open(filename) as file_:
             for line in file_:
-                if 'node' == line[0:4]:
+                if line[0:4] == 'node':
                     self.add_vertex(line[5:-3])
-                elif 'start' == line[0:5]:
+                elif line[0:5] == 'start':
                     pass
                 else:
                     formated_line = line[5:-3]

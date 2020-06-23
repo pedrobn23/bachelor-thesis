@@ -1,14 +1,21 @@
-# utils_test.py
+"""
+Module that implements automatic test cases for
+Graph class.
+"""
+
 from unittest import TestCase, main
 from graph import Graph
 
 
 class GraphTestCase(TestCase):
+    """
+    Test Class for Graph class.
+    """
 
     def __init__(self, *args, **kwargs):
         super(__class__, self).__init__(*args, **kwargs)
 
-        g = {
+        graph = {
             "a": {"d"},
             "b": {"c"},
             "c": {"b", "c", "d", "e"},
@@ -17,10 +24,10 @@ class GraphTestCase(TestCase):
             "f": set()
         }
 
-        g2 = {"a": {"b", "c"}, "b": {"c", "a"}, "c": {"b", "a"}}
+        graph2 = {"a": {"b", "c"}, "b": {"c", "a"}, "c": {"b", "a"}}
 
-        self.graph = Graph(g)
-        self.graph2 = Graph(g2)
+        self.graph = Graph(graph)
+        self.graph2 = Graph(graph2)
 
     def test_vertices(self):
         self.assertEqual(['a', 'b', 'c', 'd', 'e', 'f'], self.graph.vertices())
@@ -39,11 +46,6 @@ class GraphTestCase(TestCase):
         self.graph.add_edge('x', 'y')
         self.assertTrue(('x', 'y') in self.graph.edges())
 
-    def test_hamiltonian_path(self):
-        self.assertTrue(self.graph2.find_hamiltonian_path(
-        ) in [["a", "b", "c", "a"], ["a", "c", "b", "a"], ["b", "c", "a", "b"],
-              ["b", "a", "c", "b"], ["c", "a", "b", "c"], ["c", "b", "a", "c"]])
-        self.assertTrue(not self.graph.find_hamiltonian_path())
 
 
 if __name__ == '__main__':
