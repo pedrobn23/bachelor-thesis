@@ -1,108 +1,67 @@
 import time
+import math
 
 from graph import Graph
 from pysat.solvers import Solver
 from pysat.card import CardEnc, EncType
-from pysat.formula import IDPool, CNF
+from pysat.formula import IDPool, CNF, CNFPlus
 
 
-def find_vertex_cover(graph, k):
+def vertex_cover(graph, k=1, verbose=True):
     """
-    should it exists, find a Hamiltonian on
-    current graph. Otherwise return empty list.
+    Check if there exists a vertex cover of, at most, k-vertices.
     """
     if not graph.edges():
         return []
 
-    print('Codifying SAT Solver...')
+    if verbose:
+        print('\nCodifying SAT Solver...')
+
     length = len(graph.vertices())
     solver = Solver(name='cd')
     names = {}
 
-    for integer, vertex in enumerate(graph.vertices()):
-        names[integer + 1] = vertex
-    names[0] = names[length]
-
     vpool = IDPool()
-    print(vpool.top)
-    print(' -> Codifying: At most k vertices should be selected')
-    # Every position in the path must be occupied
-    cnf = CardEnc.atmost(lits=graph.vertices(),
-                         bound=k,
-                         vpool=vpool,
-                         encoding=0)
-
-    print(cnf.clauses)
+    vertices_ids = [vpool.id(vertex) for vertex in graph.vertices()]
+    
+    if verbose:
+        print(' -> Codifying: Every vertex must be accessible')
 
     for vertex in graph.vertices():
-
-        var_list = [
-            vpool.id('v{}pos{}'.format(vertex, position_in_path))
-            for vertex in range(1, length + 1)
-        ]
-
-        cnf = CardEnc.equals(lits=var_list, encoding=0)
-        solver.append_formula(cnf)
-
-    print(' -> Codifying: All vertex visited')
-    # Every vertex must have a position in path
-    for vertex in range(1, length + 1):
-        var_list = [
-            vpool.id('v{}pos{}'.format(vertex, position_in_path))
-            for position_in_path in range(length)
-        ]
-
-        cnf = CardEnc.equals(lits=var_list, encoding=EncType.pairwise)
-        solver.append_formula(cnf)
-
-    print(' -> Codifying: Adjacency Matrix')
-    # Every two consecutive vertex has to be adjacent
-    edges = graph.edges()
-    for vertex_a in range(1, length + 1):
-        for vertex_b in range(vertex_a + 1, length + 1):
-            if (names[vertex_a], names[vertex_b]) not in edges:
-                for position_in_path in range(length - 1):
-                    solver.add_clause([
-                        -(position_in_path * length + vertex_a),
-                        -((position_in_path + 1) * length + vertex_b)
-                    ])
-                    solver.add_clause([
-                        -(position_in_path * length + vertex_b),
-                        -((position_in_path + 1) * length + vertex_a)
-                    ])
-
-                solver.add_clause(
-                    [-vertex_b, -(length * (length - 1) + vertex_a)])
-                solver.add_clause(
-                    [-vertex_a, -(length * (length - 1) + vertex_b)])
-
-    print('Running SAT Solver...')
-    solution = []
-    if solver.solve():
-        for variable in solver.get_model():
-            if variable > 0:
-                solution.append(names[variable % length])
-
-    return solution
+        solver.add_clause(
+            [vpool.id(vertex)] +
+            [vpool.id(adjacent_vertex) for adjacent_vertex in graph[vertex]])
 
 
-def check_correctness(graph, path):
-    for i, e in enumerate(path):
-        if path[(i + 1) % len(path)] not in graph[e]:
-            return False
-    return True
+    if verbose:
+        print(' -> Codifying: At most', k ,'vertices should be selected')
+
+    cnf = CardEnc.atmost(lits=vertices_ids,
+                         bound=k,
+                         vpool=vpool)
+
+    solver.append_formula(cnf)
+
+    if verbose:
+        print('Running SAT Solver...')
+    return solver.solve()
 
 
-graph = Graph()
-graph.add_from_text('graphs/structured-type1-100nodes.txt')
+def minimun_cover(graph):
+    old = len(graph)
+    new = len(graph)//2
 
-start_time = time.time()
-path = find_vertex_cover(graph, 30)
-print('Hamiltonian path found in', (time.time() - start_time), 'segs.')
-print('Checking correctness:', check_correctness(graph, path))
+    while old != new:
+        if vertex_cover(graph, new, False):
+            old = new
+            new = new // 2
 
-# start_time =  time.time()
-# print('Resolving Standard Way:')
-# path = alternative_hamilton(graph,'n0')
-# print('Hamiltonian path found in',(time.time() - start_time), 'segs.')
-# print('Checking correctness:', check_correctness(graph, path))
+        else:
+            new += math.ceil((old - new) / 2)
+
+    return new
+
+g2 = {"a": {"b", "c"}, "b": {"a"}, "c": {"a"}}
+graph = Graph(g2)
+print(vertex_cover(graph,2))
+

@@ -106,6 +106,3 @@ def backtrack_hamilton(graph, start_v):
     return path
 
 
-g2 = {"a": {"b","c"}, "b": { "a"}, "c": {"a"}}
-graph = Graph(g2)
-print(backtrack_hamilton(graph, "a"))
