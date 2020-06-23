@@ -1,7 +1,10 @@
+import time
+
 from graph import Graph
 from pysat.solvers import Solver
 from pysat.card import CardEnc, EncType
-from pysat.formula import CNF
+from pysat.formula import IDPool, CNF
+
 
 def find_hamiltonian_path(graph):
     """
@@ -20,12 +23,12 @@ def find_hamiltonian_path(graph):
         names[integer + 1] = vertex
     names[0] = names[length]
 
-    cnf = CNF()
+    vpool = IDPool()
     print(' -> Codifying: All Positions occupied')
     # Every position in the path must be occupied
     for position_in_path in range(length):
-        var_list = [
-            position_in_path * length + vertex
+        var_list = [                
+            vpool.id('v{}pos{}'.format(vertex, position_in_path))
             for vertex in range(1, length + 1)
         ] 
 
@@ -37,7 +40,7 @@ def find_hamiltonian_path(graph):
     # Every vertex must have a position in path
     for vertex in range(1, length + 1):
         var_list = [
-            position_in_path * length + vertex
+            vpool.id('v{}pos{}'.format(vertex, position_in_path))
             for position_in_path in range(length)
         ]
         
@@ -73,9 +76,20 @@ def find_hamiltonian_path(graph):
 
     return solution
 
+def check_correctness(graph, path):
+    for i,e in enumerate(path):
+        if path[(i+1)%len(path)] not in graph[e]:
+            return False
+    return True
+
 
 
 
 graph = Graph()
 graph.add_from_text('graphs/structured-type1-100nodes.txt')
-print(find_hamiltonian_path(graph))
+
+start_time =  time.time()
+path = find_hamiltonian_path(graph)
+print('Solving last: ',(time.time() - start_time), 'segs.')
+
+print('Checking correctness:', check_correctness(graph, path))
