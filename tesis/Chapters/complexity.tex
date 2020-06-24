@@ -1,9 +1,15 @@
 
 \chapter{Complexity Classes and Relevance of the Problem}
+\epigraph{“Either mathematics is too big for the human mind or the human mind is more than a machine.” }{\textit{Kurt Godël} As quoted in Topoi : The Categorial Analysis of Logic (1979) by Robert Goldblatt}
 \section{Model of Computation}
 
+
+Computation started as a way of relieving mathematicians of mechanical work. A long journey has been made by now. In particular, models of computation improve our ability to ease work to unexpected limits. Nonetheless some barriers are still left to breaks. In particular there is the dream of a efficient theorem prover, that will made mathematicians life easier, so that formalism would be relegated to the domain of machines, just as arithmetic has already been done.The work of the mathematician would then be to check and understand what things are important and how to pose the problems in the right language.\\
+
+SAT, and even more QBF, try to solve this problem, by asserting veracity of simple laws. Some projects such as COQ\cite{bertot2008short} have been doing work on this area. They have had limited success, because of the complexity of the problem  we have before us. In this chapter we present the theory of complexity and the state of the art of the complexity analysis. We reflex upon the P vs NP problem and we present sat as the cornerstone for the development of this theory, having as its zenith the Cook-Levin Theorem [\ref{ref:cooklevin}].
+
 \subsection{Deterministic Computation}
-In this section we discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximations to Turing machines, so we present a quick formal approach to the area. 
+In this section we discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximations to Turing machines, so we present a quick formal approach to the area.  \\
 
 Turing machines are arguably the epicenter of  models of computation. A Turing Machine  represents a long mechanical tape on which we are going to operate. The tape is divided into discrete positions, such that we can see the tape as a one-dimensional array. Operating on this tape we can focus on a cell, scan its contents, overwrite  its contents or move to an adjacent cell. These operations try to resemble the process of human calculus, as done with paper and pencil when applying the long division method  for example. Formally:
 
@@ -30,13 +36,13 @@ As a brief note before going on, we have not defined the empty word yet, as in p
   \begin{itemize}
   \item if $D=L$, then if $u=u_1...u_n$ and $v = v_1...v_m$, it should happen that $u' = u_1...u_{n-1}$ and $v' = u_n bv_2...v_n$ with two exceptions:
     \begin{itemize}
-    \item if $u=\epsilon$ then $u' = \epsilon$ and $v' = bv_2...v_n$
+    \item if $u=\epsilon$ then $u' = \epsilon$ and $v' = bv_2...v_n,$
     \item if $v = v_1$ and $b =B$ then $u'=u_1...u_{n-1}$ and $v' = u_n$.
     \end{itemize}
 
   \item if $D=R$, then if $u=u_1...u_n$ and $v = v_1...v_m$, it should happen that $u' = u_1...u_{n}b$ and $v' = v_2...v_n$ with two exceptions:
     \begin{itemize}
-    \item if $u=\epsilon$ then $u' = b$ and $v' =v_2...v_n$
+    \item if $u=\epsilon$ then $u' = b$ and $v' =v_2...v_n,$
     \item if $v = v_1$ and $b =B$ then $u'=u_1...u_{n-1}$ and $v' = \epsilon$.
     \end{itemize}
   \end{itemize}
@@ -116,7 +122,7 @@ There are different approaches as how to measure the complexity of given algorit
 
 \begin{definition}
   Let $g:\mathbb{N}^\mathbb{N}$, the:
-  $$O(g) = \left\{ f\in \mathbb{N}^\mathbb{N} :\ \exists N,C \in \mathbb{N} : f(n) \le Cg(n) \ \forall  n \ge N\right\}$$
+  $$O(g) = \left\{ f\in \mathbb{N}^\mathbb{N} :\ \exists N,C \in \mathbb{N} : f(n) \le Cg(n) \ \forall  n \ge N\right\}.$$
 \end{definition}
 
 \begin{definition}
@@ -133,11 +139,11 @@ Sometimes we will also consider the TM $M$ that decides/computes the problem to 
   Let $\Omega$ be a set of endofunctions of $\mathbb{N}$.
   \begin{enumerate}
   \item We have a homonym complexity class $\Omega$:
-  $$\Omega =  \bigcup_{f \in \Omega} TIME(f) $$
+  $$\Omega =  \bigcup_{f \in \Omega} TIME(f). $$
   \item We have an associated function complexity class $FA$:
-    $$F\Omega =  \bigcup_{f \in \Omega} FTIME(f)$$
+    $$F\Omega =  \bigcup_{f \in \Omega} FTIME(f).$$
   \item We have an associated space complexity class $FA$:
-    $$\Omega SPACE =  \bigcup_{f \in \Omega} SPACE(f)$$  \end{enumerate}
+    $$\Omega SPACE =  \bigcup_{f \in \Omega} SPACE(f).$$  \end{enumerate}
 \end{definition}
 
 
@@ -196,7 +202,7 @@ Analogous with what we done with deterministic complexity, we can define non-det
 
 \begin{definition}
   Let $F$ be a set of endofunctions of $\mathbb{N}$. We have a complexity class $NF$ defined:
-  $$NF =  \bigcup_{f \in F} NTIME(f) $$
+  $$NF =  \bigcup_{f \in F} NTIME(f) .$$
 \end{definition}
 
 At this point we can state a corollary of high importance for the mathematical community.
@@ -211,12 +217,12 @@ Another characterization of NP is by \emph{verfiers}. Given a language that migh
 
 \begin{proposition}[Alternative definition of NP]
   A language $L\subset A^*$ is in NP if and only if there is an relationship $R\subset A^*\times A^*$  computable in polynomial time and a polynomial $p$ such that
-  $$L = \{x \in A^*:\exists y \in A^* \text{ with } |y | \le p(|x|), R(x, y) = 1\}$$
+  $$L = \{x \in A^*:\exists y \in A^* \text{ with } |y | \le p(|x|), R(x, y) = 1\}.$$
 \end{proposition}
 \begin{proof}\hfill
 \begin{itemize}
 \item[\fbox{$\Rightarrow$}] If $L\subset A^*$ is in NP, there is a NDTM $M$ that decides $L$ in $O(p)$, with $p$ a polynomial. For every $x\in L$ we have that $M$ accepts $x$ after at most $p(|x|)$ decisions. Let $<d_{x,i} : 1 \le i \le p(|x|)>$ be the word that codify such decisions in the alphabet $A^*$. We can define the relationship:
-  $$R = \{(x,y)  : x \in L, y = <d_{x,i} : 1 \le i \le p(|x|)>\}$$
+  $$R = \{(x,y)  : x \in L, y = <d_{x,i} : 1 \le i \le p(|x|)>\}.$$
   We can compute such relationship with a DTM $M'$ that works as $M$, but at each iteration $i$ make the decision $d_i$. 
 \item[\fbox{$\Leftarrow$}] We define a NDTM $M$ that works like follow, for an input $|x|$:
   \begin{enumerate}
@@ -311,7 +317,7 @@ If $L_1 \le_{P} L_2$ we say that $L_1$ \emph{is reduced} to $L_2$.
 \begin{definition}
   Let $\Omega$ be a deterministic complexity class.  We say that a problem $L$ is $\Omega$\emph{-Complete} iff:
   \begin{itemize}
-  \item $L \in\Omega$
+  \item $L \in\Omega.$
   \item For every $L' \in \Omega$, we have that $L' \le_P L$.
   \end{itemize}
 
@@ -343,11 +349,11 @@ The theorem proves that SAT is NP-Complete, and was at the time the first comple
   For a set $A = \{a_1,...,a_n\}$ of Propositional Logic variables, we can define a set of clauses $\mathcal{C}(A)$ such that, for an assignment $alpha$ we have   $\mathcal{C}(A)\alpha = 1$ iff $\alpha$ maps to 1 one and only one of the variables in $A$.
 \end{lemma}
 \begin{proof}
-  We define $$\mathcal{C}(A) = D\cup \left (  \cup_{i,j \in 1,..,n} D_{i,j} \right )$$ where:
+  We define $$\mathcal{C}(A) = D\cup \left (  \cup_{i,j \in 1,..,n} D_{i,j} \right ),$$ where:
   \begin{equation}
     \begin{split}
       D & = (a_1 \vee ... \vee a_n ),\\
-      D_{i,j} & = (\neg a_{i} \vee \neg a_{j} ),
+      D_{i,j} & = (\neg a_{i} \vee \neg a_{j} ).
 \end{split}
 \end{equation}
 
@@ -382,26 +388,26 @@ From $D$ it follows that $\alpha$ satisfy at least one variable, and from $D_{i,
     \item For each pair state-symbol $(q_k,\gamma_d)$ we let $\{(q_{k_1} , \gamma_{d_1} , m_1 ), ... , (q_{k_l} , \gamma_{d_l , m_l)} \subset Q \times \Gamma \times \{-1,1\}$ be the set of related transitions. We add the clauses:
 
     \[
-    (\neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor q_{t+1, k_e})
+    (\neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor q_{t+1, k_e}),
     \]
     \[
-(      \neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor p_{s,t+1}^{d_e})
+(      \neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor p_{s,t+1}^{d_e}),
     \]
     \[
-(      \neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor S_{s+m_e, t+1})
+(      \neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor S_{s+m_e, t+1}),
     \]
 
     with $0 \le s,t \le T$, $0 \le d \le  \delta_0$. 
 
     If the set of related transitions is empty we add
     \[
-    (\neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor q_{t+1, k})
+    (\neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor q_{t+1, k}),
     \]
     \[
-(      \neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor p_{s,t+1}^{d})
+(      \neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor p_{s,t+1}^{d}),
     \]
     \[
-(      \neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor S_{s, t+1})
+(      \neg s_{s,t} \lor \neg q_t^i  \lor p_{s,t}^d \lor \neg o_{t, e}  \lor S_{s, t+1}),
     \]
 
     with $0 \le s,t \le T$, $0 \le d \le  \delta_0$.
@@ -409,10 +415,10 @@ From $D$ it follows that $\alpha$ satisfy at least one variable, and from $D_{i,
     This represent the machine's operation.
   \item In order to maintain the tape unchanged in the cells where no operation is done we add:
 
-    $$\neg s_{t,s} \lor \neg p_{s,t}^i \lor  p_{s,t+1}^i  $$
+    $$(\neg s_{t,s} \lor \neg p_{s,t}^i \lor  p_{s,t+1}^i),  $$
     for $0 \le s,t \le T$, $0 \le i \le l$.
   \item Suppose $\{q_{i_1},...,q_{i_k}\}$ is the set of final states. Then we add the clause:
-    $$ (q_{i_1}^T \lor ... \lor q_{i_k}^T)$$
+    $$ (q_{i_1}^T \lor ... \lor q_{i_k}^T).$$
 
     That represents the necessity of the machine to end on a final state in order to accept $w$.
     \end{enumerate}
@@ -431,7 +437,6 @@ On the time of publication, this result was a truly breakthrough. On the technic
 \item One and only one encodings, as the one showcased in the lemma, are common restriction for real-world problems. We decide to express this alternative in order to respect the original proof as much as possible, but also because this formulation is commonly believed to work better with DPLL based - solvers[\ref{sec:dpll}]. Different approaches to this reduction are considered in literature. For more information on this area we refer to subsection 2.2.4 \cite{darwiche2009complete}.
 
 \item The rest of the clauses has at most one positive literal. These are the named Horn clauses. The particularity of this clauses resides in the fact that,
-
   $$(\neg u_1 \lor \neg u_2 ... \lor \neg u_n \lor v) \iff ((u_1\land ... \land u_n) \to v).$$
   That is, they are the natural language of implication in CNF. Because of theorem[\ref{theorem:hornsat}] we now that this language is enough to express polynomial DTM.
 \end{itemize}
@@ -554,7 +559,7 @@ In this subsection we will introduce the hypothesis, shown first on \cite{impagl
 
 \begin{definition}[ETH]
   For $k\ge 3$, lets define:
-  $$s_k=\inf\{\delta: \text{there exists a } O(2^{\delta n})\ \ k-\text{ SAT solver.}\}$$
+  $$s_k=\inf\{\delta: \text{there exists a } O(2^{\delta n})\ \ k-\text{ SAT solver}\}.$$
   It is claim that $s_k>0$.
 \end{definition}
 

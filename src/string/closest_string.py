@@ -10,9 +10,9 @@ from pysat.formula import IDPool, CNF
 
 def triple_equal(x, y, z, vpool):
     return [[vpool.id(x), -vpool.id(y), vpool.id(z)],
-            [-vpool.id(x), vpool.id(y), vpool.id(z)],
-            [-vpool.id(x), -vpool.id(y), -vpool.id(z)],
-            [vpool.id(x), vpool.id(y), -vpool.id(z)]]
+            [-vpool.id(x), vpool.id(y),-vpool.id(z)],
+            [vpool.id(x), -vpool.id(y),-vpool.id(z)],
+            [vpool.id(x), vpool.id(y), vpool.id(z)]]
 
 
 def closest_string(bitarray_list, distance=4, verbose=True):
