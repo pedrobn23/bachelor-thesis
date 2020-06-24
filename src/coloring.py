@@ -5,52 +5,61 @@ import random
 from graph import Graph
 from pysat.solvers import Solver
 from pysat.card import CardEnc, EncType
-from pysat.formula import IDPool, CNF, CNFPlus
+from pysat.formula import IDPool, CNF
 
 
-def vertex_cover(graph, k=1, verbose=True):
+def coloring(graph, n_color=4, verbose=True):
     """
     Check if there exists a vertex cover of, at most, k-vertices.
     """
-    if not graph.edges():
-        return []
+    if n_color < 0:
+        raise ValueError('Number of colors must be positive integer')
 
+    if n_color == 0:
+        return not bool(graph.vertices())
+    
     if verbose:
         print('\nCodifying SAT Solver...')
 
     length = len(graph.vertices())
     solver = Solver(name='cd')
     names = {}
-
+    cnf = CNF()
+    
     vpool = IDPool()
-    vertices_ids = [vpool.id(vertex) for vertex in graph.vertices()]
-
+    
     if verbose:
-        print(' -> Codifying: Every vertex must be accessible')
+        print(' -> Codifying: Every vertex must have a color, and only one')
 
     for vertex in graph.vertices():
-        solver.add_clause(
-            [vpool.id(vertex)] +
-            [vpool.id(adjacent_vertex) for adjacent_vertex in graph[vertex]])
+        cnf = CardEnc.equals(lits = [
+            vpool.id('{}color{}'.format(vertex, color))
+            for color in range(n_color)
+        ], vpool=vpool,encoding=0)
+        
+        solver.append_formula(cnf)
 
     if verbose:
-        print(' -> Codifying: At most', k, 'vertices should be selected')
+        print(' -> Codifying: No two neighbours can have the same color')
 
-    cnf = CardEnc.atmost(lits=vertices_ids, bound=k, vpool=vpool)
-
-    solver.append_formula(cnf)
-
+    visited = set()
+    for vertex in graph.vertices():
+        for neighbour in graph[vertex]:
+            for color in range(n_color):
+                solver.add_clause([
+                    - vpool.id('{}color{}'.format(vertex, color)),
+                    - vpool.id('{}color{}'.format(neighbour, color))
+                ])
     if verbose:
         print('Running SAT Solver...')
     return solver.solve()
 
-
-def minimun_cover(graph):
+def minimun_coloring(graph):
     old = len(graph)
     new = len(graph) // 2
 
     while old != new:
-        if vertex_cover(graph, new, False):
+        if coloring(graph, new, False):
             old = new
             new = new // 2
 
@@ -59,7 +68,6 @@ def minimun_cover(graph):
 
     return new
     
-
 
 def random_graph(n_vertices, n_edges):
     graph = Graph()
@@ -73,7 +81,5 @@ def random_graph(n_vertices, n_edges):
 
     return graph
 
-rg = random_graph(19,5)
-graph = Graph(rg)
-print(rg)
-print(minimun_cover(graph))
+
+
