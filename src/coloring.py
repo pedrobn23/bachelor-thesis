@@ -67,19 +67,6 @@ def minimun_coloring(graph):
             new += math.ceil((old - new) / 2)
 
     return new
-    
-
-def random_graph(n_vertices, n_edges):
-    graph = Graph()
-    for i in range(n_vertices):
-        graph.add_vertex(str(i))
-
-    for i in range(n_edges):
-        ori = random.randint(0, n_vertices - 1)
-        des = random.randint(0, n_vertices - 1)
-        graph.add_edge(str(ori), str(des))
-
-    return graph
 
 
 
