@@ -47,6 +47,5 @@ class GraphTestCase(TestCase):
         self.assertTrue(('x', 'y') in self.graph.edges())
 
 
-
 if __name__ == '__main__':
     main()

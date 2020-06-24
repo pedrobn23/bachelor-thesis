@@ -17,7 +17,7 @@ def coloring(graph, n_color=4, verbose=True):
 
     if n_color == 0:
         return not bool(graph.vertices())
-    
+
     if verbose:
         print('\nCodifying SAT Solver...')
 
@@ -25,18 +25,20 @@ def coloring(graph, n_color=4, verbose=True):
     solver = Solver(name='cd')
     names = {}
     cnf = CNF()
-    
+
     vpool = IDPool()
-    
+
     if verbose:
         print(' -> Codifying: Every vertex must have a color, and only one')
 
     for vertex in graph.vertices():
-        cnf = CardEnc.equals(lits = [
+        cnf = CardEnc.equals(lits=[
             vpool.id('{}color{}'.format(vertex, color))
             for color in range(n_color)
-        ], vpool=vpool,encoding=0)
-        
+        ],
+                             vpool=vpool,
+                             encoding=0)
+
         solver.append_formula(cnf)
 
     if verbose:
@@ -47,12 +49,13 @@ def coloring(graph, n_color=4, verbose=True):
         for neighbour in graph[vertex]:
             for color in range(n_color):
                 solver.add_clause([
-                    - vpool.id('{}color{}'.format(vertex, color)),
-                    - vpool.id('{}color{}'.format(neighbour, color))
+                    -vpool.id('{}color{}'.format(vertex, color)),
+                    -vpool.id('{}color{}'.format(neighbour, color))
                 ])
     if verbose:
         print('Running SAT Solver...')
     return solver.solve()
+
 
 def minimun_coloring(graph):
     old = len(graph)
@@ -67,6 +70,3 @@ def minimun_coloring(graph):
             new += math.ceil((old - new) / 2)
 
     return new
-
-
-

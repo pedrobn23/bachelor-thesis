@@ -58,7 +58,6 @@ def minimun_cover(graph):
             new += math.ceil((old - new) / 2)
 
     return new
-    
 
 
 def random_graph(n_vertices, n_edges):
@@ -73,7 +72,8 @@ def random_graph(n_vertices, n_edges):
 
     return graph
 
-rg = random_graph(19,5)
+
+rg = random_graph(19, 5)
 graph = Graph(rg)
 print(rg)
 print(minimun_cover(graph))

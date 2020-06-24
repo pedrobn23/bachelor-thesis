@@ -88,7 +88,7 @@ def check_correctness(graph, path):
     order to solve the Hamiltonian path
     """
     length = len(graph)
-    for i in range(length-1):
+    for i in range(length - 1):
         if path[(i + 1)] not in graph[path[i]]:
             return False
     return True
