@@ -260,7 +260,7 @@ We explain the way Erdös, Lovász and Spencer originally proved the Lemma \cite
 Thorough the proof we will use repeatedly the Chain Rule. It states that for any events $\{E_i\}_{i\in 1,...,r}$,
 
 \[
-P\left ( \bigcap_{i=1}^r E_1\right ) = \prod_{i=1}^rP \left( E_i \Big | \bigcap_{j=1}^{i-1} E_j\right)\\
+P\left ( \bigcap_{i=1}^r E_1\right ) = \prod_{i=1}^rP \left( E_i \Big | \bigcap_{j=1}^{i-1} E_j\right).\\
 \]
 
 Further on this subsection we will consider  $\Omega$ to be a probability space and $\mathcal{A} = \{A_1,...,A_m\}$ to be arbitrary events in this space, $G$ to be a lopsidependency graph, and $\mu: \mathcal{A} \to (0,1)$ such that the conditions of the theorem are satisfied. We first prove an auxiliary lemma.
@@ -268,7 +268,7 @@ Further on this subsection we will consider  $\Omega$ to be a probability space 
 \begin{lemma} \label{LemaLLL}
 Let $ A_0 \in \mathcal{A} $ and $\mathcal{H}\subset \mathcal{A} $. then 
 \[
-	P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B}\right ) \le \mu(A) 
+	P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B}\right ) \le \mu(A) .
 \]
 
 		
@@ -279,7 +279,7 @@ Let $ A_0 \in \mathcal{A} $ and $\mathcal{H}\subset \mathcal{A} $. then
 The proof is by induction on the size of $|\mathcal{H}|$. The case $H=\emptyset$ follows from the hypothesis easily:
 
 $$ 
-	P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B}\right ) =  P(A) \le^{1.}   \mu(A) \prod_{B\in\Gamma^*_G(A)} (1-\mu(B)) \le^{2.} \mu(A) $$
+	P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B}\right ) =  P(A) \le^{1.}   \mu(A) \prod_{B\in\Gamma^*_G(A)} (1-\mu(B)) \le^{2.} \mu(A) .$$
 
 Where 1. uses the hypothesis and 2. uses that $0 < \mu(B) < 1$. Now we suppose that $|\mathcal{H}|=n$ and that the claim is true for all $\mathcal{H}'$ such that $|\mathcal{H}'|<n$. We distinguish two cases. The induction hypothesis will not be necessary for the first of them
 \begin{itemize}
@@ -287,13 +287,13 @@ Where 1. uses the hypothesis and 2. uses that $0 < \mu(B) < 1$. Now we suppose t
 \item Otherwise we have $A\not \in \mathcal{H}$ and $\mathcal{H} \cap \Gamma^*_G(A) \ne \emptyset$. Then we can define to sets $\mathcal{H}_A = \mathcal{H} \cap \Gamma^*_G(A) = \{H_1,...,H_k\}$ and $\mathcal{H}_0 = \mathcal{H}  \backslash \mathcal{H}_A$. 
 \[
 	P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B} \right ) = \frac{P\left ( A \cap \left ( \bigcap_{B\in \mathcal{H}_A} \overline{B} \right ) \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right )
-	}{P\left ( \bigcap_{B\in \mathcal{H}_A} \overline{B}  \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right )}
+	}{P\left ( \bigcap_{B\in \mathcal{H}_A} \overline{B}  \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right )}.
 \]
 
 We will bound numerator and denominator. For the numerator:
 
 \[
-P\left ( A \cap \left ( \bigcap_{B\in \mathcal{H}_A} \overline{B} \right ) \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right ) \le P\left ( A \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right ) \le P(A)
+P\left ( A \cap \left ( \bigcap_{B\in \mathcal{H}_A} \overline{B} \right ) \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right ) \le P\left ( A \Big| \bigcap_{B\in \mathcal{H}_0} \overline{B} \right ) \le P(A).
 \]
 
 Where the second inequality is given by the definition of lopsidependency graph. On the other hand, for the denominator, we can define $\mathcal{H}_i := \{H_i,...,H_k\} \cup \mathcal{H}_0$.
@@ -305,7 +305,7 @@ P\left ( \bigcap_{B\in \mathcal{H}_A} \overline{B}  \Big| \bigcap_{B\in \mathcal
 Where in 3. the induction hypothesis is used, and in 4. is considering  that $H_i \in \Gamma_G^*(A)$
 Considering now both parts:
 \[
-P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B} \right ) \le \frac{P(A)}{\prod_{B\in\Gamma_G^*(A)} \left (1-\mu(B)\right )} \le \mu(A)
+P\left ( A \Big| \bigcap_{B\in \mathcal{H}} \overline{B} \right ) \le \frac{P(A)}{\prod_{B\in\Gamma_G^*(A)} \left (1-\mu(B)\right )} \le \mu(A).
 \]
 Where the last inequality uses the hypothesis on $\mu$.
 \end{itemize}
@@ -314,9 +314,9 @@ Where the last inequality uses the hypothesis on $\mu$.
 
 \begin{proof}[proof of the theorem \ref{LLL}]
 \[
-P\left ( \bigcap_{A\in \mathcal{A}} \overline{A}\right ) = \prod_{i=1}^m P \left( \overline{A_i} \Big | \bigcap_{j=1}^{i-1} \overline{A_j}\right) \ge^{5.} \prod_{i=1}^m ( 1 - \mu(A_i))
+P\left ( \bigcap_{A\in \mathcal{A}} \overline{A}\right ) = \prod_{i=1}^m P \left( \overline{A_i} \Big | \bigcap_{j=1}^{i-1} \overline{A_j}\right) \ge^{5.} \prod_{i=1}^m ( 1 - \mu(A_i)),
 \]
-	Where in 5. is used \ref{LemaLLL} and since $\mu:\mathcal{A}\to (0,1)$ then $P\left ( \bigcap_{A\in \mathcal{A}} \overline{A}\right )  > 0$.\\
+	where in 5. is used \ref{LemaLLL} and since $\mu:\mathcal{A}\to (0,1)$ then $P\left ( \bigcap_{A\in \mathcal{A}} \overline{A}\right )  > 0$.\\
 \end{proof}
 
 

@@ -81,28 +81,28 @@ We will consider the problem of the Hamiltonian cycle of undirected graphs. Ther
 This problem is a very good example to represent what means to use a SAT-solver to solve a hard problem. The presented reduction is done as shown in \cite{49593}, with a minor error solved.\\
 
 
-It moves the complexity of the problem from how to solve it to how to implement a SAT-solver. Therefore it only left a worry about what do I need to satisfy in order to solve this problem.\\
+It moves the complexity of the problem from how to solve it to how to implement a SAT-solver. Therefore it only left a worry about what do I need to satisfy in order to solve this problem. In order to make the reduction we will represent with Boolean clauses the conditions. We use the same reduction in order to reduce both the problem for the Hamiltonian path and the Hamiltonian cycle.\\
+
+Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. To reduce it to a SAT problem, we will first define the variables $\{x_{i,j}: i\in 1,...,n ; j\in 1,...,n \}$. If the variable $x_{i,j}$ is assigned to true it would mean that the vertex $v_i$ is in position $j$ in the path. We would like to find a assignment of these variables that satisfy the following clauses. When we note $\mathcal{C}(A)$ we refer in the context of the lemma \ref{lemma:cooklevin}.
 
 
-
-In order to make the reduction we will represent with Boolean clauses the conditions:\\
-
-Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. To reduce it to a SAT problem, we will first define the variables $\{x_{i,j}: i\in 1,...,n ; j\in 1,...,n \}$. If the variable $x_{i,j}$ is assigned to true it would mean that the vertex $v_i$ is in position $j$ in the path. We would like to find a assignment of these variables that satisfy the following clauses:
-
-
-TODO: Check minor errors.
 \begin{enumerate}
-\item Each vertex must appear at least once in the path, for every vertex $v_i$:
-  $$ x_{i,1} \vee ... \vee x_{i,n +1},\ i \in 1,...,n.$$
-\item Each vertex must not appear twice in the path, unless it is the first and last node:
-  $$\neg x_{i,j} \vee \neg x_{i,k},\ i \in 1,...,n ,\ j \in 2,...,m+1, k \in 1,...,m.$$
-\item Every position in the path must be occupied:
-  $$ x_{1,i} \vee ... \vee x_{n,i},\ i \in 1,...,m+1.$$
+\item Each vertex must appear at least once in the path, and only one. Thus, for every vertex $v_i$:
+  $$\mathcal{C}( \{x_{i,j} : j \in 1,...,n \}) \qquad i \in 1,...,n.$$
+
+\item Every position in the path must has an associated vertex, and only one:
+  $$\mathcal{C}( \{x_{i,j} : i \in 1,...,n \}) \qquad j \in 1,...,n.$$
 \item Two consecutive vertices have to be adjacent:
-  $$\neg x_{i,j} \vee \neg x_{i+1,k}\ \forall (k,j) \not \in E.$$
+  $$(\neg x_{i,j} \vee \neg x_{i+1,k})\qquad \forall (k,j) \not \in E, i \in 1,...,n-1.$$
+\item Should a cycle be wanted, we add:
+  $$(\neg x_{1,j} \vee \neg x_{n,k})\qquad \forall (k,j) \not \in E.$$
 \end{enumerate}
 
 Let now prove that this is a correct reduction, i.e., that an assignment that can satisfy these clauses exists if, and only if, the graph $G$ has a Hamiltonian graph. If such an assignment exists we can make a Hamiltonian cycle with the variables assigned to 1. On the other hand if such cycle exists an assignment that assign to 1 the variable $x_{i,j}$ given that the vertex $v_i$ is in position $j$ in the path would satisfy all the clauses. 
+
+\subsubsection{Coloring}
+
+
 
 \subsection{Implementation}
 
