@@ -11,6 +11,9 @@ We uses internally the CaDiCaL solver.
 from pysat.solvers import Solver
 from pysat.card import CardEnc, EncType
 from pysat.formula import IDPool
+from graph import Graph
+from utilities import xvar
+    
 
 
 def find_hamiltonian_path(graph, check_cycle=False):
@@ -30,25 +33,31 @@ def find_hamiltonian_path(graph, check_cycle=False):
     for integer, vertex in enumerate(graph.vertices()):
         names[integer + 1] = vertex
     names[0] = names[length]
+        
 
+    
+    for position_in_path in range(length):
+        for vertex in range(1, length + 1):
+            vpool.id('v{}pos{}'.format(vertex, position_in_path))
+               
     print(' -> Codifying: All Positions occupied')
     for position_in_path in range(length):
         var_list = [
-            vpool.id('v{}pos{}'.format(vertex, position_in_path))
+            'v{}pos{}'.format(vertex, position_in_path)
             for vertex in range(1, length + 1)
         ]
 
-        cnf = CardEnc.equals(lits=var_list, encoding=0)
+        cnf = CardEnc.equals(lits=var_list, encoding=0, vpool=vpool)
         solver.append_formula(cnf)
 
     print(' -> Codifying: All vertex visited')
     for vertex in range(1, length + 1):
         var_list = [
-            vpool.id('v{}pos{}'.format(vertex, position_in_path))
+            'v{}pos{}'.format(vertex, position_in_path)
             for position_in_path in range(length)
         ]
 
-        cnf = CardEnc.equals(lits=var_list, encoding=EncType.pairwise)
+        cnf = CardEnc.equals(lits=var_list, encoding=EncType.pairwise, vpool=vpool)
         solver.append_formula(cnf)
 
     print(' -> Codifying: Adjacency Matrix')
@@ -58,7 +67,7 @@ def find_hamiltonian_path(graph, check_cycle=False):
             if (names[vertex_a], names[vertex_b]) not in edges:
                 for position_in_path in range(length - 1):
                     solver.add_clause([
-                        -(position_in_path * length + vertex_a),
+                        -vpool.id(vertex_a, position_in_path),
                         -((position_in_path + 1) * length + vertex_b)
                     ])
                     solver.add_clause([
@@ -87,10 +96,18 @@ def check_correctness(graph, path):
     Check the correctness of a path in
     order to solve the Hamiltonian path
     """
-    length = len(graph)
-    for i in range(length - 1):
-        if path[(i + 1)] not in graph[path[i]]:
-            return False
+    if path:
+        length = len(graph)
+        for i in range(length - 1):
+            if path[(i + 1)] not in graph[path[i]]:
+                return False
     return True
 
 
+print(xvar(1,2))
+
+graph2 = {"a": {"b", "c"}, "b": {"c"}, "c": {"b"}}
+
+graph = Graph(graph2)
+path = find_hamiltonian_path(graph, check_cycle=True)
+print(check_correctness(graph, path), path)

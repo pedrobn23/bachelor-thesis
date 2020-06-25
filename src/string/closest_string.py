@@ -6,14 +6,7 @@ from bitarray import bitarray
 from pysat.solvers import Solver
 from pysat.card import CardEnc, EncType
 from pysat.formula import IDPool, CNF
-
-
-def triple_equal(x, y, z, vpool):
-    return [[vpool.id(x), -vpool.id(y), vpool.id(z)],
-            [-vpool.id(x), vpool.id(y),-vpool.id(z)],
-            [vpool.id(x), -vpool.id(y),-vpool.id(z)],
-            [vpool.id(x), vpool.id(y), vpool.id(z)]]
-
+from utilities import triple_equal, xvar, yvar, zvar
 
 def closest_string(bitarray_list, distance=4, verbose=True):
     """
@@ -37,32 +30,26 @@ def closest_string(bitarray_list, distance=4, verbose=True):
     for bitarr in bitarray_list:
         bitarr = bitarr + aux
 
-    def x(word, pos):
-        return 'x{} {}'.format(i, j)
-
-    def y(i):
-        return 'y{}'.format(i)
-
-    def z(i, j):
-        return 'z{} {}'.format(i, j)
 
     if verbose:
         print(' -> Codifying: imposing distance condition')
 
     for index, word in string_list:
         for pos in range(length):
-            for clause in triple_equal(x(index, pos), y(pos), z(index, pos)):
+            for clause in triple_equal(xvar(index, pos), yvar(pos),
+                                       zvar(index, pos)):
                 solver.add_clause(clause)
-        cnf = CardEnc.equals(lits=[z(index, pos) for pos in range(length)],
+        cnf = CardEnc.equals(lits=[zvar(index, pos) for pos in range(length)],
                              bound=distance,
                              vpool=vpool)
 
     if verbose:
         print(' -> Codifying: Words Value')
+        
     for index, word in string_list:
         for pos in range(length):
             solver.propagate(
-                assumptions=[vpool.id(x(index, pos)) * (-1)**(not word[pos])])
+                assumptions=[vpool.id(xvar(index, pos)) * (-1)**(not word[pos])])
 
     if verbose:
         print('Running SAT Solver...')
