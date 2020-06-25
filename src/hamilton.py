@@ -12,7 +12,7 @@ from pysat.solvers import Solver
 from pysat.card import CardEnc, EncType
 from pysat.formula import IDPool
 from graph import Graph
-from utilities import xvar
+from utility import xvar
     
 
 
@@ -43,21 +43,23 @@ def find_hamiltonian_path(graph, check_cycle=False):
     print(' -> Codifying: All Positions occupied')
     for position_in_path in range(length):
         var_list = [
-            'v{}pos{}'.format(vertex, position_in_path)
+            vpool.id('v{}pos{}'.format(vertex, position_in_path))
             for vertex in range(1, length + 1)
         ]
 
         cnf = CardEnc.equals(lits=var_list, encoding=0, vpool=vpool)
+        print(cnf.clauses)
         solver.append_formula(cnf)
 
     print(' -> Codifying: All vertex visited')
     for vertex in range(1, length + 1):
         var_list = [
-            'v{}pos{}'.format(vertex, position_in_path)
+            vpool.id('v{}pos{}'.format(vertex, position_in_path))
             for position_in_path in range(length)
         ]
 
         cnf = CardEnc.equals(lits=var_list, encoding=EncType.pairwise, vpool=vpool)
+        print(cnf.clauses)
         solver.append_formula(cnf)
 
     print(' -> Codifying: Adjacency Matrix')

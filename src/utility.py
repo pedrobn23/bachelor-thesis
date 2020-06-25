@@ -4,7 +4,7 @@ def triple_equal(x, y, z, vpool):
             [vpool.id(x), -vpool.id(y),-vpool.id(z)],
             [vpool.id(x), vpool.id(y), vpool.id(z)]]
 
-def xvar(word, pos):
+def xvar(i, j):
     return 'x{} {}'.format(i, j)
 
 def yvar(i):
