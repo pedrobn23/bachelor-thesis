@@ -65,6 +65,7 @@ def minimun_coloring(graph):
         if coloring(graph, new, False):
             old = new
             new = new // 2
+
         else:
             new += math.ceil((old - new) / 2)
 

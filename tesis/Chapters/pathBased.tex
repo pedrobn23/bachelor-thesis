@@ -112,10 +112,45 @@ Let now prove that this is a correct reduction, i.e., that an assignment that ca
 
 \subsubsection{The optimization trick}
 
+The next problems that we consider have a characteristic in common: they are optimizing problem with an associated NP-Complete decision problem. That is, we have a decision problem that, given a graph $G$ and a number $k$, check whether a condition is satisfied, and an associated minimizing (resp. maximizing) problem that consists of looking for the least (resp. greatest) $k$ where the conditions are satisfy for $G$. For the rest of the discussion we consider that we can solve the decision problem in $O(f(n))$ for some $f\in \mathbb{N}^\mathbb{N}$. \\
+
+The naive approach is straight forward: trying iteratively try every $k$ increasingly (resp. decreasingly) until some satisfy the condition, therefore finding the minimum (resp. maximum). As in all three problems it happens that $1\le k \le n$ therefore we can solve the function problem in $O(nf(n))$. \\
+
+Nonetheless there is a somewhat common trick that consist of using one more property of these type of problem: if the conditions are satisfied for a number $k$ then they are satisfy for every $k' \ge k$. Therefore we can implement a binary search, therefore achieving a better efficiency $O(log(n)f(n))$.\\
+
+
+\begin{algorithm}
+  \caption{Optimization trick for minimizing}\label{bt}
+  \begin{algorithmic}[1]
+    \State $G \gets$ a graph.
+    \Procedure{\texttt{Minimizing}}{$G$}
+    \State old $\gets$ maximun value for $k$
+    \State new $\gets$ old / 2
+    \While{ old $\neq$ new}
+        \If{ \texttt{decision\_problem}($G$,new)}
+         \State   old $\gets$ new
+         \State   new $\gets$ new / 2
+         \Else
+         \State new $\gets$ (old - new) / 2
+         \EndIf
+    \EndWhile
+    \State \Return new
+  \end{algorithmic}
+\end{algorithm}
+
+This method allow us to study the decision problem, and having an slightly refined algorithm to solve the associated optimization problem. 
 
 \subsubsection{Coloring}
 
+We now introduce one of the most active problems in graph theory. Some interesting problems such as the Hadwiger-Nelson problem. This area has an active scene. In this text we use the Lovasz Local Lemma, which was originally developed in order to solve an hypergraph (a generalization of graph) coloring problem.\\
 
+We defined what a coloring is in Definition \ref{def:coloring}. We now change our focus and, instead for trying to find a stable coloring, we now look for \emph{proper coloring}.
+
+\begin{definition}
+  Let $G=(V,E)$ be a graph and $\pi$ be a coloring of $G$. We say that $\pi$ is a \emph{proper coloring} of $G$ if not two adjacent vertices belong to the same color.
+\end{definition}
+
+proposition easy.
 
 \subsection{Implementation}
 

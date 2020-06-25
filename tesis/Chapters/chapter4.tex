@@ -180,8 +180,8 @@ We are going to search symmetries in a CNF formula $F$. Until now we have a naiv
 
 
 
-\begin{definition}
-  Let $G = (V,E)$ be a graph where $V$ is the set of nodes and $E$ the set of edges, represented as unordered pairs. A \emph{coloring} of a graph its a partition  $(V_1,...,V_n)$ of $V$. Each  $V_i$ is called a \emph{color}, and for every $x\in V_i$ it is said that $x$ with color $i$. Also, let $v\in V$ we define $$d(v, V_i) = |\{u \in V_i : (u,v)\in E\}|.$$
+\begin{definition}\label{def:coloring}
+  Let $G = (V,E)$ be a graph where $V$ is the set of nodes and $E$ be the set of edges, represented as unordered pairs. A \emph{coloring} of a graph its a partition  $(V_1,...,V_n)$ of $V$. Each  $V_i$ is called a \emph{color}, and for every $x\in V_i$ it is said that $x$ with color $i$. Also, let $v\in V$ we define $$d(v, V_i) = |\{u \in V_i : (u,v)\in E\}|.$$
   We say that a coloring is \emph{stable} if
   $$d(u,V_i) = d(v,V_i), \qquad  \forall u,v \in V_j,\ \forall i,j \in 1,...,n.$$
 
