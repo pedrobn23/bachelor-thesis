@@ -4,7 +4,7 @@ Graph class.
 """
 
 from unittest import TestCase, main
-from src.graph import Graph
+from graph import Graph
 
 
 class GraphTestCase(TestCase):
