@@ -34,16 +34,14 @@ def find_hamiltonian_path(graph, check_cycle=False):
         names[integer + 1] = vertex
     names[0] = names[length]
         
-
-    
     for position_in_path in range(length):
         for vertex in range(1, length + 1):
-            vpool.id('v{}pos{}'.format(vertex, position_in_path))
+            vpool.id(xvar(vertex, position_in_path))
                
     print(' -> Codifying: All Positions occupied')
     for position_in_path in range(length):
         var_list = [
-            vpool.id('v{}pos{}'.format(vertex, position_in_path))
+            vpool.id(xvar(vertex, position_in_path))
             for vertex in range(1, length + 1)
         ]
 
@@ -54,7 +52,7 @@ def find_hamiltonian_path(graph, check_cycle=False):
     print(' -> Codifying: All vertex visited')
     for vertex in range(1, length + 1):
         var_list = [
-            vpool.id('v{}pos{}'.format(vertex, position_in_path))
+            vpool.id(xvar(vertex, position_in_path))
             for position_in_path in range(length)
         ]
 
@@ -69,19 +67,21 @@ def find_hamiltonian_path(graph, check_cycle=False):
             if (names[vertex_a], names[vertex_b]) not in edges:
                 for position_in_path in range(length - 1):
                     solver.add_clause([
-                        -vpool.id(vertex_a, position_in_path),
-                        -((position_in_path + 1) * length + vertex_b)
+                        -vpool.id(xvar(vertex_a, position_in_path)),
+                        -vpool.id(xvar(vertex_b, position_in_path+1)),
                     ])
                     solver.add_clause([
-                        -(position_in_path * length + vertex_b),
-                        -((position_in_path + 1) * length + vertex_a)
+                        -vpool.id(xvar(vertex_b, position_in_path)),
+                        -vpool.id(xvar(vertex_a, position_in_path+1)),
                     ])
 
                 if check_cycle:
-                    solver.add_clause(
-                        [-vertex_b, -(length * (length - 1) + vertex_a)])
-                    solver.add_clause(
-                        [-vertex_a, -(length * (length - 1) + vertex_b)])
+                    solver.add_clause([
+                        vpool.id(xvar(vertex_b, length - 1)),
+                        vpool.id(xvar(vertex_a, 0))])
+                    solver.add_clause([
+                        vpool.id(xvar(vertex_b, 0)),
+                        vpool.id(xvar(vertex_a, length -1))])
 
     print('Running SAT Solver...')
     solution = []
@@ -108,7 +108,7 @@ def check_correctness(graph, path):
 
 print(xvar(1,2))
 
-graph2 = {"a": {"b", "c"}, "b": {"c"}, "c": {"b"}}
+graph2 = {"a": {"b"}, "b": {"c","a"}, "c": {"b"}}
 
 graph = Graph(graph2)
 path = find_hamiltonian_path(graph, check_cycle=True)
