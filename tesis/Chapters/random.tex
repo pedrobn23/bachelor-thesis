@@ -13,7 +13,7 @@ The first one that we will consider is the Paturi-Pudlák-Zane(PPZ) algorithm \c
 In this subsection we will present the PPZ algorithm and in the next subsection its improved version PPSZ. The information presented here follows the discussion in \cite{paturi2005improved}. The difference between PPZ and PPSZ is some added preprocessing. At the time of release, PPSZ was the asymptotically fastest algorithm for random $k$-SAT with $k \ge 4$ only improved in $3$-SAT by the Schönning random walk algorithm and its improved version the Hofmeister algorithm, because PPSZ were not able to extend the results they found but it was suggested that it should be extendable. At the end, it was proved 9 years later by Hertli \cite{hertli20143} that the bounds hold on general. \\
 
 
-To define the algorithms, we first define some subroutines. The first of them take a CNF formula $F$, an assignment $\alpha$ and a permutation $\pi$ and returns other assignment $u$.Note that in line 5 and 7 on the procedure \texttt{modify}[Algorithm\ref{alg:modify}]is only checking whether or not we can unit propagate the variable $x_{\pi(i)}$. The algorithm \texttt{Search}[Algorithm \ref{search}] is obtained by running \texttt{Modify} on many pairs $(\alpha, \pi)$ where $\alpha$ is a random assignment and $\pi$ a random permutation.\\ 
+To define the algorithms, we first define some subroutines. The first of them take a CNF formula $F$, an assignment $\alpha$ and a permutation $\pi$ and returns other assignment $u$.Note that in line 5 and 7 on the procedure \texttt{modify} [Algorithm\ref{alg:modify}] is only checking whether or not we can unit propagate the variable $x_{\pi(i)}$. The algorithm \texttt{Search}[Algorithm \ref{search}] is obtained by running \texttt{Modify} on many pairs $(\alpha, \pi)$ where $\alpha$ is a random assignment and $\pi$ a random permutation.\\ 
 
 \begin{algorithm}
   \caption{\texttt{Modify subroutine}}\label{alg:modify}
@@ -88,20 +88,22 @@ $\{1,...,n\}$ and $y$ be any assignment to the variables. Then,
 
 Now, let $\tau (F,z)$ the probability that \texttt{Modify}$(\alpha,\pi,F)$ would return $z$ with random $\pi$ and $\alpha$. From the previous lemma:
 
-$$ \tau(F,z) = 2^{-n} \mathbb{E}_{\pi}[2^{|\text{Forced}(z, \pi, F)|}] \ge^{1.} 2^{-n +E_{\pi}[{|\text{Forced}(z, \pi, F)|}] }$$
+$$ \tau(F,z) = 2^{-n} \mathbb{E}_{\pi}[2^{|\text{Forced}(z, \pi, F)|}] \ge^{1.} 2^{-n +E_{\pi}[{|\text{Forced}(z, \pi, F)|}] },$$
 
-Where 1. is by the convexity of the exponential function and $\mathbb{E}_{\pi}$ is the expected value with $\pi$ as variable. \\
+where 1. is by the convexity of the exponential function and $\mathbb{E}_{\pi}$ is the expected value with $\pi$ as variable. \\
 
 Let $v$ be a variable in $Var(f)$ and $z$ a satisfying assignment of $F$. let $C$ be a clause in $F$, then we say that $C$ is critical for $(v,z,F)$ if the only true literal in $C$ is the one corresponding to $v$. Suppose that $\pi$ is a permutation such that $v$ appears after all other variables in $C$. It is easy to follow that $v \in \text{Forced}(z,\pi,F)$ if $C$ is critical for $(v,z,F)$. Conversely, if $z$ is forced it must be critical and appears last on the permutation. Let $Last(v,G,z)$ be the set of permutation of the variables such that for at least one critical clause for $(v,G,z)$, v appears last on the permutation. That is, the set of permutations where $v$ is forced. Let $P(v,z,F)$ the probability that a random permutation is in $Last(v,G,z)$. It follows that
+\begin{align*}
+   \mathbb{E}_{\pi}[|\text{Forced}(z, \pi, F)|] & = \sum_{v \in Var(F)} \mathbb{E}_{\pi}[v \in \text{Forced}( z, \pi, F)]\\ & = \sum_{v \in Var(F)} P(v, z, F) .
+\end{align*}
 
-$$ \mathbb{E}_{\pi}[|\text{Forced}(z, \pi, F)|]= \sum_{v \in Var(F)} \mathbb{E}_{\pi}[v \in \text{Forced}( z, \pi, F)] = \sum_{v \in Var(F)} P(v, z, F)  $$
 
 Putting it all together we have:
 
 \begin{lemma}
   \label{labelito}
   For any satisfying assignment $z$ of a CNF formula $F$
-  $$\tau(F,z) \ge 2^{-n + \sum_{v \in Var(F)} P(v, z, F)}$$
+  $$\tau(F,z) \ge 2^{-n + \sum_{v \in Var(F)} P(v, z, F)}.$$
 
   In particular, if $P(v,z,F) \ge p$ for all variables $v$ then $\tau(G,z) \ge 2^{-(1-p)n}$.
 \end{lemma}
@@ -111,7 +113,7 @@ Putting it all together we have:
   Let $F$ be a $k$-CNF formula. If $F$ is satisfiable by an isolated assignment, $\tau(F) \ge 2^{-(1-\frac{1}{k})n}$, where $n$ is the number of variables.
 \end{theorem}
 \begin{proof}
-  Let $z$ be a satisfying assignment of $F$. Then $\tau(F) \ge \tau(F,z)$. If $z$ is an isolated assignment, them for each variable $v$ there is a critical clause $C_v$ and the probability that for a random permutation $v$ appear last is $1/k$. Therefore by the previous lemma  $$\tau(F) \ge \tau(F,z) \ge 2^{-(1-\frac{1}{k})n}$$
+  Let $z$ be a satisfying assignment of $F$. Then $\tau(F) \ge \tau(F,z)$. If $z$ is an isolated assignment, them for each variable $v$ there is a critical clause $C_v$ and the probability that for a random permutation $v$ appear last is $1/k$. Therefore by the previous lemma  $$\tau(F) \ge \tau(F,z) \ge 2^{-(1-\frac{1}{k})n}.$$
 \end{proof}
 
 
@@ -136,7 +138,7 @@ Given a formula $F$ we will apply this lemma to the set $sat(F)$ of assignments 
 
 
 \begin{align*}
-  \tau(G) \ge \sum_{z\in sat(F)}  \tau(G, z | B_z) Prob(y \in B_z)  &\ge  \sum_{z\in sat(F)} \min_{\chi \in sat(F)} \{\tau(G, \chi | B_\chi)\}  Prob(y \in B_z)\\ & = \min_{\chi \in sat(F)} \{\tau(G, \chi | B_\chi)\}
+  \tau(G) & \ge \sum_{z\in sat(F)}  \tau(G, z | B_z) Prob(y \in B_z)\\  &\ge  \sum_{z\in sat(F)} \min_{\chi \in sat(F)} \{\tau(G, \chi | B_\chi)\}  Prob(y \in B_z)\\ & = \min_{\chi \in sat(F)} \{\tau(G, \chi | B_\chi)\}.
 \end{align*}
 
 
@@ -285,13 +287,13 @@ Now that we have all our machineri working we will define and estoy three events
 
 
 For the analysis of the probability of $E_1$ we can assume $\alpha_0 = \{ x \to 0 : x \in Var(F)\}$ without loss of generality. To drawn our assignment $\alpha$ we randomly choose a value $a_x \in \{0,1\}$ for every $x \in Var(F)$. Therefore, the number of variables mapped to 1 obtained in a random assignment follows a binomial distribution $B(n, 1/2)$. We can see that:
-$$P(E_1) = P(B(n,1/2) = \lfloor n/k\rfloor) = {\displaystyle {n \choose \lfloor n/k\rfloor }  \left (\frac{1}{2}\right )^{n}} $$
+$$P(E_1) = P(B(n,1/2) = \lfloor n/k\rfloor) = {\displaystyle {n \choose \lfloor n/k\rfloor }  \left (\frac{1}{2}\right )^{n}}. $$
 
 Note also that $k\le n$, as by the Pigeon Hole Principle, there exists a variable $x\in Var(F)$ for every $C\in F$ such that both literals $x$ and $\neg x$ belong to $C$, and therefore the formula would be a tautology. We do not consider clauses with repeated literals.\\
 
 For the probability of the event $E_2$, we 'walk' in the right direction at least $\lfloor n/k\rfloor$. As each step follows a Bernoulli distribution of probability $1/k$ we can see that:
 
-$$P(E_2) =  P(B(n,1/k) \ge \lfloor n/k\rfloor) = {\displaystyle \sum _{i=\lfloor n/k\rfloor }^{n}{n \choose i }  \left (\frac{1}{k}\right )^{i}  \left (\frac{k-1}{k}\right )^{n-i}} $$
+$$P(E_2) =  P(B(n,1/k) \ge \lfloor n/k\rfloor) = {\displaystyle \sum _{i=\lfloor n/k\rfloor }^{n}{n \choose i }  \left (\frac{1}{k}\right )^{i}  \left (\frac{k-1}{k}\right )^{n-i}} .$$
 
 
 Now we can see that
@@ -302,15 +304,15 @@ Now we can see that
     & \ge {\displaystyle {n \choose \lfloor n/k\rfloor  }^2  2^{-n}   \left (\frac{1}{k}\right )^{n/k}  \left (\frac{k-1}{k}\right )^{n-( n/k)}  } \\
     & =^{poly \ 1.} {\displaystyle 2^{2\mathfrak{h}(1/k) n}  2^{-n}   \left (\frac{1}{k}\right )^{ n/k}  \left (\frac{k-1}{k}\right )^{n-( n/k )}  }\\
     & = \frac{ 2^{-n}   \left (\frac{1}{k}\right )^{ n/k}  \left (\frac{k-1}{k}\right )^{n-( n/k )} }{(\frac{1}{k})^{2n/k} (\frac{k-1}{k})^{2((k-1)/k)n}  }
-     =\frac{1}{\left ( 2\left (1-\frac{1}{k}\right ) \right )^n} 
+     =\frac{1}{\left ( 2\left (1-\frac{1}{k}\right ) \right )^n}. 
   \end{split}
 \end{equation}
 
 Where 1. is a direct consequence of proposition[\ref{pro:shannon}]. Now that we have bounded the probability that \texttt{Random-LS} find a satisfiable assingment, we can see that, if $r = c \left ( 2\left (1-\frac{1}{k}\right ) \right )^n$ then the probability of \texttt{WalkSAT} algorithm not finding a correct assignment conditioned on its existence is:
 
-$$ \left ( 1-  \frac{1}{\left ( 2\left (1-\frac{1}{k}\right ) \right )^n} \right )^{\left ( c2\left (1-\frac{1}{k}\right ) \right )^n}  \approx^{2.} e^{-c}$$
+$$ \left ( 1-  \frac{1}{\left ( 2\left (1-\frac{1}{k}\right ) \right )^n} \right )^{\left ( c2\left (1-\frac{1}{k}\right ) \right )^n}  \approx^{2.} e^{-c},$$
 
-On 2. we coinsder $n$ to be big enough in order to approximate to the limit of the expresion.
+where on 2. we coinsder $n$ to be big enough in order to approximate to the limit of the expresion.
 \end{proof}
 
 This algorithm was fully derandomized \cite{moser2011full}. 
@@ -347,13 +349,7 @@ As a last section of this part we will summarize all SAT solver explained and cl
 \end{table}
 
 
+We have gone through the main algorithms in question of their theoretical relevance. We'd like to make a mention of Stalmark's algorithm. This algorithm, instead of trying to solve the SAT problem focuses on the resolution of the TAUT analog. This algorithm had great importance since its discovery and is said to be very well adapted to induced formulas of real situations. However, our mainly theoretical point of view has made us prefer to expose other algorithms. 
 
-TODO:Incluir ahora un parrafo de algoritmos no incluidos pero dignos de mención
-
-\begin{enumerate}
-\item Hoffmeister
-\item Stalmark
-\item Derandomized algorithms
-\end{enumerate}
     
     

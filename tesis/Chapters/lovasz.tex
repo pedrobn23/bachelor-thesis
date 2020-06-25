@@ -151,7 +151,7 @@ This section will follow this order:
 We will work here with a very specific type of formulas.
 \begin{definition}
 	Let $C$ be a clause in $F$, the neighborhood of $C$, denoted as $\Gamma_F(C)$ as 
-	$$ \Gamma_F(C) = \{ D \in F : D\ne C, Var(C) \cap Var(D) \ne \emptyset\}$$
+	$$ \Gamma_F(C) = \{ D \in F : D\ne C, Var(C) \cap Var(D) \ne \emptyset\}.$$
 	
 	Analogously, the inclusive neighborhood $\Gamma_F^+(C) = \Gamma(C) \cup \{C\}$. 
 \end{definition}
@@ -173,7 +173,7 @@ Further on $\Gamma$ and $\Gamma^+$ will respectively denote inclusive or exclusi
 $\mathcal{A} = \{A_1,...,A_m\}$ be arbitrary events in this space. We say that a graph $G$ on the vertex set $\mathcal{A}$ is a \emph{lopsidependency graph }for $\mathcal{A}$ if no event is more likely in the conditional space defined by intersecting the complement of any subset of its non-neighbors. In others words:
 
 \[
- P\left(  A\ \Big | \bigcap_{B\in S} \overline{B} \right ) \le P(A) \ \ \ \ \quad \forall A \in \mathcal{A},\ \forall S \subset \mathcal{A} \backslash\Gamma_G^+(A) 
+ P\left(  A\ \Big | \bigcap_{B\in S} \overline{B} \right ) \le P(A) \ \ \ \ \quad \forall A \in \mathcal{A},\ \forall S \subset \mathcal{A} \backslash\Gamma_G^+(A) .
 \]
 
 
@@ -187,7 +187,7 @@ If, instead of requiring the event to be more likely, we require it to be indepe
 	Let $\Omega$ be a probability space and let 
 $\mathcal{A} = \{A_1,...,A_m\}$ be arbitrary events in this space. Let $G$ be a lopsidependency graph for $\mathcal{A}$. If there exists a mapping $\mu:\mathcal{A} \to (0,1)$ such that 
 $$
-\forall A \in \mathcal{A} : P (A) \le \mu(A) \prod_{B\in\Gamma_G(A)} (1-\mu(B))
+\forall A \in \mathcal{A} : P (A) \le \mu(A) \prod_{B\in\Gamma_G(A)} (1-\mu(B)),
 $$
 
 then $P\left ( \bigcap_{A\in \mathcal{A}} \overline{A}\right ) > 0$.\\
@@ -199,7 +199,7 @@ By considering the random experiment of drawing an assignment uniformly, with th
 	Let $F$ be a CNF formula. If there exists a mapping $\mu:F\to (0,1)$ that associates a number with each clause in the formula such that 
 	
 	$$
-\forall A \in \mathcal{A} : \omega (A) \le \mu(A) \prod_{B\in\Gamma^*_G(A)} (1-\mu(B))
+\forall A \in \mathcal{A} : \omega (A) \le \mu(A) \prod_{B\in\Gamma^*_G(A)} (1-\mu(B)),
 $$
 	then F is satisfiable.
 \end{corollary}
@@ -220,7 +220,7 @@ The result that we will prove in a constructive way will be slightly more strict
 	Let $F$ be a CNF formula. If there exists a mapping $\mu:F\to (0,1)$ that associates a number with each clause in the formula such that 
 	
 	$$
-\forall A \in \mathcal{A} : \omega (A) \le \mu(A) \prod_{B\in\Gamma_G(A)} (1-\mu(B))
+\forall A \in \mathcal{A} : \omega (A) \le \mu(A) \prod_{B\in\Gamma_G(A)} (1-\mu(B)),
 $$
 	then F is satisfiable.
 \end{corollary}
@@ -236,13 +236,13 @@ In order to get a result easier to check we will present a new criteria. If $k\l
 	 We will try to use [\ref{LLLSC}]. We will define such $\mu: F \to (0,1),$$\ \mu(C)=e\cdot 2^{-k}$. Let $C_0\in F$ be an arbitrary clause.
 	 
 	 \[
-	 2^{-k}=\omega(C)\le  \mu(C) \prod_{B\in\Gamma_F(C)} (1-\mu(B)) = e2^{-k}(1-e 2^{-k})^{|\Gamma_F(C)|}
+	 2^{-k}=\omega(C)\le  \mu(C) \prod_{B\in\Gamma_F(C)} (1-\mu(B)) = e2^{-k}(1-e 2^{-k})^{|\Gamma_F(C)|}.
 	 \]
 	 With the hypothesis
 	 
 	\[
-		 2^{-k} \le  e 2^{-k}(1-e2^{-k})^{2^k/e-1}\]\[
-		 1  \le e(1-e2^{-k})^{2^k/e-1}
+		 2^{-k} \le  e 2^{-k}(1-e2^{-k})^{2^k/e-1},\]\[
+		 1  \le e(1-e2^{-k})^{2^k/e-1}.
 	\]
 	
 	Being famous that the convergence of the sequence $\{(1-e2^{-k})^{2^k/e-1}\}_k$ to $1/e$ is monotonically decreasing.\\

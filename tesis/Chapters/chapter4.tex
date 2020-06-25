@@ -408,7 +408,6 @@ As checking whether an assignment is autark is linear on the number of clauses, 
 
 
 \subsection{Tseitin Theorem}
-TODO: Redo the operations
 Now that we are able to talk about efficiency is time to talk about an interesting, anticipated result. If we remember Lindenbaum algebra[\ref{def:linden}] we have defined a quotient space on the formulas in terms of satisfiability. In order to solve GSAT, we are not in need of solving all formulas.  Instead we can learn how to solve a language of formulas $\mathsrc{F}$ such that for every class $[\phi_1]\in Form/\sim$ there  is a formula $f\in\mathsrc{F}$ such that $f \in [\phi_1]$. Also, we will need a method that allows us to find such $f\in\mathsrc{F}$ given any element of $[\phi_1]$.We want to prove that SAT is a language that satisfies this restrictions. The naive approach to the problem is straightforward:\\
 
 \begin{proposition}

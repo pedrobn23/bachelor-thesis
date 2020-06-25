@@ -41,22 +41,36 @@ PySAT\cite{imms-sat18} is a library developed for python SAT solving. It has bee
   \item Minisat: is ''a minimalistic, open-source SAT solver, developed to help researchers and developers alike to get started on SAT.'' Is one of the main references in SAT solving. This year SAT competitions included a MiniSAT Hack Track, that aim to display the best improvements possible to the classical MiniSAT with only minor changes (<10 lines).
   \end{itemize}
 
-  We will use generally the solver CaDiCal, in order to get the best for our money.
+  We will use generally the solver CaDiCaL. The solvers read a formula as a list of list of integers, negated or not. Should an integer $n$ exists, it assumes that all integer in $\{1,...,n\}$ exists as variable. Each particular solver is a class. The class \texttt{Solver} is a wrapper that works as an interface between the users and a solver. 
+
+
   
-\item Cardinality Encodings: PySAT includes a series of cardinality encodings. This will take an important in the development. In particular, we highlight the pairwise encoding. This is the implementation of the formula explained in the lemma[\ref{lemma:cooklevin}]. For the rest of the problems we do not care so much, because the techniques that use extra variables might collide, as it overlap with variables that we might already have defined for other purpose.
+\item Cardinality Encodings: PySAT includes a series of cardinality encodings. This will take an important in the development. This will take an important in the development, as this type of constraints are commonplace on problems. An example the formula explained in the lemma[\ref{lemma:cooklevin}], that is the called pairwise encoding. There are two classes involved:
+  \begin{itemize}
+  \item \texttt{IDPool}: a class that help us manage variables without having personally to have a log of what variable is associated to each integer. Nonetheless, we do not consider this class to be a black box. Reading the code we recognize that the variables are named after their order of arrival. This details is important in order to solve some function problems.
+  \item \texttt{CardEnc}: a class that allow us to encode cardinality restrictions of the type atmost, atleast and equals. I feel proud to say that I notified a bug in this particular class relative to a unidiomatic use of python that derived in a error, while thoroughly studying the project.  
+  \end{itemize}
 
 \end{itemize}
 
 
-\section{Path based Problems - Hamiltonian Cycle}
+\section{Path based Problems}
 
 
- In order to demonstrate the utility a series of reductions will be developed. This will imply a formal approach to the resolution of the problems, as well as deploying a little theoretical background to some problems when needed. Also we would like to show that this technique provide sometimes really simple approximations to the problems.\\
+In order to demonstrate the utility of SAT a series of reductions will be developed. This will imply a formal approach to the resolution of the problems, as well as deploying a little theoretical background to some problems when needed. Also we would like to show that this technique provide sometimes really simple approximations to the problems. We start approaching graph related problems, for two reasons:
+
+\begin{enumerate}
+\item The graphs arouse interest both in mathematics and in computer science, thus deriving a work that could be interesting for profiles coming from both subjects.
+\item We want to use SAT to solve problems at least as complex as SAT. Thus, we look for problems that are NP-Hard. Some of the most important classical NP-Problems\ are defined over graphs. 
+\end{enumerate}
 
 
-\subsection{Resolution}
 
-The problem of, given a graph, whether it exists  a Hamiltonian Cycle is well know to be NP-Complete. Then by Cook Theorem it is known that a reduction from the problem of the Hamiltonian Cycle to SAT exists. This theorem is constructive, so it effectively does gives a reduction. Nonetheless, this reduction is unmanageable and in order to use SAT-solvers to improve Hamiltonian cycle resolution it would be necessary to provide easier programming techniques. On this subsection an alternative reduction will be shown.
+\subsection{Resolutions}
+
+\subsubsection{Hamiltonian Path}
+
+The problem of, given a graph, whether it exists a Hamiltonian Path is well know to be NP-Complete. Then by Cook Theorem it is known that a reduction from the problem of the Hamiltonian Cycle to SAT exists. This theorem is constructive, so it effectively does gives a reduction. Nonetheless, this reduction is unmanageable and in order to use SAT-solvers to improve Hamiltonian cycle resolution it would be necessary to provide easier programming techniques. On this subsection an alternative reduction will be shown.
 
 \begin{definition}
   A Hamiltonian cycle is a cycle that visits every node in a graph. The associated problem is to check, given a graph, whether whether cycle exists.
@@ -79,10 +93,13 @@ Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. To reduce it to a SA
 TODO: Check minor errors.
 \begin{enumerate}
 \item Each vertex must appear at least once in the path, for every vertex $v_i$:
-  $ x_{i,1} \vee ... \vee x_{i,n +1},\ i \in 1,...,n$.
-\item Each vertex must not appear twice in the path, unless it is the first and last node: $\neg x_{i,j} \vee \neg x_{i,k},\ i \in 1,...,n ,\ j \in 2,...,m+1, k \in 1,...,m$.
-\item Every position in the path must be occupied:   $ x_{1,i} \vee ... \vee x_{n,i},\ i \in 1,...,m+1$.
-\item Two consecutive vertices have to be adjacent: $\neg x_{i,j} \vee \neg x_{i+1,k}\ \forall (k,j) \not \in E$.
+  $$ x_{i,1} \vee ... \vee x_{i,n +1},\ i \in 1,...,n.$$
+\item Each vertex must not appear twice in the path, unless it is the first and last node:
+  $$\neg x_{i,j} \vee \neg x_{i,k},\ i \in 1,...,n ,\ j \in 2,...,m+1, k \in 1,...,m.$$
+\item Every position in the path must be occupied:
+  $$ x_{1,i} \vee ... \vee x_{n,i},\ i \in 1,...,m+1.$$
+\item Two consecutive vertices have to be adjacent:
+  $$\neg x_{i,j} \vee \neg x_{i+1,k}\ \forall (k,j) \not \in E.$$
 \end{enumerate}
 
 Let now prove that this is a correct reduction, i.e., that an assignment that can satisfy these clauses exists if, and only if, the graph $G$ has a Hamiltonian graph. If such an assignment exists we can make a Hamiltonian cycle with the variables assigned to 1. On the other hand if such cycle exists an assignment that assign to 1 the variable $x_{i,j}$ given that the vertex $v_i$ is in position $j$ in the path would satisfy all the clauses. 
