@@ -33,7 +33,6 @@ Further on this section we will present Boolean Algebra in a classic lattice-bas
 \end{definition}
 
 
-
 \begin{definition} A lattice is a partial ordered set 
 $ \{X,\le\} $ where every pair of elements possesses a least upper bound and a greatest lower bound. A lattice has two new operations defined: given two elements $x,y\in X$
   \begin{itemize}
@@ -43,8 +42,7 @@ $ \{X,\le\} $ where every pair of elements possesses a least upper bound and a g
 \end{definition}
 
 
-  A lattice is complete if every subset has an unique largest element and an unique lowest element. A lattice is presented generally as a duple $\{L,\le\}$, a triple $\{X,\vee,\wedge\}$ and, whenever possible, is presented as a quintuple $\{X, \vee, \wedge, \top,\bot\}$ where $\top$ is the greatest element and $\bot$ the lowest element. A lattice is called distributive if $x\vee(y \wedge z) = (x\vee y) \wedge (x \vee z)$ and $x\wedge(y \vee z) = (x\wedge y) \vee (x \wedge z)$.
-
+  A lattice is complete if every subset has an unique largest element and an unique lowest element. A lattice is presented generally as a duple $\{L,\le\}$, a triple $\{X,\vee,\wedge\}$ and, whenever possible, is presented as a quintuple $\{X, \vee, \wedge, \top,\bot\}$ where $\top$ is the greatest element and $\bot$ the lowest element. A lattice is called distributive if $x\vee(y \wedge z) = (x\vee y) \wedge (x \vee z)$ and $x\wedge(y \vee z) = (x\wedge y) \vee (x \wedge z)$. For every lattice $\{L,\le\}$ we can consider an associated \emph{inverse lattice} denoted by $\{L,\ge\}$ where: $$ a \ge b \iff b \le a\qquad  \forall a,b \in L.$$
 
 
 With the concept of lattice just included, we present the \emph{Knaster and Tarski fixpoint theorem}. In order to do that we will introduce some concepts. Given a function $f:\{L,\le\}\to \{L,\le\}$, a prefixpoint (resp. postfixpoint) is a point $x \in L$ such that $f(x) \le x$ (resp. $f(x) \ge x$). A fixpoint is a point that is both prefixpoint and postfixpoint. Note that, given that they exists, $\top$ and $\bot$ are a prefixpoint and a postfixpoint of $f$ respectively.
@@ -63,7 +61,7 @@ With the concept of lattice just included, we present the \emph{Knaster and Tars
   \item We know that there is at least a prefixpoint. Let
     $$l = \bigwedge_{\{x\in X: x\text{ is a prefixpoint}\}} x .$$ 
     Lets prove that $l$ is a fixpoint. Le $x$ be an arbitrary fixpoint, therefore, $l \le x \le f(x)$. Since $x$ was arbitrary, $f(l) \le l$. To show that it a fixpoint it suffices to see that $f(l)$ is a prefixpoint to, as $f$ is monotone.
-  \item Apply the previous result on $f:\{L,\le\}\to \{L,\le\}$.
+  \item Apply the previous result on $f:\{L,\ge\}\to \{L,\ge\}$.
   \end{enumerate}
 \end{proof}
 
@@ -133,7 +131,7 @@ We first start with the basic building blocks, which collectively form what is c
   
 \item Values 0 and 1. These values are often named as $\bot$ and $\top$ respectively.
 
-\item Binary operators: $\wedge, \vee, \rightarrow, \oplus, \iff $
+\item Binary operators: $\wedge, \vee, \rightarrow, \oplus, \iff $.
 \end{itemize}
 
 
@@ -430,7 +428,7 @@ Let $F$ be a CNF formula. If F is satisfied certifying this property is as easy 
 
 \begin{definition}[\cite{marek2009introduction}]
   Let $C_1,C_2$ be clauses and $l$ be a literal. The resolution rule is an execution of the following partial binary operation:
-  $$\frac{l \lor C_1 \qquad \neg l \lor C_2}{ C_1 \lor C_2}$$
+  $$\frac{l \lor C_1 \qquad \neg l \lor C_2}{ C_1 \lor C_2}.$$
 \end{definition}
 
 \begin{definition}
@@ -440,7 +438,7 @@ We define \emph{Cla} as the lattice of all clauses regarded as sets, along with 
 
 \begin{definition}
  Let $C_1,C_2\in$ Cla  such that the literal $l$ appear only once in $C_1$ and the literal $\neg l$ appear only once in $l_2$. Then we define the \emph{resolution operator} as the partial operator $Res: Cla \times Cla \to Cla$ as
-  $$Res(C_1,C_2) = (C_1 \backslash \{l\}) \cup ((C_1 \backslash \{\neg l\}))$$
+  $$Res(C_1,C_2) = (C_1 \backslash \{l\}) \cup ((C_1 \backslash \{\neg l\})).$$
 \end{definition}
 
 \begin{definition}
@@ -454,7 +452,12 @@ We define \emph{Cla} as the lattice of all clauses regarded as sets, along with 
 
 Once we have  the resolution operator we want to define the closure of a CNF formula $F$ by res, that it we want to find the least set of clauses that includes $F$ and is a fixpoint under resolution. For that, we define the operator $res_F:\text{Cla}\to\text{Cla}$ as
 
-$$res_F(G) = F \cup \{Res(C_1,C_2) : C_1,C_2 \in F \cup G \text{ and } Res(C_1,C_2) \text{is non-tautological}\}$$
+
+\begin{equation}
+  \begin{split}
+    res_F(G) = F \cup \{Res(C_1,C_2) : &C_1,C_2 \in F \cup G, \\ & Res(C_1,C_2) \text{ is non-tautological}\}
+  \end{split}
+\end{equation}
 
 
 We can see that $res_F$ is monotone. As a consequence of [\ref{the:fixpoint}] there is an unique least fixpoint of $res_F$.
@@ -536,7 +539,7 @@ SAT could be seen as a CSP where every domain is $\{0,1\}$ and each clause is a 
 $$
 \alpha(x_{i})=
 \begin{cases}
-  1 & \beta(x_{i}) = d_{i,j}\\
+  1 & \beta(x_{i}) = d_{i,j},\\
   0 & \text{otherwise}.
 \end{cases}
 $$
