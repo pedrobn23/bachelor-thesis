@@ -65,8 +65,18 @@ In order to demonstrate the utility of SAT a series of reductions will be develo
 \end{enumerate}
 
 
-
 \subsection{Resolutions}
+ 
+We choose to solve four of the 21 Karp's NP-Complete problems\cite{karp1972reducibility}, namely:
+\begin{itemize}
+\item Hamiltonian Path.
+\item Vertex Coloring.
+\item Vertex Covering.
+\item Steinner tree.
+\end{itemize}
+
+These problems are among the most representatives of graphs theory, so we believe of great interest developing a library to solve then.
+
 
 \subsubsection{Hamiltonian Path}
 
@@ -99,6 +109,9 @@ Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. To reduce it to a SA
 \end{enumerate}
 
 Let now prove that this is a correct reduction, i.e., that an assignment that can satisfy these clauses exists if, and only if, the graph $G$ has a Hamiltonian graph. If such an assignment exists we can make a Hamiltonian cycle with the variables assigned to 1. On the other hand if such cycle exists an assignment that assign to 1 the variable $x_{i,j}$ given that the vertex $v_i$ is in position $j$ in the path would satisfy all the clauses. 
+
+\subsubsection{The optimization trick}
+
 
 \subsubsection{Coloring}
 

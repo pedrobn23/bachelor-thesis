@@ -10,7 +10,7 @@ from pysat.formula import IDPool, CNF
 
 def coloring(graph, n_color=4, verbose=True):
     """
-    Check if there exists a vertex cover of, at most, k-vertices.
+    Check if there exists a vertex coloring of, at most, k-vertices.
     """
     if n_color < 0:
         raise ValueError('Number of colors must be positive integer')
@@ -65,7 +65,6 @@ def minimun_coloring(graph):
         if coloring(graph, new, False):
             old = new
             new = new // 2
-
         else:
             new += math.ceil((old - new) / 2)
 
