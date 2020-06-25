@@ -17,16 +17,6 @@
 
 \chapter{Logic}
 
-\begin{itemize}
-\item[TODO:]$\qquad$ Incluir introducción del problema.
-
-\item[INFO:]
-  \begin{itemize}
-  \item Explicar que vamos a explicar en este capítulo.
-  \item Handbook incluye una introducción histórica.
-  \item Libro verde incluye una introducción intuitiva excelente.
-\end{itemize}
-\end{itemize}
 \epigraph{“Mathematics is a presuppositionless science.” }{\textit{Hilbert's Die Grundlagen der Mathematik (1927)}}
 
 In this chapter we present the bases of Logic and formal languages. Logic will provide us with a framework on which we will be able to define the Satisfiability Problem. We will present the area with formality, explaining only the things that will be necessary for our goal.
@@ -36,7 +26,7 @@ In this chapter we present the bases of Logic and formal languages. Logic will p
 
 The same way I started my journey on the university, we could have started this text right from the axioms, making a really romantic thesis. Nonetheless, given the goal we want to achieve, it seems excessive. We will refer to the commonly used \emph{Zermelo-Fraenkel axioms}, in order to have a point of reference, and therefore we will work without more considerations with sets and set operations. We will only be concerned with finite sets for most cases.\\
 
-Further on this section we will present Boolean Algebra in a classic lattice-based way that could be found in related literature. In particular we follow  \emph{Introduction to mathematics of satisfiability}\cite{marek2009introduction} for the definition of boolean algebra and propositional logic. The definition of Lattice of Partitions is adapted from \cite{sakallah2009symmetry}
+Further on this section we will present Boolean Algebra in a classic lattice-based way that could be found in related literature. In particular we follow  \emph{Introduction to mathematics of satisfiability}\cite{marek2009introduction} for the definition of boolean algebra and propositional logic. The definition of Lattice of Partitions is adapted from \cite{sakallah2009symmetry}.
 
 \begin{definition}
   A partial ordered set, also poset, is a pair $\{X, \le\}$ where $X$ is a set and $\le$ is a partial order of $X$. A chain $Y$ of $\{X, \le\}$ is a subset of $X$ where $\le$ is a total order. 
@@ -53,7 +43,7 @@ $ \{X,\le\} $ where every pair of elements possesses a least upper bound and a g
 \end{definition}
 
 
-  A lattice is complete if every subset has an unique largest element and an unique lowest element. A lattice is presented generally as a duple $\{L,\le\}$, a triple $\{X,\vee,\wedge\}$ and, whenever possible, is presented as a quintuple $\{X, \vee, \wedge, \top,\bot\}$ where $\top$ is the greatest element and $\bot$ the lowest element. A lattice is called distributive if $x\vee(y \wedge z) = (x\vee y) \wedge (x \vee z)$ and $x\wedge(y \vee z) = (x\wedge y) \vee (x \wedge z)$
+  A lattice is complete if every subset has an unique largest element and an unique lowest element. A lattice is presented generally as a duple $\{L,\le\}$, a triple $\{X,\vee,\wedge\}$ and, whenever possible, is presented as a quintuple $\{X, \vee, \wedge, \top,\bot\}$ where $\top$ is the greatest element and $\bot$ the lowest element. A lattice is called distributive if $x\vee(y \wedge z) = (x\vee y) \wedge (x \vee z)$ and $x\wedge(y \vee z) = (x\wedge y) \vee (x \wedge z)$.
 
 
 
@@ -67,7 +57,9 @@ With the concept of lattice just included, we present the \emph{Knaster and Tars
   \item $f$ has a largest postfixpoint $l$ that is a fixpoint.
   \end{enumerate}
 \end{theorem}
+    TODO: Arreglar esta dem.
 \begin{proof}\hfill  \begin{enumerate}
+
   \item We know that there is at least a prefixpoint. Let
     $$l = \bigwedge_{\{x\in X: x\text{ is a prefixpoint}\}} x .$$ 
     Lets prove that $l$ is a fixpoint. Le $x$ be an arbitrary fixpoint, therefore, $l \le x \le f(x)$. Since $x$ was arbitrary, $f(l) \le l$. To show that it a fixpoint it suffices to see that $f(l)$ is a prefixpoint to, as $f$ is monotone.
@@ -96,16 +88,16 @@ For example given the lattice $\{\mathcal{P}(\{1,2,3,4\}),\le_{\mathcal{P}}\}$ a
 
 \begin{equation}
     \begin{split}
-      \pi_1 & = \{\{1,2\},\{3,4\}\}\\
-      \pi_2 & = \{\{1,2,3\},\{4\}\}
+      \pi_1 & = \{\{1,2\},\{3,4\}\},\\
+      \pi_2 & = \{\{1,2,3\},\{4\}\}.
 \end{split}
 \end{equation}
 
 We have that:
 \begin{equation}
     \begin{split}
-      \pi_1\land\pi_2 & = \{\{1,2\},\{3\},\{4\}\}\\
-      \pi_1\lor\pi_2 & = \{\{1,2,3,4\}\}
+      \pi_1\land\pi_2 & = \{\{1,2\},\{3\},\{4\}\},\\
+      \pi_1\lor\pi_2 & = \{\{1,2,3,4\}\}.
 \end{split}
 \end{equation}
 
