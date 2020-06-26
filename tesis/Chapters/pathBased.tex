@@ -168,7 +168,7 @@ The  Graph Proper Coloring Decision problem is a well-known NP-Complete problem.
 
 We get an associated function problem by considering the relation $R \subset \text{GRAPH}\times \mathbb{N}$ such that $R = \{(G,\chi(G)): \forevery G \in \text{GRAPH}.\}$. This problem is NP-Hard, as a simple result of the following remark.
 
-\begin{remark}
+\begin{remark}\label{remark:proper}
   Let $L$ be  The Graph Proper Coloring Language. If $(G,k) \in L$ we have that $(G,k')\in L$ for every $k'\ge k$.
 \end{remark}
 
@@ -201,7 +201,7 @@ As in the previous subsubsection this problem is among the ones that consist on 
   The Graph Vertex Cover Language is the language $L \subset \text{GRAPH} \times \mathbb{N}$, such that for every $( G, k ) \in L$ there exists a vertex cover $V'$  of $G$ such that $ |V'|= k$
 \end{definition}
 
-
+Therefore we have a decision problem. We define the associated minimizing problem of, for a given graph $G$, finding the least $k\in \mathbb{N}$ that satisfy the decision problem. As we can state that $k\le |V|$ and the remark \ref{remark:proper} holds for The Graph Vertex Cover Language  we can also use the optimization trick for minimizing in order to solve the associated minimizing problem, once we solve the decision problem. 
 
 
 
