@@ -8,7 +8,7 @@
 
 The objective of this chapter is to develop a brief work based mostly on original ideas as a final step to an extensive work of deepening in an area of knowledge. It also seeks to illustrate some of the skills acquired during the degree in the context of programming, as well as to develop tools that are of practical interest in the field of mathematics. \\
 
-To this end, we are going to create a library in the Python programming language that will allow us to solve np-complete problems in an elegant and efficient way.  We will consider graph, hypergraph, and other problems. 
+To this end, we are going to create a library (\texttt{SATreduce}) in the Python  programming language that will allow us to solve np-complete problems in an elegant and efficient way.  We will consider graph, hypergraph, and other problems. 
 
 \section{Development Environment}
 
@@ -32,9 +32,16 @@ All test cases are done in an ARCH-BASED OS. In particular:
       \texttt{Linux 4.19.122-1-MANJARO  2020 x86\_64\ GNU/Linux}\\
     \end{center} }
 
-  With 4 physical (8 virtual) processor \texttt{Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz}. 
+  With 4 physical (8 virtual) processor \texttt{Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz}. \\
 
-  
+  The code was regularly uploaded and updated at:
+\begin{center}
+  \url{https://github.com/pedrobn23/TFG/}
+\end{center}
+
+On this repository you will also find this document and all the .text files attached to it.  
+
+
 \section{PySAT}
 PySAT\cite{imms-sat18} is a library developed for python SAT solving. It has been primarily develop by Alexey Ignatiev, Antonio Morgado, Joao Marques-Silva since 2018. Among their feature we can highlight:
 
@@ -67,9 +74,6 @@ In order to demonstrate the utility of SAT a series of reductions will be develo
 \item The graphs arouse interest both in mathematics and in computer science, thus deriving a work that could be interesting for profiles coming from both subjects.
 \item We want to use SAT to solve problems at least as complex as SAT. Thus, we look for problems that are NP-Hard. Some of the most important classical NP-Problems\ are defined over graphs. 
 \end{enumerate}
-
-
-
  
 We choose to solve four of the 21 Karp's NP-Complete problems\cite{karp1972reducibility}, namely:
 \begin{itemize}
@@ -204,8 +208,79 @@ As in the previous subsubsection this problem is among the ones that consist on 
 Therefore we have a decision problem. We define the associated minimizing problem of, for a given graph $G$, finding the least $k\in \mathbb{N}$ that satisfy the decision problem. As we can state that $k\le |V|$ and the remark \ref{remark:proper} holds for The Graph Vertex Cover Language  we can also use the optimization trick for minimizing in order to solve the associated minimizing problem, once we solve the decision problem. 
 
 
+Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph and let $k\in \mathbb{N}$. To reduce it to a SAT problem, we will first define the variables $\{x_{i,j} : 1\le i \le n,  1 \le j \le k\}$. If the variable $x_{i,j}$ is assigned to true, it would means that the vertex $v_i$ is in the color $k$. We would like to find a assignment of these variables that satisfy the following clauses.
+\begin{enumerate}
+\item Each vertex should have one and only one coloring. Thus, for every vertex $v_i$:
+  $$\mathcal{C}( \{x_{i,j} : j \in 1,...,k \}) \qquad \forall i \in 1,...,n.$$
+\item No two adjacent vertices should have the same color:
+$$(\neg x_{i,j}, \neg x_{k,j}) \qquad \forall (i,k) \in E,\ \forall j \in 1,...,k.$$
+\end{enumerate}
 
-\subsection{Implementation}
+Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph and let $k\in \mathbb{N}$. To reduce it to a SAT problem, we will first define the variables $\{x_{i} : 1\le i \le n\}$. If the variable $x_{i}$ is assigned to 1, it would means that the vertex $v_i$ is in $V'$. We would like to find a assignment of these variables that satisfy the following clauses.
+\begin{enumerate}
+\item At most $k$ vertex should be selected:
+  $$(\neg x_{i_j} : j\in 1,...,k +1 ) \qquad  i_j \in 1,...,n.$$
+\item All vertices should be accessible, therefore
+$$ ( x : (x,x_i)\in E ) \qquad i \in 1,...,n $$
+\end{enumerate}
+
+\subsection{Other problems approached}
+\subsubsection{QBF}
+We look on this problem for a series of reasons:
+\begin{itemize}
+\item We want to study a PSPACE-Complete problem in order to analysis it whole complexity, an reflex a little onto the feasibility of this class.
+\item We have talk about Gödel letter \cite{hartmanis1993godel}. The 'Gödel's dream' was of a QBF solver that run in linear time. A bit too ambitious, but nothing to reproach yourself with, given the youth of the branch at the time.
+\item The 23rd International Conference on Theory and Applications of Satisfiability Testing is on  3-10 July 2020. A workshop about the state of the art on QBF will be hold, and I was interested in trying to implement over this clean skeleton some of the improvements. \\
+\end{itemize}
+
+  At the moment of exposing this thesis the conference will be finishing, however at the moment of writing it I am very interested to see how it will be and to see what line or development are though of being optimal.
+
+
+We implement a pretty simple QBF-solver that we have called \texttt{naive-solver}. We hope that it will serve as a basis for developing QBF-solvers over preexisting SAT-Solvers.\\
+
+The resolution is done by computing the formula as in \ref{def:QBF}. Therefore we have an algorithm of complexity $O(2^n)$ where $n$ is the number of variables. We also
+
+\subsubsection{Closest string}
+
+This is the latest of the decision problem with a minimizing associated. This is the problem named closest string. Our interest in this problem arise from our study of Hamming distance for the Local Search Procedure. In particular we use the Shannon’s binary entropy function, that arouse interest in information theory when reading the reference bibliography. \\
+
+We find that this is a simple, yet interesting problem relating codes and strings. Lets define the problem.
+
+\begin{definition}
+Let $m\in\mathbb{N}$ and $s_1,s_2\in \{0,1\}^m$ , we define the Hamming distance for Strings $d_\mathcal{S}$ as:
+$$d_{\mathcal{S}} ( s_1,s_2 ) = |\{ i : s_1(i) = s_2(i)\}|,$$
+
+where $s_j(i)$ is the position $i$ of the string $s_j$. 
+\end{definition}
+
+\begin{definition}
+The Language of Closest string of length $m$ is the language $L\subset \left (\{0,1\}^m \right )^n \times \mathbb{N}$, such that, for every $((s_1,...,s_m), k)\in L$ there is an string $s' \in \{0,1\}^m$ such that $d_\mathcal{S}(s', s_j) <k $ for all $j \in 1,...,n$.  The string $s'$ is called a \emph{string} of distance $k$.
+\end{definition}
+
+This problem is known to be NP-Complete\cite{lanctot2003distinguishing}. We reduce it to SAT. For this reduction we use some of the techniques developed in order to solve the Tseitin theorem \ref{the:Tseitin}. In particular we use the fact that:
+
+\begin{equation} \label{aunnosehadormio}
+\begin{split}
+    z \iff( x \iff y ) =& (x \lor  \neg y \lor z) \land (\neg x \lor y \lor \neg z) \land\\
+    &  (x \lor \neg y \lor \neg z) \land (x \lor y \lor z) = \mathcal{C'} (z,x,y)
+\end{split}
+\end{equation}
+
+
+We would use this in order to gain more flexibility reducing the problem, without needing a GSAT solver.\\
+
+Lets define the reduction, Let $G = ( V = \{ v_1 , ..., v_n\} , E =\{ e_1 , ..., e_m\})$ be a graph and let $k \in \mathbb{N}$. To reduce it to a SAT problem, we will first define the variables$ \{ x_{i,j} : 1 \le i \le m, 1 \le j \le n \}$, $\{y_i : 1 \le i \le m\}$ and $\{z_{i,j} : 1\le i \le m, 1 \le j \le n\}$. $x_{i,j}$ represents the value of the word $s_j$ at position $i$, and $y_j$ represent the value of such string of distance $k$. $z_j$ is an auxiliary variable that allow us to make a more elegant reduction. We would like to find a assignment of these variables that satisfy the following clauses.
+
+\begin{enumerate}
+\item $z_{i,j}$ is true if and only if $x_{i,j} = y_j$:
+  $$\mathcal{C'} (z_{i,j},x_{i,j},y_i)  \qquad i \in 1,...,m, j \in 1,...,n$$
+\item At most $z_{i,j}$ can be true for each $j$:
+    $$(\neg x_{i_j} : j\in 1,...,k +1 ) \qquad  i_j \in 1,...,n.$$
+\end{enumerate}
+
+Note that, although we treat $x_{i,j}$ as variables, they are fixed constants, defined by the problem itself. It is easy to see that if such a satisfying assignment $\alpha$ exists therefore the string $<\alpha(y_i) : 1 \le i \le m>$ is a string of distance $k$. Conversely, if such an string $s$ exists, by assigning $\alpha(y_i) = s(i)$ and computing every value of $z_{i,j} $ we can find a satisfying assignment of the clauses.
+
+\section{Implementation}
 
 In this subsection, once we have proved the reduction in a constructive way, we proceed to program this in order to make these ideas usable.
 
@@ -213,26 +288,54 @@ In this subsection, once we have proved the reduction in a constructive way, we 
 
 We consider that we have to face three problems:
 \begin{itemize}
-\item Representation of the graph. We want to make an elegant yet useful representation of the graph. After checking some implementations we decide to improve one simply enough to do our job. We choose the basic implementation from \cite{graphAdvanced}. We like the fact that it used a dictionary, that that naturally represents a graph. We improve two major details:
+\item Representation of the graph. We want to make an elegant yet useful representation of the graph. 
+\item Develop of the reduction.
+\item Adapt the reduction to the solver.
+\item Prepare folder as a package in order to be importable and release it.
+\end{itemize}
+
+
+We plan one weeks and a half to fully implement this work. Once we get to this point, it is time to make a small estimate of the cost of implementing the library. We do not include in this estimate the effort made in the study and development of the first two parts of the text. To make price estimates we considered an example salary of a junior programmer employed by a multinational company with an office in Spain of 20 euros per hour with 39 hours of work per week.\\
+
+
+\subsubsection{Analysis and Design}
+
+We start with the representation of the graph. We choose the basic implementation from \cite{graphAdvanced}. We like the fact that it used a dictionary, that that naturally represents a graph. We improve two major details:
   \begin{enumerate}
   \item The class is decided to has a graph as a god-object on which resides all the work. As recommended in \cite{slatkin2019effective}, we choose to inherit directly from dict, in order to gain some strength in processing.
   \item We consider a set to be better to represent the adjacent nodes, as the order that a list provide is useless and difficult membership checking.
   \end{enumerate}
 
-\item Develop of the reduction.
-\item Adapt the reduction to the solver.
-
-\end{itemize}
+  We implement the graph in a class \texttt{Graph}, that can be found in the file \texttt{graph.py}.
 
 
-We plan one week to fully implement this work. 
-
-\subsubsection{Analysis and Design}
-
-
-
-
-
+\begin{figure}[h]
+\begin{center}
+\tikzstyle{every node}=[draw=black,thick,anchor=west]
+\tikzstyle{selected}=[draw=red,fill=red!30]
+\tikzstyle{optional}=[dashed,fill=gray!50]
+\begin{tikzpicture}[%
+  grow via three points={one child at (0.5,-0.7) and
+  two children at (0.5,-0.7) and (0.5,-1.4)},
+  edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+  \node [selected]{\texttt{SATreduce}}
+    child { node  {\texttt{graph}}
+      child { node [optional] {\texttt{find\_hamilton_path}}}
+      child { node [optional] {\texttt{minimun\_covering}}}
+      child { node [optional] {\texttt{minimun\_vertex\_covering}}}
+    }
+    child [missing] {}				
+    child [missing] {}				
+    child [missing] {}				
+    child { node {\texttt{qbf}}
+      child { node [optional] {\texttt{naiveQBF}}}
+    }
+    child [missing] {}				
+    child { node {string}};
+  \end{tikzpicture}
+  \caption{some caption}
+  \end{center}
+\end{figure}
 
 \subsubsection{Test}
 
