@@ -5,6 +5,11 @@
 
 
 \chapter{Development}
+
+The objective of this chapter is to develop a brief work based mostly on original ideas as a final step to an extensive work of deepening in an area of knowledge. It also seeks to illustrate some of the skills acquired during the degree in the context of programming, as well as to develop tools that are of practical interest in the field of mathematics. \\
+
+To this end, we are going to create a library in the Python programming language that will allow us to solve np-complete problems in an elegant and efficient way.  We will consider graph, hypergraph, and other problems. 
+
 \section{Development Environment}
 
 In this chapter we briefly introduce the development environment used to program reductions.\\
@@ -54,9 +59,8 @@ PySAT\cite{imms-sat18} is a library developed for python SAT solving. It has bee
 \end{itemize}
 
 
-\section{Path based Problems}
-
-
+\section{Reductions}
+\subsection{Graph based Problems}
 In order to demonstrate the utility of SAT a series of reductions will be developed. This will imply a formal approach to the resolution of the problems, as well as deploying a little theoretical background to some problems when needed. Also we would like to show that this technique provide sometimes really simple approximations to the problems. We start approaching graph related problems, for two reasons:
 
 \begin{enumerate}
@@ -65,17 +69,18 @@ In order to demonstrate the utility of SAT a series of reductions will be develo
 \end{enumerate}
 
 
-\subsection{Resolutions}
+
  
 We choose to solve four of the 21 Karp's NP-Complete problems\cite{karp1972reducibility}, namely:
 \begin{itemize}
 \item Hamiltonian Path.
-\item Vertex Coloring.
+\item Proper Coloring.
 \item Vertex Covering.
-\item Steinner tree.
 \end{itemize}
 
-These problems are among the most representatives of graphs theory, so we believe of great interest developing a library to solve then.
+When we talk about graph in this subsection we will consider simple undirected graphs only, that is, undirected graphs without more than one edge between two nodes and no loops.
+
+These problems are among the most representatives of graphs theory, so we believe of great interest developing a library to solve then. Thorough the chapter, when we refer to $\mathcal{C}(A)$ we refer in the context of the lemma \ref{lemma:cooklevin}.
 
 
 \subsubsection{Hamiltonian Path}
@@ -83,7 +88,7 @@ These problems are among the most representatives of graphs theory, so we believ
 The problem of, given a graph, whether it exists a Hamiltonian Path is well know to be NP-Complete. Then by Cook Theorem it is known that a reduction from the problem of the Hamiltonian Cycle to SAT exists. This theorem is constructive, so it effectively does gives a reduction. Nonetheless, this reduction is unmanageable and in order to use SAT-solvers to improve Hamiltonian cycle resolution it would be necessary to provide easier programming techniques. On this subsection an alternative reduction will be shown.
 
 \begin{definition}
-  A Hamiltonian cycle is a cycle that visits every node in a graph. The associated problem is to check, given a graph, whether whether cycle exists.
+  A Hamiltonian cycle (resp. path) is a cycle (resp. path) that visits every node in a graph. The associated problem is to check, given a graph, whether such cycle (resp. path) exists.
 \end{definition}
 
 We will consider the problem of the Hamiltonian cycle of undirected graphs. Therefore an edge would have two sources instead of a source and a target as it is regarded on directed graphs.\\
@@ -93,11 +98,11 @@ This problem is a very good example to represent what means to use a SAT-solver 
 
 It moves the complexity of the problem from how to solve it to how to implement a SAT-solver. Therefore it only left a worry about what do I need to satisfy in order to solve this problem. In order to make the reduction we will represent with Boolean clauses the conditions. We use the same reduction in order to reduce both the problem for the Hamiltonian path and the Hamiltonian cycle.\\
 
-Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. To reduce it to a SAT problem, we will first define the variables $\{x_{i,j}: i\in 1,...,n ; j\in 1,...,n \}$. If the variable $x_{i,j}$ is assigned to true it would mean that the vertex $v_i$ is in position $j$ in the path. We would like to find a assignment of these variables that satisfy the following clauses. When we note $\mathcal{C}(A)$ we refer in the context of the lemma \ref{lemma:cooklevin}.
+Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. To reduce it to a SAT problem, we will first define the variables $\{x_{i,j}: i\in 1,...,n ; j\in 1,...,n \}$. If the variable $x_{i,j}$ is assigned to true it would mean that the vertex $v_i$ is in position $j$ in the path. We would like to find a assignment of these variables that satisfy the following clauses.
 
 
 \begin{enumerate}
-\item Each vertex must appear at least once in the path, and only one. Thus, for every vertex $v_i$:
+\item Each vertex must appear at least once in the path, and only one. Thus:
   $$\mathcal{C}( \{x_{i,j} : j \in 1,...,n \}) \qquad i \in 1,...,n.$$
 
 \item Every position in the path must has an associated vertex, and only one:
@@ -142,19 +147,58 @@ This method allow us to study the decision problem, and having an slightly refin
 
 \subsubsection{Coloring}
 
-We now introduce one of the most active problems in graph theory. Some interesting problems such as the Hadwiger-Nelson problem. This area has an active scene. In this text we use the Lovasz Local Lemma, which was originally developed in order to solve an hypergraph (a generalization of graph) coloring problem.\\
+We now introduce one of the most active problems in graph theory: the graph coloring. In this text we have already consider graph coloring, defined in definition \ref{def:coloring}. In that context we focus on  trying to find a stable coloring in order to exploit symmetry in formulas, we now focus on \emph{proper colorings}.
 
-We defined what a coloring is in Definition \ref{def:coloring}. We now change our focus and, instead for trying to find a stable coloring, we now look for \emph{proper coloring}.
+
 
 \begin{definition}
-  Let $G=(V,E)$ be a graph and $\pi$ be a coloring of $G$. We say that $\pi$ is a \emph{proper coloring} of $G$ if not two adjacent vertices belong to the same color.
+  Let $G=(V,E)$ be a graph and let $\pi$ be a coloring of $G$. We say that $\pi$ is a \emph{proper coloring} of $G$ if not two adjacent vertices belong to the same color.  
 \end{definition}
 
-proposition easy.
+\begin{definition}
+  The Graph Proper Coloring Language is the language $L\subset \text{GRAPH}\times \mathbb{N}$, such that for every $(G,k)\in L$ there exists a proper coloring $\pi$ of $G$ such that $|\pi| = k$.  
+\end{definition}
+
+The  Graph Proper Coloring Decision problem is a well-known NP-Complete problem. We will reduce this problem to SAT in order to make use of efficient solvers, nonetheless, we will first consider a bit generalization of the problem.
+
+\begin{definition}
+  We define the chromatic number function $\chi:\text{GRAPH}\to \mathbb{N}$ as follows:
+  $$ \chi(G) = \min\{|\pi|: \pi \text{ is a proper coloring of } G\} \qquad \forevery G \in \text{GRAPH}$$. 
+\end{definition}
+
+We get an associated function problem by considering the relation $R \subset \text{GRAPH}\times \mathbb{N}$ such that $R = \{(G,\chi(G)): \forevery G \in \text{GRAPH}.\}$. This problem is NP-Hard, as a simple result of the following remark.
+
+\begin{remark}
+  Let $L$ be  The Graph Proper Coloring Language. If $(G,k) \in L$ we have that $(G,k')\in L$ for every $k'\ge k$.
+\end{remark}
+
+Therefore being able to solve this problem is enough to be able to solve the coloring problem. This remark also allow us to use the Optimization trick for minimizing, if we find a upper bound for $k$. This upper bound  is the number of vertices, as every discrete coloring is a proper coloring. Let's therefore solve the decision problem and we will solve both problem described in this subsubsection as a consequence.\\
+
+Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph and let $k\in \mathbb{N}$. To reduce it to a SAT problem, we will first define the variables $\{x_{i,j} : 1\le i \le n,  1 \le j \le k\}$. If the variable $x_{i,j}$ is assigned to true, it would means that the vertex $v_i$ is in the color $k$. We would like to find a assignment of these variables that satisfy the following clauses.
+\begin{enumerate}
+\item Each vertex should have one and only one coloring. Thus, for every vertex $v_i$:
+  $$\mathcal{C}( \{x_{i,j} : j \in 1,...,k \}) \qquad \forall i \in 1,...,n.$$
+\item No two adjacent vertices should have the same color:
+$$(\neg x_{i,j}, \neg x_{k,j}) \qquad \forall (i,k) \in E,\ \forall j \in 1,...,k.$$
+\end{enumerate}
+
+Let now prove that this is a correct reduction. If there exists a satisfying assignment of the following clauses, thanks to 1. we can define a coloring of $G$ and thanks to 2. such coloring is a proper coloring. Reversely should that coloring exists we can define a satisfying assignment $\alpha$ as:
+$$\alpha(x_{i,j}) = 1_{V_j} (v_i),$$
+
+where $1_{V_j}$ is the characteristic function of $V_j$.
+
+
+\subsubsection{Vertex cover}
+
+As in the previous subsubsection this problem is among the ones that consist on a NP-Complete decision problem with an associated NP-Hard minimizing problem. A vertex cover is a 
+
+\begin
+
+
 
 \subsection{Implementation}
 
-In this subsection, once we have proved the reduction in a constructive way, we proceed to program this in order to make this ideas usable.
+In this subsection, once we have proved the reduction in a constructive way, we proceed to program this in order to make these ideas usable.
 
 \subsubsection{Planning and Budgeting}
 
