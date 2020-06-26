@@ -190,9 +190,18 @@ where $1_{V_j}$ is the characteristic function of $V_j$.
 
 \subsubsection{Vertex cover}
 
-As in the previous subsubsection this problem is among the ones that consist on a NP-Complete decision problem with an associated NP-Hard minimizing problem. A vertex cover is a 
+As in the previous subsubsection this problem is among the ones that consist on a NP-Complete decision problem with an associated NP-Hard minimizing problem. Vertex covering are used in planification in order to ensure supply of areas using the minimum amount of resources. 
 
-\begin
+\begin{definition}
+  Let $G=(V,E)$ be a graph and let $V' \subset V$. We say that $V$ is a \emph{vertex cover} of $G$ for every $v\in V$ there exists some $v'\in V' $ such that $(v,v')\in E$.
+\end{definition}
+
+
+\begin{definition}
+  The Graph Vertex Cover Language is the language $L \subset \text{GRAPH} \times \mathbb{N}$, such that for every $( G, k ) \in L$ there exists a vertex cover $V'$  of $G$ such that $ |V'|= k$
+\end{definition}
+
+
 
 
 
