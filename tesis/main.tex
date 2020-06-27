@@ -35,7 +35,12 @@ headsepline, % Uncomment to get a line under the header
 \usepackage{stmaryrd}
 \usepackage{mathpazo} % Use the Palatino font by default
 
-\fontfamily{garamond}
+\usepackage[font=itshape]{quoting} 
+\usepackage[toc,page]{appendix}
+
+
+\usepackage[nogin]{Sweave}
+\usepackage{pdfpages}
 
 \usepackage[backend=biber,style=numeric]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
 
@@ -162,135 +167,33 @@ Serafín Moral Callejón \\ \emph{Ciencias de la Computación e Inteligencia Art
 
 \frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
 
-\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+%\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
 
 
+\includepdf{img/portada.pdf}
 
-%----------------------------------------------------------------------------------------
-%	DECLARATION PAGE
-%----------------------------------------------------------------------------------------
+\cleardoublepage
 
-%\begin{declaration}
-%\addchaptertocentry{\authorshipname} % Add the declaration to the table of contents
-%\noindent I, \authorname, declare that this thesis titled, \enquote{\ttitle} and the work presented in it are my own. I confirm that:
-
-%\begin{itemize} 
-%\item This work was done wholly or mainly while in candidature for a research degree at this University.
-%\item Where any part of this thesis has previously been submitted for a degree or any other qualification at this University or any other institution, this has been clearly stated.
-%\item Where I have consulted the published work of others, this is always clearly attributed.
-%\item Where I have quoted from the work of others, the source is always given. With the exception of such quotations, this thesis is entirely my own work.
-%\item I have acknowledged all main sources of help.
-%\item Where the thesis is based on work done by myself jointly with others, I have made clear exactly what was done by others and what I have contributed myself.\\
-%\end{itemize}
- 
-%\noindent Signed:\\
-%\rule[0.5em]{25em}{0.5pt} % This prints a line for the signature
- 
-%\noindent Date:\\
-%\rule[0.5em]{25em}{0.5pt} % This prints a line to write the date
-%\end{declaration}
-%----------------------------------------------------------------------------------------
-%	QUOTATION PAGE
-%----------------------------------------------------------------------------------------
-
-
-%\vspace*{0.2\textheight}
-
-%\noindent\enquote{\itshape Thanks to my solid academic training, today I can write hundreds of words on virtually any topic without possessing a shred of information, which is how I got a good job in journalism.}\bigbreak
-
-%\hfill Dave Barry
-
-%----------------------------------------------------------------------------------------
-%	ABSTRACT PAGE
-%----------------------------------------------------------------------------------------
-
-%\begin{abstract}
-%\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-%The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
-%\end{abstract}
-
-%----------------------------------------------------------------------------------------
-%	ACKNOWLEDGEMENTS
-%----------------------------------------------------------------------------------------
-
-%\begin{acknowledgements}
-%\addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
-%The acknowledgments and the people to thank go here, don't forget to include your project advisor\ldots
-%\end{acknowledgements}
-
-%----------------------------------------------------------------------------------------
-%	LIST OF CONTENTS/FIGURES/TABLES PAGES
-%----------------------------------------------------------------------------------------
-% Prints the main table of contents
-
-%\listoffigures % Prints the list of figures
-
-%\listoftables % Prints the list of tables
-
-%----------------------------------------------------------------------------------------
-%	ABBREVIATIONS
-%----------------------------------------------------------------------------------------
-
-%\begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
-
-%\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere\\
-%\textbf{WSF} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or\\
-
-%\end{abbreviations}
-
-%----------------------------------------------------------------------------------------
-%	PHYSICAL CONSTANTS/OTHER DEFINITIONS
-%----------------------------------------------------------------------------------------
-
-%\begin{constants}{lr@{${}={}$}l} % The list of physical constants is a three column table
-
-% The \SI{}{} command is provided by the siunitx package, see its documentation for instructions on how to use it
-
-%Speed of Light & $c_{0}$ & \SI{2.99792458e8}{\meter\per\second} (exact)\\
-%Constant Name & $Symbol$ & $Constant Value$ with units\\
-
-%\end{constants}
-
-%----------------------------------------------------------------------------------------
-%	SYMBOLS
-%----------------------------------------------------------------------------------------
-
-%\begin{symbols}{lll} % Include a list of Symbols (a three column table)
-
-%$a$ & distance & \si{\meter} \\
-%$P$ & power & \si{\watt} (\si{\joule\per\second}) \\
-%Symbol & Name & Unit \\
-
-%\addlinespace % Gap to separate the Roman symbols from the Greek
-
-%$\omega$ & angular frequency & \si{\radian} \\
-
-%\end{symbols}
-
-%----------------------------------------------------------------------------------------
-%	DEDICATION
-%----------------------------------------------------------------------------------------
-
-%\dedicatory{For/Dedicated to/To my\ldots} 
-
-%----------------------------------------------------------------------------------------
-%	THESIS CONTENT - CHAPTERS
-%----------------------------------------------------------------------------------------
-
-\include{preliminares/titulo}                     
+\include{preliminares/titulo}
 \include{preliminares/declaracion-originalidad}
 \include{preliminares/dedicatoria}
 \pagestyle{thesis}
-\include{preliminares/summary}                    
-\include{preliminares/introduccion}               
-
-
 {
   \hypersetup{hidelinks}
   \setcounter{tocdepth}{2}
   \tableofcontents
 
 }
+
+
+
+\include{preliminares/introduccion}               
+\include{preliminares/summary}                    
+
+
+
+
+
 
 \mainmatter % Begin numeric (1,2,3...) page numbering
 
@@ -307,7 +210,7 @@ Serafín Moral Callejón \\ \emph{Ciencias de la Computación e Inteligencia Art
 \input{Chapters/DPLL}
 \input{Chapters/random}
 \input{Chapters/pathBased}
-
+\input{Chapters/conclusions}
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - APPENDICES
@@ -319,7 +222,22 @@ Serafín Moral Callejón \\ \emph{Ciencias de la Computación e Inteligencia Art
 % Include the appendices of the thesis as separate files from the Appendices folder
 % Uncomment the lines as you write the Appendices
 
-%\include{Appendices/AppendixA}
+
+
+%\input{Appendices/ApendixA}
+%\input{appendices/acknow}
+\newpage
+\chapter*{}
+\section*{Acknowledgements}
+Professor Serafín Moral Callejón has helped me greatly with his corrections and advice in writing this document, assisting me with useful bibliography and notifying when more clarity was needed. I am also thankful to him and to the Department for allowing me to pursue this project with a collaboration grant.\\
+
+
+The pysat project has been a key piece in adding another dimension to this work, which otherwise would have been eminently theoretical. Without them it would not have been possible to demonstrate so efficiently the advantages that SAT research provides us with. \\
+
+Lastly, I thanks to all my classmates that has enriched this text, leaving a bit of their ideas in myself and in this project every time we discuss how a concept could be understand or clarified. In particular, conversations with the undergraduates Antonio Coín, Sofía Almeida, Yabir García and Antonio Martín  and the graduates Pablo Baeyens and Francisco Luque have greatly influence this thesis.\\
+
+
+%A mention should be made to my parents and sister, that has always been as present and supportive as possible and to Alicia that has never fail to cheer me up.
 %\include{Appendices/AppendixB}
 %\include{Appendices/AppendixC}
 
@@ -329,8 +247,9 @@ Serafín Moral Callejón \\ \emph{Ciencias de la Computación e Inteligencia Art
 
 \medskip
 
-\nocite{*}
+%\nocite{*}
 
+\addcontentsline{toc}{chapter}{Bibliography}
 \printbibliography
 
 
