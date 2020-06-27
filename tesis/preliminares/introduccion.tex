@@ -1,0 +1,63 @@
+%*******************************************************
+% Introducción
+%*******************************************************
+
+% \manualmark
+% \markboth{\textsc{Introducción}}{\textsc{Introducción}} 
+\chapter{Introduction}
+Some 2300 years ago, in Greece,  the field of logic was discovered when some people start asking themselves about syllogism. From that point on, the problem of satisfiability has been a central part of the science.  From my point of view, it is one of the most natural problem anyone could be asked,  Satisfiability is the study of what can be true under some free conditions.\\
+
+It was not until the 20th century that this problem became something more than a philosophical question. The correct foundation has been laid by Bool and Lindenbaum. The mathematicians were moving from an understanding of science based on not-always-evident arguments to an axiomatized foundation. This shift in perspective became more intense when Hilbert gave some homework for the mathematical community at the beginning of the century. In particular, we are interested in Hilbert's second problem:
+
+
+\begin{quoting}
+Prove that the axioms of arithmetic are consistent. 
+\end{quoting}
+
+This interest in logic, as the tool that proves (at last) the mathematics to be perfectly formal was paired with the develop of one of the most influential revolution of the last century: the computation.\\
+
+As the mid-century approached, while Gödel's second incompleteness theorem put a huge dump in the faith on axiomatism,  different theories were proposed with the aim of creating a thinking machine. It was Turing who finally got the right idea first (I don't know if Charles Babbage would agree with this statement). With the thinking/computing machine in place, it happened that this branch of the science was absorbed by mathematics, as every formal science that is incipient enough.  The idea of getting an automatic demonstrator based in the axioms hovered in the community.\\
+
+
+We wanted a theorem solver, and we dreamed about it in the form of a linear solver of first order logic formulas, that solve them efficiently. The difficult in this area to develop such solver was underlying a much more complex problem, the P vs NP problem, that is, whether think that can be checked to has some properties efficiently enough can be found efficiently enough.\\
+
+The next big step forward was made in 1973 by Stephen Cook, as he proved that SAT problem was as least as difficult to solve as any other problem in NP, therefore, providing a simplification from NP $\subset^?$ P to  SAT $\in^? $ P. This theorem moved the emphasis in SAT from having a supportive role in the play of logic to be the main character of its own story.\\
+
+As the century ended, the new homework for the community of mathematicians was not asked by another important enough mathematician. Instead, the mathematicians  were asked by the Clay Mathematics Institute, to solve the millennium problems. and one of them, as many already now, is whether NP $\subset^?$ P, that is, whether SAT$\in^?$ P. To this day no one truly know the answer. \\
+
+Meanwhile, in the electronics engineering scene, more powerful computers were developed each day. As the computing power increased, computers enabled us to use them in other branches of science. A lot of this branches needed to solve problems at least as hard as SAT, that . Therefore, the community stated the search for a practical algorithm that  allows us to know whether or not something is satisfiable.\\
+
+
+Since then, more sciences started to be interested in solving SAT. Nowadays, as John Franco and John Martin said:
+\begin{quoting}
+Satisfiability stands at the crossroads of logic, graph theory, computer science, computer engineering, and operations research.
+\end{quoting}
+
+I like to think about this crossroad as a bridge that everyone wants to cross for its results, but is guarded by both Mathematics and Computer Sciences, the rulers of Satisfiability solving.\\
+
+This document attempts at giving an overview of some results in SAT solving complextity, as well as implementing some reductions to SAT solvers. \\
+
+The first part, encompassed by chapters 1 to 3 is more theoretical and introduce the  the problem and describe the main open problems and hypothesis.
+The second part, chapters 4 to 6, describe the most relevant algorithms, mainly in terms of asymptotic complexity. The third and  last part, chapter 7, we develop a library that allow us to elegantly solve some relevant NP-Complete problems, making use of cutting-edge solvers.\\
+
+
+The main sources of this document were \cite{schoning2013satisfiability},\cite{marek2009introduction},\cite{arora2009computational} and \cite{imms-sat18}. The sources for each section and chapter are referenced within the text.
+
+\section*{Main goals and results achieved}
+The initials goals of this thesis were:
+\begin{enumerate}
+\item Accomplish a theoretical study of the complexity of SAT.
+\item Study of reductions of mathematical problems to SAT.
+\item Study the state-of-the-art of the algorithms solving SAT.
+\item Study how can we solve MAXSAT using SAT and deduce theoretical complexity .
+\end{enumerate}
+
+The first three of the was completely successful. In the first part we study the complexity extensively, in the second part we study the algorithms as well as in the third part we make reductions. \\
+
+The last one is a partial success result. We expose MAXSAT and present its complexity, we do not solve it by reducing it to SAT. The study of these reductions from MAXSAT to SAT is left as work to be done.\\
+
+For the achievement of these goals, i have to make use of notions relating to: boolean algebra, computational models, probability,  graph theory, object oriented programming and software design.
+
+
+
+\endinput
