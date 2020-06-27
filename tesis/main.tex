@@ -39,6 +39,20 @@ headsepline, % Uncomment to get a line under the header
 
 \usepackage[backend=biber,style=numeric]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
 
+\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+
+\usepackage{eso-pic}
+\newcommand\BackgroundPic{%
+	\put(0,0){%
+		\parbox[b][\paperheight]{\paperwidth}{%
+			\vfill
+			\centering
+      % Indicar la imagen de fondo en el siguiente comando
+			\includegraphics[width=\paperwidth,height=\paperheight,%
+			keepaspectratio]{img/portada-ugr-sencilla}%
+			\vfill
+}}}
+
 \addbibresource{./example.bib} % The filename of the bibliography
 
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
@@ -79,6 +93,20 @@ headsepline, % Uncomment to get a line under the header
 \hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
 \hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
 }
+
+\newcommand{\miTitulo}{The SAT Problem\xspace}
+\newcommand{\miNombre}{Pedro Bonilla Nadal\xspace}
+\newcommand{\miGrado}{Doble Grado en Ingeniería Informática y Matemáticas}
+\newcommand{\miFacultad}{Facultad de Ciencias\\
+  Escuela Técnica Superior de Ingenierías Informática y de Telecomunicación}
+\newcommand{\miUniversidad}{Universidad de Granada}
+% Añadir tantos tutores como sea necesario separando cada uno de ellos
+% mediante el comando `\\\medskip` y una línea en blanco
+\newcommand{\miTutor}{
+Serafín Moral Callejón \\ \emph{Ciencias de la Computación e Inteligencia Artificial}}
+}
+\newcommand{\miCurso}{2019-2020\xspace}
+
 
 \usepackage[utf8]{inputenc}
 \usepackage{babel}
@@ -135,55 +163,6 @@ headsepline, % Uncomment to get a line under the header
 \frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
 
 \pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
-
-%----------------------------------------------------------------------------------------
-%	TITLE PAGE
-%----------------------------------------------------------------------------------------
-
-\begin{titlepage}
-\begin{center}
-
-\vspace*{.06\textheight}
-{\scshape\LARGE \univname\par}\vspace{1.5cm} % University name
-\textsc{\Large Bachelor Thesis}\\[0.5cm] % Thesis type
-
-\HRule \\[0.4cm] % Horizontal line
-{\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
-\HRule \\[1.5cm] % Horizontal line
- 
-\begin{minipage}[t]{0.4\textwidth}
-\begin{flushleft} \large
-\emph{Author:}\\
-\href{https://github.com/pedrobn23/TFG/}{\authorname} % Author name - remove the \href bracket to remove the link
-\end{flushleft}
-\end{minipage}
-\begin{minipage}[t]{0.4\textwidth}
-\begin{flushright} \large
-  \emph{Supervisor:} \\
-
-  
-\noindent
-{\color{myred} \supname }
- % Supervisor name - remove the \href bracket to remove the link  
-\end{flushright}
-\end{minipage}\\[3cm]
- 
-\vfill
-
-\large \textit{A thesis submitted in fulfillment of the requirements\\ for the degrees of \degreename}\\[0.3cm] % University requirement text
-\textit{in the}\\[0.4cm]
-%\groupname\\
-\deptname\\[2cm] % Research group name and department name
- 
-\vfill
-
-{\large \today}\\[4cm] % Date
-%\includegraphics{Logo} % University/department logo - uncomment to place it
- 
-\vfill
-\end{center}
-\end{titlepage}
-
 
 
 
@@ -242,13 +221,6 @@ headsepline, % Uncomment to get a line under the header
 %----------------------------------------------------------------------------------------
 %	LIST OF CONTENTS/FIGURES/TABLES PAGES
 %----------------------------------------------------------------------------------------
-
-{
-  \hypersetup{hidelinks}
-  \setcounter{tocdepth}{2}
-  \tableofcontents
-
-}
 % Prints the main table of contents
 
 %\listoffigures % Prints the list of figures
@@ -305,9 +277,24 @@ headsepline, % Uncomment to get a line under the header
 %	THESIS CONTENT - CHAPTERS
 %----------------------------------------------------------------------------------------
 
+\include{preliminares/titulo}                     
+\include{preliminares/declaracion-originalidad}
+\include{preliminares/dedicatoria}
+\pagestyle{thesis}
+\include{preliminares/summary}                    
+\include{preliminares/introduccion}               
+
+
+{
+  \hypersetup{hidelinks}
+  \setcounter{tocdepth}{2}
+  \tableofcontents
+
+}
+
 \mainmatter % Begin numeric (1,2,3...) page numbering
 
-\pagestyle{thesis} % Return the page headers back to the "thesis" style
+ % Return the page headers back to the "thesis" style
 
 % Include the chapters of the thesis as separate files from the Chapters folder
 % Uncomment the lines as you write the chapters
@@ -345,7 +332,6 @@ headsepline, % Uncomment to get a line under the header
 \nocite{*}
 
 \printbibliography
-
 
 
 \end{document}  
