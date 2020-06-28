@@ -15,3 +15,21 @@ def yvar(*args):
 
 def zvar(*args):
     return 'z' + ' '.join([str(arg) for arg in args])
+
+
+def to_minimun(funct):
+    def __minim(graph, maximun):
+        old = maximun
+        new = old // 2
+
+        while old != new:
+            if funct(graph, new, False):
+                old = new
+                new = new // 2
+
+            else:
+                new += math.ceil((old - new) / 2)
+
+        return new
+
+    return __minim
