@@ -10,6 +10,7 @@ from pysat.formula import IDPool, CNF
 
 
 class NaiveQBF():
+
     def __init__(self):
         self.formula = CNF
         self.quantifiers = []
@@ -39,7 +40,7 @@ class NaiveQBF():
     def negate(self):
         self.formula = self.formula.negate()
         self.quantifiers = [-quant for quant in self.quantifiers]
-        
+
     def __solve(quantifiers, formula, propagate):
         if quantifiers:
             new_quant = copy.deepcopy(quantifiers)
@@ -57,4 +58,3 @@ class NaiveQBF():
             solver = Solver(name='cd')
             solver.append_formula(self.cnf)
             return solver.solve()
-

@@ -8,8 +8,6 @@ from pysat.card import CardEnc, EncType
 from pysat.formula import IDPool, CNF, CNFPlus
 
 
-
-
 def minimun_cover(graph):
     old = len(graph)
     new = len(graph) // 2

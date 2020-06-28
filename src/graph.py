@@ -2,6 +2,10 @@
 A simple Python Module, demonstrating the essential
 facts and functionalities of graphs.
 
+Implements a function find_hamiltonian_path
+that reduces the problem to SAT.
+
+We uses internally the CaDiCaL solver.
 Improved from: https://www.python-course.eu/graphs_python.php
 """
 
@@ -120,7 +124,7 @@ class Graph(dict):
 
         return res
 
-    def find_hamiltonian_path(self, check_cycle=False):
+    def find_hamiltonian_path(self, check_cycle=False, verbose=False):
         """
         should it exists, find a Hamiltonian on
         current self. Otherwise return empty list.
@@ -128,7 +132,8 @@ class Graph(dict):
         if not self.edges():
             return []
 
-        print('Codifying SAT Solver...')
+        if verbose:
+            print('Codifying SAT Solver...')
         length = len(self.vertices())
         solver = Solver(name='cd')
         names = {}
@@ -141,8 +146,8 @@ class Graph(dict):
         for position_in_path in range(length):
             for vertex in range(1, length + 1):
                 vpool.id(xvar(vertex, position_in_path))
-
-        print(' -> Codifying: All Positions occupied')
+        if verbose:
+            print(' -> Codifying: All Positions occupied')
         for position_in_path in range(length):
             var_list = [
                 vpool.id(xvar(vertex, position_in_path))
@@ -150,10 +155,10 @@ class Graph(dict):
             ]
 
             cnf = CardEnc.equals(lits=var_list, vpool=vpool)
-            print(cnf.clauses)
             solver.append_formula(cnf)
 
-        print(' -> Codifying: All vertex visited')
+        if verbose:
+            print(' -> Codifying: All vertex visited')
         for vertex in range(1, length + 1):
             var_list = [
                 vpool.id(xvar(vertex, position_in_path))
@@ -161,10 +166,10 @@ class Graph(dict):
             ]
 
             cnf = CardEnc.equals(lits=var_list, vpool=vpool)
-            print(cnf.clauses)
             solver.append_formula(cnf)
 
-        print(' -> Codifying: Adjacency Matrix')
+        if verbose:
+            print(' -> Codifying: Adjacency Matrix')
         edges = self.edges()
         for vertex_a in range(1, length + 1):
             for vertex_b in range(vertex_a + 1, length + 1):
@@ -189,11 +194,12 @@ class Graph(dict):
                             vpool.id(xvar(vertex_a, length - 1))
                         ])
 
-        print('Running SAT Solver...')
+        if verbose:
+            print('Running SAT Solver...')
         solution = []
         if solver.solve():
             for index, variable in enumerate(solver.get_model()):
-                if variable > 0 and index < length**2 +1:
+                if variable > 0 and index < length**2:
                     solution.append(names[variable % length])
 
         return solution
@@ -265,9 +271,9 @@ class Graph(dict):
             print(' -> Codifying: Every vertex must be accessible')
 
         for vertex in self.vertices():
-            solver.add_clause([vpool.id(vertex)] + [
-                vpool.id(adjacent_vertex) for adjacent_vertex in self[vertex]
-            ])
+            solver.add_clause(
+                [vpool.id(vertex)] +
+                [vpool.id(adjacent_vertex) for adjacent_vertex in self[vertex]])
 
         if verbose:
             print(' -> Codifying: At most', k, 'vertices should be selected')
@@ -280,8 +286,4 @@ class Graph(dict):
         return solver.solve()
 
 
-graph2 = {"a": {"b"}, "b": {"c","a"}, "c": {"b"}}
-
-graph = Graph(graph2)
-path = graph.find_hamiltonian_path(check_cycle=True)
-print(check_correctness(graph, path), path)
+#print(check_correctness(graph, path), path)

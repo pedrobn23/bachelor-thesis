@@ -48,6 +48,6 @@ if __name__ == '__main__':
     #     experiment(graph)
 
     for n_vertices in range(100, 251, 75):
-        for n_edges in range(100, 10000, 1000): 
+        for n_edges in range(100, 10000, 1000):
             graph = random_graph(n_vertices, n_edges)
             experiment(graph)

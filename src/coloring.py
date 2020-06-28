@@ -8,7 +8,6 @@ from pysat.card import CardEnc, EncType
 from pysat.formula import IDPool, CNF
 
 
-
 def minimun_coloring(graph):
     old = len(graph)
     new = len(graph) // 2

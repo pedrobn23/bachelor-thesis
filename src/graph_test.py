@@ -46,6 +46,23 @@ class GraphTestCase(TestCase):
         self.graph.add_edge('x', 'y')
         self.assertTrue(('x', 'y') in self.graph.edges())
 
+    def check_correctness(graph, path):
+        """
+        Check the correctness of a path in
+        order to solve the Hamiltonian path
+        """
+        if path:
+            length = len(graph)
+            for i in range(length - 1):
+                if path[(i + 1)] not in graph[path[i]]:
+                    return False
+        return True
+
+    def test_hamilton(self):
+        path = self.graph2.find_hamiltonian_path(check_cycle=True,
+                                                 verbose=False)
+        return GraphTestCase.check_correctness(self.graph2, path)
+
 
 if __name__ == '__main__':
     main()

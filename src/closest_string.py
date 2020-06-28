@@ -8,6 +8,7 @@ from pysat.card import CardEnc, EncType
 from pysat.formula import IDPool, CNF
 from utilities import triple_equal, xvar, yvar, zvar
 
+
 def closest_string(bitarray_list, distance=4, verbose=True):
     """
     Check if there exists a vertex cover of, at most, k-vertices.
@@ -30,7 +31,6 @@ def closest_string(bitarray_list, distance=4, verbose=True):
     for bitarr in bitarray_list:
         bitarr = bitarr + aux
 
-
     if verbose:
         print(' -> Codifying: imposing distance condition')
 
@@ -45,11 +45,12 @@ def closest_string(bitarray_list, distance=4, verbose=True):
 
     if verbose:
         print(' -> Codifying: Words Value')
-        
+
     for index, word in string_list:
         for pos in range(length):
-            solver.propagate(
-                assumptions=[vpool.id(xvar(index, pos)) * (-1)**(not word[pos])])
+            solver.propagate(assumptions=[
+                vpool.id(xvar(index, pos)) * (-1)**(not word[pos])
+            ])
 
     if verbose:
         print('Running SAT Solver...')
