@@ -313,19 +313,23 @@ We start with the module graph. For that purpose we implement a graph class.  We
   \item We consider a set to be better to represent the adjacent nodes, as the order that a list provide is useless and difficult membership checking.
   \end{enumerate}
 
-  We implement the graph in a class \texttt{Graph}, that can be found in the file \texttt{graph.py}. We implement functionality methods:
+  We implement the graph in a class \texttt{Graph}, that can be found in the file \texttt{graph.py}. We implement, among other functionalities that provide a good interface, the  methods:
   \begin{itemize}
-  \item
-  \item
-  \item
+  \item \texttt{find\_hamiltonian\_path}
+  \item \texttt{coloring}
+  \item \texttt{vertex\_cover}
   \end{itemize}
 
 
-  And in this 
+  Let's now talk about the package utility. we implement 3 main functionalities:
 
-  
+  \begin{enumerate}
 
-  
+  \item We implement the \texttt{minimizing\_trick} we define a python \emph{decorator}. A decorator can be regarded as an endomorphism defined over the python functions.
+  \item The functions \texttt{xvar},\texttt{yvar}, \texttt{zvar} that provide a useful interface to define variables with an undefined number of variables. For that we use the \emph{multiple function parameters} syntax allowed in python.
+    
+  \item We implement the \texttt{triple\_equal} function that is to be used in the closest string reduction.
+  \end{enumerate}  
 \begin{figure}[h]
 \begin{center}
 \tikzstyle{every node}=[draw=black,thick,anchor=west]
@@ -348,7 +352,7 @@ We start with the module graph. For that purpose we implement a graph class.  We
       child { node [optional] {\texttt{naiveQBF}}}
     }
     child [missing] {}				
-    child { node {string}
+    child { node {\texttt{string}}
       child { node [optional] {\texttt{closest\_string}}}
     }
     child [missing] {}
@@ -361,10 +365,12 @@ We start with the module graph. For that purpose we implement a graph class.  We
 \end{figure}
 
 
+The last to modules include a single homonym function each, that implements the associated reduction. More information about the code can be found in the documentation of each function. 
+
 \newpage
 \subsubsection{Test}
 
 In order to automatize testing we use the \texttt{Python} class of test classes. Therefore we can use automatic test cases in order to check our implementations. The work-flow followed is an agile one, on which we first define the objective of each code along with the test cases that we want it to pass, and then we start to develop the code. 
-We use the class \texttt{graph\_test.py} to test the Graph class. \\
+We use the class \texttt{graph\_test.py} to test the Graph class, the class \texttt{closes_string} for the closest string function adn the class . \\
 
-In order to check the implementation an scalability of our program we search for some bigger graph that we can define by hand. We find the NPDatalog graph database \cite{NPDatalog}.
+%In order to check the implementation an scalability of our program we search for some bigger graph that we can define by hand. We find the NPDatalog graph database \cite{NPDatalog}.

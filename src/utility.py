@@ -4,11 +4,11 @@ def triple_equal(x, y, z, vpool):
             [vpool.id(x), -vpool.id(y),-vpool.id(z)],
             [vpool.id(x), vpool.id(y), vpool.id(z)]]
 
-def xvar(i, j):
-    return 'x{} {}'.format(i, j)
+def xvar(args*):
+    return 'x' + ' '.join([str(arg) for arg in args])
 
-def yvar(i):
-    return 'y{}'.format(i)
+def yvar(args*):
+    return 'y' + ' '.join([str(arg) for arg in args])
 
-def zvar(i, j):
-    return 'z{} {}'.format(i, j)
+def zvar(args*):
+    return 'z' + ' '.join([str(arg) for arg in args])
