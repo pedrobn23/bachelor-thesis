@@ -1,6 +1,5 @@
 import random
 import time
-import hamilton
 from graph import Graph
 
 
@@ -25,9 +24,9 @@ def experiment(graph):
 
     start_time = time.time()
     print('SAT solving - ')
-    path = hamilton.find_hamiltonian_path(graph)
+    path = graph.find_hamiltonian_path()
     print('Solving last: ', (time.time() - start_time), 'segs.')
-    print('Checking correctness:', hamilton.check_correctness(graph, path))
+    #    print('Checking correctness:', check_correctness(graph, path))
     print(path)
     print('\n\n')
 
@@ -40,14 +39,14 @@ def experiment(graph):
 
 
 if __name__ == '__main__':
-    graph_list = ['graphs/structured-type1-100nodes.txt']
+    graph_list = ['graphs/structured-type1-100nodes.txt','graphs/structured-type1-400nodes.txt']
 
-    # for filename in graph_list:
-    #     graph = Graph()
-    #     graph.add_from_text(filename)
-    #     experiment(graph)
+    for filename in graph_list:
+        graph = Graph()
+        graph.add_from_text(filename)
+        experiment(graph)
 
-    for n_vertices in range(100, 251, 75):
-        for n_edges in range(100, 10000, 1000):
-            graph = random_graph(n_vertices, n_edges)
-            experiment(graph)
+    # for n_vertices in range(100, 251, 75):
+    #     for n_edges in range(100, 10000, 1000):
+    #         graph = random_graph(n_vertices, n_edges)
+    #         experiment(graph)
