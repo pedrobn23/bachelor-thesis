@@ -10,8 +10,13 @@
 \addcontentsline{toc}{chapter}{Summary}
 \section*{Brief Summary}
 
+On this Bachelors' Thesis we deepen our knowledge in the satisfiability problem for propositional logic. In order to do that we start from the understanding of logic and problems to the study of completeness in complexity classes. Is in this area where SAT is a cornerstone in the development of notion a new theories. When a theoretical understanding of the problem is achieve we proceed to look for efficient algorithms to solve it (SAT-Solvers or solvers). We consider both deterministics and probabilitics approaches to this task, and discuss their efficiency. We present the state of the art on solvers. To end this project we implement a library that use the notions explained thorough the text in order to solve some interesting math-related NP-Complete problems.\\
+
+\textbf{keywords:} NP-Complete, SAT, QBF, Cook-Levin, DPLL, PPSZ.
 
 
+
+\selectlanguage{spanish}
 \section*{Resumen Extendido}
 
 Durante la redacción de este trabajo estudiaremos un campo multidisciplinar que involucra, por lo general, tanto consideraciones propias de los intereses de las matemáticas como de los intereses del campo de la ingeniería informática. Por lo tanto, es difícil distinguir a grandes rasgos que partes son de mayor interés para un lector que pertenezca a solo una de las disciplinas. Sin embargo, intentaremos diferenciar en la medida de lo posible, que partes son de interés para cada una de estas materias. En caso de que esto no sea posible, justificaremos el interés que cada ciencia tiene.\\
@@ -28,7 +33,7 @@ Empezamos definiendo el Álgebra Booleana como un retículo distributivo. Poster
 Para poder introducir el problema introducimos los modelos de computación, que nos servirán como base para, una vez definidos los problemas, resolverlos. Estos modelos se basan en la noción de máquina de Turing. Sobre estos modelos creamos una división de los problemas basada en su dificultad, que son las clases de complejidad, y presentamos algunas de las más importante como P,NP o LSPACE. Llegados a este punto introducimos el problema P vs NP, junto con otros resultados y problemas abiertos de interés.\\
 
 
-La tercera sección está destinada a introducir la teoría necesaria para enunciar y demostrar el teorema de Cook-Levin. Una vez realizado este teorema lo aprovechamos e  introducimos una serie de resultados análogos en las diferentes variaciones de SAT, presentadas en el capítulo previo. Este teorema nos habla de la dificultad de SAT relativa a otros problemas de NP. Reflexionamos sobre la posibilidad de que SAT pertenezca a P presentado la hipótesis ETH, una hipótesis tan ampliamente aceptada como no demostrada.En la última sección realizamos un desarrollo de teorías asociadas con el problema SAT. En particular, estudiamos la acción de grupos de permutaciones y negaciones sobre fórmulas CNF. Presentamos las asignaciones Autark así como su NP-Completitud, desarrollamos el teorema de Tseitin que nos permita relacionar eficientemente SAT con GSAT, consideramos CoNP completitud y, para terminar, consideramos FSAT y la relación entre los métodos constructivos y no constructivos de resolución.\\
+La tercera sección está destinada a introducir la teoría necesaria para enunciar y demostrar el teorema de Cook-Levin. Una vez realizado este teorema lo aprovechamos e  introducimos una serie de resultados análogos en las diferentes variaciones de SAT, presentadas en el capítulo previo. Este teorema nos habla de la dificultad de SAT relativa a otros problemas de NP. Reflexionamos sobre la posibilidad de que SAT pertenezca a P presentado la hipótesis ETH, una hipótesis tan ampliamente aceptada como no demostrada.En la última sección realizamos un desarrollo de teorías asociadas con el problema SAT. En particular, estudiamos la acción de grupos de permutaciones y negaciones sobre fórmulas CNF. Presentamos las asignaciones Autark así como su NP-Completitud,  desarrollamos el teorema de Tseitin que nos permita relacionar eficientemente SAT con GSAT, consideramos CoNP completitud y, para terminar, consideramos FSAT y la relación entre los métodos constructivos y no constructivos de resolución.\\
 
 En relación a la división del trabajo en informática y matemáticas, consideramos que este capítulo debe ser de interés para ambas disciplinas. Proseguimos explicando la siguiente parte. En esta, nos centramos en los algoritmos de resolución. Dividimos nuestro estudio de los algoritmos en tres capítulos.\\
 
@@ -39,12 +44,12 @@ En relación a la división del trabajo en informática y matemáticas, consider
 
 Tomando otro enfoque explicamos el método de búsqueda local ajustado a SAT. Una vez descrito lo mejoramos aplicando la teoría de código de cubrimientos. Esta sección consideramos que tiene un interés natural para el ámbito de la ingeniería informática. Desde el ámbito de las matemáticas el interés reside en el análisis de la complejidad de los algoritmos.\\
 
-\textbf{Capítulo 6:} En este capítulo realizamos un estudio profundo del probablemente campo más activo de los algoritmos SAT-solver: el campo de los algoritmos probabilísticos. En estos algoritmos hacemos un compromiso en el cual a cambio de ganar en eficiencia admitimos algoritmos con un error unilateral acotado, es decir, un algoritmo que siempre responda correctamente si una formula no es satisfacible, y tenga una probabilidad de responder correctamente si lo es. Entre los algoritmos probabilisticos, al igual que en la sección anterior estudiamos los dos enfoques: algoritmos basado en DPLL y algoritmos basados en busqueda Local. Entre los primeros estudiamos en profundidad el algoritmo PPZ y su mejora el algoritmos PPSZ. Este algoritmo es a día de hoy el que mejor eficiencia teórica presenta. En el ámbito de la búsqueda local encontramos el algoritmos de Schöning, que siendo uno de los más simples tiene una eficiencia no mucho pero a PPSZ. \\
+\textbf{Capítulo 6:} En este capítulo realizamos un estudio profundo del probablemente campo más activo de los algoritmos SAT-solver: el campo de los algoritmos probabilísticos. En estos algoritmos hacemos un compromiso en el cual a cambio de ganar en eficiencia admitimos algoritmos con un error unilateral acotado, es decir, un algoritmo que siempre responda correctamente si una formula no es satisfacible, y tenga una probabilidad de responder correctamente si lo es. Entre los algoritmos probabilísticos, al igual que en la sección anterior estudiamos los dos enfoques: algoritmos basado en DPLL y algoritmos basados en busqueda Local. Entre los primeros estudiamos en profundidad el algoritmo PPZ y su mejora el algoritmos PPSZ. Este algoritmo es a día de hoy el que mejor eficiencia teórica presenta. En el ámbito de la búsqueda local encontramos el algoritmos de Schöning, que siendo uno de los más simples tiene una eficiencia no mucho peor a PPSZ. \\
 
 Este capítulo es de interés para el ámbito de la informática debido al desarrollo de algoritmos de resolución. A su vez, un matemático puede ver reflejado sus intereses en la demostraciones realizadas para el estudio de la esperanza de error unilateral. Con esto acabamos la segunda parte.\\
 
 
-\textbf{Capítulo 7:} Este capítulo, único perteneciente a la parte 3, narra el desarrollo de una librería en Python basada en PySAT. El objetivo de esta librería es realizar una resolución eficaz a la vez que elegante de problemas NP-Completos. Para esto realizamos reducciones de estos problemas al problema SAT. Esta librería resuelve los problemas NP-Completos de Coloreado, Cubrimiento por grafos y existencia de camino hamiltoniano en grafos, así como el problema de distancia en cadenas. Por último desarrollamos naiveQBF que tiene como esperanza ser un esqueleto eficiente para el desarrollo de QBFsolvers basados en SAT. El código asociado a esta librería esta disponible en:
+\textbf{Capítulo 7:} Este capítulo, único perteneciente a la parte 3, narra el desarrollo de una biblioteca en Python basada en PySAT. El objetivo de esta biblioteca es realizar una resolución eficaz a la vez que elegante de problemas NP-Completos. Para esto realizamos reducciones de estos problemas al problema SAT. Esta biblioteca resuelve los problemas NP-Completos de Coloreado, Cubrimiento por grafos y existencia de camino hamiltoniano en grafos, así como el problema de distancia en cadenas. Por último desarrollamos naiveQBF que tiene como esperanza ser un esqueleto eficiente para el desarrollo de QBFsolvers basados en SAT. El código asociado a esta biblioteca esta disponible en:
 
 \begin{center}
   \url{https://github.com/pedrobn23/TFG/}
@@ -55,7 +60,7 @@ El interés de esta sección para las matemáticas está en el desarrollo de her
 \textbf{palabras clave:} SAT, QBF, NP, NP-Completo, Cook-Levin, DPLL.
 
 
-
+\selectlanguage{english}
 
 
 % \endinput
