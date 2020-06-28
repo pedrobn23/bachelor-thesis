@@ -122,7 +122,7 @@ class Graph(dict):
         """
         if not graph.edges():
             return []
-    
+
         print('Codifying SAT Solver...')
         length = len(graph.vertices())
         solver = Solver(name='cd')
@@ -132,11 +132,11 @@ class Graph(dict):
         for integer, vertex in enumerate(graph.vertices()):
             names[integer + 1] = vertex
         names[0] = names[length]
-        
+
         for position_in_path in range(length):
             for vertex in range(1, length + 1):
                 vpool.id(xvar(vertex, position_in_path))
-               
+
         print(' -> Codifying: All Positions occupied')
         for position_in_path in range(length):
             var_list = [
@@ -155,7 +155,9 @@ class Graph(dict):
                 for position_in_path in range(length)
             ]
 
-            cnf = CardEnc.equals(lits=var_list, encoding=EncType.pairwise, vpool=vpool)
+            cnf = CardEnc.equals(lits=var_list,
+                                 encoding=EncType.pairwise,
+                                 vpool=vpool)
             print(cnf.clauses)
             solver.append_formula(cnf)
 
@@ -167,20 +169,22 @@ class Graph(dict):
                     for position_in_path in range(length - 1):
                         solver.add_clause([
                             -vpool.id(xvar(vertex_a, position_in_path)),
-                            -vpool.id(xvar(vertex_b, position_in_path+1)),
+                            -vpool.id(xvar(vertex_b, position_in_path + 1)),
                         ])
                         solver.add_clause([
                             -vpool.id(xvar(vertex_b, position_in_path)),
-                            -vpool.id(xvar(vertex_a, position_in_path+1)),
+                            -vpool.id(xvar(vertex_a, position_in_path + 1)),
                         ])
 
                     if check_cycle:
                         solver.add_clause([
                             vpool.id(xvar(vertex_b, length - 1)),
-                            vpool.id(xvar(vertex_a, 0))])
+                            vpool.id(xvar(vertex_a, 0))
+                        ])
                         solver.add_clause([
                             vpool.id(xvar(vertex_b, 0)),
-                            vpool.id(xvar(vertex_a, length -1))])
+                            vpool.id(xvar(vertex_a, length - 1))
+                        ])
 
         print('Running SAT Solver...')
         solution = []
@@ -197,7 +201,7 @@ class Graph(dict):
         """
         if n_color < 0:
             raise ValueError('Number of colors must be positive integer')
-    
+
         if n_color == 0:
             return not bool(graph.vertices())
 
@@ -217,9 +221,9 @@ class Graph(dict):
                 vpool.id('{}color{}'.format(vertex, color))
                 for color in range(n_color)
             ],
-                                vpool=vpool,
-                                encoding=0)
-            
+                                 vpool=vpool,
+                                 encoding=0)
+
             solver.append_formula(cnf)
 
         if verbose:
@@ -236,7 +240,7 @@ class Graph(dict):
         if verbose:
             print('Running SAT Solver...')
         return solver.solve()
-    
+
     def vertex_cover(graph, k=1, verbose=True):
         """
         Check if there exists a vertex cover of, at most, k-vertices.
@@ -258,9 +262,9 @@ class Graph(dict):
             print(' -> Codifying: Every vertex must be accessible')
 
         for vertex in graph.vertices():
-            solver.add_clause(
-                [vpool.id(vertex)] +
-                [vpool.id(adjacent_vertex) for adjacent_vertex in graph[vertex]])
+            solver.add_clause([vpool.id(vertex)] + [
+                vpool.id(adjacent_vertex) for adjacent_vertex in graph[vertex]
+            ])
 
         if verbose:
             print(' -> Codifying: At most', k, 'vertices should be selected')
