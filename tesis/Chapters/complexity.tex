@@ -4,14 +4,14 @@
 \section{Model of Computation}
 
 
-Computation started as a way of relieving mathematicians of mechanical work. A long journey has been made by now. In particular, models of computation improve our ability to ease work to unexpected limits. Nonetheless some barriers are still left to breaks. In particular there is the dream of a efficient theorem prover, that will made mathematicians life easier, so that formalism would be relegated to the domain of machines, just as arithmetic has already been done.The work of the mathematician would then be to check and understand what things are important and how to pose the problems in the right language.\\
+Computation started as a way of relieving mathematicians of mechanical work. A long journey has been made by now. In particular, models of computation improve our ability to ease work to unexpected limits. Nonetheless some barriers are still left to be broken. In particular there is the dream of a efficient theorem prover, that will made mathematicians life easier, so that formalism would be relegated to the domain of machines, just as arithmetic has already been done.The work of the mathematician would then be to check and understand what things are important and how to pose the problems in the right language.\\
 
-SAT, and even more QBF, try to solve this problem, by asserting veracity of simple laws. Some projects such as COQ\cite{bertot2008short} have been doing work on this area. They have had limited success, because of the complexity of the problem  we have before us. In this chapter we present the theory of complexity and the state of the art of the complexity analysis. We reflex upon the P vs NP problem and we present sat as the cornerstone for the development of this theory, having as its zenith the Cook-Levin Theorem [\ref{ref:cooklevin}].
+SAT, and even more QBF, try to solve this problem, by asserting veracity of simple laws. Some projects such as COQ\cite{bertot2008short} have been doing work on this area. They have had limited success, because of the complexity of the problem  we have before us. In fact, now we know that this can not be achieved even in restricted domains, as it is believed that there is not a polynomial algorithm for the simpler propositional logic. In this chapter we present the theory of complexity and the state of the art of the complexity analysis. We reflect upon the P vs NP problem and we present sat as the cornerstone for the development of this theory, having as its zenith the Cook-Levin Theorem [\ref{ref:cooklevin}].
 
 \subsection{Deterministic Computation}
-In this section we discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximations to Turing machines, so we present a quick formal approach to the area.  \\
+In this section we discuss two computation models: Turing Machines and Circuits. We do not expect the text to be the first approximation to Turing machines, so we present a quick formal approach to the area.  \\
 
-Turing machines are arguably the epicenter of  models of computation. A Turing Machine  represents a long mechanical tape on which we are going to operate. The tape is divided into discrete positions, such that we can see the tape as a one-dimensional array. Operating on this tape we can focus on a cell, scan its contents, overwrite  its contents or move to an adjacent cell. These operations try to resemble the process of human calculus, as done with paper and pencil when applying the long division method  for example. Formally:
+Turing machines are arguably the epicenter of  models of computation. A Turing Machine  represents a long mechanical tape on which we are going to operate. The tape is divided into discrete positions, such that we can see the tape as a one-dimensional array. Operating on this tape we can focus on a cell, scan its contents, overwrite  its contents or move to an adjacent cell. These operations try to resemble the process of human calculus by  means of a set of rules or algorithm, as done with paper and pencil when applying the long division method  for example. Formally:
 
 \begin{definition}[Turing Machine \cite{hopcroft2007introduction}] We describe a Turing Machine as a 7-tuple $M=(Q, \Sigma, \Gamma, \delta, q_0, B, F)$ whose components have the following meanings:
   \begin{itemize}
@@ -20,14 +20,14 @@ Turing machines are arguably the epicenter of  models of computation. A Turing M
   \item $\Gamma$ the finite set of \emph{tape symbols}. $\Sigma$ is always a subset of $\Gamma$.
   \item  $\delta: Q\times \Gamma \to Q\times\Gamma\times\{L,R\}$ the transition function.
   \item $q_0$ the \emph{start state}.
-  \item $B$ the \emph{blank symbol}.
+  \item $B\in\Gamma$ the \emph{blank symbol}.
   \item $F$ the \emph{accepting states}.
   \end{itemize}
 
   A configuration of a Turing machine is a triplet $C=(q,u,v)$ where $q\in Q$, $u,v\in \Gamma^*$. A configuration is accepting if $q\in F$.
 \end{definition}
 
-A configuration should be understand as a state of the machine, where $q$ is the current state, $u$ the part of the tape left to the cell on which we focus and $v$ is the part of the tape right to the cell we focus, starting on it.\\
+A configuration should be understood as a decription of the machine, where $q$ is the current state, $u$ the part of the tape left to the cell on which we focus and $v$ is the part of the tape right to the cell we focus, starting on it.\\
 
 As a brief note before going on, we have not defined the empty word yet, as in propositional logic is not a valid formula so it lacks our interest until now. We will note the empty word as $\epsilon$ and would consist of an empty sequence of symbols. We can  now define a relation between configurations:
 
@@ -53,7 +53,7 @@ As a brief note before going on, we have not defined the empty word yet, as in p
   When it is beneficial we can consider a TM $M$ to have an output, that is, to explicitly say whether or not $M$ accepts a word.\\
 
   
-  We now describe the use of Turing Machine: solving problems. We consider that Turing Machines solve both decision and function problems. Lets start by explaining how a Turing Machine solves a decision problem.
+  We now describe the use of Turing Machines: solving problems. We consider that Turing Machines solve both decision and function problems. Lets start by explaining how a Turing Machine solves a decision problem.
 
   \begin{definition}
      Let $M$ be a Turing Machine. We say that $u\in\Sigma^*$ is \emph{accepted} by $M$ if there exists a final configuration $C$ such that $(q_0,\epsilon,u)\vdash^* C$. The language \emph{accepted} by $M$ denoted as $L(M)$ is the collection of all words accepted. We say that $M$ \emph{decides} a language $L$ if $L$ is the language accepted by $M$.
@@ -63,7 +63,7 @@ As a brief note before going on, we have not defined the empty word yet, as in p
 
 
   \begin{definition}
-    Let $R\subset\Sigma^*\times \Sigma^*$ be a relation. A Turing Machine $M$ \emph{compute} $R$ if for every $u\in \Sigma^*$ there is an accepting configuration $C=(q',v,v')$ of $M$  such that $(q,\epsilon,u)\vdash^* C$ and $(u,vv') \in R$. A Turing Machine $M$ computes a function problem defined by $R$ if it computes $R$.
+    Let $R\subset\Sigma^*\times \Sigma^*$ be a relation. A Turing Machine $M$ \emph{computes} $R$ if for every $u\in \Sigma^*$ there is an accepting configuration $C=(q',v,v')$ of $M$  such that $(q,\epsilon,u)\vdash^* C$ and $(u,vv') \in R$. A Turing Machine $M$ computes a function problem defined by $R$ if it computes $R$.
   \end{definition}
 
 
@@ -71,7 +71,7 @@ As a brief note before going on, we have not defined the empty word yet, as in p
   
 
   \subsection{Non-deterministic Computation}
-Analogous to the concept of Turing Machine, another recurrent idea in computation is the concept of non-deterministic computing. These models allow an algorithm to react different to the same input. These models are useful as there as they encapsulate various problem of interest and give upper bound to the deterministic complexity. In order to formalize this concept we will define non-deterministic Turing Machines.\\
+Analogous to the concept of Turing Machine, another recurrent idea in computation is the concept of non-deterministic computing. These models allow an algorithm to react different to the same input. These models are useful as they encapsulate various problems of interest and give upper bound to the deterministic complexity. In order to formalize this concept we will define non-deterministic Turing Machines.\\
 
 Intuitively, a non-deterministic Turing Machine is a Turing Machine that, at any point on its computation, can choose from several different 'paths' to compute. This choice is made in a non-deterministic manner, that is, it is not known what the result will be until the computation is done.
 
@@ -82,7 +82,7 @@ Intuitively, a non-deterministic Turing Machine is a Turing Machine that, at any
   \item $\Gamma$ the finite set of \emph{tape symbols}. $\Sigma$ is always a subset of $\Gamma$.
   \item  $\delta\subset (Q\times \Gamma)\times( Q\times\Gamma\times\{L,R\})$ the transition relation.
   \item $q_0$ the \emph{start state}.
-  \item $B$ the \emph{blank symbol}.
+  \item $B\in \Gamma$ the \emph{blank symbol}.
   \item $F$ the \emph{accepting states}.
   \end{itemize}
 
@@ -95,7 +95,7 @@ Note that there exists $d_0 \in \mathbb{N}$ such that:
 
 By opposition, the previously defined Turing machines are considered Deterministic Turing Machines(DTM). The definition of Non-Deterministic Turing Machine is adapted from \cite{hopcroft2007introduction}. \\
   
-The definition [\ref{def:paso}] holds for non-deterministic Turing machines, with the consideration that now instead of finding the image of a function we have to find a related triple. Using analogous notions we define when a problem is decided/computed by a Non-deterministic Turing Machine. A Non-Deterministic Turing machine can be regarded as a tree. In this tree we assume that a branch divides when a decision has to be made. Once this tree is built, we can assume that the execution of our TM will be the progression of one of the possible paths of the tree.\\
+The definition [\ref{def:paso}] holds for non-deterministic Turing machines, with the consideration that now instead of finding the image of a function we have to find a related triple. Using analogous notions we define when a problem is decided/computed by a Non-deterministic Turing Machine. The computation associated with a non-Deterministic Turing machine can be regarded as a tree. In this tree we assume that a branch divides when a decision has to be made. Once this tree is built, we can assume that the execution of our TM will be the progression of one of the possible paths of the tree.\\
 
 
   
@@ -104,24 +104,24 @@ The definition [\ref{def:paso}] holds for non-deterministic Turing machines, wit
 Once we now how to make a TM for one problem, we may ask ourselves: can we make a TM machine in order to solve more that one problem?. To answer this question we define the notion of reduction. Intuitively, a reduction is a process in which, instead of solving two problem $L_1$ and $L_2$, we choose to only solve $L_1$ and use its resolution in order to solve $L_2$. Formally:
 
 \begin{definition}
-If $L_1$ and $L_2$ are decision problems, then we say that $L_1$ is reduced to $L_2$ is there is an TM that always stops and computes a function $f$ such that for every input $w$ to $L_1$ , we have that $L_2$ produces the same answer for the input $f (w )$.  
+If $L_1$ and $L_2$ are decision problems, then we say that $L_1$ is reduced to $L_2$ is there is a TM that always stops and computes a function $f$ such that for every input $w$ to $L_1$ , we have that $L_2$ produces the same answer for the input $f (w )$.  
 \end{definition}
 
 
-This notion also provides us with a partial order relationship. For function problem we can state the analogue definition. 
+This notion also provides us with a partial order relationship. For function problems we can state the analogue definition. 
 
 
 \section{Complexity Classes}
 \label{sec:complexity}
 
-In this section we are going to define what a complexity class is and then we are going to discuss some results of the complexity of the SAT-problem. We use as principal reference \cite{arora2009computational}.
+In this section we are going to define what a complexity class is and then we are going to discuss some results of the complexity of the SAT-problem. We uses \cite{arora2009computational}  as principal reference.
 
 \subsection{Deterministic complexity}
 \label{sub:detcomp}
-There are different approaches as how to measure the complexity of given algorithm. We will focus primarily on \emph{worst-case time complexity}. We will also introduce \emph{worst-case space complexity} and provide some results.
+There are different approaches to how to measure the complexity of given algorithm. We will focus primarily on \emph{worst-case time complexity}. We will also introduce \emph{worst-case space complexity} and provide some results.
 
 \begin{definition}
-  Let $g:\mathbb{N}^\mathbb{N}$, the:
+  Let $g:\mathbb{N}^\mathbb{N}$, then:
   $$O(g) = \left\{ f\in \mathbb{N}^\mathbb{N} :\ \exists N,C \in \mathbb{N} : f(n) \le Cg(n) \ \forall  n \ge N\right\}.$$
 \end{definition}
 
@@ -134,7 +134,7 @@ There are different approaches as how to measure the complexity of given algorit
 
 \end{definition}
 
-Sometimes we will also consider the TM $M$ that decides/computes the problem to be in $TIME(f)$ if the context is clear enough. This definition let us a great tool in order to define collections of problems, and to compare them. We introduce some classes.
+Sometimes we will also consider the TM $M$ that decides/computes the problem to be in $TIME(f)$ if the context is clear enough. This definition provide us a great tool in order to define collections of problems, and to compare them. We introduce some classes.
 \begin{definition}
   Let $\Omega$ be a set of endofunctions of $\mathbb{N}$.
   \begin{enumerate}
@@ -147,12 +147,12 @@ Sometimes we will also consider the TM $M$ that decides/computes the problem to 
 \end{definition}
 
 
-Although we have define the complexity classes as collections of decision problems, we can also consider consider a language to be in a class $C$ if its associated decision problem is. During the study we will focus on decision problem complexity classes. Nonetheless ties between this classes and its associated function complexity classes are strong and will be pointed out.\\
+Although we have defined the complexity classes as collections of decision problems, we can also consider consider a language to be in a class $C$ if its associated decision problem is. During the study we will focus on decision problem complexity classes. Nonetheless ties between this classes and its associated function complexity classes are strong and will be pointed out.\\
 
 In general the notation of complexity classes is additive. Therefore is we want to represent the function space complexity class associated to $\Omega$ we denote that by $F\Omega SPACE$.\\
 
 
-Arguably the most important of the complexity classes is P. We define P as the set of all polynomials. Therefore we have an homonym complexity class P. We can justify the importance of this class the Feasibility Thesis.
+Arguably the most important of the complexity classes is P. We define P as the set of all polynomials. Therefore we have an homonym complexity class P. We can justify the importance of this class by the Feasibility Thesis.
 
 \begin{thesis}[\cite{cook2006p}]
 A natural problem has a feasible algorithm iff it has a polynomial-time algorithm.
