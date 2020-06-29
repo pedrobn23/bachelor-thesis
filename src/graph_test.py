@@ -47,10 +47,6 @@ class GraphTestCase(TestCase):
         self.assertTrue(('x', 'y') in self.graph.edges())
 
     def check_correctness(graph, path):
-        """
-        Check the correctness of a path in
-        order to solve the Hamiltonian path
-        """
         if path:
             length = len(graph)
             for i in range(length - 1):
@@ -59,9 +55,14 @@ class GraphTestCase(TestCase):
         return True
 
     def test_hamilton(self):
-        path = self.graph2.find_hamiltonian_path(check_cycle=True,
-                                                 verbose=False)
-        return GraphTestCase.check_correctness(self.graph2, path)
+        self.assertEqual(
+            self.graph.find_hamiltonian_path(check_cycle=True, verbose=False),
+            [])
+
+        path2 = self.graph2.find_hamiltonian_path(check_cycle=True,
+                                                  verbose=False)
+
+        self.assertTrue(GraphTestCase.check_correctness(self.graph2, path2))
 
 
 if __name__ == '__main__':

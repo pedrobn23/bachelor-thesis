@@ -39,7 +39,10 @@ def experiment(graph):
 
 
 if __name__ == '__main__':
-    graph_list = ['graphs/structured-type1-100nodes.txt','graphs/structured-type1-400nodes.txt']
+    graph_list = [
+        'graphs/structured-type1-100nodes.txt',
+        'graphs/structured-type1-400nodes.txt'
+    ]
 
     for filename in graph_list:
         graph = Graph()
