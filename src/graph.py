@@ -13,7 +13,7 @@ from pysat.solvers import Solver
 from pysat.card import CardEnc, EncType
 from pysat.formula import IDPool
 from utility import xvar
-
+import math
 
 class Graph(dict):
     """
@@ -250,7 +250,26 @@ class Graph(dict):
             print('Running SAT Solver...')
         return solver.solve()
 
-    def vertex_cover(self, k=1, verbose=True):
+    def minimun_coloring(self):
+        """
+        Using the minimizing trick, return the size of the minimun coloring
+        """
+        
+        old = len(self)
+        new = len(self) // 2
+
+        while old != new:
+            if self.coloring( new, False):
+                old = new
+                new = new // 2
+
+            else:
+                new += math.ceil((old - new) / 2)
+
+        return new
+
+    
+    def dominating_subset(self, k=1, verbose=True):
         """
         Check if there exists a vertex cover of, at most, k-vertices.
         """
@@ -284,6 +303,41 @@ class Graph(dict):
         if verbose:
             print('Running SAT Solver...')
         return solver.solve()
+    
+    def minimun_dominating_subset(self):
+        """
+        Using the minimizing trick, return the size of the minimun dominating subset
+        """
+        old = len(self)
+        new = len(self) // 2
 
+        while old != new:
+            if self.dominating_subset(new, False):
+                old = new
+                new = new // 2
 
-#print(check_correctness(graph, path), path)
+            else:
+                new += math.ceil((old - new) / 2)
+
+        return new
+
+    def random_graph(n_vertices, n_edges):
+        """
+        Class method that returns a random graph. 
+
+        Receives two params: 
+        n_vertices: the number of vertices
+        n_edges: the number of edges.
+        """
+
+        graph = Graph()
+        for i in range(n_vertices):
+            graph.add_vertex(str(i))
+
+        for i in range(n_edges):
+            ori = random.randint(0, n_vertices - 1)
+            des = random.randint(0, n_vertices - 1)
+            graph.add_edge(str(ori), str(des))
+
+        return graph
+

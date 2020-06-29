@@ -34,9 +34,9 @@ All test cases are done in an ARCH-BASED OS. In particular:
 
   With 4 physical (8 virtual) processor \texttt{Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz}. \\
 
-  The code was regularly uploaded and updated at:
+  The code was uploaded and updated at:
 \begin{center}
-  \url{https://github.com/pedrobn23/TFG/}
+  \url{https://github.com/pedrobn23/TFG/tree/master/src}
 \end{center}
 
 On this repository you will also find this document and all the .text files attached to it.  
@@ -61,38 +61,38 @@ PySAT\cite{imms-sat18} is a library developed for python SAT solving. It has bee
   \begin{itemize}
   \item \texttt{IDPool}: a class that help us manage variables without having personally to have a log of what variable is associated to each integer. Nonetheless, we do not consider this class to be a black box. Reading the code we recognize that the variables are named after their order of arrival. This details is important in order to solve some function problems.
   \item \texttt{CardEnc}: a class that allow us to encode cardinality restrictions of the type atmost, atleast and equals. I feel proud to say that I notified a bug in this particular class relative to a unidiomatic use of Python that derived in a error, while thoroughly studying the project.  
-  \end{itemize}
+>  \end{itemize}
 
 \end{itemize}
 
 
 \section{Reductions}
 \subsection{Graph based Problems}
-In order to demonstrate the utility of SAT, a series of reductions will be developed. This will imply a formal approach to the resolution of the problems, as well as deploying a little theoretical background to some problems when needed. Also we would like to show that this technique provide sometimes really simple approximations to the problems. We start approaching graph related problems, for two reasons:
+In order to demonstrate the utility of SAT, a series of reductions will be developed. This will imply a formal approach to the resolution of the problems, as well as deploying a little theoretical background to some problems when needed. Also we would like to show that this technique provides sometimes really simple approximations to the problems. We start approaching graph related problems, for two reasons:
 
 \begin{enumerate}
 \item The graphs arouse interest both in mathematics and in computer science, thus deriving a work that could be interesting for profiles coming from both subjects.
 \item We want to use SAT to solve problems at least as complex as SAT. Thus, we look for problems that are NP-Hard. Some of the most important classical NP-Problems\ are defined over graphs. 
 \end{enumerate}
  
-We choose to solve four of the 21 Karp's NP-Complete problems\cite{karp1972reducibility}, namely:
+We choose to solve three of the 21 Karp's NP-Complete problems\cite{karp1972reducibility}, namely:
 \begin{itemize}
 \item Hamiltonian Path.
 \item Proper Coloring.
-\item Vertex Covering.
+\item Dominant Subseting.
 \end{itemize}
 
-When we talk about graph in this subsection we will consider undirected graphs only, that is, undirected graphs without more than one edge between two nodes and no loops.
+When we talk about graph in this subsection we will consider undirected graphs only, more precisely, undirected graphs without more than one edge between two nodes and no loops.
 
-These problems are among the most representatives of graphs theory, so we believe of great interest developing a library to solve then. Thorough the chapter, when we refer to $\mathcal{C}(A)$ we refer in the context of the lemma \ref{lemma:cooklevin}.
+These problems are among the most representatives of graphs theory, so we believe that there is a great interest developing a library to solve then. Thorough the chapter, when we refer to $\mathcal{C}(A)$ we do it in the context of the lemma \ref{lemma:cooklevin}.
 
 
 \subsubsection{Hamiltonian Path}
 
-The problem of, given a graph, whether it exists a Hamiltonian Path is well know to be NP-Complete. Then by Cook Theorem it is known that a reduction from the problem of the Hamiltonian Cycle to SAT exists. This theorem is constructive, so it effectively does gives a reduction. Nonetheless, this reduction is unmanageable and in order to use SAT-solvers to improve Hamiltonian cycle resolution it would be necessary to provide easier programming techniques. On this subsection an alternative reduction will be shown.
+The problem of, given a graph, whether there exists a Hamiltonian Path is well know to be NP-Complete. Then by Cook Theorem it is known that a reduction from the problem of the Hamiltonian Cycle to SAT exists. This theorem is constructive, so it effectively does gives a reduction. Nonetheless, this reduction is unmanageable and in order to use SAT-solvers to improve Hamiltonian cycle resolution it would be necessary to provide easier programming techniques. On this subsection an alternative reduction will be shown.
 
 \begin{definition}
-  A Hamiltonian cycle (resp. path) is a cycle (resp. path) that visits every node in a graph. The associated problem is to check, given a graph, whether such cycle (resp. path) exists.
+  A Hamiltonian cycle (resp. path) is a cycle (resp. path) that visits every node in a graph only once. The associated problem is to check, given a graph, whether such cycle (resp. path) exists.
 \end{definition}
 
 We will consider the problem of the Hamiltonian cycle of undirected graphs. Therefore an edge would have two sources instead of a source and a target as it is regarded on directed graphs.\\
@@ -100,7 +100,7 @@ We will consider the problem of the Hamiltonian cycle of undirected graphs. Ther
 This problem is a very good example to represent what means to use a SAT-solver to solve a hard problem. The presented reduction is done as shown in \cite{49593}, with a minor error solved.\\
 
 
-It moves the complexity of the problem from how to solve it to how to implement a SAT-solver. Therefore it only left a worry about what do I need to satisfy in order to solve this problem. In order to make the reduction we will represent with Boolean clauses the conditions. We use the same reduction in order to reduce both the problem for the Hamiltonian path and the Hamiltonian cycle.\\
+It moves the complexity of the problem from how to solve it to how to implement a SAT-solver.The reduction will encode the Hamiltonian cycle problem as a SAT problem. We use the same reduction in order to reduce both the problem for the Hamiltonian path and the Hamiltonian cycle.\\
 
 Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. To reduce it to a SAT problem, we will first define the variables $\{x_{i,j}: i\in 1,...,n ; j\in 1,...,n \}$. If the variable $x_{i,j}$ is assigned to true it would mean that the vertex $v_i$ is in position $j$ in the path. We would like to find a assignment of these variables that satisfy the following clauses.
 
@@ -117,13 +117,13 @@ Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph. To reduce it to a SA
   $$(\neg x_{1,j} \vee \neg x_{n,k})\qquad \forall (k,j) \not \in E.$$
 \end{enumerate}
 
-Let now prove that this is a correct reduction, i.e., that an assignment that can satisfy these clauses exists if, and only if, the graph $G$ has a Hamiltonian graph. If such an assignment exists we can make a Hamiltonian cycle with the variables assigned to 1. On the other hand if such cycle exists an assignment that assign to 1 the variable $x_{i,j}$ given that the vertex $v_i$ is in position $j$ in the path would satisfy all the clauses. 
+This is a correct reduction, i.e., that an assignment that can satisfy these clauses exists if, and only if, the graph $G$ has a Hamiltonian graph. If such an assignment exists we can make a Hamiltonian cycle with the variables assigned to 1. On the other hand if such cycle exists an assignment that assign to 1 the variable $x_{i,j}$ given that the vertex $v_i$ is in position $j$ in the path would satisfy all the clauses. 
 
 \subsubsection{The optimization trick}
 
-The next problems that we consider have a characteristic in common: they are optimizing problem with an associated NP-Complete decision problem. That is, we have a decision problem that, given a graph $G$ and a number $k$, check whether a condition is satisfied, and an associated minimizing (resp. maximizing) problem that consists of looking for the least (resp. greatest) $k$ where the conditions are satisfy for $G$. For the rest of the discussion we consider that we can solve the decision problem in $O(f(n))$ for some $f\in \mathbb{N}^\mathbb{N}$. \\
+The next problems that we consider have a characteristic in common: they are optimization problem with an associated NP-Complete decision problem. That is, we have a decision problem that, given a graph $G$ and a number $k$, check whether a condition is satisfied, and an associated minimizing (resp. maximizing) problem that consists of looking for the least (resp. greatest) $k$ where the conditions are satisfied for $G$. For the rest of the discussion we consider that we can solve the decision problem in $O(f(n))$ for some $f\in \mathbb{N}^\mathbb{N}$. \\
 
-The naive approach is straight forward: trying iteratively try every $k$ increasingly (resp. decreasingly) until some satisfy the condition, therefore finding the minimum (resp. maximum). As in all three problems it happens that $1\le k \le n$ therefore we can solve the function problem in $O(nf(n))$. \\
+The naive approach is straight forward: trying iteratively for every $k$ increasingly (resp. decreasingly) until that one satisfy the condition, therefore finding the minimum (resp. maximum). As in all three problems it happens that $1\le k \le n$ therefore we can solve the function problem in $O(nf(n))$. \\
 
 Nonetheless there is a somewhat common trick that consist of using one more property of these type of problem: if the conditions are satisfied for a number $k$ then they are satisfy for every $k' \ge k$. Therefore we can implement a binary search, therefore achieving a better efficiency $O(log(n)f(n))$.\\
 
@@ -147,11 +147,11 @@ Nonetheless there is a somewhat common trick that consist of using one more prop
   \end{algorithmic}
 \end{algorithm}
 
-This method allow us to study the decision problem, and having an slightly refined algorithm to solve the associated optimization problem. 
+This method allows us to study the decision problem, and having an slightly refined algorithm to solve the associated optimization problem. 
 
 \subsubsection{Coloring}
 
-We now introduce one of the most active problems in graph theory: the graph coloring. In this text we have already consider graph coloring, defined in definition \ref{def:coloring}. In that context we focus on  trying to find a stable coloring in order to exploit symmetry in formulas, we now focus on \emph{proper colorings}.
+We now introduce one of the most active problems in graph theory: the graph coloring. In this text we have already consider graph coloring, defined in definition \ref{def:coloring}. In that context we focused on  trying to find a stable coloring in order to exploit symmetry in formulas, we now focus on \emph{proper colorings}.
 
 
 
@@ -163,7 +163,7 @@ We now introduce one of the most active problems in graph theory: the graph colo
   The Graph Proper Coloring Language is the language $L\subset \text{GRAPH}\times \mathbb{N}$, such that for every $(G,k)\in L$ there exists a proper coloring $\pi$ of $G$ such that $|\pi| = k$.  
 \end{definition}
 
-The  Graph Proper Coloring Decision problem is a well-known NP-Complete problem. We will reduce this problem to SAT in order to make use of efficient solvers, nonetheless, we will first consider a bit generalization of the problem.
+The  Graph Proper Coloring Decision problem is a well-known NP-Complete problem. We will reduce this problem to SAT in order to make use of efficient solvers, nonetheless, we will first consider a minor generalization of the problem.
 
 \begin{definition}
   We define the chromatic number function $\chi:\text{GRAPH}\to \mathbb{N}$ as follows:
@@ -176,9 +176,9 @@ We get an associated function problem by considering the relation $R \subset \te
   Let $L$ be  The Graph Proper Coloring Language. If $(G,k) \in L$ we have that $(G,k')\in L$ for every $k'\ge k$.
 \end{remark}
 
-Therefore being able to solve this problem is enough to be able to solve the coloring problem. This remark also allow us to use the Optimization trick for minimizing, if we find a upper bound for $k$. This upper bound  is the number of vertices, as every discrete coloring is a proper coloring. Let's therefore solve the decision problem and we will solve both problem described in this subsubsection as a consequence.\\
+Therefore being able to solve this problem is enough to be able to solve the coloring problem. This remark also allow us to use the optimization trick for minimizing, if we find a upper bound for $k$. This upper bound  is the number of vertices, as every discrete coloring is a proper coloring. Let us therefore solve the decision problem and we will solve both problem described in this subsection as a consequence.\\
 
-Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph and let $k\in \mathbb{N}$. To reduce it to a SAT problem, we will first define the variables $\{x_{i,j} : 1\le i \le n,  1 \le j \le k\}$. If the variable $x_{i,j}$ is assigned to true, it would means that the vertex $v_i$ is in the color $k$. We would like to find a assignment of these variables that satisfy the following clauses.
+Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph and let $k\in \mathbb{N}$. To reduce it to a SAT problem, we will first define the variables $\{x_{i,j} : 1\le i \le n,  1 \le j \le k\}$. If the variable $x_{i,j}$ is assigned to true, it would means that the vertex $v_i$ is in the color $j$. We would like to find a assignment of these variables that satisfy the following clauses.
 \begin{enumerate}
 \item Each vertex should have one and only one coloring. Thus, for every vertex $v_i$:
   $$\mathcal{C}( \{x_{i,j} : j \in 1,...,k \}) \qquad \forall i \in 1,...,n.$$
@@ -186,35 +186,26 @@ Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph and let $k\in \mathbb
 $$(\neg x_{i,j}, \neg x_{k,j}) \qquad \forall (i,k) \in E,\ \forall j \in 1,...,k.$$
 \end{enumerate}
 
-Let now prove that this is a correct reduction. If there exists a satisfying assignment of the following clauses, thanks to 1. we can define a coloring of $G$ and thanks to 2. such coloring is a proper coloring. Reversely should that coloring exists we can define a satisfying assignment $\alpha$ as:
+This is a correct reduction. If there exists a satisfying assignment of the following clauses, thanks to 1, we can define a coloring of $G$ and thanks to 2, such coloring is a proper coloring. Reversely, should that coloring $V_j$ exists we can define a satisfying assignment $\alpha$ as:
 $$\alpha(x_{i,j}) = 1_{V_j} (v_i),$$
 
 where $1_{V_j}$ is the characteristic function of $V_j$.
 
 
-\subsubsection{Vertex cover}
+\subsubsection{Dominant subset}
 
-As in the previous subsubsection this problem is among the ones that consist on a NP-Complete decision problem with an associated NP-Hard minimizing problem. Vertex covering are used in planification in order to ensure supply of areas using the minimum amount of resources. 
+As in the previous subsection this problem is among the ones that consist on a NP-Complete decision problem with an associated NP-Hard minimizing problem. Dominant subseting is used in planification in order to ensure supply of areas using the minimum amount of resources. 
 
 \begin{definition}
-  Let $G=(V,E)$ be a graph and let $V' \subset V$. We say that $V$ is a \emph{vertex cover} of $G$ for every $v\in V$ there exists some $v'\in V' $ such that $(v,v')\in E$.
+  Let $G=(V,E)$ be a graph and let $V' \subset V$. We say that $V$ is a \emph{dominant subset} of $G$ for every $v\in V$ there exists some $v'\in V' $ such that $(v,v')\in E$.
 \end{definition}
 
 
 \begin{definition}
-  The Graph Vertex Cover Language is the language $L \subset \text{GRAPH} \times \mathbb{N}$, such that for every $( G, k ) \in L$ there exists a vertex cover $V'$  of $G$ such that $ |V'|= k$
+  The Graph Dominant Subset Language is the language $L \subset \text{GRAPH} \times \mathbb{N}$, such that for every $( G, k ) \in L$ there exists a dominant subset $V'$  of $G$ such that $ |V'|= k$
 \end{definition}
 
-Therefore we have a decision problem. We define the associated minimizing problem of, for a given graph $G$, finding the least $k\in \mathbb{N}$ that satisfy the decision problem. As we can state that $k\le |V|$ and the remark \ref{remark:proper} holds for The Graph Vertex Cover Language  we can also use the optimization trick for minimizing in order to solve the associated minimizing problem, once we solve the decision problem. 
-
-
-Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph and let $k\in \mathbb{N}$. To reduce it to a SAT problem, we will first define the variables $\{x_{i,j} : 1\le i \le n,  1 \le j \le k\}$. If the variable $x_{i,j}$ is assigned to true, it would means that the vertex $v_i$ is in the color $k$. We would like to find a assignment of these variables that satisfy the following clauses.
-\begin{enumerate}
-\item Each vertex should have one and only one coloring. Thus, for every vertex $v_i$:
-  $$\mathcal{C}( \{x_{i,j} : j \in 1,...,k \}) \qquad \forall i \in 1,...,n.$$
-\item No two adjacent vertices should have the same color:
-$$(\neg x_{i,j}, \neg x_{k,j}) \qquad \forall (i,k) \in E,\ \forall j \in 1,...,k.$$
-\end{enumerate}
+Therefore we have a decision problem. We define the associated minimizing problem of, for a given graph $G$, finding the least $k\in \mathbb{N}$ that satisfy the decision problem. As we can state that $k\le |V|$ and the remark \ref{remark:proper} holds for The Graph Dominant Subset Language  we can also use the optimization trick for minimizing in order to solve the associated minimizing problem, once we solve the decision problem. 
 
 Let $G=(V=\{ v_1,...,v_n\},E= \{e_1,...,e_m\})$ be a graph and let $k\in \mathbb{N}$. To reduce it to a SAT problem, we will first define the variables $\{x_{i} : 1\le i \le n\}$. If the variable $x_{i}$ is assigned to 1, it would means that the vertex $v_i$ is in $V'$. We would like to find a assignment of these variables that satisfy the following clauses.
 \begin{enumerate}
@@ -228,27 +219,27 @@ $$ ( x : (x,x_i)\in E ) \qquad i \in 1,...,n $$
 \subsubsection{QBF}
 We look on this problem for a series of reasons:
 \begin{itemize}
-\item We want to study a PSPACE-Complete problem in order to analysis it whole complexity, an reflex a little onto the feasibility of this class.
-\item We have talk about Gödel letter \cite{hartmanis1993godel}. The 'Gödel's dream' was of a QBF solver that run in linear time. A bit too ambitious, but nothing to reproach yourself with, given the youth of the branch at the time.
+\item We want to study a PSPACE-Complete problem in order to analysis it whole complexity, and to make some considerations about the feasibility of this class.
+\item We have commented about Gödel letter \cite{hartmanis1993godel}. The 'Gödel's dream' was of a QBF solver that run in linear time. A bit too ambitious, but nothing to reproach yourself with, given the youth of the branch at the time.
 \item The 23rd International Conference on Theory and Applications of Satisfiability Testing is on  3-10 July 2020. A workshop about the state of the art on QBF will be hold, and I was interested in trying to implement over this clean skeleton some of the improvements. \\
 \end{itemize}
 
-  At the moment of exposing this thesis the conference will be finishing, however at the moment of writing it I am very interested to see how it will be and to see what line or development are though of being optimal.
+  At the moment of exposing this thesis the conference will be finishing, however I am very interested to see how it will be and to see what line or development are though of being optimal.
 
 
 We implement a pretty simple QBF-solver that we have called \texttt{naive-solver}. We hope that it will serve as a basis for developing QBF-solvers over preexisting SAT-Solvers.\\
 
-The resolution is done by computing the formula as in \ref{def:QBF}. Therefore we have an algorithm of complexity $O(2^n)$ where $n$ is the number of variables. We also
+The resolution is done by computing the formula as in \ref{def:QBF}. Therefore we have an algorithm of complexity $O(2^n)$ where $n$ is the number of variables.
 
 \subsubsection{Closest string}
 
-This is the latest of the decision problem with a minimizing associated. This is the problem named closest string. Our interest in this problem arise from our study of Hamming distance for the Local Search Procedure. In particular we use the Shannon’s binary entropy function, that arouse interest in information theory when reading the reference bibliography. \\
+This is the latest of the decision problems with an associaged minimization problem. it is named closest string problem. Our interest in this problem arises from our study of Hamming distance for the Local Search Procedure. 
 
-We find that this is a simple, yet interesting problem relating codes and strings. Lets define the problem.
+We find that this is a simple, yet interesting problem relating codes and strings. Let us define the problem.
 
 \begin{definition}
 Let $m\in\mathbb{N}$ and $s_1,s_2\in \{0,1\}^m$ , we define the Hamming distance for Strings $d_\mathcal{S}$ as:
-$$d_{\mathcal{S}} ( s_1,s_2 ) = |\{ i : s_1(i) = s_2(i)\}|,$$
+$$d_{\mathcal{S}} ( s_1,s_2 ) = |\{ i : s_1(i) \ne s_2(i)\}|,$$
 
 where $s_j(i)$ is the position $i$ of the string $s_j$. 
 \end{definition}
@@ -269,7 +260,7 @@ This problem is known to be NP-Complete\cite{lanctot2003distinguishing}. We redu
 
 We would use this in order to gain more flexibility reducing the problem, without needing a GSAT solver.\\
 
-Lets define the reduction, Let $G = ( V = \{ v_1 , ..., v_n\} , E =\{ e_1 , ..., e_m\})$ be a graph and let $k \in \mathbb{N}$. To reduce it to a SAT problem, we will first define the variables$ \{ x_{i,j} : 1 \le i \le m, 1 \le j \le n \}$, $\{y_i : 1 \le i \le m\}$ and $\{z_{i,j} : 1\le i \le m, 1 \le j \le n\}$. $x_{i,j}$ represents the value of the word $s_j$ at position $i$, and $y_j$ represent the value of such string of distance $k$. $z_j$ is an auxiliary variable that allow us to make a more elegant reduction. We would like to find a assignment of these variables that satisfy the following clauses.
+Lets define the reduction, Let $\{s_1,...,s_n\})$ be a set of strings of length $k \in \mathbb{N}$. We look for a string $s'$ that is at most at distance $k$. To reduce this to a SAT problem, we will first define the variables$ \{ x_{i,j} : 1 \le i \le m, 1 \le j \le n \}$, $\{y_i : 1 \le i \le m\}$ and $\{z_{i,j} : 1\le i \le m, 1 \le j \le n\}$. $x_{i,j}$ represents the value of the word $s_j$ at position $i$, and $y_j$ represent the value of $s'$ at position $j$. $z_j$ is an auxiliary variable that allow us to make a more elegant reduction. We would like to find a assignment of these variables that satisfy the following clauses.
 
 \begin{enumerate}
 \item $z_{i,j}$ is true if and only if $x_{i,j} = y_j$:
@@ -284,18 +275,16 @@ Note that, although we treat $x_{i,j}$ as variables, they are fixed constants, d
 
 In this subsection, once we have proved the reduction in a constructive way, we proceed to program this in order to make these ideas usable.
 
-\subsubsection{Planning and Budgeting}
+\subsubsection{Planning}
 
 We consider that we have to face three problems:
 \begin{itemize}
 \item Representation of the graph. We want to make an elegant yet useful representation of the graph. 
-\item Develop of the reduction.
+\item Development of the reduction.
 \item Adapt the reduction to the solver.
 \item Prepare folder as a package in order to be importable and release it.
 \end{itemize}
 
-
-We plan one weeks and a half to fully implement this work. Once we get to this point, it is time to make a small estimate of the cost of implementing the library. We do not include in this estimate the effort made in the study and development of the first two parts of the text. To make price estimates we considered an example salary of a junior programmer employed by a multinational company with an office in Spain of 20 euros per hour with 39 hours of work per week.\\
 
 
 \subsubsection{Analysis and Design}
@@ -307,10 +296,10 @@ We start with the design of the library. We divide the library in four different
 
 
 
-We start with the module graph. For that purpose we implement a graph class.  We choose the basic implementation from \cite{graphAdvanced}, that resembles the one done by Networkx. We like the fact that it used a dictionary, an object that naturally represents a graph. We improve two major details:
+We start with the module graph. For that purpose we implement a graph class.  We choose the basic implementation from \cite{graphAdvanced}, that resembles the one done by Networkx. We like the fact that it uses a dictionary, an object that naturally represents a graph. We improve two major details:
   \begin{enumerate}
-  \item The class is decided to has a graph as a god-object on which resides all the work. As recommended in \cite{slatkin2019effective}, we choose to inherit directly from dict, in order to gain some strength in processing.
-  \item We consider a set to be better to represent the adjacent nodes, as the order that a list provide is useless and difficult membership checking.
+  \item The original class uses a dictionary as a god-object on which resides all the work. As recommended in \cite{slatkin2019effective}, we choose to inherit directly from dict, in order to gain some strength in processing.
+  \item We consider a set to be better to represent the adjacent nodes, as the order that a list provides is useless and makes more difficult membership checking.
   \end{enumerate}
 
   We implement the graph in a class \texttt{Graph}, that can be found in the file \texttt{graph.py}. We implement, among other functionalities that provide a good interface, the  methods:
@@ -321,12 +310,11 @@ We start with the module graph. For that purpose we implement a graph class.  We
   \end{itemize}
 
 
-  Let's now talk about the package utility. we implement 3 main functionalities:
+  Let's now talk about the package utility. we implement two main functionalities:
 
   \begin{enumerate}
 
-  \item We implement the \texttt{minimizing\_trick} we define a python \emph{decorator}. A decorator can be regarded as an endomorphism defined over the python functions.
-  \item The functions \texttt{xvar},\texttt{yvar}, \texttt{zvar} that provide a useful interface to define variables with an undefined number of variables. For that we use the \emph{multiple function parameters} syntax allowed in python.
+  \item The functions \texttt{xvar},\texttt{yvar}, \texttt{zvar} that provide an useful interface to define variables with an undefined number of variables. For that we use the \emph{multiple function parameters} syntax allowed in python. This functions should be used in conjunction with an \texttt{IDPool} object.
     
   \item We implement the \texttt{triple\_equal} function that is to be used in the closest string reduction.
   \end{enumerate}  
@@ -365,12 +353,11 @@ We start with the module graph. For that purpose we implement a graph class.  We
 \end{figure}
 
 
-The last to modules include a single homonym function each, that implements the associated reduction. More information about the code can be found in the documentation of each function. 
+The last two modules include a single homonym function each, that implements the associated reduction. More information about the code can be found in the documentation of each function. 
 
 \newpage
 \subsubsection{Test}
 
-In order to automatize testing we use the \texttt{Python} class of test classes. Therefore we can use automatic test cases in order to check our implementations. The work-flow followed is an agile one, on which we first define the objective of each code along with the test cases that we want it to pass, and then we start to develop the code. 
-We use the class \texttt{graph\_test.py} to test the Graph class, the class \texttt{closes_string} for the closest string function adn the class . \\
+In order to automatize testing we use the \texttt{Python} class of test classes. Therefore we can use automatic test cases in order to check our implementations. The work-flow followed is an agile one, on which we first define the objective of each code along with the test cases that we want it to pass, and then we start to develop the code. We use the class \texttt{graph\_test.py} to test the Graph class as a example of this process.
 
 %In order to check the implementation an scalability of our program we search for some bigger graph that we can define by hand. We find the NPDatalog graph database \cite{NPDatalog}.

@@ -19,8 +19,8 @@ def zvar(*args):
 
 def to_minimun(funct):
 
-    def __minim(graph, maximun):
-        old = maximun
+    def __minim(graph):
+        old = len(graph)
         new = old // 2
 
         while old != new:

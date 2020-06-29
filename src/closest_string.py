@@ -1,3 +1,9 @@
+"""
+Module that implements function closest string to solve 
+
+"""
+
+
 import time
 import math
 import random
@@ -6,7 +12,7 @@ from bitarray import bitarray
 from pysat.solvers import Solver
 from pysat.card import CardEnc, EncType
 from pysat.formula import IDPool, CNF
-from utilities import triple_equal, xvar, yvar, zvar
+from utility import triple_equal, xvar, yvar, zvar
 
 
 def closest_string(bitarray_list, distance=4, verbose=True):
