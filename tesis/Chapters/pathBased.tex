@@ -39,6 +39,7 @@ All test cases are done in an ARCH-BASED OS. In particular:
   \url{https://github.com/pedrobn23/TFG/tree/master/src}
 \end{center}
 
+The code uploaded may be subject to small modifications or corrections, so we recommend to check the link best. Nonetheless, the code was attached.
 On this repository you will also find this document and all the .text files attached to it.  
 
 
@@ -306,7 +307,7 @@ We start with the module graph. For that purpose we implement a graph class.  We
   \begin{itemize}
   \item \texttt{find\_hamiltonian\_path}
   \item \texttt{coloring}
-  \item \texttt{vertex\_cover}
+  \item \texttt{dominating\_subset}
   \end{itemize}
 
 
@@ -330,8 +331,8 @@ We start with the module graph. For that purpose we implement a graph class.  We
   \node [selected]{\texttt{SATreduce}}
     child { node  {\texttt{graph}}
       child { node [optional] {\texttt{hamiltonian\_path}}}
-      child { node [optional] {\texttt{minimun\_covering}}}
-      child { node [optional] {\texttt{minimun\_vertex\_covering}}}
+      child { node [optional] {\texttt{minimun\_coloring}}}
+      child { node [optional] {\texttt{minimun\_dominating\_subset}}}
     }
     child [missing] {}				
     child [missing] {}				
