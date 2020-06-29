@@ -10,6 +10,7 @@ from pysat.formula import IDPool, CNF
 
 
 class NaiveQBF():
+
     def __init__(self):
         """
         Constructor of the class. Always create an empty solver
@@ -43,7 +44,7 @@ class NaiveQBF():
         """
         Add a clause to the formula
         """
-        
+
         self.formula.add_clause(clause)
 
     def add_quantifiers(self, quantifier):

@@ -3,7 +3,6 @@ Module that implements function closest string to solve
 
 """
 
-
 import time
 import math
 import random

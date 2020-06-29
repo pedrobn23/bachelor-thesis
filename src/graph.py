@@ -15,6 +15,7 @@ from pysat.formula import IDPool
 from utility import xvar
 import math
 
+
 class Graph(dict):
     """
     Class that implements a directed graph. Inherited from
@@ -254,12 +255,12 @@ class Graph(dict):
         """
         Using the minimizing trick, return the size of the minimun coloring
         """
-        
+
         old = len(self)
         new = len(self) // 2
 
         while old != new:
-            if self.coloring( new, False):
+            if self.coloring(new, False):
                 old = new
                 new = new // 2
 
@@ -268,7 +269,6 @@ class Graph(dict):
 
         return new
 
-    
     def dominating_subset(self, k=1, verbose=True):
         """
         Check if there exists a vertex cover of, at most, k-vertices.
@@ -303,7 +303,7 @@ class Graph(dict):
         if verbose:
             print('Running SAT Solver...')
         return solver.solve()
-    
+
     def minimun_dominating_subset(self):
         """
         Using the minimizing trick, return the size of the minimun dominating subset
@@ -340,4 +340,3 @@ class Graph(dict):
             graph.add_edge(str(ori), str(des))
 
         return graph
-

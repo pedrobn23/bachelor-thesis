@@ -3,11 +3,11 @@ This module implements some proves to check efficiency of hamilton method.
 We compare it with a simple backtrack search provided by mikkelam
 """
 
-
 import random
 import time
 from graph import Graph
 import networkx as nx
+
 
 def hamilton(G):
     """
@@ -15,23 +15,24 @@ def hamilton(G):
     Todo el crédito de esta función es de   mikkelam
     """
 
-    F = [(G,[list(G.nodes())[0]])]
+    F = [(G, [list(G.nodes())[0]])]
     n = G.number_of_nodes()
     while F:
-        graph,path = F.pop()
+        graph, path = F.pop()
         confs = []
         for node in graph.neighbors(path[-1]):
             conf_p = path[:]
             conf_p.append(node)
             conf_g = nx.Graph(graph)
             conf_g.remove_node(path[-1])
-            confs.append((conf_g,conf_p))
-        for g,p in confs:
-            if len(p)==n:
+            confs.append((conf_g, conf_p))
+        for g, p in confs:
+            if len(p) == n:
                 return p
             else:
-                F.append((g,p))
+                F.append((g, p))
     return None
+
 
 def experiment(graph):
     print('Graph info:')
@@ -49,7 +50,7 @@ def experiment(graph):
 
     print('Backtrack solving - ')
     start_time = time.time()
-    path =     internet_hamilton(list(graph.edges()))
+    path = internet_hamilton(list(graph.edges()))
     print('Solving last: ', (time.time() - start_time), 'segs.')
     # print('Checking correctness:', hamilton.check_correctness(graph, path))
     print('\n\n')
@@ -65,4 +66,3 @@ if __name__ == '__main__':
         graph = Graph()
         graph.add_from_text(filename)
         experiment(graph)
-
