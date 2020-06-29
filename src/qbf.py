@@ -1,16 +1,17 @@
-import time
-import math
-import random
+"""
+Module that implements QBF resolution
+"""
 import copy
-
 from graph import Graph
 from pysat.solvers import Solver
 from pysat.card import CardEnc, EncType
-from pysat.formula import IDPool, CNF
+from pysat.formula import CNF
 
 
 class NaiveQBF():
-
+    """
+    This class work as a skeleton in order to defin qbf solver based on SAT.
+    """   
     def __init__(self):
         """
         Constructor of the class. Always create an empty solver
@@ -19,20 +20,14 @@ class NaiveQBF():
         self.quantifiers = []
         self.propagate = []
 
-    def solve(self):
-        """
-        Solved the associated formula.
-        """
-        return __solve(self.quantifiers, self.formula, self.propagate)
-
     def append_formula(self, formula):
         """
         Append a formula (seen as a list of clauses) to the solver.
         """
-        for clause in append_formula:
+        for clause in formula:
             self.formula.add_clause(clause)
 
-    def propagate(self, variable):
+    def propagate_literal(self, variable):
         """
         Add a literal to be propagated.
         """
@@ -49,7 +44,7 @@ class NaiveQBF():
 
     def add_quantifiers(self, quantifier):
         """
-        Add a quantifier to the quantifiers list. 
+        Add a quantifier to the quantifiers list.
         Quantifiers are represented as integers. A positive
         quantifiers is interpreted as an exists, as well as
         a negative quantifiers is interpreted as a for all.
@@ -62,7 +57,7 @@ class NaiveQBF():
 
     def negate(self):
         """
-        negate the formula along with the quantifiers list. 
+        negate the formula along with the quantifiers list.
         """
         self.formula = self.formula.negate()
         self.quantifiers = [-quant for quant in self.quantifiers]
@@ -76,14 +71,19 @@ class NaiveQBF():
             quantifier = new_quant.pop()
 
             if quantifier < 0:
-                return __solve(
-                    new_quant, formula, propagate + [quantifier]) and __solve(
+                return NaiveQBF.__solve(
+                    new_quant, formula, propagate + [quantifier]) and NaiveQBF.__solve(
                         new_quant, formula, propagate + [-quantifier])
             else:
-                if __solve(new_quant, formula, propagate + [quantifier]):
+                if NaiveQBF.__solve(new_quant, formula, propagate + [quantifier]):
                     return True
-                return __solve(new_quant, formula, propagate + [quantifier])
+                return NaiveQBF.__solve(new_quant, formula, propagate + [quantifier])
         else:
             solver = Solver(name='cd')
             solver.append_formula(self.cnf)
             return solver.solve()
+    def solve(self):
+        """
+        Solved the associated formula.
+        """
+        return NaiveQBF.__solve(self.quantifiers, self.formula, self.propagate)
