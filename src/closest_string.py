@@ -24,8 +24,8 @@ def closest_string(bitarray_list, distance=4, verbose=True):
     if verbose:
         print('\nCodifying SAT Solver...')
 
-    length = max(len(word) for word in list)
-    solver = Solver(name='cd')
+    length = max(len(word) for word in bitarray_list)
+    solver = Solver(name='mcm')
     vpool = IDPool()
     local_bitarray = bitarray_list.copy()
 
@@ -33,30 +33,62 @@ def closest_string(bitarray_list, distance=4, verbose=True):
         print(' -> Codifying: normalizing strings')
 
     aux = length * bitarray('0')
-    for bitarr in bitarray_list:
-        bitarr = bitarr + aux
+    for index, bitarr in enumerate(bitarray_list):
+        bitarray_list[index] = bitarr + aux
 
     if verbose:
         print(' -> Codifying: imposing distance condition')
 
-    for index, word in string_list:
+    for index, word in enumerate(bitarray_list):
         for pos in range(length):
-            for clause in triple_equal(xvar(index, pos), yvar(pos),
-                                       zvar(index, pos)):
+            vpool.id(xvar(index, pos))
+
+    for pos in range(length):
+        vpool.id(yvar(pos))
+
+    for index, word in enumerate(bitarray_list):
+        for pos in range(length):
+            vpool.id(zvar(index, pos))
+
+    for index, word in enumerate(bitarray_list):
+        for pos in range(length):
+            for clause in triple_equal(xvar(index, pos),
+                                       yvar(pos),
+                                       zvar(index, pos),
+                                       vpool=vpool):
                 solver.add_clause(clause)
-        cnf = CardEnc.equals(lits=[zvar(index, pos) for pos in range(length)],
-                             bound=distance,
-                             vpool=vpool)
+        cnf = CardEnc.atleast(
+            lits=[vpool.id(zvar(index, pos)) for pos in range(length)],
+            bound=length-distance,
+            vpool=vpool)
+        solver.append_formula(cnf)
 
     if verbose:
         print(' -> Codifying: Words Value')
 
-    for index, word in string_list:
+    assumptions = []
+    for index, word in enumerate(bitarray_list):
         for pos in range(length):
-            solver.propagate(assumptions=[
-                vpool.id(xvar(index, pos)) * (-1)**(not word[pos])
-            ])
+            assumptions += [vpool.id(xvar(index, pos)) * (-1)**(not word[pos])]
 
     if verbose:
         print('Running SAT Solver...')
-    return solver.solve()
+    
+    return solver.solve(assumptions=assumptions)
+
+def minimun_distance(bitarray_list):
+    """
+    Using the minimizing trick, return the size of the minimun dominating subset
+    """
+    old = max(len(word) for word in bitarray_list)
+    new = old // 2
+
+    while old != new:
+        if self.closest_string(bitarray_list, new, False):
+            old = new
+            new = new // 2
+        else:
+            new += math.ceil((old - new) / 2)
+
+    return new
+
