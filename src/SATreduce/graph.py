@@ -55,11 +55,13 @@ class Graph(dict):
             (origin, destiny) for origin, destiny in self.iterate_edges())
 
     def add_vertex(self, vertex):
-        """ If the vertex "vertex" is not in
-            self.__graph_dict, a key "vertex" with an empty
-            list as a value is added to the dictionary.
-            Otherwise nothing has to be done.
-            Might raise ValueError exception.
+        """ 
+        If the vertex "vertex" is not in
+        self.__graph_dict, a key "vertex" with an empty
+        list as a value is added to the dictionary.
+        Otherwise nothing has to be done.
+            
+        Might raise ValueError exception.
         """
         if not isinstance(vertex, str):
             raise ValueError('Nodes should be identified with str')
@@ -71,6 +73,8 @@ class Graph(dict):
         """
         Add a new edge to the graph. If the
         requires that nodes are of type str.
+        
+        Might raise ValueError exception.
         """
 
         if not isinstance(ori, str) or not isinstance(des, str):
@@ -89,6 +93,8 @@ class Graph(dict):
 
         Format done as in http://wwwinfo.deis.unical.it/npdatalog/-
         experiments/hamiltoniancycle.htm
+
+        Requires as param a file path
         """
         with open(filename) as file_:
             for line in file_:
@@ -215,6 +221,8 @@ class Graph(dict):
         Accepts two params:
         - n_color: number of color to check
         - verbose: whether or not print the process
+
+        Might raise ValueError exception.
         """
         if n_color < 0:
             raise ValueError('Number of colors must be positive integer')
@@ -334,6 +342,7 @@ class Graph(dict):
         Receives two params:
         n_vertices: the number of vertices
         n_edges: the number of edges.
+
         """
 
         graph = Graph()
