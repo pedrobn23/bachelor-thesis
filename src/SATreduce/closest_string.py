@@ -1,9 +1,12 @@
 """
-Module that implements function closest string to solve
+Module that implements function closest string 
+and minimum distance. Solves closest string
+problem. require bitarray package.
 """
 
 
 import math
+improt 
 from bitarray import bitarray
 from pysat.solvers import Solver
 from pysat.card import CardEnc
@@ -11,39 +14,36 @@ from pysat.formula import IDPool
 from utility import triple_equal, xvar, yvar, zvar
 
 
-def closest_string(bitarray_list, distance=4, verbose=True):
+def closest_string(bitarray_list, distance=4):
     """
     Return if a bitarray exists of distance at most 'distance'.
     Use example:
 
     s1=bitarray('0010')
     s2=bitarray('0011')
-    closest_string([s1,s2], distance=0, verbose=False)
+    closest_string([s1,s2], distance=0)
     > False
-    closest_string([s1,s2], distance=2, verbose=False)
+    closest_string([s1,s2], distance=2)
     > True
     """
     if distance < 0:
         raise ValueError('Distance must be positive integer')
 
-    if verbose:
-        print('\nCodifying SAT Solver...')
+
+    logging.info('\nCodifying SAT Solver...')
 
     length = max(bitarray_list, key=len)
     solver = Solver(name='mcm')
     vpool = IDPool()
     local_list = bitarray_list.copy()
 
-    if verbose:
-        print(' -> Codifying: normalizing strings')
-
+    logging.info(' -> Codifying: normalizing strings')
     aux = length * bitarray('0')
     for index, bitarr in enumerate(bitarray_list):
         local_list[index] = bitarr + aux
 
-    if verbose:
-        print(' -> Codifying: imposing distance condition')
 
+    logging.info(' -> Codifying: imposing distance condition')
     for index, word in enumerate(local_list):
         for pos in range(length):
             vpool.id(xvar(index, pos))
@@ -68,17 +68,13 @@ def closest_string(bitarray_list, distance=4, verbose=True):
             vpool=vpool)
         solver.append_formula(cnf)
 
-    if verbose:
-        print(' -> Codifying: Words Value')
-
+    logging.info(' -> Codifying: Words Value')
     assumptions = []
     for index, word in enumerate(bitarray_list):
         for pos in range(length):
             assumptions += [vpool.id(xvar(index, pos)) * (-1)**(not word[pos])]
 
-    if verbose:
-        print('Running SAT Solver...')
-
+    logging.info('Running SAT Solver...')
     return solver.solve(assumptions=assumptions)
 
 

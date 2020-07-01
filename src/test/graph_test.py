@@ -56,20 +56,18 @@ class GraphTestCase(TestCase):
 
     def test_hamilton(self):
         self.assertEqual(
-            self.graph.find_hamiltonian_path(check_cycle=True, verbose=False),
+            self.graph.find_hamiltonian_path(check_cycle=True),
             [])
 
-        path2 = self.graph2.find_hamiltonian_path(check_cycle=True,
-                                                  verbose=False)
-
+        path2 = self.graph2.find_hamiltonian_path(check_cycle=True)
         self.assertTrue(GraphTestCase.check_correctness(self.graph2, path2))
 
     def test_coloring(self):
-        self.assertTrue(not self.graph2.coloring(2, verbose=False))
+        self.assertTrue(not self.graph2.coloring(2))
         self.assertEqual(self.graph2.minimum_coloring(), 3)
 
     def test_domin(self):
-        self.assertTrue(self.graph2.dominating_subset(1, verbose=False))
+        self.assertTrue(self.graph2.dominating_subset(1))
         self.assertEqual(self.graph2.minimum_dominating_subset(), 1)
 
 

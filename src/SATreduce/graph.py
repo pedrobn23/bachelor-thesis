@@ -11,6 +11,7 @@ Improved from: https://www.python-course.eu/graphs_python.php
 
 import math
 import random
+import logging
 from pysat.solvers import Solver
 from pysat.card import CardEnc
 from pysat.formula import IDPool
@@ -129,7 +130,7 @@ class Graph(dict):
 
         return res
 
-    def find_hamiltonian_path(self, check_cycle=False, verbose=False):
+    def find_hamiltonian_path(self, check_cycle=False):
         """
         should it exists, find a Hamiltonian on
         current self. Otherwise return empty list.
@@ -137,8 +138,8 @@ class Graph(dict):
         if not self.edges():
             return []
 
-        if verbose:
-            print('Codifying SAT Solver...')
+        
+        logging.info('Codifying SAT Solver...')
         length = len(self.vertices())
         solver = Solver(name='cd')
         names = {}
@@ -151,8 +152,8 @@ class Graph(dict):
         for position_in_path in range(length):
             for vertex in range(1, length + 1):
                 vpool.id(xvar(vertex, position_in_path))
-        if verbose:
-            print(' -> Codifying: All Positions occupied')
+
+        logging.info(' -> Codifying: All Positions occupied')
         for position_in_path in range(length):
             var_list = [
                 vpool.id(xvar(vertex, position_in_path))
@@ -162,8 +163,8 @@ class Graph(dict):
             cnf = CardEnc.equals(lits=var_list, vpool=vpool)
             solver.append_formula(cnf)
 
-        if verbose:
-            print(' -> Codifying: All vertex visited')
+            
+        logging.info(' -> Codifying: All vertex visited')
         for vertex in range(1, length + 1):
             var_list = [
                 vpool.id(xvar(vertex, position_in_path))
@@ -173,8 +174,7 @@ class Graph(dict):
             cnf = CardEnc.equals(lits=var_list, vpool=vpool)
             solver.append_formula(cnf)
 
-        if verbose:
-            print(' -> Codifying: Adjacency Matrix')
+        logging.info(' -> Codifying: Adjacency Matrix')
         edges = self.edges()
         for vertex_a in range(1, length + 1):
             for vertex_b in range(vertex_a + 1, length + 1):
@@ -199,8 +199,7 @@ class Graph(dict):
                             vpool.id(xvar(vertex_a, length - 1))
                         ])
 
-        if verbose:
-            print('Running SAT Solver...')
+        logging.info('Running SAT Solver...')
         solution = []
         if solver.solve():
             for index, variable in enumerate(solver.get_model()):
@@ -209,14 +208,13 @@ class Graph(dict):
 
         return solution
 
-    def coloring(self, n_color, verbose=True):
+    def coloring(self, n_color):
         """
         Returns whether or not there exists a vertex coloring
         of, at most, n_color colors.
 
-        Accepts two params:
+        Accepts one param:
         - n_color: number of color to check
-        - verbose: whether or not print the process
 
         Might raise ValueError exception.
         """
@@ -226,15 +224,12 @@ class Graph(dict):
         if n_color == 0:
             return not bool(self.vertices())
 
-        if verbose:
-            print('\nCodifying SAT Solver...')
-
+        
+        logging.info('\nCodifying SAT Solver...')
         solver = Solver(name='cd')
         vpool = IDPool()
 
-        if verbose:
-            print(' -> Codifying: Every vertex must have a color, and only one')
-
+        logging.info(' -> Codifying: Every vertex must have a color, and only one')
         for vertex in self.vertices():
             cnf = CardEnc.equals(lits=[
                 vpool.id('{}color{}'.format(vertex, color))
@@ -245,9 +240,8 @@ class Graph(dict):
 
             solver.append_formula(cnf)
 
-        if verbose:
-            print(' -> Codifying: No two neighbours can have the same color')
 
+        logging.info(' -> Codifying: No two neighbours can have the same color')
         for vertex in self.vertices():
             for neighbour in self[vertex]:
                 for color in range(n_color):
@@ -255,8 +249,8 @@ class Graph(dict):
                         -vpool.id('{}color{}'.format(vertex, color)),
                         -vpool.id('{}color{}'.format(neighbour, color))
                     ])
-        if verbose:
-            print('Running SAT Solver...')
+
+        logging.info('Running SAT Solver...')
         return solver.solve()
 
     def minimum_coloring(self):
@@ -288,9 +282,8 @@ class Graph(dict):
         if not self.edges():
             return []
 
-        if verbose:
-            print('\nCodifying SAT Solver...')
-
+        
+        logging.info('\nCodifying SAT Solver...')
         solver = Solver(name='cd')
         vpool = IDPool()
         vertices_ids = [vpool.id(vertex) for vertex in self.vertices()]

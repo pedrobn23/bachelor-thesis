@@ -26,8 +26,9 @@ class ClosestStringTestCase(TestCase):
     def test_closest_string(self):
         for index, elem in enumerate([False, False, False, False, True]):
             self.assertEqual(
-                cs.closest_string([self.s1, self.s2, self.s3, self.s4], index,
-                                  False), elem)
+                cs.closest_string([self.s1, self.s2, self.s3, self.s4],
+                                  index),
+                elem)
         self.assertEqual(
             cs.minimum_distance([self.s1, self.s2, self.s3, self.s4]), 4)
 
