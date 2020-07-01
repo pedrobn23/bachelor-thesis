@@ -13,6 +13,8 @@ Esta es una biblioteca que implementa varias reducciones de problemas NP-Duros a
 
 <p align="center">
   <img width="460" src="https://github.com/pedrobn23/TFG/blob/master/tesis/img/distribucion.png">
-  Some text
+</p>
+<p align="center">
+Some text
 </p>
 
