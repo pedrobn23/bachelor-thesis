@@ -1,6 +1,9 @@
 """
 This module implements some proves to check efficiency of hamilton method. 
-We compare it with a simple backtrack search provided by mikkelam
+We compare the hamilton path that we have implemented with  a simple 
+backtrack search provided by mikkelam.
+
+Los grafos de ejemplo provienen de http://wwwinfo.deis.unical.it/npdatalog/
 """
 
 import random
@@ -12,7 +15,7 @@ import networkx as nx
 def hamilton(G):
     """
     Código obtenido de https://gist.github.com/mikkelam/ab7966e7ab1c441f947b.
-    Todo el crédito de esta función es de   mikkelam
+    Todo el crédito de esta función es de mikkelam
     """
 
     F = [(G, [list(G.nodes())[0]])]
@@ -35,6 +38,11 @@ def hamilton(G):
 
 
 def experiment(graph):
+    """
+    Función experimento de prueba. No comprueba
+    la veracidad del resultado si no su velocidad.
+    """
+
     print('Graph info:')
     print(' - vertices:', len(graph.vertices()))
     print(' - edges:', len(graph.edges()))
@@ -44,15 +52,12 @@ def experiment(graph):
     print('SAT solving - ')
     path = graph.find_hamiltonian_path()
     print('Solving last: ', (time.time() - start_time), 'segs.')
-    #    print('Checking correctness:', check_correctness(graph, path))
-    print(path)
     print('\n\n')
 
     print('Backtrack solving - ')
     start_time = time.time()
     path = internet_hamilton(list(graph.edges()))
     print('Solving last: ', (time.time() - start_time), 'segs.')
-    # print('Checking correctness:', hamilton.check_correctness(graph, path))
     print('\n\n')
 
 
