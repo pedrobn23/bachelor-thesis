@@ -25,7 +25,7 @@ class Graph(dict):
     """
 
     def __init__(self, graph_dict=None):
-        """ initializes a graph object
+        """ Initializes a graph object
             If no dictionary or None is given,
             an empty dictionary will be use.
             Might raise ValueError exception.
@@ -46,16 +46,16 @@ class Graph(dict):
         super().__init__(graph_dict)
 
     def vertices(self):
-        """ returns the vertices of a graph """
+        """ Returns the vertices of a graph """
         return list(self.keys())
 
     def edges(self):
-        """ returns the edges of a graph """
+        """ Returns the edges of a graph """
         return set(
             (origin, destiny) for origin, destiny in self.iterate_edges())
 
     def add_vertex(self, vertex):
-        """ 
+        """
         If the vertex "vertex" is not in
         self.__graph_dict, a key "vertex" with an empty
         list as a value is added to the dictionary.
@@ -89,7 +89,7 @@ class Graph(dict):
 
     def add_from_text(self, filename):
         """
-        A method that read a graph from text.
+        A method that reads a graph from text.
 
         Format done as in http://wwwinfo.deis.unical.it/npdatalog/-
         experiments/hamiltoniancycle.htm
@@ -119,17 +119,13 @@ class Graph(dict):
 
     def __str__(self):
         res = "vertices: "
-
-        for k in self:
-            res += str(k) + " "
+        res += " ".join(self)
         res += "\nedges: "
 
-        index = 1
-        for edge in self.iterate_edges():
+        for index, edge in enumerate(self.iterate_edges(), start=1):
             res += str(edge) + " "
             if index % 4 == 0:
                 res += "\n       "
-            index += 1
 
         return res
 
@@ -263,10 +259,10 @@ class Graph(dict):
             print('Running SAT Solver...')
         return solver.solve()
 
-    def minimun_coloring(self):
+    def minimum_coloring(self):
         """
         Using the minimizing trick, return the size
-        of the minimun coloring. Use the function coloring
+        of the minimum coloring. Use the function coloring
         """
 
         old = len(self)
@@ -317,10 +313,10 @@ class Graph(dict):
             print('Running SAT Solver...')
         return solver.solve()
 
-    def minimun_dominating_subset(self):
+    def minimum_dominating_subset(self):
         """
         Using the minimizing trick, return the size
-        of the minimun dominating subset.
+        of the minimum dominating subset.
         """
         old = len(self)
         new = len(self) // 2
@@ -335,6 +331,7 @@ class Graph(dict):
 
         return new
 
+    @classmethod
     def random_graph(n_vertices, n_edges):
         """
         Class method that returns a random graph.

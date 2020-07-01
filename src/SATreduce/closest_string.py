@@ -29,7 +29,7 @@ def closest_string(bitarray_list, distance=4, verbose=True):
     if verbose:
         print('\nCodifying SAT Solver...')
 
-    length = max(len(word) for word in bitarray_list)
+    length = max(bitarray_list, key=len)
     solver = Solver(name='mcm')
     vpool = IDPool()
     local_list = bitarray_list.copy()
@@ -82,7 +82,7 @@ def closest_string(bitarray_list, distance=4, verbose=True):
     return solver.solve(assumptions=assumptions)
 
 
-def minimun_distance(bitarray_list):
+def minimum_distance(bitarray_list):
     """
     Using the minimizing trick, return the distance of the bitarray
     to the closest string.
@@ -90,7 +90,7 @@ def minimun_distance(bitarray_list):
 
     s1=bitarray('0010')
     s2=bitarray('0011')
-    minimun_distance([s1,s2])
+    minimum_distance([s1,s2])
     > 1
     """
     old = max(len(word) for word in bitarray_list)

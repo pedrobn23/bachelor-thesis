@@ -66,11 +66,11 @@ class GraphTestCase(TestCase):
 
     def test_coloring(self):
         self.assertTrue(not self.graph2.coloring(2, verbose=False))
-        self.assertEqual(self.graph2.minimun_coloring(), 3)
+        self.assertEqual(self.graph2.minimum_coloring(), 3)
 
     def test_domin(self):
         self.assertTrue(self.graph2.dominating_subset(1, verbose=False))
-        self.assertEqual(self.graph2.minimun_dominating_subset(), 1)
+        self.assertEqual(self.graph2.minimum_dominating_subset(), 1)
 
 
 if __name__ == '__main__':

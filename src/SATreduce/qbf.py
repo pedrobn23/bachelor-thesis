@@ -76,11 +76,10 @@ class NaiveQBF():
                     new_quant, formula,
                     propagate + [quantifier]) and NaiveQBF.__solve(
                         new_quant, formula, propagate + [-quantifier])
-            else:
-                if NaiveQBF.__solve(new_quant, formula,
+            if NaiveQBF.__solve(new_quant, formula,
                                     propagate + [quantifier]):
-                    return True
-                return NaiveQBF.__solve(new_quant, formula,
+                return True
+            return NaiveQBF.__solve(new_quant, formula,
                                         propagate + [quantifier])
         else:
             solver = Solver(name='cd')

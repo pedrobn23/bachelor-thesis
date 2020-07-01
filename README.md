@@ -10,7 +10,7 @@ Este repositorio se organiza en dos carpetas principales:
 pdflatex  -file-line-error   -interaction=nonstopmode main.tex
 ```
 
-Espero les guste este trabajo. No duden en dejar marcado un issue o pull request (o contactarme personalmente) en caso de encontrara algún fallo tanto en el código como en el texto. 
+Espero les guste este trabajo. No duden en dejar marcado un issue o pull request (o contactarme personalmente) en caso de encontrar algún fallo tanto en el código como en el texto. 
 
 Un saludo,
 Pedro Bonilla Nadal.
