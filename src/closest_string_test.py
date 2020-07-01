@@ -8,9 +8,10 @@ from graph import Graph
 import closest_string as cs
 from bitarray import bitarray
 
-class GraphTestCase(TestCase):
+
+class ClosestStringTestCase(TestCase):
     """
-    Test Class for Graph class.
+    Test Class for closest_string module
     """
 
     def __init__(self, *args, **kwargs):
@@ -19,14 +20,17 @@ class GraphTestCase(TestCase):
         self.s1 = bitarray('010111')
         self.s2 = bitarray('010101')
 
-
         self.s3 = bitarray('101')
         self.s4 = bitarray('010')
 
     def test_closest_string(self):
         for index, elem in enumerate([False, False, False, False, True]):
-            self.assertEqual(cs.closest_string([self.s1,self.s2,self.s3,self.s4], index, False), elem)
-        self.assertEqual(cs.minimun_distance([self.s1,self.s2,self.s3,self.s4]), 4) 
+            self.assertEqual(
+                cs.closest_string([self.s1, self.s2, self.s3, self.s4], index,
+                                  False), elem)
+        self.assertEqual(
+            cs.minimun_distance([self.s1, self.s2, self.s3, self.s4]), 4)
+
 
 if __name__ == '__main__':
     main()

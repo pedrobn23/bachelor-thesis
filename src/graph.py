@@ -9,11 +9,13 @@ We uses internally the CaDiCaL solver.
 Improved from: https://www.python-course.eu/graphs_python.php
 """
 
+import math
+import random
 from pysat.solvers import Solver
-from pysat.card import CardEnc, EncType
+from pysat.card import CardEnc
 from pysat.formula import IDPool
 from utility import xvar
-import math
+
 
 
 class Graph(dict):
@@ -205,9 +207,14 @@ class Graph(dict):
 
         return solution
 
-    def coloring(self, n_color=4, verbose=True):
+    def coloring(self, n_color, verbose=True):
         """
-        Check if there exists a vertex coloring of, at most, k-vertices.
+        Returns whether or not there exists a vertex coloring
+        of, at most, n_color colors.
+
+        Accepts two params:
+        - n_color: number of color to check
+        - verbose: whether or not print the process
         """
         if n_color < 0:
             raise ValueError('Number of colors must be positive integer')
@@ -218,9 +225,7 @@ class Graph(dict):
         if verbose:
             print('\nCodifying SAT Solver...')
 
-        length = len(self.vertices())
         solver = Solver(name='cd')
-        names = {}
         vpool = IDPool()
 
         if verbose:
@@ -239,7 +244,6 @@ class Graph(dict):
         if verbose:
             print(' -> Codifying: No two neighbours can have the same color')
 
-        visited = set()
         for vertex in self.vertices():
             for neighbour in self[vertex]:
                 for color in range(n_color):
@@ -253,7 +257,8 @@ class Graph(dict):
 
     def minimun_coloring(self):
         """
-        Using the minimizing trick, return the size of the minimun coloring
+        Using the minimizing trick, return the size
+        of the minimun coloring. Use the function coloring
         """
 
         old = len(self)
@@ -272,6 +277,9 @@ class Graph(dict):
     def dominating_subset(self, k=1, verbose=True):
         """
         Check if there exists a vertex cover of, at most, k-vertices.
+        Accepts as params:
+        - n_color: number of color to check
+        - verbose: whether or not print the process
         """
         if not self.edges():
             return []
@@ -279,10 +287,7 @@ class Graph(dict):
         if verbose:
             print('\nCodifying SAT Solver...')
 
-        length = len(self.vertices())
         solver = Solver(name='cd')
-        names = {}
-
         vpool = IDPool()
         vertices_ids = [vpool.id(vertex) for vertex in self.vertices()]
 
@@ -306,7 +311,8 @@ class Graph(dict):
 
     def minimun_dominating_subset(self):
         """
-        Using the minimizing trick, return the size of the minimun dominating subset
+        Using the minimizing trick, return the size
+        of the minimun dominating subset.
         """
         old = len(self)
         new = len(self) // 2
@@ -323,9 +329,9 @@ class Graph(dict):
 
     def random_graph(n_vertices, n_edges):
         """
-        Class method that returns a random graph. 
+        Class method that returns a random graph.
 
-        Receives two params: 
+        Receives two params:
         n_vertices: the number of vertices
         n_edges: the number of edges.
         """

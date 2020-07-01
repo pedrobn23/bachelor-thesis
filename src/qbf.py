@@ -11,7 +11,8 @@ from pysat.formula import CNF
 class NaiveQBF():
     """
     This class work as a skeleton in order to defin qbf solver based on SAT.
-    """   
+    """
+
     def __init__(self):
         """
         Constructor of the class. Always create an empty solver
@@ -25,7 +26,7 @@ class NaiveQBF():
         Append a formula (seen as a list of clauses) to the solver.
         """
         for clause in formula:
-            self.formula.add_clause(clause)
+            self.formula.append(clause)
 
     def propagate_literal(self, variable):
         """
@@ -40,7 +41,7 @@ class NaiveQBF():
         Add a clause to the formula
         """
 
-        self.formula.add_clause(clause)
+        self.formula.append(clause)
 
     def add_quantifiers(self, quantifier):
         """
@@ -72,18 +73,25 @@ class NaiveQBF():
 
             if quantifier < 0:
                 return NaiveQBF.__solve(
-                    new_quant, formula, propagate + [quantifier]) and NaiveQBF.__solve(
+                    new_quant, formula,
+                    propagate + [quantifier]) and NaiveQBF.__solve(
                         new_quant, formula, propagate + [-quantifier])
             else:
-                if NaiveQBF.__solve(new_quant, formula, propagate + [quantifier]):
+                if NaiveQBF.__solve(new_quant, formula,
+                                    propagate + [quantifier]):
                     return True
-                return NaiveQBF.__solve(new_quant, formula, propagate + [quantifier])
+                return NaiveQBF.__solve(new_quant, formula,
+                                        propagate + [quantifier])
         else:
             solver = Solver(name='cd')
-            solver.append_formula(self.cnf)
-            return solver.solve()
+            solver.append_formula(formula)
+            print(formula.clauses)
+            print(propagate)
+            return solver.solve(assumptions = propagate)
+
     def solve(self):
         """
         Solved the associated formula.
         """
         return NaiveQBF.__solve(self.quantifiers, self.formula, self.propagate)
+

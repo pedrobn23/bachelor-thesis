@@ -1,22 +1,27 @@
 """
-Module that implements function closest string to solve 
-
+Module that implements function closest string to solve
 """
 
-import time
-import math
-import random
 
+import math
 from bitarray import bitarray
 from pysat.solvers import Solver
-from pysat.card import CardEnc, EncType
-from pysat.formula import IDPool, CNF
+from pysat.card import CardEnc
+from pysat.formula import IDPool
 from utility import triple_equal, xvar, yvar, zvar
 
 
 def closest_string(bitarray_list, distance=4, verbose=True):
     """
-    Return a bitarray of distance at most 'distance'
+    Return if a bitarray exists of distance at most 'distance'.
+    Use example:
+
+    s1=bitarray('0010')
+    s2=bitarray('0011')
+    closest_string([s1,s2], distance=0, verbose=False)
+    > False
+    closest_string([s1,s2], distance=2, verbose=False)
+    > True
     """
     if distance < 0:
         raise ValueError('Distance must be positive integer')
@@ -27,30 +32,30 @@ def closest_string(bitarray_list, distance=4, verbose=True):
     length = max(len(word) for word in bitarray_list)
     solver = Solver(name='mcm')
     vpool = IDPool()
-    local_bitarray = bitarray_list.copy()
+    local_list = bitarray_list.copy()
 
     if verbose:
         print(' -> Codifying: normalizing strings')
 
     aux = length * bitarray('0')
     for index, bitarr in enumerate(bitarray_list):
-        bitarray_list[index] = bitarr + aux
+        local_list[index] = bitarr + aux
 
     if verbose:
         print(' -> Codifying: imposing distance condition')
 
-    for index, word in enumerate(bitarray_list):
+    for index, word in enumerate(local_list):
         for pos in range(length):
             vpool.id(xvar(index, pos))
 
     for pos in range(length):
         vpool.id(yvar(pos))
 
-    for index, word in enumerate(bitarray_list):
+    for index, word in enumerate(local_list):
         for pos in range(length):
             vpool.id(zvar(index, pos))
 
-    for index, word in enumerate(bitarray_list):
+    for index, word in enumerate(local_list):
         for pos in range(length):
             for clause in triple_equal(xvar(index, pos),
                                        yvar(pos),
@@ -59,7 +64,7 @@ def closest_string(bitarray_list, distance=4, verbose=True):
                 solver.add_clause(clause)
         cnf = CardEnc.atleast(
             lits=[vpool.id(zvar(index, pos)) for pos in range(length)],
-            bound=length-distance,
+            bound=length - distance,
             vpool=vpool)
         solver.append_formula(cnf)
 
@@ -73,13 +78,20 @@ def closest_string(bitarray_list, distance=4, verbose=True):
 
     if verbose:
         print('Running SAT Solver...')
-    
+
     return solver.solve(assumptions=assumptions)
+
 
 def minimun_distance(bitarray_list):
     """
-    Using the minimizing trick, return the distance of the bitarray 
-    to the closest string
+    Using the minimizing trick, return the distance of the bitarray
+    to the closest string.
+    Use example:
+
+    s1=bitarray('0010')
+    s2=bitarray('0011')
+    minimun_distance([s1,s2])
+    > 1
     """
     old = max(len(word) for word in bitarray_list)
     new = old // 2
@@ -92,4 +104,3 @@ def minimun_distance(bitarray_list):
             new += math.ceil((old - new) / 2)
 
     return new
-
