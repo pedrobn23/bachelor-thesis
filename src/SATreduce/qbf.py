@@ -10,7 +10,7 @@ from pysat.formula import CNF
 
 class NaiveQBF():
     """
-    This class work as a skeleton in order to defin qbf solver based on SAT.
+    This class work as a skeleton in order to define qbf solver based on SAT.
     """
 
     def __init__(self):
