@@ -14,7 +14,7 @@ import random
 from pysat.solvers import Solver
 from pysat.card import CardEnc
 from pysat.formula import IDPool
-from utility import xvar
+from SATreduce.utility import xvar
 
 
 

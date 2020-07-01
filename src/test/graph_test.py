@@ -4,7 +4,7 @@ Graph class.
 """
 
 from unittest import TestCase, main
-from src import graph
+from SATreduce import graph
 
 
 class GraphTestCase(TestCase):
@@ -15,7 +15,7 @@ class GraphTestCase(TestCase):
     def __init__(self, *args, **kwargs):
         super(__class__, self).__init__(*args, **kwargs)
 
-        graph = {
+        grf = {
             "a": {"d"},
             "b": {"c"},
             "c": {"b", "c", "d", "e"},
@@ -24,10 +24,10 @@ class GraphTestCase(TestCase):
             "f": set()
         }
 
-        graph2 = {"a": {"b", "c"}, "b": {"c", "a"}, "c": {"b", "a"}}
+        grf2 = {"a": {"b", "c"}, "b": {"c", "a"}, "c": {"b", "a"}}
 
-        self.graph = Graph(graph)
-        self.graph2 = Graph(graph2)
+        self.graph = graph.Graph(grf)
+        self.graph2 = graph.Graph(grf2)
 
     def test_vertices(self):
         self.assertEqual(['a', 'b', 'c', 'd', 'e', 'f'], self.graph.vertices())
