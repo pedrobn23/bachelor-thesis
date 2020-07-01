@@ -93,7 +93,7 @@ def minimum_distance(bitarray_list):
     minimum_distance([s1,s2])
     > 1
     """
-    old = max(len(word) for word in bitarray_list)
+    length = max(bitarray_list, key=len)
     new = old // 2
 
     while old != new:

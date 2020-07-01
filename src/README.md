@@ -31,7 +31,19 @@ El módulo `graph` incluye la clase `Graph`. Esta realiza una representación de
 - `dominating_subset`
 - `minimun_dominating_subset`
 
-Para más información sobre estos métodos, por favor, lea la documentación asociada (docstring). También dispone de un método de clase `random_graph`, que genera un método aleatorio.
+ También dispone de un método de clase `random_graph`, que genera un método aleatorio.
+
+El módulo closest string incluye unicamente dos funciones: `closest_string` y `minimum_distance`. Estas funciones trabajan sobre la clase bitarray que se puede encontrar [aquí](https://pypi.org/project/bitarray/).
+
+El módulo `qbf` incluye la clase `naiveQBF` que provee un esqueleto para la resolucion de fórmulas cuantificadas.
 
 
+- `append_formula`
+- `propagate_literal`
+- `add_clause`
+- `add_quantifiers`
+- `negate`
+- `__solve`
+- `solve`
 
+Para más información sobre cualquiera de los métodos o funciones, por favor, lea la documentación asociada (docstring).
