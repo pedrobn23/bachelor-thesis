@@ -1,6 +1,6 @@
 """"
-Esta es una biblioteca que implementa varias
- reducciones de problemas NP-Duros a SAT.
- Disponemos de tres módulos principales: 
-`graph`, `closest\_string` y `qbf`.
+This is a library that implements several                                         
+ reductions of NP-Hard problems to SAT.                                            
+ We have three main modules:                                             
+"graph", "closest_string" and "qbf".  
 """
