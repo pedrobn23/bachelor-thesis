@@ -21,17 +21,17 @@ Esta es una biblioteca que implementa varias reducciones de problemas NP-Duros a
 El módulo `graph` incluye la clase `Graph`. Esta realiza una representación de un grafo basado en un diccionario, donde cada nodo está emparejado con un objeto de tipo `set` que contiene todos los nodos adyacentes a él. Consideramos grafos no-dirigidos y sin múltiples caminos entre nodo y nodo. Esta clase dispone de los métodos de objeto:
 - `vertices`
 - `edges`
-- `add\_vertex`
-- `add\_edge`
-- `add\_from\_text`
-- `iterate\_edges`
-- `find\_hamiltonian\_path`
+- `add_vertex`
+- `add_edge`
+- `add_from_text`
+- `iterate_edges`
+- `find_hamiltonian_path`
 - `coloring`
-- `minimun\_coloring`
-- `dominating\_subset`
-- `minimun\_dominating\_subset`
+- `minimun_coloring`
+- `dominating_subset`
+- `minimun_dominating_subset`
 
-Para más información sobre estos métodos, por favor, lea la documentación asociada (docstring). También dispone de un método de clase `random\_graph`, que genera un método aleatorio.
+Para más información sobre estos métodos, por favor, lea la documentación asociada (docstring). También dispone de un método de clase `random_graph`, que genera un método aleatorio.
 
 
 
