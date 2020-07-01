@@ -12,7 +12,7 @@ A continuación describiremos la estructura interna de cada clase así como su f
 Esta es una biblioteca que implementa varias reducciones de problemas NP-Duros a SAT. Disponemos de tres módulos principales: graph, closest\_string y qbf.
 
 <p align="center">
-  <img width="460" height="300" src="https://github.com/pedrobn23/TFG/blob/master/tesis/img/distribucion.png">
+  <img width="460" src="https://github.com/pedrobn23/TFG/blob/master/tesis/img/distribucion.png">
   Some text
 </p>
 
