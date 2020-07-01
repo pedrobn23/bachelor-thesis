@@ -48,7 +48,7 @@ El módulo `qbf` incluye la clase `naiveQBF` que provee un esqueleto para la res
 
 Para más información sobre cualquiera de los métodos o funciones, por favor, lea la documentación asociada (docstring). El módulo `utility` es usado por nosotros para realizar algunas tareas transecionales del desarrollo de los módulos. Sin embargo las funciones están disponibles y documentadas para aquellos interesados en reducir problemas a SAT, aunque este no es el proposito principal de la clase. 
 
-Los módulos `closest_string` y `graph` están implementadas con acceso a (logging)[https://docs.python.org/3/howto/logging.html#logging-basic-tutorial].
+Los módulos `closest_string` y `graph` están implementadas con acceso a [logging](https://docs.python.org/3/howto/logging.html#logging-basic-tutorial).
 
 
 ## Test
