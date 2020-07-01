@@ -84,7 +84,7 @@ def minimun_distance(bitarray_list):
     new = old // 2
 
     while old != new:
-        if self.closest_string(bitarray_list, new, False):
+        if closest_string(bitarray_list, new, False):
             old = new
             new = new // 2
         else:
