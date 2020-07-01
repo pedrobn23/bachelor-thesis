@@ -16,7 +16,7 @@ from utility import triple_equal, xvar, yvar, zvar
 
 def closest_string(bitarray_list, distance=4, verbose=True):
     """
-    Check if there exists a vertex cover of, at most, k-vertices.
+    Return a bitarray of distance at most 'distance'
     """
     if distance < 0:
         raise ValueError('Distance must be positive integer')
