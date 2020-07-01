@@ -78,7 +78,8 @@ def closest_string(bitarray_list, distance=4, verbose=True):
 
 def minimun_distance(bitarray_list):
     """
-    Using the minimizing trick, return the distance of the minimun string
+    Using the minimizing trick, return the distance of the bitarray 
+    to the closest string
     """
     old = max(len(word) for word in bitarray_list)
     new = old // 2
