@@ -64,7 +64,7 @@ def experiment(graph, make_backtrack):
 
 if __name__ == '__main__':
     answer = input(
-        '''
+    '''
         Do you want to run bracktrack solver, in addition to the sat solver? 
         (Warning: lot of time involved) : (Y/N) 
         '''
