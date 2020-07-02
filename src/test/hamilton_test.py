@@ -8,7 +8,7 @@ Los grafos de ejemplo provienen de http://wwwinfo.deis.unical.it/npdatalog/
 
 import random
 import time
-from graph import Graph
+from SATreduce.graph import Graph
 import networkx as nx
 
 

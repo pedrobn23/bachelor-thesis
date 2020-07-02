@@ -6,12 +6,11 @@ problem. require bitarray package.
 
 
 import math
-improt 
 from bitarray import bitarray
 from pysat.solvers import Solver
 from pysat.card import CardEnc
 from pysat.formula import IDPool
-from utility import triple_equal, xvar, yvar, zvar
+from SATreduce import utility as ut
 
 
 def closest_string(bitarray_list, distance=4):
@@ -46,24 +45,24 @@ def closest_string(bitarray_list, distance=4):
     logging.info(' -> Codifying: imposing distance condition')
     for index, word in enumerate(local_list):
         for pos in range(length):
-            vpool.id(xvar(index, pos))
+            vpool.id(ut.xvar(index, pos))
 
     for pos in range(length):
-        vpool.id(yvar(pos))
+        vpool.id(ut.yvar(pos))
 
     for index, word in enumerate(local_list):
         for pos in range(length):
-            vpool.id(zvar(index, pos))
+            vpool.id(ut.zvar(index, pos))
 
     for index, word in enumerate(local_list):
         for pos in range(length):
-            for clause in triple_equal(xvar(index, pos),
-                                       yvar(pos),
-                                       zvar(index, pos),
+            for clause in ut.triple_equal(ut.xvar(index, pos),
+                                       ut.yvar(pos),
+                                       ut.zvar(index, pos),
                                        vpool=vpool):
                 solver.add_clause(clause)
         cnf = CardEnc.atleast(
-            lits=[vpool.id(zvar(index, pos)) for pos in range(length)],
+            lits=[vpool.id(ut.zvar(index, pos)) for pos in range(length)],
             bound=length - distance,
             vpool=vpool)
         solver.append_formula(cnf)
@@ -72,7 +71,7 @@ def closest_string(bitarray_list, distance=4):
     assumptions = []
     for index, word in enumerate(bitarray_list):
         for pos in range(length):
-            assumptions += [vpool.id(xvar(index, pos)) * (-1)**(not word[pos])]
+            assumptions += [vpool.id(ut.xvar(index, pos)) * (-1)**(not word[pos])]
 
     logging.info('Running SAT Solver...')
     return solver.solve(assumptions=assumptions)

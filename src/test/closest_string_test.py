@@ -4,8 +4,7 @@ Graph class.
 """
 
 from unittest import TestCase, main
-from graph import Graph
-import closest_string as cs
+from SATreduce import closest_string as cs
 from bitarray import bitarray
 
 
