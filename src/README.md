@@ -59,4 +59,6 @@ En la carpeta test tenemos diversos script que implementant test classes basados
 python -m test.my_module_name
 ```
 
-desde este directorio, donde `my_module_name` es el nombre del módulo de test a ejecutar (el nombre del archivo sin el `.py`) . 
+desde este directorio, donde `my_module_name` es el nombre del módulo de test a ejecutar (el nombre del archivo sin el `.py`).
+
+El archivo `hamilton_test.py` no utiliza una clase unittest. Este modulo implementa una pruebas de comparación de la velocidad de resolución utilizando nuestro método, comparado con un método backtrack clásico encontrado en internet.

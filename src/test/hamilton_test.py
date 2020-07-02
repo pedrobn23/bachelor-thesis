@@ -37,7 +37,7 @@ def hamilton(G):
     return None
 
 
-def experiment(graph):
+def experiment(graph, make_backtrack):
     """
     Función experimento de prueba. No comprueba
     la veracidad del resultado si no su velocidad.
@@ -54,20 +54,27 @@ def experiment(graph):
     print('Solving last: ', (time.time() - start_time), 'segs.')
     print('\n\n')
 
-    print('Backtrack solving - ')
-    start_time = time.time()
-    path = internet_hamilton(list(graph.edges()))
-    print('Solving last: ', (time.time() - start_time), 'segs.')
-    print('\n\n')
+    if make_backtrack:
+        print('Backtrack solving - ')
+        start_time = time.time()
+        path = internet_hamilton(list(graph.edges()))
+        print('Solving last: ', (time.time() - start_time), 'segs.')
+        print('\n\n')
 
 
 if __name__ == '__main__':
+    answer = input(
+        '''
+        Do you want to run bracktrack solver, in addition to the sat solver? 
+        (Warning: lot of time involved) : (Y/N) 
+        '''
+    ) == 'Y'
     graph_list = [
-        'graphs/structured-type1-100nodes.txt',
-        'graphs/structured-type1-400nodes.txt',
+        'test/graphs/structured-type1-100nodes.txt',
+        'test/graphs/structured-type1-400nodes.txt',
     ]
 
     for filename in graph_list:
         graph = Graph()
         graph.add_from_text(filename)
-        experiment(graph)
+        experiment(graph, answer)

@@ -263,7 +263,7 @@ class Graph(dict):
         new = len(self) // 2
 
         while old != new:
-            if self.coloring(new, False):
+            if self.coloring(new):
                 old = new
                 new = new // 2
 
@@ -272,7 +272,7 @@ class Graph(dict):
 
         return new
 
-    def dominating_subset(self, k=1, verbose=True):
+    def dominating_subset(self, k=1):
         """
         Check if there exists a vertex cover of, at most, k-vertices.
         Accepts as params:
@@ -288,22 +288,18 @@ class Graph(dict):
         vpool = IDPool()
         vertices_ids = [vpool.id(vertex) for vertex in self.vertices()]
 
-        if verbose:
-            print(' -> Codifying: Every vertex must be accessible')
-
+        logging.info(' -> Codifying: Every vertex must be accessible')
         for vertex in self.vertices():
             solver.add_clause(
                 [vpool.id(vertex)] +
                 [vpool.id(adjacent_vertex) for adjacent_vertex in self[vertex]])
-
-        if verbose:
-            print(' -> Codifying: At most', k, 'vertices should be selected')
+            
+        logging.info(' -> Codifying: At most', k, 'vertices should be selected')
 
         cnf = CardEnc.atmost(lits=vertices_ids, bound=k, vpool=vpool)
         solver.append_formula(cnf)
 
-        if verbose:
-            print('Running SAT Solver...')
+        logging.info('Running SAT Solver...')
         return solver.solve()
 
     def minimum_dominating_subset(self):
@@ -315,7 +311,7 @@ class Graph(dict):
         new = len(self) // 2
 
         while old != new:
-            if self.dominating_subset(new, False):
+            if self.dominating_subset(new):
                 old = new
                 new = new // 2
 
