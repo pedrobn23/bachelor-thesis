@@ -3,6 +3,7 @@ Module that implements automatic test cases for
 Graph class.
 """
 
+
 from unittest import TestCase, main
 from SATreduce import closest_string as cs
 from bitarray import bitarray

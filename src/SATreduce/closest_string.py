@@ -6,6 +6,7 @@ problem. require bitarray package.
 
 
 import math
+import logging
 from bitarray import bitarray
 from pysat.solvers import Solver
 from pysat.card import CardEnc
@@ -31,7 +32,7 @@ def closest_string(bitarray_list, distance=4):
 
     logging.info('\nCodifying SAT Solver...')
 
-    length = max(bitarray_list, key=len)
+    length = max(len(bit_arr) for bit_arr in  bitarray_list)
     solver = Solver(name='mcm')
     vpool = IDPool()
     local_list = bitarray_list.copy()
@@ -88,7 +89,7 @@ def minimum_distance(bitarray_list):
     minimum_distance([s1,s2])
     > 1
     """
-    length = max(bitarray_list, key=len)
+    length = max(len(bit_arr) for bit_arr in  bitarray_list)
     new = old // 2
 
     while old != new:
