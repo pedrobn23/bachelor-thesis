@@ -56,7 +56,7 @@ Los módulos `closest_string` y `graph` están implementadas con acceso a [loggi
 En la carpeta test tenemos diversos script que implementant test classes basados en `unittest`. Para ejecutarlos, corra la orden
 
 ```
-python -m test.my_testfyle
+python -m test.my_module_name
 ```
 
-desde este directorio. 
+desde este directorio, donde `my_module_name` es el nombre del módulo de test a ejecutar (el nombre del archivo sin el `.py`) . 

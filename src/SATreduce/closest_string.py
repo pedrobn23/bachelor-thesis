@@ -38,8 +38,8 @@ def closest_string(bitarray_list, distance=4):
     local_list = bitarray_list.copy()
 
     logging.info(' -> Codifying: normalizing strings')
-    aux = length * bitarray('0')
     for index, bitarr in enumerate(bitarray_list):
+        aux = (length - len(bitarr)) * bitarray('0')
         local_list[index] = bitarr + aux
 
 
@@ -70,7 +70,7 @@ def closest_string(bitarray_list, distance=4):
 
     logging.info(' -> Codifying: Words Value')
     assumptions = []
-    for index, word in enumerate(bitarray_list):
+    for index, word in enumerate(local_list):
         for pos in range(length):
             assumptions += [vpool.id(ut.xvar(index, pos)) * (-1)**(not word[pos])]
 
@@ -89,11 +89,11 @@ def minimum_distance(bitarray_list):
     minimum_distance([s1,s2])
     > 1
     """
-    length = max(len(bit_arr) for bit_arr in  bitarray_list)
+    old = max(len(bit_arr) for bit_arr in  bitarray_list)
     new = old // 2
 
     while old != new:
-        if closest_string(bitarray_list, new, False):
+        if closest_string(bitarray_list, new):
             old = new
             new = new // 2
         else:
